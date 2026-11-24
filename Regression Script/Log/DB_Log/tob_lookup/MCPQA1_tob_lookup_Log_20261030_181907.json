@@ -1,0 +1,233 @@
+[
+    {
+        "DataValidationLog_ID": 110,
+        "Module": "tob_lookup",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for TOB_LOOKUP_ID, BUSINESS_ID, TYPE_OF_BILL_CODE, DESCRIPTION, DW_CREATED_DT, DW_MODIFIED_DT",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:19:02.160724",
+                "EndTime": "2026-10-30 18:19:07.634928",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT BUSINESS_ID\n  ,TYPE_OF_BILL_CODE\n  ,DESCRIPTION \n  FROM DW.tob_lookup \n  WHERE dw_file_detail_id >= 2066"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:19:03",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source LOCAL_PATH records: 2768, Total target ORACLE records: 2768"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:19:07",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:19:07",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:19:07",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-30 18:19:07",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Check for null values in BUSINESS_ID, TYPE_OF_BILL_CODE, DESCRIPTION",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:19:02.162724",
+                "EndTime": "2026-10-30 18:19:03.940214",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:19:03",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'BUSINESS_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:19:03",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'TYPE_OF_BILL_CODE': No nulls found."
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Check for duplicate records on BUSINESS_ID and TYPE_OF_BILL_CODE",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:19:02.163726",
+                "EndTime": "2026-10-30 18:19:03.714682",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:19:03",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "No duplicates on ['BUSINESS_ID', 'TYPE_OF_BILL_CODE']."
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "Target DW.tob_lookup: no duplicate BUSINESS_ID, TYPE_OF_BILL_CODE",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:19:02.163726",
+                "EndTime": "2026-10-30 18:19:02.380963",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT BUSINESS_ID\n  ,TYPE_OF_BILL_CODE \n  FROM DW.tob_lookup \n  WHERE dw_file_detail_id >= :dw_file_detail_id"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['BUSINESS_ID', 'TYPE_OF_BILL_CODE']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "WARNING",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'BUSINESS_ID, TYPE_OF_BILL_CODE': Failed to fetch duplicate data \u2014 skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Target DW.tob_lookup: keys and load columns are populated",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:19:02.164726",
+                "EndTime": "2026-10-30 18:19:02.382963",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT BUSINESS_ID\n  ,TYPE_OF_BILL_CODE\n  ,TOB_LOOKUP_ID\n  ,DW_FILE_DETAIL_ID\n  ,DW_CREATED_DT\n  ,DW_MODIFIED_DT \n  FROM DW.tob_lookup \n  WHERE dw_file_detail_id >= :dw_file_detail_id"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Checking fields: ['BUSINESS_ID', 'TYPE_OF_BILL_CODE', 'TOB_LOOKUP_ID', 'DW_FILE_DETAIL_ID', 'DW_CREATED_DT', 'DW_MODIFIED_DT']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'BUSINESS_ID': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'TYPE_OF_BILL_CODE': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'TOB_LOOKUP_ID': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_FILE_DETAIL_ID': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_CREATED_DT': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-10-30 18:19:02",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_MODIFIED_DT': Failed to fetch data \u2014 skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "BUSINESS_ID has only approved values",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:19:02.380963",
+                "EndTime": "2026-10-30 18:19:03.965214",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:19:03",
+                        "Type": "INFO",
+                        "RunType": "InApprovedValue",
+                        "Detail": "Approved Values: '['109', '2066']' \u2014 all source values are approved."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-30 18:19:07.695963"
+        }
+    }
+]

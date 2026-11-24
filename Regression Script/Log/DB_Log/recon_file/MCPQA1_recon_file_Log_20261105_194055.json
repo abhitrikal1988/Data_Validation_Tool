@@ -1,0 +1,188 @@
+[
+    {
+        "DataValidationLog_ID": 123,
+        "Module": "recon_file",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target on cFileKey, cOriginalFileName, cDocId and 58 more",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 19:40:53.279729",
+                "EndTime": "2026-11-05 19:40:55.143521",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:40:53",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT C_JOB_NUMBER\n  ,C_CLAIM_NUMBERS\n  ,C_FILE_KEY\n  ,C_ORIGINAL_FILE_NAME\n  ,C_DOC_ID\n  ,C_GH_1\n  ,C_GH_2\n  ,C_GH_3\n  ,C_GH_4\n  ,C_GH_5\n  ,C_GH_6\n  ,C_GH_7\n  ,C_GH_8\n  ,C_GH_9\n  ,C_GH_10\n  ,C_ENROLLEE_ID\n  ,C_MASTER_C_NAME\n  ,C_ENROLLEE_NAME\n  ,C_PROVIDER_TAX_ID\n  ,C_DOCUMENT_TYPE\n  ,C_DOCUMENT_TYPE_DESCRIPTION\n  ,C_DOCUMENT_EXTENSIONS\n  ,C_BATCH_NUMBER\n  ,I_ENVELOPE_NUMBER\n  ,C_DELIVERY_TYPE\n  ,Y_SHIPPING_AMOUNT\n  ,C_TRACKING_NUMBER\n  ,I_PAGE_QUANTITY\n  ,C_STATUS\n  ,T_FILE_RECEIPT_DATE\n  ,T_RELEASED_DATE\n  ,T_SHIP_DATE\n  ,C_USERNAME\n  ,T_DATE_TIME\n  ,C_PAPER_STOCK_DESC\n  ,C_PURGE_REASON\n  ,C_PURGE_REASON_DESC\n  ,C_RECIPIENT_TYPE\n  ,C_CLAIM_TYPE\n  ,C_CHECK_NUMBER\n  ,Y_CHECK_AMOUNT\n  ,C_PAYEE_NAME\n  ,C_PULL_CODE\n  ,SPOILED_TOUCH_AND_TOSS\n  ,REISSUED_TOUCH_AND_TOSS\n  ,C_REPORTING_ROLLUP_VALUE_1\n  ,C_REPORTING_ROLLUP_VALUE_2\n  ,C_REPORTING_ROLLUP_VALUE_3\n  ,C_REPORTING_ROLLUP_VALUE_4\n  ,C_REPORTING_ROLLUP_VALUE_5\n  ,C_REPORTING_ROLLUP_VALUE_6\n  ,C_REPORTING_ROLLUP_VALUE_7\n  ,C_REPORTING_ROLLUP_VALUE_8\n  ,C_REPORTING_ROLLUP_VALUE_9\n  ,C_REPORTING_ROLLUP_VALUE_10\n  ,C_DOCUMENT_INDEX_1\n  ,C_DOCUMENT_INDEX_2\n  ,C_DOCUMENT_INDEX_3\n  ,C_DOCUMENT_INDEX_4\n  ,DOCUMENT_WORKFLOW_ID\n  ,DOCUMENT_STATE_ID \n  FROM DW.zelis_recon \n  WHERE dw_file_detail_id = 2156"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 19:40:55",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source data empty and Target having data. Please check SRC."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Target DW.zelis_recon: no duplicate C_JOB_NUMBER, C_CLAIM_NUMBERS",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 19:40:53.279729",
+                "EndTime": "2026-11-05 19:40:55.286608",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:40:53",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT C_JOB_NUMBER\n  ,C_CLAIM_NUMBERS \n  FROM DW.zelis_recon \n  WHERE dw_file_detail_id = 2156"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 19:40:53",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['C_JOB_NUMBER', 'C_CLAIM_NUMBERS']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 19:40:55",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'C_JOB_NUMBER, C_CLAIM_NUMBERS': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Target DW.zelis_recon: keys and load columns are populated",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 19:40:53.279729",
+                "EndTime": "2026-11-05 19:40:54.639927",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:40:53",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT C_CLAIM_NUMBERS\n  ,ZELIS_RECON_ID\n  ,C_FILE_KEY\n  ,C_DOC_ID\n  ,I_ENVELOPE_NUMBER\n  ,T_FILE_RECEIPT_DATE\n  ,C_CHECK_NUMBER\n  ,DOCUMENT_STATE_ID\n  ,DW_FILE_DETAIL_ID\n  ,DW_CREATED_DT \n  FROM DW.zelis_recon \n  WHERE dw_file_detail_id = 2156"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 19:40:53",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Checking fields: ['C_CLAIM_NUMBERS', 'ZELIS_RECON_ID', 'C_FILE_KEY', 'C_DOC_ID', 'I_ENVELOPE_NUMBER', 'T_FILE_RECEIPT_DATE', 'C_CHECK_NUMBER', 'DOCUMENT_STATE_ID', 'DW_FILE_DETAIL_ID', 'DW_CREATED_DT']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'C_CLAIM_NUMBERS': No nulls found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'ZELIS_RECON_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'C_FILE_KEY': No nulls found."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'C_DOC_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'I_ENVELOPE_NUMBER': No nulls found."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'T_FILE_RECEIPT_DATE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'C_CHECK_NUMBER': No nulls found."
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DOCUMENT_STATE_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_FILE_DETAIL_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2026-11-05 19:40:54",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_CREATED_DT': No nulls found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "File Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv: no row repeated in every field",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 19:40:53.279729",
+                "EndTime": "2026-11-05 19:40:53.326439",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:40:53",
+                        "Type": "ERROR",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Exception: Path not found: \\Rxadvance\\qa-team\\QA Documentation\\Amit"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-11-05 19:40:55.350069"
+        }
+    }
+]

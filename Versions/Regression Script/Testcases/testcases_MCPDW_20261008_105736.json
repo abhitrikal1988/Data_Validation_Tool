@@ -1,0 +1,219 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for Contract_ID, Contract_Name, Contract_Description, Status_ID, Status_Name, Business_ID, Start_Date, End_Date",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Name\": 1, \"Description\": 1, \"Span.EndDate\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CONTRACT_ID, STATUS_ID, BUSINESS_ID, START_DATE, CONTRACT_NAME, CONTRACT_DESCRIPTION, END_DATE FROM DW.CONTRACT"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "TargetField": "STATUS_ID"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "TargetField": "START_DATE"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Name",
+        "TargetField": "CONTRACT_NAME"
+      },
+      {
+        "SourceField": "Description",
+        "TargetField": "CONTRACT_DESCRIPTION"
+      },
+      {
+        "SourceField": "Span.EndDate",
+        "TargetField": "END_DATE"
+      }
+    ],
+    "DataFilters": [],
+    "Module": "MCPDW",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 301,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 10:57:36"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null in Name",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Name\": {\"$ifNull\": [\"$Name\", null]}, \"DefaultPay\": {\"$ifNull\": [\"$DefaultPay\", null]}, \"ContractConfigX.ListCapitation\": {\"$ifNull\": [\"$ContractConfigX.ListCapitation\", null]}, \"ContractConfigX.ListEOC\": {\"$ifNull\": [\"$ContractConfigX.ListEOC\", null]}, \"ContractConfigX.ListBonus\": {\"$ifNull\": [\"$ContractConfigX.ListBonus\", null]}, \"ContractConfigX.PricingSources\": {\"$ifNull\": [\"$ContractConfigX.PricingSources\", null]}, \"ContractConfigX.EOCs\": {\"$ifNull\": [\"$ContractConfigX.EOCs\", null]}, \"Notes\": {\"$ifNull\": [\"$Notes\", null]}, \"AdditionalAttribute\": {\"$ifNull\": [\"$AdditionalAttribute\", null]}}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Name",
+        "ResultFields": [
+          "Name"
+        ]
+      },
+      {
+        "SourceField": "DefaultPay",
+        "ResultFields": [
+          "DefaultPay"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.ListCapitation",
+        "ResultFields": [
+          "ContractConfigX.ListCapitation"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.ListEOC",
+        "ResultFields": [
+          "ContractConfigX.ListEOC"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.ListBonus",
+        "ResultFields": [
+          "ContractConfigX.ListBonus"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources",
+        "ResultFields": [
+          "ContractConfigX.PricingSources"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.EOCs",
+        "ResultFields": [
+          "ContractConfigX.EOCs"
+        ]
+      },
+      {
+        "SourceField": "Notes",
+        "ResultFields": [
+          "Notes"
+        ]
+      },
+      {
+        "SourceField": "AdditionalAttribute",
+        "ResultFields": [
+          "AdditionalAttribute"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "Module": "MCPDW",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 302,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 10:57:36"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate Contract_ID",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Contract_ID",
+        "ResultFields": [
+          "Contract_ID"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      }
+    ],
+    "ExpectedResult": 0,
+    "DataFilters": [],
+    "Module": "MCPDW",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 303,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 10:57:36"
+    }
+  },
+  {
+    "ValidationType": "Format_Check",
+    "TestDescription": "Check for format in DefaultPay",
+    "Viceversa": false,
+    "TestCaseNumber": 4,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "CheckFields": [],
+    "ExpectedResult": 0,
+    "DataFilters": [],
+    "Module": "MCPDW",
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INCOMPLETE",
+      "Detail": "not loaded",
+      "Errors": [
+        "missing CheckFields"
+      ],
+      "LoadedOn": "2026-10-08 10:57:36"
+    }
+  }
+]

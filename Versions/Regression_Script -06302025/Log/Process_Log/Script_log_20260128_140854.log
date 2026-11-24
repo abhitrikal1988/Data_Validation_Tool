@@ -1,0 +1,34 @@
+2026-01-28 14:08:55,014 | INFO | ========== Starting Validation ==========
+2026-01-28 14:08:55,034 | INFO | Module :  M3P 
+2026-01-28 14:08:55,054 | INFO | Stage :  None 
+2026-01-28 14:08:55,074 | INFO | Cycle :  None
+2026-01-28 14:08:55,094 | INFO | Environment  : MONGODB_MCPQA1
+2026-01-28 14:08:55,888 | INFO | ========== [ Running TestCase 2: Checking MemberReceipt Data Validation after CapRx load ] ==========
+2026-01-28 14:08:55,948 | ERROR | [TC 2] Exception: 'NoneType' object has no attribute 'upper'
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 205, in _execute_single_testcase
+    source_data, target_data = self._fetch_source_target_parallel(source_cfg, target_cfg)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 157, in _fetch_source_target_parallel
+    return f_src.result(), f_tgt.result()
+           ^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 138, in _fetch_one_side_cached
+    data, _ = get_data(
+              ^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Libraries\data_fetcher.py", line 29, in get_data
+    targetEnvKey = targetEnvKey.upper()
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'upper'
+2026-01-28 14:08:56,134 | INFO | Execution time for TestCase 2: 0.23s
+2026-01-28 14:08:56,153 | INFO | Total Number of Testcases Executed:1, Pass:0, Fail:1
+2026-01-28 14:08:56,641 | INFO | Master combined log written to: MONGODB_MCPQA1_M3P_Log_20260128_190856.json
+2026-01-28 14:08:56,682 | INFO | Result.InsertData : 697a5ec8d3a7771ec3eaa580
+2026-01-28 14:08:58,986 | INFO | ========== Completed Validation ==========

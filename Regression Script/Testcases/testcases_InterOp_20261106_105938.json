@@ -1,0 +1,63 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for practitioner role",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Test_InterOpPractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "Target": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "InterOp",
+      "Collection": "PractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "JoinFields": [],
+    "CompareFields": [],
+    "DataFilters": [],
+    "Module": "InterOp",
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INCOMPLETE",
+      "Detail": "not loaded",
+      "Errors": [
+        "missing JoinFields"
+      ],
+      "LoadedOn": "2026-11-06 10:59:38"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on key fields",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Test_InterOpPractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "CheckFields": [],
+    "ExpectedResult": " should not have duplicate values",
+    "DataFilters": [],
+    "Module": "InterOp",
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INCOMPLETE",
+      "Detail": "not loaded",
+      "Errors": [
+        "missing CheckFields"
+      ],
+      "LoadedOn": "2026-11-06 10:59:38"
+    }
+  }
+]

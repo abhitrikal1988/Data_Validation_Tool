@@ -1,0 +1,497 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for Contract_ID, Contract_Name, Contract_Description, Status_ID, Status_Name, Business_ID, Start_Date, End_Date",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Name\": 1, \"Description\": 1, \"Span.EndDate\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CONTRACT_ID, STATUS_ID, BUSINESS_ID, START_DATE, CONTRACT_NAME, CONTRACT_DESCRIPTION, END_DATE FROM DW.CONTRACT"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "TargetField": "STATUS_ID"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "TargetField": "START_DATE"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Name",
+        "TargetField": "CONTRACT_NAME"
+      },
+      {
+        "SourceField": "Description",
+        "TargetField": "CONTRACT_DESCRIPTION"
+      },
+      {
+        "SourceField": "Span.EndDate",
+        "TargetField": "END_DATE"
+      }
+    ],
+    "DataFilters": [],
+    "Module": "MCPDW",
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 301,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-10-08 17:00:18"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in Contract_ID, Name, Status.StatusID, Business.Business_ID, Span.StartDate",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": {\"$ifNull\": [\"$Contract_ID\", null]}, \"Status.StatusID\": {\"$ifNull\": [\"$Status.StatusID\", null]}, \"Business.Business_ID\": {\"$ifNull\": [\"$Business.Business_ID\", null]}, \"Span.StartDate\": {\"$ifNull\": [\"$Span.StartDate\", null]}}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Contract_ID",
+        "ResultFields": [
+          "Contract_ID"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "Module": "MCPDW",
+    "ExpectedResult": "Contract_ID, Status.StatusID, Business.Business_ID, Span.StartDate should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 302,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-10-08 17:00:18"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on Contract_ID, Name, Status.StatusID, Business.Business_ID, Span.StartDate, Span.EndDate",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Contract_ID",
+        "ResultFields": [
+          "Contract_ID"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      }
+    ],
+    "ExpectedResult": "Contract_ID, Status.StatusID, Business.Business_ID, Span.StartDate should not have duplicate values",
+    "DataFilters": [],
+    "Module": "MCPDW",
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 303,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-10-08 17:00:18"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "CONTRACT_ADD_ATTR matches Contract.AdditionalAttribute[]",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$AdditionalAttribute\"}, {\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"AdditionalAttribute.AdditionalAttributeID\": 1, \"AdditionalAttribute.Value\": 1, \"AdditionalAttribute.Span.StartDate\": 1, \"AdditionalAttribute.Span.EndDate\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CONTRACT_ID, ADD_ATTR_ID, VALUE, START_DT, END_DT, BUSINESS_ID FROM DW.CONTRACT_ADD_ATTR"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "AdditionalAttribute.AdditionalAttributeID",
+        "TargetField": "ADD_ATTR_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "AdditionalAttribute.Value",
+        "TargetField": "VALUE"
+      },
+      {
+        "SourceField": "AdditionalAttribute.Span.StartDate",
+        "TargetField": "START_DT"
+      },
+      {
+        "SourceField": "AdditionalAttribute.Span.EndDate",
+        "TargetField": "END_DT"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 309,
+      "DataRegressionSetTestCaseNumber": 7,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 17:00:18"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "CONTRACT_DEFAULT_PAY matches Contract.DefaultPay[]",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$DefaultPay\"}, {\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"DefaultPay.DefaultPay_ID\": 1, \"DefaultPay.FormType\": 1, \"DefaultPay.IP_OP\": 1, \"DefaultPay.StopLossDollar\": 1, \"DefaultPay.PctStopLoss\": 1, \"DefaultPay.PctOfBilled\": 1, \"DefaultPay.ExceedFlag\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CONTRACT_ID, DEFAULT_PAY_ID, FORM_TYPE, IP_OP, STOP_LOSS_DOLLAR, PCT_STOP_LOSS, PCT_OF_BILLED, EXCEED_FLAG, BUSINESS_ID FROM DW.CONTRACT_DEFAULT_PAY"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "DefaultPay.DefaultPay_ID",
+        "TargetField": "DEFAULT_PAY_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "DefaultPay.FormType",
+        "TargetField": "FORM_TYPE"
+      },
+      {
+        "SourceField": "DefaultPay.IP_OP",
+        "TargetField": "IP_OP"
+      },
+      {
+        "SourceField": "DefaultPay.StopLossDollar",
+        "TargetField": "STOP_LOSS_DOLLAR"
+      },
+      {
+        "SourceField": "DefaultPay.PctStopLoss",
+        "TargetField": "PCT_STOP_LOSS"
+      },
+      {
+        "SourceField": "DefaultPay.PctOfBilled",
+        "TargetField": "PCT_OF_BILLED"
+      },
+      {
+        "SourceField": "DefaultPay.ExceedFlag",
+        "TargetField": "EXCEED_FLAG"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 310,
+      "DataRegressionSetTestCaseNumber": 8,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 17:00:18"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "CONTRACT_PRICING_SOURCE matches Contract.ContractConfigX.PricingSources[]",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$ContractConfigX.PricingSources\"}, {\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"ContractConfigX.PricingSources.PricingSources_ID\": 1, \"ContractConfigX.PricingSources.FormType\": 1, \"ContractConfigX.PricingSources.IP_OP\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CONTRACT_ID, PRICING_SOURCE_ID, FORM_TYPE, IP_OP, BUSINESS_ID FROM DW.CONTRACT_PRICING_SOURCE"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.PricingSources_ID",
+        "TargetField": "PRICING_SOURCE_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "ContractConfigX.PricingSources.FormType",
+        "TargetField": "FORM_TYPE"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.IP_OP",
+        "TargetField": "IP_OP"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 311,
+      "DataRegressionSetTestCaseNumber": 9,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 17:00:18"
+    }
+  },
+  {
+    "TestCaseNumber": 7,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "CONTRACT_PRICING_SOURCE_LST_GROUPER matches Contract.ContractConfigX.PricingSources.ListGrouper[]",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$ContractConfigX.PricingSources\"}, {\"$unwind\": \"$ContractConfigX.PricingSources.ListGrouper\"}, {\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"ContractConfigX.PricingSources.PricingSources_ID\": 1, \"ContractConfigX.PricingSources.ListGrouper.ListGrouper_ID\": 1, \"ContractConfigX.PricingSources.ListGrouper.PendReason\": 1, \"ContractConfigX.PricingSources.ListGrouper.DenialReason\": 1, \"ContractConfigX.PricingSources.ListGrouper.InfoReason\": 1, \"ContractConfigX.PricingSources.ListGrouper.ServiceCategory_ID\": 1, \"ContractConfigX.PricingSources.ListGrouper.Priority\": 1, \"ContractConfigX.PricingSources.ListGrouper.Description\": 1, \"ContractConfigX.PricingSources.ListGrouper.OverrideBilledFlag\": 1, \"ContractConfigX.PricingSources.ListGrouper.PricerType\": 1, \"ContractConfigX.PricingSources.ListGrouper.PricerPayerId\": 1, \"ContractConfigX.PricingSources.ListGrouper.PctPricerRate\": 1, \"ContractConfigX.PricingSources.ListGrouper.AddlPayConfigId\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CONTRACT_ID, PRICING_SOURCE_ID, LIST_GROUPER_ID, PENDING_REASON, DENIAL_REASON, INFO_REASON, SERVICE_CATEGORY_ID, PRIORITY, DESCRIPTION, OVERRIDE_BILLED_FLAG, PRICER_TYPE, PRICER_PAYER_ID, PCT_PRICER_RATE, ADDL_PAY_CONFIG_ID, BUSINESS_ID FROM DW.CONTRACT_PRICING_SOURCE_LST_GROUPER"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.PricingSources_ID",
+        "TargetField": "PRICING_SOURCE_ID"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.ListGrouper_ID",
+        "TargetField": "LIST_GROUPER_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.PendReason",
+        "TargetField": "PENDING_REASON"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.DenialReason",
+        "TargetField": "DENIAL_REASON"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.InfoReason",
+        "TargetField": "INFO_REASON"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.ServiceCategory_ID",
+        "TargetField": "SERVICE_CATEGORY_ID"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.Priority",
+        "TargetField": "PRIORITY"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.Description",
+        "TargetField": "DESCRIPTION"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.OverrideBilledFlag",
+        "TargetField": "OVERRIDE_BILLED_FLAG"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.PricerType",
+        "TargetField": "PRICER_TYPE"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.PricerPayerId",
+        "TargetField": "PRICER_PAYER_ID"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.PctPricerRate",
+        "TargetField": "PCT_PRICER_RATE"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.ListGrouper.AddlPayConfigId",
+        "TargetField": "ADDL_PAY_CONFIG_ID"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 312,
+      "DataRegressionSetTestCaseNumber": 10,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 17:00:18"
+    }
+  },
+  {
+    "TestCaseNumber": 8,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "CONTRACT_PRICING_SOURCE_PRIORITY matches Contract.ContractConfigX.PricingSources.PriorityOrder[]",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$ContractConfigX.PricingSources\"}, {\"$unwind\": \"$ContractConfigX.PricingSources.PriorityOrder\"}, {\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"ContractConfigX.PricingSources.PricingSources_ID\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CONTRACT_ID, PRICING_SOURCE_ID, BUSINESS_ID FROM DW.CONTRACT_PRICING_SOURCE_PRIORITY"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources.PricingSources_ID",
+        "TargetField": "PRICING_SOURCE_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 313,
+      "DataRegressionSetTestCaseNumber": 11,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 17:00:18"
+    }
+  }
+]

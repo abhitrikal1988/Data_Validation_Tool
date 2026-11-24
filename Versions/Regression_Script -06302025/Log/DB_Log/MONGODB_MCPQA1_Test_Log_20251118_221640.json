@@ -1,0 +1,24 @@
+[
+    {
+        "DataValidationLog_ID": 49,
+        "Module": "Test",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 11,
+                "TestCaseName": "Data Comparison between SRC and TGT",
+                "Result": "Pass",
+                "StartTime": "2025-11-18 22:15:18.308907",
+                "EndTime": "2025-11-18 22:16:40.710056",
+                "Log": [],
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2025-11-18 22:16:40.941059"
+        }
+    }
+]

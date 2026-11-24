@@ -1,0 +1,2020 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Cardholder ID match with target field values.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": "DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_"
+      }
+    ],
+    "JoinFields": [],
+    "CompareFields": []
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Election Start Date and Election End Date should not contain any NULL values.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionEndDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not have duplicates.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should match regex pattern.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Record_Count",
+    "TestDescription": "Source row count should be equal to target row count.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Cardholder ID and Election Start Date should not have values outside approved list.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 7,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Format",
+    "TestDescription": "Cardholder ID and Election Start Date should match X12 835 structure.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 8,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Balance",
+    "TestDescription": "Cardholder ID and Election Start Date should have balanced 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 9,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Data",
+    "TestDescription": "Cardholder ID and Election Start Date should match 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 10,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not contain any NULL values.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 11,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not have duplicates.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 12,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should match regex pattern.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 13,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Record_Count",
+    "TestDescription": "Source row count should be equal to target row count.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 14,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Cardholder ID and Election Start Date should not have values outside approved list.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 15,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Format",
+    "TestDescription": "Cardholder ID and Election Start Date should match X12 835 structure.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 16,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Balance",
+    "TestDescription": "Cardholder ID and Election Start Date should have balanced 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 17,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Data",
+    "TestDescription": "Cardholder ID and Election Start Date should match 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 18,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not contain any NULL values.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 19,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not have duplicates.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 20,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should match regex pattern.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 21,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Record_Count",
+    "TestDescription": "Source row count should be equal to target row count.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 22,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Cardholder ID and Election Start Date should not have values outside approved list.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 23,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Format",
+    "TestDescription": "Cardholder ID and Election Start Date should match X12 835 structure.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 24,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Balance",
+    "TestDescription": "Cardholder ID and Election Start Date should have balanced 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 25,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Data",
+    "TestDescription": "Cardholder ID and Election Start Date should match 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 26,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not contain any NULL values.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 27,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not have duplicates.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 28,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should match regex pattern.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 29,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Record_Count",
+    "TestDescription": "Source row count should be equal to target row count.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 30,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Cardholder ID and Election Start Date should not have values outside approved list.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 31,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Format",
+    "TestDescription": "Cardholder ID and Election Start Date should match X12 835 structure.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 32,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Balance",
+    "TestDescription": "Cardholder ID and Election Start Date should have balanced 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 33,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Data",
+    "TestDescription": "Cardholder ID and Election Start Date should match 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 34,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not contain any NULL values.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 35,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not have duplicates.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 36,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should match regex pattern.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 37,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Record_Count",
+    "TestDescription": "Source row count should be equal to target row count.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 38,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Cardholder ID and Election Start Date should not have values outside approved list.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 39,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Format",
+    "TestDescription": "Cardholder ID and Election Start Date should match X12 835 structure.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 40,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Balance",
+    "TestDescription": "Cardholder ID and Election Start Date should have balanced 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 41,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Data",
+    "TestDescription": "Cardholder ID and Election Start Date should match 835 amounts.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 42,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not contain any NULL values.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 43,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should not have duplicates.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": 44,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Cardholder ID and Election Start Date should match regex pattern.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "DataFilters": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ]
+  }
+]

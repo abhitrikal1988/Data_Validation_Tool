@@ -1,0 +1,345 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "Practitioner_role",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target on LocationProvider_ID, Last, NPI and 39 more",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "LocationProvider",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"MCPProvider_ID\": 1, \"PrimiraySpecialtyCode\": 1, \"SecSpecialtyCode\": 1, \"Last\": 1, \"NPI\": 1, \"PrimiraySpecialty\": 1, \"SecSpecialty\": 1, \"PracticeName\": 1, \"OnDirectoryFlag\": 1, \"VendorLocationID\": 1, \"Span.StartDate\": 1, \"Span.EndDate\": 1, \"Location.Location_ID\": 1, \"Location.Location_Name\": 1, \"Location.NPI\": 1, \"Location.TIN\": 1, \"Location.MCPProvider_ID\": 1, \"Location.Address\": 1, \"Business.Business_ID\": 1, \"Business.BusinessName\": 1, \"PrimaryLocationFlag\": 1}}]"
+    },
+    "Target": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "InterOP",
+      "Collection": "PractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"McpProviderId\": 1, \"Specialty\": 1, \"IngestionDetail.LastUploadStatus\": 1, \"NPI\": 1, \"PracticeName\": 1, \"ExcludedByOnDirectoryFlag\": 1, \"Location\": 1, \"Span.StartDate\": 1, \"Span.EndDate\": 1, \"Business.Business_ID\": 1, \"Business.BusinessName\": 1}}]"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "LocationProvider_ID",
+        "TargetField": "LocationProvider_ID"
+      },
+      {
+        "SourceField": "MCPProvider_ID",
+        "TargetField": "McpProviderId"
+      },
+      {
+        "SourceField": "PrimiraySpecialtyCode",
+        "TargetField": "Specialty"
+      },
+      {
+        "SourceField": "SecSpecialtyCode",
+        "TargetField": "Specialty"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Last",
+        "TargetField": "IngestionDetail.LastUploadStatus"
+      },
+      {
+        "SourceField": "NPI",
+        "TargetField": "NPI"
+      },
+      {
+        "SourceField": "PrimiraySpecialty",
+        "TargetField": "Specialty"
+      },
+      {
+        "SourceField": "SecSpecialty",
+        "TargetField": "Specialty"
+      },
+      {
+        "SourceField": "PracticeName",
+        "TargetField": "PracticeName"
+      },
+      {
+        "SourceField": "OnDirectoryFlag",
+        "TargetField": "ExcludedByOnDirectoryFlag"
+      },
+      {
+        "SourceField": "VendorLocationID",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "TargetField": "Span.StartDate"
+      },
+      {
+        "SourceField": "Span.EndDate",
+        "TargetField": "Span.EndDate"
+      },
+      {
+        "SourceField": "Location.Location_ID",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Location_Name",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.NPI",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.TIN",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.MCPProvider_ID",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "Business.Business_ID"
+      },
+      {
+        "SourceField": "Business.BusinessName",
+        "TargetField": "Business.BusinessName"
+      },
+      {
+        "SourceField": "Location.Address.Address_ID",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Address1",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Address2",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.City",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.State",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Zip",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.County",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Geolocation.type",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Geolocation.coordinates",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Country",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "PrimaryLocationFlag",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.FirstName",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.LastName",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.Phone",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.Ext",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.Fax",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.Email",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.Phone2",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.TTY",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Contact.UMFax",
+        "TargetField": "Location"
+      },
+      {
+        "SourceField": "Location.Address.Geolocation",
+        "TargetField": "Location"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 373,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-28 13:54:17"
+    }
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "Practitioner_role",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target PractitionerRole: no duplicate LocationProvider_ID, McpProviderId, Specialty, Specialty",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "InterOP",
+      "Collection": "PractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"McpProviderId\": 1, \"Specialty\": 1}}]"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "LocationProvider_ID",
+        "ResultFields": [
+          "LocationProvider_ID"
+        ]
+      },
+      {
+        "SourceField": "McpProviderId",
+        "ResultFields": [
+          "McpProviderId"
+        ]
+      },
+      {
+        "SourceField": "Specialty",
+        "ResultFields": [
+          "Specialty"
+        ]
+      },
+      {
+        "SourceField": "Specialty",
+        "ResultFields": [
+          "Specialty"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same LocationProvider_ID, McpProviderId, Specialty, Specialty",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 374,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-28 13:54:17"
+    }
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "Practitioner_role",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target PractitionerRole: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "InterOP",
+      "Collection": "PractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"LocationProvider_ID\": {\"$ifNull\": [\"$LocationProvider_ID\", null]}, \"McpProviderId\": {\"$ifNull\": [\"$McpProviderId\", null]}, \"Specialty\": {\"$ifNull\": [\"$Specialty\", null]}, \"LocationId\": {\"$ifNull\": [\"$LocationId\", null]}, \"SourceIdentity.LocationProvider_ID\": {\"$ifNull\": [\"$SourceIdentity.LocationProvider_ID\", null]}, \"Business.Business_ID\": {\"$ifNull\": [\"$Business.Business_ID\", null]}, \"Organization.McpProviderId\": {\"$ifNull\": [\"$Organization.McpProviderId\", null]}, \"Organization._idOfOrg\": {\"$ifNull\": [\"$Organization._idOfOrg\", null]}, \"Practitioner.McpProviderId\": {\"$ifNull\": [\"$Practitioner.McpProviderId\", null]}, \"Practitioner._idOfPractitioner\": {\"$ifNull\": [\"$Practitioner._idOfPractitioner\", null]}}}]"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "LocationProvider_ID",
+        "ResultFields": [
+          "LocationProvider_ID"
+        ]
+      },
+      {
+        "SourceField": "McpProviderId",
+        "ResultFields": [
+          "McpProviderId"
+        ]
+      },
+      {
+        "SourceField": "Specialty",
+        "ResultFields": [
+          "Specialty"
+        ]
+      },
+      {
+        "SourceField": "LocationId",
+        "ResultFields": [
+          "LocationId"
+        ]
+      },
+      {
+        "SourceField": "SourceIdentity.LocationProvider_ID",
+        "ResultFields": [
+          "SourceIdentity.LocationProvider_ID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Organization.McpProviderId",
+        "ResultFields": [
+          "Organization.McpProviderId"
+        ]
+      },
+      {
+        "SourceField": "Organization._idOfOrg",
+        "ResultFields": [
+          "Organization._idOfOrg"
+        ]
+      },
+      {
+        "SourceField": "Practitioner.McpProviderId",
+        "ResultFields": [
+          "Practitioner.McpProviderId"
+        ]
+      },
+      {
+        "SourceField": "Practitioner._idOfPractitioner",
+        "ResultFields": [
+          "Practitioner._idOfPractitioner"
+        ]
+      }
+    ],
+    "ExpectedResult": "LocationProvider_ID, McpProviderId, Specialty, LocationId, SourceIdentity.LocationProvider_ID, Business.Business_ID, Organization.McpProviderId, Organization._idOfOrg, Practitioner.McpProviderId, Practitioner._idOfPractitioner should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 375,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-28 13:54:17"
+    }
+  }
+]

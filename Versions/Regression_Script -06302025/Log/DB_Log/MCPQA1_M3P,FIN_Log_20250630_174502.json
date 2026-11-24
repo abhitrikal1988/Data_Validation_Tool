@@ -1,0 +1,519 @@
+[
+    {
+        "DataValidationLog_ID": 37,
+        "Module": "M3P",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Enrollment Data comparison between M3P and PBM",
+                "Result": "Fail",
+                "StartTime": "2025-06-30 17:44:58.790070",
+                "EndTime": "2025-06-30 17:44:59.256046",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 61, Total target ORACLE records: 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'Cardholder_ID': 'EH013557701'}"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'Cardholder_ID': 'T9808000657'}"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 61"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'CARD_ID': 'PPO1000101'}"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 1"
+                    }
+                ],
+                "MissingFields": [
+                    "Cardholder_ID",
+                    "CARD_ID"
+                ],
+                "MismatchFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Checking MemberReceipt Data Validation after CapRx load",
+                "Result": "Fail",
+                "StartTime": "2025-06-30 17:44:59.258054",
+                "EndTime": "2025-06-30 17:44:59.577250",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 17, Total target MONGODB records: 50"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808048630', 'M3PMember_ID': 4017, 'ElectionStartDate': Timestamp('2025-01-10 19:00:00-0500', tz='America/New_York')}: Elected=Y != Elected=9"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: ElectionEndDate=NaT != ElectionEndDate=2025-12-30"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: ElectionRequestDate=NaT != ElectionRequestDate=2025-04-30"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: ElectionYear=nan != ElectionYear=2025"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: Elected=nan != Elected=Y"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: AppReceivedDate=NaT != AppReceivedDate=2024-11-08"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: Signature=nan != Signature=True"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: M3PProgram_ID=nan != M3PProgram_ID=1003"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: ElectionSource=nan != ElectionSource=CAPRX"
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: ElectionEndDate=NaT != ElectionEndDate=2025-06-29"
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: ElectionRequestDate=NaT != ElectionRequestDate=2024-12-31"
+                    },
+                    {
+                        "Log_ID": 13,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: ElectionYear=nan != ElectionYear=2025"
+                    },
+                    {
+                        "Log_ID": 14,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: AppReceivedDate=NaT != AppReceivedDate=2024-10-21"
+                    },
+                    {
+                        "Log_ID": 15,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: Signature=nan != Signature=True"
+                    },
+                    {
+                        "Log_ID": 16,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: M3PProgram_ID=nan != M3PProgram_ID=1003"
+                    },
+                    {
+                        "Log_ID": 17,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: ElectionSource=nan != ElectionSource=CAPRX"
+                    },
+                    {
+                        "Log_ID": 18,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 265"
+                    },
+                    {
+                        "Log_ID": 19,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 20,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}"
+                    },
+                    {
+                        "Log_ID": 21,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}"
+                    },
+                    {
+                        "Log_ID": 22,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808048630', 'M3PMember_ID': 4017, 'ElectionStartDate': Timestamp('2025-01-10 19:00:00-0500', tz='America/New_York')}: Elected=9 != Elected=Y"
+                    },
+                    {
+                        "Log_ID": 23,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 1"
+                    },
+                    {
+                        "Log_ID": 24,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 33"
+                    }
+                ],
+                "MismatchFields": [
+                    "Elected",
+                    "ElectionEndDate",
+                    "ElectionRequestDate",
+                    "ElectionYear",
+                    "AppReceivedDate",
+                    "Signature",
+                    "M3PProgram_ID",
+                    "ElectionSource"
+                ],
+                "MissingFields": [
+                    "Cardholder_ID",
+                    "M3PMember_ID",
+                    "ElectionStartDate"
+                ]
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Checking CapRX Data Validation into STG collection",
+                "Result": "Fail",
+                "StartTime": "2025-06-30 17:44:59.580253",
+                "EndTime": "2025-06-30 17:44:59.957322",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 21, Total target MONGODB records: 21"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Effective_End=2025-10-29 != Effective_End=2025-12-30"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Record_ID=9010 != Record_ID=9017"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Effective_End=2025-12-30 != Effective_End=2025-10-29"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Record_ID=9017 != Record_ID=9010"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 16"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Effective_End=2025-10-29 != Effective_End=2025-12-30"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Record_ID=9010 != Record_ID=9017"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Effective_End=2025-12-30 != Effective_End=2025-10-29"
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Record_ID=9017 != Record_ID=9010"
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 16"
+                    },
+                    {
+                        "Log_ID": 13,
+                        "LogTime": "2025-06-30 17:44:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "MismatchFields": [
+                    "Effective_End",
+                    "Record_ID"
+                ],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "Checking TBD Records in MemberReceipt Collection",
+                "Result": "Fail",
+                "StartTime": "2025-06-30 17:44:59.959321",
+                "EndTime": "2025-06-30 17:45:00.182362",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:45:00",
+                        "Type": "ERROR",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: 84,  Approved Count: 0"
+                    }
+                ],
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Checking duplicate records of phone sequence",
+                "Result": "Pass",
+                "StartTime": "2025-06-30 17:45:00.184359",
+                "EndTime": "2025-06-30 17:45:00.250370",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:45:00",
+                        "Type": "INFO",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: 0, Approved Count: 0"
+                    }
+                ],
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "Checking missing phone sequence",
+                "Result": "Pass",
+                "StartTime": "2025-06-30 17:45:00.251864",
+                "EndTime": "2025-06-30 17:45:00.320879",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:45:00",
+                        "Type": "INFO",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: 0, Approved Count: 0"
+                    }
+                ],
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 7,
+                "TestCaseName": "Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap",
+                "Result": "Fail",
+                "StartTime": "2025-06-30 17:45:00.322874",
+                "EndTime": "2025-06-30 17:45:00.389022",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:45:00",
+                        "Type": "ERROR",
+                        "RunType": "InApprovedValue",
+                        "Detail": "Values not in Source Data '[2000012.0]'"
+                    }
+                ],
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 8,
+                "TestCaseName": "PBM View for Testing",
+                "Result": "Fail",
+                "StartTime": "2025-06-30 17:45:00.390017",
+                "EndTime": "2025-06-30 17:45:00.618073",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:45:00",
+                        "Type": "ERROR",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: 64944,  Approved Count: 64821"
+                    }
+                ],
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 9,
+                "TestCaseName": "PBM Table for Testing",
+                "Result": "Fail",
+                "StartTime": "2025-06-30 17:45:00.621063",
+                "EndTime": "2025-06-30 17:45:00.703574",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:45:00",
+                        "Type": "ERROR",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: 193167,  Approved Count: 0"
+                    }
+                ],
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2025-06-30 17:45:02.693874"
+        }
+    },
+    {
+        "DataValidationLog_ID": 38,
+        "Module": "FIN",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 10,
+                "TestCaseName": "Checking TBD Records in MemberReceipt Collection",
+                "Result": "Fail",
+                "StartTime": "2025-06-30 17:45:00.705074",
+                "EndTime": "2025-06-30 17:45:02.688249",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-06-30 17:45:02",
+                        "Type": "ERROR",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: None,  Approved Count: 0"
+                    }
+                ],
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2025-06-30 17:45:02.693874"
+        }
+    }
+]

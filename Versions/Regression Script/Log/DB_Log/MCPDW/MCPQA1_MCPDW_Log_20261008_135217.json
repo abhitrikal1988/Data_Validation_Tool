@@ -1,0 +1,47 @@
+[
+    {
+        "DataValidationLog_ID": 86,
+        "Module": "MCPDW",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare Contract_ID, Name, and Description",
+                "Result": "Fail",
+                "StartTime": "2026-10-08 13:52:13.872729",
+                "EndTime": "2026-10-08 13:52:17.911584",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-08 13:52:13",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.Contract.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Name\": 1, \"Description\": 1, \"Span.EndDate\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-08 13:52:13",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT CONTRACT_ID\n  ,STATUS_ID\n  ,BUSINESS_ID\n  ,START_DATE\n  ,CONTRACT_NAME\n  ,CONTRACT_DESCRIPTION\n  ,END_DATE \n  FROM DW.CONTRACT"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-08 13:52:17",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-08 13:52:17.947587"
+        }
+    }
+]

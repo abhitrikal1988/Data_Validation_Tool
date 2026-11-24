@@ -1,0 +1,2741 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_AAA matches 271 PAYER_VALIDATION (presence only)",
+    "Viceversa": false,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "PAYER_VALIDATION"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT AAA01_RESP_CODE, AAA03_REJECT_CODE, AAA04_ACTION_CODE FROM (SELECT t.AAA01_RESP_CODE AS AAA01_RESP_CODE, t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE, t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE, CASE WHEN (t.LOOP_QUAL LIKE '%A') THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_AAA t) q WHERE q.KEEP_ROW = 1"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "VALID_REQUEST",
+        "TargetField": "AAA01_RESP_CODE"
+      },
+      {
+        "SourceField": "REJECT_REASON",
+        "TargetField": "AAA03_REJECT_CODE"
+      },
+      {
+        "SourceField": "FOLLOW_UP_ACTION",
+        "TargetField": "AAA04_ACTION_CODE"
+      }
+    ],
+    "CompareFields": [],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 320,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_AAA matches 271 PROVIDER_VALIDATION (presence only)",
+    "Viceversa": false,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "PROVIDER_VALIDATION"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT AAA01_RESP_CODE, AAA03_REJECT_CODE, AAA04_ACTION_CODE FROM (SELECT t.AAA01_RESP_CODE AS AAA01_RESP_CODE, t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE, t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE, CASE WHEN (t.LOOP_QUAL LIKE '%B') THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_AAA t) q WHERE q.KEEP_ROW = 1"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "VALID_REQUEST",
+        "TargetField": "AAA01_RESP_CODE"
+      },
+      {
+        "SourceField": "REJECT_REASON",
+        "TargetField": "AAA03_REJECT_CODE"
+      },
+      {
+        "SourceField": "FOLLOW_UP_ACTION",
+        "TargetField": "AAA04_ACTION_CODE"
+      }
+    ],
+    "CompareFields": [],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 321,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_AAA matches 271 MEMBER_VALIDATION (presence only)",
+    "Viceversa": false,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER_VALIDATION"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT AAA01_RESP_CODE, AAA03_REJECT_CODE, AAA04_ACTION_CODE FROM (SELECT t.AAA01_RESP_CODE AS AAA01_RESP_CODE, t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE, t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE, CASE WHEN (t.LOOP_QUAL LIKE '%C') THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_AAA t) q WHERE q.KEEP_ROW = 1"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "VALID_REQUEST",
+        "TargetField": "AAA01_RESP_CODE"
+      },
+      {
+        "SourceField": "REJECT_REASON",
+        "TargetField": "AAA03_REJECT_CODE"
+      },
+      {
+        "SourceField": "FOLLOW_UP_ACTION",
+        "TargetField": "AAA04_ACTION_CODE"
+      }
+    ],
+    "CompareFields": [],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 322,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_AAA_EB matches 271 BENEFIT_VALIDATION",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_VALIDATION"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC, AAA01_RESP_CODE, AAA03_REJECT_CODE, AAA04_ACTION_CODE FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_AAA_EB_ID_NH) AS OCC, t.AAA01_RESP_CODE AS AAA01_RESP_CODE, t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE, t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE FROM RECON.EDI_271_AAA_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "VALID_REQUEST",
+        "TargetField": "AAA01_RESP_CODE"
+      },
+      {
+        "SourceField": "REJECT_REASON",
+        "TargetField": "AAA03_REJECT_CODE"
+      },
+      {
+        "SourceField": "FOLLOW_UP_ACTION",
+        "TargetField": "AAA04_ACTION_CODE"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 323,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_AAA_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC, AAA01_RESP_CODE, AAA03_REJECT_CODE, AAA04_ACTION_CODE FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_AAA_EB_ID_NH) AS OCC, t.AAA01_RESP_CODE AS AAA01_RESP_CODE, t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE, t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE FROM RECON.EDI_271_AAA_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 324,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_ADDTNL_INFO matches 271 PROVIDER_REF (presence only)",
+    "Viceversa": false,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "PROVIDER_REF"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT REF01_ID_QUAL, REF02_REF_ID, REF03_DESC FROM (SELECT t.REF01_ID_QUAL AS REF01_ID_QUAL, t.REF02_REF_ID AS REF02_REF_ID, t.REF03_DESC AS REF03_DESC, CASE WHEN (t.LOOP_QUAL LIKE '%B') THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_ADDTNL_INFO t) q WHERE q.KEEP_ROW = 1"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "REF_QUALIFIER",
+        "TargetField": "REF01_ID_QUAL"
+      },
+      {
+        "SourceField": "REF_ID",
+        "TargetField": "REF02_REF_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "REF_DESC",
+        "TargetField": "REF03_DESC"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 325,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 7,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_ADDTNL_INFO matches 271 MEMBER_REF (presence only)",
+    "Viceversa": false,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER_REF"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT REF01_ID_QUAL, REF02_REF_ID, REF03_DESC FROM (SELECT t.REF01_ID_QUAL AS REF01_ID_QUAL, t.REF02_REF_ID AS REF02_REF_ID, t.REF03_DESC AS REF03_DESC, CASE WHEN (t.LOOP_QUAL LIKE '%C' AND t.REF01_ID_QUAL <> 'SY') THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_ADDTNL_INFO t) q WHERE q.KEEP_ROW = 1"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "REF_QUALIFIER",
+        "TargetField": "REF01_ID_QUAL"
+      },
+      {
+        "SourceField": "REF_ID",
+        "TargetField": "REF02_REF_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "REF_DESC",
+        "TargetField": "REF03_DESC"
+      }
+    ],
+    "DataFilters": [
+      {
+        "SourceField": "REF_QUALIFIER",
+        "DefaultValue": "SY",
+        "OperatorType": "!="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 326,
+      "DataRegressionSetTestCaseNumber": 7,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 8,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_ADDTNL_INFO_EB matches 271 BENEFIT_REF (presence only)",
+    "Viceversa": false,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_REF"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT REF01_ID_QUAL, REF02_REF_ID, REF03_DESC FROM (SELECT t.REF01_ID_QUAL AS REF01_ID_QUAL, t.REF02_REF_ID AS REF02_REF_ID, t.REF03_DESC AS REF03_DESC FROM RECON.EDI_271_ADDTNL_INFO_EB t) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "REF_QUALIFIER",
+        "TargetField": "REF01_ID_QUAL"
+      },
+      {
+        "SourceField": "REF_ID",
+        "TargetField": "REF02_REF_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "REF_DESC",
+        "TargetField": "REF03_DESC"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 327,
+      "DataRegressionSetTestCaseNumber": 8,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 9,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_DTP_EB matches 271 BENEFIT_DATE",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_DATE"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, DTP01_QUAL, OCC, DTP02_DT_FORMAT_QUAL, START_DT, END_DT FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.DTP01_QUAL ORDER BY t.EDI_271_DTP_EB_ID_NH) AS OCC, t.DTP01_QUAL AS DTP01_QUAL, t.DTP02_DT_FORMAT_QUAL AS DTP02_DT_FORMAT_QUAL, t.START_DT AS START_DT, t.END_DT AS END_DT FROM RECON.EDI_271_DTP_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      },
+      {
+        "SourceField": "DATE_QUALIFIER",
+        "TargetField": "DTP01_QUAL"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "DATE_FORMAT",
+        "TargetField": "DTP02_DT_FORMAT_QUAL"
+      },
+      {
+        "SourceField": "START_DATE",
+        "TargetField": "START_DT"
+      },
+      {
+        "SourceField": "END_DATE",
+        "TargetField": "END_DT"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 328,
+      "DataRegressionSetTestCaseNumber": 9,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 10,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_DTP_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, DTP01_QUAL, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, DTP01_QUAL, OCC, DTP02_DT_FORMAT_QUAL, START_DT, END_DT FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.DTP01_QUAL ORDER BY t.EDI_271_DTP_EB_ID_NH) AS OCC, t.DTP01_QUAL AS DTP01_QUAL, t.DTP02_DT_FORMAT_QUAL AS DTP02_DT_FORMAT_QUAL, t.START_DT AS START_DT, t.END_DT AS END_DT FROM RECON.EDI_271_DTP_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "DTP01_QUAL",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "DTP01_QUAL",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ, DTP01_QUAL, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 329,
+      "DataRegressionSetTestCaseNumber": 10,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 11,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_HEALTH_SERVICE_DELV_EB matches 271 BENEFIT_DELIVERY",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_DELIVERY"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC, QUAN_QUAL, QUANTITY, UNITS_CODE, SELECT_MODULES, PERIOD_QUALF, NUM_OF_PERIODS, DELIVERY_FREQ_CODE, DELIVERY_TIME_CODE FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_HEALTH_SERVICE_DELV_EB_ID_NH) AS OCC, t.QUAN_QUAL AS QUAN_QUAL, t.QUANTITY AS QUANTITY, t.UNITS_CODE AS UNITS_CODE, t.SELECT_MODULES AS SELECT_MODULES, t.PERIOD_QUALF AS PERIOD_QUALF, t.NUM_OF_PERIODS AS NUM_OF_PERIODS, t.DELIVERY_FREQ_CODE AS DELIVERY_FREQ_CODE, t.DELIVERY_TIME_CODE AS DELIVERY_TIME_CODE FROM RECON.EDI_271_HEALTH_SERVICE_DELV_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "QUANTITY_QUALIFIER",
+        "TargetField": "QUAN_QUAL"
+      },
+      {
+        "SourceField": "QUANTITY",
+        "TargetField": "QUANTITY"
+      },
+      {
+        "SourceField": "UNIT",
+        "TargetField": "UNITS_CODE"
+      },
+      {
+        "SourceField": "SAMPLE_MODULUS",
+        "TargetField": "SELECT_MODULES"
+      },
+      {
+        "SourceField": "PERIOD_QUALIFIER",
+        "TargetField": "PERIOD_QUALF"
+      },
+      {
+        "SourceField": "PERIOD_COUNT",
+        "TargetField": "NUM_OF_PERIODS"
+      },
+      {
+        "SourceField": "FREQUENCY",
+        "TargetField": "DELIVERY_FREQ_CODE"
+      },
+      {
+        "SourceField": "PATTERN_TIME",
+        "TargetField": "DELIVERY_TIME_CODE"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 330,
+      "DataRegressionSetTestCaseNumber": 11,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 12,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_HEALTH_SERVICE_DELV_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC, QUAN_QUAL, QUANTITY, UNITS_CODE, SELECT_MODULES, PERIOD_QUALF, NUM_OF_PERIODS, DELIVERY_FREQ_CODE, DELIVERY_TIME_CODE FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_HEALTH_SERVICE_DELV_EB_ID_NH) AS OCC, t.QUAN_QUAL AS QUAN_QUAL, t.QUANTITY AS QUANTITY, t.UNITS_CODE AS UNITS_CODE, t.SELECT_MODULES AS SELECT_MODULES, t.PERIOD_QUALF AS PERIOD_QUALF, t.NUM_OF_PERIODS AS NUM_OF_PERIODS, t.DELIVERY_FREQ_CODE AS DELIVERY_FREQ_CODE, t.DELIVERY_TIME_CODE AS DELIVERY_TIME_CODE FROM RECON.EDI_271_HEALTH_SERVICE_DELV_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 331,
+      "DataRegressionSetTestCaseNumber": 12,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 13,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_III_EB matches 271 BENEFIT_INDUSTRY_CODE",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_INDUSTRY_CODE"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC, QUALF_CODE, INDUSTRY_CODE, MSG FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_III_EB_ID_NH) AS OCC, t.QUALF_CODE AS QUALF_CODE, t.INDUSTRY_CODE AS INDUSTRY_CODE, t.MSG AS MSG FROM RECON.EDI_271_III_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "CODE_LIST_QUALIFIER",
+        "TargetField": "QUALF_CODE"
+      },
+      {
+        "SourceField": "INDUSTRY_CODE",
+        "TargetField": "INDUSTRY_CODE"
+      },
+      {
+        "SourceField": "FREE_TEXT",
+        "TargetField": "MSG"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 332,
+      "DataRegressionSetTestCaseNumber": 13,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 14,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_III_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC, QUALF_CODE, INDUSTRY_CODE, MSG FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_III_EB_ID_NH) AS OCC, t.QUALF_CODE AS QUALF_CODE, t.INDUSTRY_CODE AS INDUSTRY_CODE, t.MSG AS MSG FROM RECON.EDI_271_III_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 333,
+      "DataRegressionSetTestCaseNumber": 14,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 15,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_INFO_RECEIVER matches 271 PROVIDER",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "PROVIDER"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, HL04_CHILD_CODE, ENTITY_CODE, ENTITY_TYPE, LAST_NAME, FIRST_NAME, MIDDLE_NAME, ID_QUAL, ID_CODE, ADDRESS1, ADDRESS2, CITY, STATE_CODE, ZIP, PROVIDER_CODE, PROVIDER_REF_ID FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, t.HL04_CHILD_CODE AS HL04_CHILD_CODE, t.ENTITY_CODE AS ENTITY_CODE, t.ENTITY_TYPE AS ENTITY_TYPE, t.LAST_NAME AS LAST_NAME, t.FIRST_NAME AS FIRST_NAME, t.MIDDLE_NAME AS MIDDLE_NAME, t.ID_QUAL AS ID_QUAL, t.ID_CODE AS ID_CODE, t.ADDRESS1 AS ADDRESS1, t.ADDRESS2 AS ADDRESS2, t.CITY AS CITY, t.STATE_CODE AS STATE_CODE, t.ZIP AS ZIP, t.PROVIDER_CODE AS PROVIDER_CODE, t.PROVIDER_REF_ID AS PROVIDER_REF_ID FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "PROVIDER_HL_CHILD_CODE",
+        "TargetField": "HL04_CHILD_CODE"
+      },
+      {
+        "SourceField": "PROVIDER_ENTITY_CODE",
+        "TargetField": "ENTITY_CODE"
+      },
+      {
+        "SourceField": "PROVIDER_ENTITY_TYPE",
+        "TargetField": "ENTITY_TYPE"
+      },
+      {
+        "SourceField": "PROVIDER_LAST_NAME",
+        "TargetField": "LAST_NAME"
+      },
+      {
+        "SourceField": "PROVIDER_FIRST_NAME",
+        "TargetField": "FIRST_NAME"
+      },
+      {
+        "SourceField": "PROVIDER_MIDDLE_NAME",
+        "TargetField": "MIDDLE_NAME"
+      },
+      {
+        "SourceField": "PROVIDER_ID_QUALIFIER",
+        "TargetField": "ID_QUAL"
+      },
+      {
+        "SourceField": "PROVIDER_ID",
+        "TargetField": "ID_CODE"
+      },
+      {
+        "SourceField": "PROVIDER_ADDRESS_LINE1",
+        "TargetField": "ADDRESS1"
+      },
+      {
+        "SourceField": "PROVIDER_ADDRESS_LINE2",
+        "TargetField": "ADDRESS2"
+      },
+      {
+        "SourceField": "PROVIDER_CITY",
+        "TargetField": "CITY"
+      },
+      {
+        "SourceField": "PROVIDER_STATE",
+        "TargetField": "STATE_CODE"
+      },
+      {
+        "SourceField": "PROVIDER_ZIP",
+        "TargetField": "ZIP"
+      },
+      {
+        "SourceField": "PROVIDER_ROLE",
+        "TargetField": "PROVIDER_CODE"
+      },
+      {
+        "SourceField": "PROVIDER_TAXONOMY_CODE",
+        "TargetField": "PROVIDER_REF_ID"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 334,
+      "DataRegressionSetTestCaseNumber": 15,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 16,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_INFO_RECEIVER: no duplicate TRANSACTION_CONTROL_NUMBER",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, HL04_CHILD_CODE, ENTITY_CODE, ENTITY_TYPE, LAST_NAME, FIRST_NAME, MIDDLE_NAME, ID_QUAL, ID_CODE, ADDRESS1, ADDRESS2, CITY, STATE_CODE, ZIP, PROVIDER_CODE, PROVIDER_REF_ID FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, t.HL04_CHILD_CODE AS HL04_CHILD_CODE, t.ENTITY_CODE AS ENTITY_CODE, t.ENTITY_TYPE AS ENTITY_TYPE, t.LAST_NAME AS LAST_NAME, t.FIRST_NAME AS FIRST_NAME, t.MIDDLE_NAME AS MIDDLE_NAME, t.ID_QUAL AS ID_QUAL, t.ID_CODE AS ID_CODE, t.ADDRESS1 AS ADDRESS1, t.ADDRESS2 AS ADDRESS2, t.CITY AS CITY, t.STATE_CODE AS STATE_CODE, t.ZIP AS ZIP, t.PROVIDER_CODE AS PROVIDER_CODE, t.PROVIDER_REF_ID AS PROVIDER_REF_ID FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "TRANSACTION_CONTROL_NUMBER should not have duplicate values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 335,
+      "DataRegressionSetTestCaseNumber": 16,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 17,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_INFO_SOURCE matches 271 PAYER",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "PAYER"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, HL04_CHILD_CODE, ENTITY_CODE, ENTITY_TYPE, LAST_NAME, FIRST_NAME, MIDDLE_NAME, ID_QUAL, ID_CODE FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, t.HL04_CHILD_CODE AS HL04_CHILD_CODE, t.ENTITY_CODE AS ENTITY_CODE, t.ENTITY_TYPE AS ENTITY_TYPE, t.LAST_NAME AS LAST_NAME, t.FIRST_NAME AS FIRST_NAME, t.MIDDLE_NAME AS MIDDLE_NAME, t.ID_QUAL AS ID_QUAL, t.ID_CODE AS ID_CODE FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "PAYER_HL_CHILD_CODE",
+        "TargetField": "HL04_CHILD_CODE"
+      },
+      {
+        "SourceField": "PAYER_ENTITY_CODE",
+        "TargetField": "ENTITY_CODE"
+      },
+      {
+        "SourceField": "PAYER_ENTITY_TYPE",
+        "TargetField": "ENTITY_TYPE"
+      },
+      {
+        "SourceField": "PAYER_LAST_NAME",
+        "TargetField": "LAST_NAME"
+      },
+      {
+        "SourceField": "PAYER_FIRST_NAME",
+        "TargetField": "FIRST_NAME"
+      },
+      {
+        "SourceField": "PAYER_MIDDLE_NAME",
+        "TargetField": "MIDDLE_NAME"
+      },
+      {
+        "SourceField": "PAYER_ID_QUALIFIER",
+        "TargetField": "ID_QUAL"
+      },
+      {
+        "SourceField": "PAYER_ID",
+        "TargetField": "ID_CODE"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 336,
+      "DataRegressionSetTestCaseNumber": 17,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 18,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_INFO_SOURCE: no duplicate TRANSACTION_CONTROL_NUMBER",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, HL04_CHILD_CODE, ENTITY_CODE, ENTITY_TYPE, LAST_NAME, FIRST_NAME, MIDDLE_NAME, ID_QUAL, ID_CODE FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, t.HL04_CHILD_CODE AS HL04_CHILD_CODE, t.ENTITY_CODE AS ENTITY_CODE, t.ENTITY_TYPE AS ENTITY_TYPE, t.LAST_NAME AS LAST_NAME, t.FIRST_NAME AS FIRST_NAME, t.MIDDLE_NAME AS MIDDLE_NAME, t.ID_QUAL AS ID_QUAL, t.ID_CODE AS ID_CODE FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "TRANSACTION_CONTROL_NUMBER should not have duplicate values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 337,
+      "DataRegressionSetTestCaseNumber": 18,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 19,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_INFO_SOURCE matches 271 PAYER_CONTACT",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "PAYER_CONTACT"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, OCC, CONTACT_FUNCT_CODE, CONTACT_NAME, PER_PHONE, PER_PHONE_EXT, PER_FAX, PER_EMAIL, PER_URL FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, 1 AS OCC, t.CONTACT_FUNCT_CODE AS CONTACT_FUNCT_CODE, t.CONTACT_NAME AS CONTACT_NAME, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'TE' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'TE' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'TE' THEN t.COMM_NUMBER_3 END AS PER_PHONE, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'EX' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'EX' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'EX' THEN t.COMM_NUMBER_3 END AS PER_PHONE_EXT, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'FX' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'FX' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'FX' THEN t.COMM_NUMBER_3 END AS PER_FAX, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'EM' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'EM' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'EM' THEN t.COMM_NUMBER_3 END AS PER_EMAIL, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'UR' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'UR' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'UR' THEN t.COMM_NUMBER_3 END AS PER_URL, CASE WHEN (t.CONTACT_FUNCT_CODE IS NOT NULL OR t.COMM_NUMBER_1 IS NOT NULL) THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) q WHERE q.KEEP_ROW = 1"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "CONTACT_FUNCTION",
+        "TargetField": "CONTACT_FUNCT_CODE"
+      },
+      {
+        "SourceField": "CONTACT_NAME",
+        "TargetField": "CONTACT_NAME"
+      },
+      {
+        "SourceField": "PHONE",
+        "TargetField": "PER_PHONE"
+      },
+      {
+        "SourceField": "PHONE_EXT",
+        "TargetField": "PER_PHONE_EXT"
+      },
+      {
+        "SourceField": "FAX",
+        "TargetField": "PER_FAX"
+      },
+      {
+        "SourceField": "EMAIL",
+        "TargetField": "PER_EMAIL"
+      },
+      {
+        "SourceField": "URL",
+        "TargetField": "PER_URL"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 338,
+      "DataRegressionSetTestCaseNumber": 19,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 20,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_INFO_SOURCE: no duplicate TRANSACTION_CONTROL_NUMBER, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, OCC, CONTACT_FUNCT_CODE, CONTACT_NAME, PER_PHONE, PER_PHONE_EXT, PER_FAX, PER_EMAIL, PER_URL FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, 1 AS OCC, t.CONTACT_FUNCT_CODE AS CONTACT_FUNCT_CODE, t.CONTACT_NAME AS CONTACT_NAME, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'TE' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'TE' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'TE' THEN t.COMM_NUMBER_3 END AS PER_PHONE, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'EX' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'EX' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'EX' THEN t.COMM_NUMBER_3 END AS PER_PHONE_EXT, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'FX' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'FX' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'FX' THEN t.COMM_NUMBER_3 END AS PER_FAX, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'EM' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'EM' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'EM' THEN t.COMM_NUMBER_3 END AS PER_EMAIL, CASE WHEN t.COMM_NUMBER_QUALF_1 = 'UR' THEN t.COMM_NUMBER_1 WHEN t.COMM_NUMBER_QUALF_2 = 'UR' THEN t.COMM_NUMBER_2 WHEN t.COMM_NUMBER_QUALF_3 = 'UR' THEN t.COMM_NUMBER_3 END AS PER_URL, CASE WHEN (t.CONTACT_FUNCT_CODE IS NOT NULL OR t.COMM_NUMBER_1 IS NOT NULL) THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) q WHERE q.KEEP_ROW = 1"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 339,
+      "DataRegressionSetTestCaseNumber": 20,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 21,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_MSG_EB matches 271 BENEFIT_MESSAGE",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_MESSAGE"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, MSG01, OCC FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.MSG01 ORDER BY t.EDI_271_MSG_EB_ID_NH) AS OCC, t.MSG01 AS MSG01 FROM RECON.EDI_271_MSG_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      },
+      {
+        "SourceField": "MESSAGE_TEXT",
+        "TargetField": "MSG01"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 340,
+      "DataRegressionSetTestCaseNumber": 21,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 22,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_MSG_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, MSG01, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, MSG01, OCC FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.MSG01 ORDER BY t.EDI_271_MSG_EB_ID_NH) AS OCC, t.MSG01 AS MSG01 FROM RECON.EDI_271_MSG_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "MSG01",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "MSG01",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ, MSG01, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 341,
+      "DataRegressionSetTestCaseNumber": 22,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 23,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_SERVICETYPE_CODE_EB matches 271 BENEFIT_SERVICE_TYPE",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_SERVICE_TYPE"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, EB03_SERVICE_TYPE_CODE, OCC FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.EB03_SERVICE_TYPE_CODE ORDER BY t.EDI_271_SERVICETYPE_CODE_EB_ID_NH) AS OCC, t.EB03_SERVICE_TYPE_CODE AS EB03_SERVICE_TYPE_CODE FROM RECON.EDI_271_SERVICETYPE_CODE_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      },
+      {
+        "SourceField": "SERVICE_TYPE_CODE",
+        "TargetField": "EB03_SERVICE_TYPE_CODE"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 342,
+      "DataRegressionSetTestCaseNumber": 23,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 24,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_SERVICETYPE_CODE_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, EB03_SERVICE_TYPE_CODE, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, EB03_SERVICE_TYPE_CODE, OCC FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.EB03_SERVICE_TYPE_CODE ORDER BY t.EDI_271_SERVICETYPE_CODE_EB_ID_NH) AS OCC, t.EB03_SERVICE_TYPE_CODE AS EB03_SERVICE_TYPE_CODE FROM RECON.EDI_271_SERVICETYPE_CODE_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "EB03_SERVICE_TYPE_CODE",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "EB03_SERVICE_TYPE_CODE",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ, EB03_SERVICE_TYPE_CODE, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 343,
+      "DataRegressionSetTestCaseNumber": 24,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 25,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_SUBSCRIBER matches 271 MEMBER",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, HIERARCHI_ID, HIERARCHI_PARENT_ID, HL04_CHILD_CODE, MEMBER_LEVEL_FROM_HL03 FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, t.HIERARCHI_ID AS HIERARCHI_ID, t.HIERARCHI_PARENT_ID AS HIERARCHI_PARENT_ID, t.HL04_CHILD_CODE AS HL04_CHILD_CODE, CASE t.HIERARCHI_PARENT_LEVEL_CODE WHEN '22' THEN 'SUBSCRIBER' WHEN '23' THEN 'DEPENDENT' ELSE t.HIERARCHI_PARENT_LEVEL_CODE END AS MEMBER_LEVEL_FROM_HL03 FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "SUBSCRIBER_HL",
+        "TargetField": "HIERARCHI_ID"
+      },
+      {
+        "SourceField": "PROVIDER_HL",
+        "TargetField": "HIERARCHI_PARENT_ID"
+      },
+      {
+        "SourceField": "MEMBER_HL_CHILD_CODE",
+        "TargetField": "HL04_CHILD_CODE"
+      },
+      {
+        "SourceField": "MEMBER_LEVEL",
+        "TargetField": "MEMBER_LEVEL_FROM_HL03"
+      }
+    ],
+    "DataFilters": [
+      {
+        "SourceField": "MEMBER_LEVEL",
+        "DefaultValue": "SUBSCRIBER",
+        "OperatorType": "="
+      },
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 344,
+      "DataRegressionSetTestCaseNumber": 25,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 26,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_SUBSCRIBER: no duplicate TRANSACTION_CONTROL_NUMBER",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, HIERARCHI_ID, HIERARCHI_PARENT_ID, HL04_CHILD_CODE, MEMBER_LEVEL_FROM_HL03 FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, t.HIERARCHI_ID AS HIERARCHI_ID, t.HIERARCHI_PARENT_ID AS HIERARCHI_PARENT_ID, t.HL04_CHILD_CODE AS HL04_CHILD_CODE, CASE t.HIERARCHI_PARENT_LEVEL_CODE WHEN '22' THEN 'SUBSCRIBER' WHEN '23' THEN 'DEPENDENT' ELSE t.HIERARCHI_PARENT_LEVEL_CODE END AS MEMBER_LEVEL_FROM_HL03 FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "TRANSACTION_CONTROL_NUMBER should not have duplicate values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 345,
+      "DataRegressionSetTestCaseNumber": 26,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 27,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_SUBSCRIBER_DTP matches 271 MEMBER_DATE",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER_DATE"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, DTP01_QUAL, OCC, DTP02_DT_FORMAT_QUAL, START_DT, END_DT FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH, t.DTP01_QUAL ORDER BY t.EDI_271_SUBSCRIBER_DTP_ID_NH) AS OCC, t.DTP01_QUAL AS DTP01_QUAL, t.DTP02_DT_FORMAT_QUAL AS DTP02_DT_FORMAT_QUAL, t.START_DT AS START_DT, t.END_DT AS END_DT FROM RECON.EDI_271_SUBSCRIBER_DTP t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "DATE_QUALIFIER",
+        "TargetField": "DTP01_QUAL"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "DATE_FORMAT",
+        "TargetField": "DTP02_DT_FORMAT_QUAL"
+      },
+      {
+        "SourceField": "START_DATE",
+        "TargetField": "START_DT"
+      },
+      {
+        "SourceField": "END_DATE",
+        "TargetField": "END_DT"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 346,
+      "DataRegressionSetTestCaseNumber": 27,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 28,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_SUBSCRIBER_DTP: no duplicate TRANSACTION_CONTROL_NUMBER, DTP01_QUAL, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, DTP01_QUAL, OCC, DTP02_DT_FORMAT_QUAL, START_DT, END_DT FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH, t.DTP01_QUAL ORDER BY t.EDI_271_SUBSCRIBER_DTP_ID_NH) AS OCC, t.DTP01_QUAL AS DTP01_QUAL, t.DTP02_DT_FORMAT_QUAL AS DTP02_DT_FORMAT_QUAL, t.START_DT AS START_DT, t.END_DT AS END_DT FROM RECON.EDI_271_SUBSCRIBER_DTP t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "DTP01_QUAL",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "DTP01_QUAL",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, DTP01_QUAL, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 347,
+      "DataRegressionSetTestCaseNumber": 28,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 29,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_SUBSCRIBER_EB matches 271 BENEFIT",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, EB01_INFO_CODE, EB02_COVERAGE_CODE, EB04_INSURANCE_TYPE_CODE, EB05_PLAN_COV_DESC, EB06_TIME_PERIOD_QUAL, EB07_MONETARY_AMOUNT, EB08_PERCNT_DEC, EB09_QUANTITY_QUAL, EB10_QUANTITY, EB11_RESP_CODE, EB12_RESP_CODE, EB13_ID_QUAL, EB13_PROCEDURE_CODE, EB13_MOD1, EB13_MOD2, EB13_MOD3, EB13_MOD4, EB13_DESC, EB14_DIAGCODE_POINTER1, EB14_DIAGCODE_POINTER2, EB14_DIAGCODE_POINTER3, EB14_DIAGCODE_POINTER4 FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ, t.EB01_INFO_CODE AS EB01_INFO_CODE, t.EB02_COVERAGE_CODE AS EB02_COVERAGE_CODE, t.EB04_INSURANCE_TYPE_CODE AS EB04_INSURANCE_TYPE_CODE, t.EB05_PLAN_COV_DESC AS EB05_PLAN_COV_DESC, t.EB06_TIME_PERIOD_QUAL AS EB06_TIME_PERIOD_QUAL, t.EB07_MONETARY_AMOUNT AS EB07_MONETARY_AMOUNT, t.EB08_PERCNT_DEC AS EB08_PERCNT_DEC, t.EB09_QUANTITY_QUAL AS EB09_QUANTITY_QUAL, t.EB10_QUANTITY AS EB10_QUANTITY, t.EB11_RESP_CODE AS EB11_RESP_CODE, t.EB12_RESP_CODE AS EB12_RESP_CODE, t.EB13_ID_QUAL AS EB13_ID_QUAL, t.EB13_PROCEDURE_CODE AS EB13_PROCEDURE_CODE, t.EB13_MOD1 AS EB13_MOD1, t.EB13_MOD2 AS EB13_MOD2, t.EB13_MOD3 AS EB13_MOD3, t.EB13_MOD4 AS EB13_MOD4, t.EB13_DESC AS EB13_DESC, t.EB14_DIAGCODE_POINTER1 AS EB14_DIAGCODE_POINTER1, t.EB14_DIAGCODE_POINTER2 AS EB14_DIAGCODE_POINTER2, t.EB14_DIAGCODE_POINTER3 AS EB14_DIAGCODE_POINTER3, t.EB14_DIAGCODE_POINTER4 AS EB14_DIAGCODE_POINTER4 FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "BENEFIT_INFO_CODE",
+        "TargetField": "EB01_INFO_CODE"
+      },
+      {
+        "SourceField": "COVERAGE_LEVEL",
+        "TargetField": "EB02_COVERAGE_CODE"
+      },
+      {
+        "SourceField": "INSURANCE_TYPE",
+        "TargetField": "EB04_INSURANCE_TYPE_CODE"
+      },
+      {
+        "SourceField": "PLAN_DESCRIPTION",
+        "TargetField": "EB05_PLAN_COV_DESC"
+      },
+      {
+        "SourceField": "TIME_PERIOD",
+        "TargetField": "EB06_TIME_PERIOD_QUAL"
+      },
+      {
+        "SourceField": "BENEFIT_AMOUNT",
+        "TargetField": "EB07_MONETARY_AMOUNT"
+      },
+      {
+        "SourceField": "BENEFIT_PERCENT",
+        "TargetField": "EB08_PERCNT_DEC"
+      },
+      {
+        "SourceField": "QUANTITY_QUALIFIER",
+        "TargetField": "EB09_QUANTITY_QUAL"
+      },
+      {
+        "SourceField": "QUANTITY",
+        "TargetField": "EB10_QUANTITY"
+      },
+      {
+        "SourceField": "AUTH_REQUIRED",
+        "TargetField": "EB11_RESP_CODE"
+      },
+      {
+        "SourceField": "IN_PLAN_NETWORK",
+        "TargetField": "EB12_RESP_CODE"
+      },
+      {
+        "SourceField": "PROCEDURE_QUALIFIER",
+        "TargetField": "EB13_ID_QUAL"
+      },
+      {
+        "SourceField": "PROCEDURE_CODE",
+        "TargetField": "EB13_PROCEDURE_CODE"
+      },
+      {
+        "SourceField": "MODIFIER_1",
+        "TargetField": "EB13_MOD1"
+      },
+      {
+        "SourceField": "MODIFIER_2",
+        "TargetField": "EB13_MOD2"
+      },
+      {
+        "SourceField": "MODIFIER_3",
+        "TargetField": "EB13_MOD3"
+      },
+      {
+        "SourceField": "MODIFIER_4",
+        "TargetField": "EB13_MOD4"
+      },
+      {
+        "SourceField": "PROCEDURE_DESC",
+        "TargetField": "EB13_DESC"
+      },
+      {
+        "SourceField": "DIAG_POINTER_1",
+        "TargetField": "EB14_DIAGCODE_POINTER1"
+      },
+      {
+        "SourceField": "DIAG_POINTER_2",
+        "TargetField": "EB14_DIAGCODE_POINTER2"
+      },
+      {
+        "SourceField": "DIAG_POINTER_3",
+        "TargetField": "EB14_DIAGCODE_POINTER3"
+      },
+      {
+        "SourceField": "DIAG_POINTER_4",
+        "TargetField": "EB14_DIAGCODE_POINTER4"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 348,
+      "DataRegressionSetTestCaseNumber": 29,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 30,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_SUBSCRIBER_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, EB01_INFO_CODE, EB02_COVERAGE_CODE, EB04_INSURANCE_TYPE_CODE, EB05_PLAN_COV_DESC, EB06_TIME_PERIOD_QUAL, EB07_MONETARY_AMOUNT, EB08_PERCNT_DEC, EB09_QUANTITY_QUAL, EB10_QUANTITY, EB11_RESP_CODE, EB12_RESP_CODE, EB13_ID_QUAL, EB13_PROCEDURE_CODE, EB13_MOD1, EB13_MOD2, EB13_MOD3, EB13_MOD4, EB13_DESC, EB14_DIAGCODE_POINTER1, EB14_DIAGCODE_POINTER2, EB14_DIAGCODE_POINTER3, EB14_DIAGCODE_POINTER4 FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ, t.EB01_INFO_CODE AS EB01_INFO_CODE, t.EB02_COVERAGE_CODE AS EB02_COVERAGE_CODE, t.EB04_INSURANCE_TYPE_CODE AS EB04_INSURANCE_TYPE_CODE, t.EB05_PLAN_COV_DESC AS EB05_PLAN_COV_DESC, t.EB06_TIME_PERIOD_QUAL AS EB06_TIME_PERIOD_QUAL, t.EB07_MONETARY_AMOUNT AS EB07_MONETARY_AMOUNT, t.EB08_PERCNT_DEC AS EB08_PERCNT_DEC, t.EB09_QUANTITY_QUAL AS EB09_QUANTITY_QUAL, t.EB10_QUANTITY AS EB10_QUANTITY, t.EB11_RESP_CODE AS EB11_RESP_CODE, t.EB12_RESP_CODE AS EB12_RESP_CODE, t.EB13_ID_QUAL AS EB13_ID_QUAL, t.EB13_PROCEDURE_CODE AS EB13_PROCEDURE_CODE, t.EB13_MOD1 AS EB13_MOD1, t.EB13_MOD2 AS EB13_MOD2, t.EB13_MOD3 AS EB13_MOD3, t.EB13_MOD4 AS EB13_MOD4, t.EB13_DESC AS EB13_DESC, t.EB14_DIAGCODE_POINTER1 AS EB14_DIAGCODE_POINTER1, t.EB14_DIAGCODE_POINTER2 AS EB14_DIAGCODE_POINTER2, t.EB14_DIAGCODE_POINTER3 AS EB14_DIAGCODE_POINTER3, t.EB14_DIAGCODE_POINTER4 AS EB14_DIAGCODE_POINTER4 FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 349,
+      "DataRegressionSetTestCaseNumber": 30,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 31,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_SUBSCRIBER_EB_ENTITY matches 271 BENEFIT_ENTITY",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_ENTITY"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ, SUBSC_EB_ENTITY_CODE, SUBSC_EB_ENTITY_TYPE, SUBSC_EB_ENTITY_LAST_NAME, SUBSC_EB_ENTITY_FIRST_NAME, SUBSC_EB_ENTITY_MIDDLE_NAME, SUBSC_EB_ENTITY_ID_QUALF, SUBSC_EB_ENTITY_ID_CODE, SUBSC_EB_ENTITY_ADDRESS1, SUBSC_EB_ENTITY_ADDRESS2, SUBSC_EB_ENTITY_CITY, SUBSC_EB_ENTITY_STATE, SUBSC_EB_ENTITY_ZIP, SUBSC_EB_ENTITY_PROVIDER_CODE, SUBSC_EB_ENTITY_REF_ID FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH) AS ENTITY_SEQ, t.SUBSC_EB_ENTITY_CODE AS SUBSC_EB_ENTITY_CODE, t.SUBSC_EB_ENTITY_TYPE AS SUBSC_EB_ENTITY_TYPE, t.SUBSC_EB_ENTITY_LAST_NAME AS SUBSC_EB_ENTITY_LAST_NAME, t.SUBSC_EB_ENTITY_FIRST_NAME AS SUBSC_EB_ENTITY_FIRST_NAME, t.SUBSC_EB_ENTITY_MIDDLE_NAME AS SUBSC_EB_ENTITY_MIDDLE_NAME, t.SUBSC_EB_ENTITY_ID_QUALF AS SUBSC_EB_ENTITY_ID_QUALF, t.SUBSC_EB_ENTITY_ID_CODE AS SUBSC_EB_ENTITY_ID_CODE, t.SUBSC_EB_ENTITY_ADDRESS1 AS SUBSC_EB_ENTITY_ADDRESS1, t.SUBSC_EB_ENTITY_ADDRESS2 AS SUBSC_EB_ENTITY_ADDRESS2, t.SUBSC_EB_ENTITY_CITY AS SUBSC_EB_ENTITY_CITY, t.SUBSC_EB_ENTITY_STATE AS SUBSC_EB_ENTITY_STATE, t.SUBSC_EB_ENTITY_ZIP AS SUBSC_EB_ENTITY_ZIP, t.SUBSC_EB_ENTITY_PROVIDER_CODE AS SUBSC_EB_ENTITY_PROVIDER_CODE, t.SUBSC_EB_ENTITY_REF_ID AS SUBSC_EB_ENTITY_REF_ID FROM RECON.EDI_271_SUBSCRIBER_EB_ENTITY t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      },
+      {
+        "SourceField": "ENTITY_SEQ",
+        "TargetField": "ENTITY_SEQ"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "ENTITY_CODE",
+        "TargetField": "SUBSC_EB_ENTITY_CODE"
+      },
+      {
+        "SourceField": "ENTITY_TYPE",
+        "TargetField": "SUBSC_EB_ENTITY_TYPE"
+      },
+      {
+        "SourceField": "ENTITY_LAST_NAME",
+        "TargetField": "SUBSC_EB_ENTITY_LAST_NAME"
+      },
+      {
+        "SourceField": "ENTITY_FIRST_NAME",
+        "TargetField": "SUBSC_EB_ENTITY_FIRST_NAME"
+      },
+      {
+        "SourceField": "ENTITY_MIDDLE_NAME",
+        "TargetField": "SUBSC_EB_ENTITY_MIDDLE_NAME"
+      },
+      {
+        "SourceField": "ENTITY_ID_QUALIFIER",
+        "TargetField": "SUBSC_EB_ENTITY_ID_QUALF"
+      },
+      {
+        "SourceField": "ENTITY_ID",
+        "TargetField": "SUBSC_EB_ENTITY_ID_CODE"
+      },
+      {
+        "SourceField": "ENTITY_ADDRESS_LINE1",
+        "TargetField": "SUBSC_EB_ENTITY_ADDRESS1"
+      },
+      {
+        "SourceField": "ENTITY_ADDRESS_LINE2",
+        "TargetField": "SUBSC_EB_ENTITY_ADDRESS2"
+      },
+      {
+        "SourceField": "ENTITY_CITY",
+        "TargetField": "SUBSC_EB_ENTITY_CITY"
+      },
+      {
+        "SourceField": "ENTITY_STATE",
+        "TargetField": "SUBSC_EB_ENTITY_STATE"
+      },
+      {
+        "SourceField": "ENTITY_ZIP",
+        "TargetField": "SUBSC_EB_ENTITY_ZIP"
+      },
+      {
+        "SourceField": "ENTITY_PROVIDER_ROLE",
+        "TargetField": "SUBSC_EB_ENTITY_PROVIDER_CODE"
+      },
+      {
+        "SourceField": "ENTITY_TAXONOMY_CODE",
+        "TargetField": "SUBSC_EB_ENTITY_REF_ID"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 350,
+      "DataRegressionSetTestCaseNumber": 31,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 32,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_SUBSCRIBER_EB_ENTITY: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ, SUBSC_EB_ENTITY_CODE, SUBSC_EB_ENTITY_TYPE, SUBSC_EB_ENTITY_LAST_NAME, SUBSC_EB_ENTITY_FIRST_NAME, SUBSC_EB_ENTITY_MIDDLE_NAME, SUBSC_EB_ENTITY_ID_QUALF, SUBSC_EB_ENTITY_ID_CODE, SUBSC_EB_ENTITY_ADDRESS1, SUBSC_EB_ENTITY_ADDRESS2, SUBSC_EB_ENTITY_CITY, SUBSC_EB_ENTITY_STATE, SUBSC_EB_ENTITY_ZIP, SUBSC_EB_ENTITY_PROVIDER_CODE, SUBSC_EB_ENTITY_REF_ID FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH) AS ENTITY_SEQ, t.SUBSC_EB_ENTITY_CODE AS SUBSC_EB_ENTITY_CODE, t.SUBSC_EB_ENTITY_TYPE AS SUBSC_EB_ENTITY_TYPE, t.SUBSC_EB_ENTITY_LAST_NAME AS SUBSC_EB_ENTITY_LAST_NAME, t.SUBSC_EB_ENTITY_FIRST_NAME AS SUBSC_EB_ENTITY_FIRST_NAME, t.SUBSC_EB_ENTITY_MIDDLE_NAME AS SUBSC_EB_ENTITY_MIDDLE_NAME, t.SUBSC_EB_ENTITY_ID_QUALF AS SUBSC_EB_ENTITY_ID_QUALF, t.SUBSC_EB_ENTITY_ID_CODE AS SUBSC_EB_ENTITY_ID_CODE, t.SUBSC_EB_ENTITY_ADDRESS1 AS SUBSC_EB_ENTITY_ADDRESS1, t.SUBSC_EB_ENTITY_ADDRESS2 AS SUBSC_EB_ENTITY_ADDRESS2, t.SUBSC_EB_ENTITY_CITY AS SUBSC_EB_ENTITY_CITY, t.SUBSC_EB_ENTITY_STATE AS SUBSC_EB_ENTITY_STATE, t.SUBSC_EB_ENTITY_ZIP AS SUBSC_EB_ENTITY_ZIP, t.SUBSC_EB_ENTITY_PROVIDER_CODE AS SUBSC_EB_ENTITY_PROVIDER_CODE, t.SUBSC_EB_ENTITY_REF_ID AS SUBSC_EB_ENTITY_REF_ID FROM RECON.EDI_271_SUBSCRIBER_EB_ENTITY t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "ENTITY_SEQ"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "ENTITY_SEQ"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 351,
+      "DataRegressionSetTestCaseNumber": 32,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 33,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_SUBSCRIBER_EB_ENTITY matches 271 BENEFIT_ENTITY_CONTACT",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "BENEFIT_ENTITY_CONTACT"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ, OCC, SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE, SUBSC_EB_ENTITY_CONTACT_NAME, PER_PHONE, PER_PHONE_EXT, PER_FAX, PER_EMAIL, PER_URL FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH) AS ENTITY_SEQ, 1 AS OCC, t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE AS SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE, t.SUBSC_EB_ENTITY_CONTACT_NAME AS SUBSC_EB_ENTITY_CONTACT_NAME, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'TE' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'TE' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'TE' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_PHONE, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'EX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'EX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'EX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_PHONE_EXT, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'FX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'FX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'FX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_FAX, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'EM' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'EM' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'EM' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_EMAIL, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'UR' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'UR' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'UR' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_URL, CASE WHEN (t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE IS NOT NULL OR t.SUBSC_EB_ENTITY_COMM_NUMBER_1 IS NOT NULL) THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_SUBSCRIBER_EB_ENTITY t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q WHERE q.KEEP_ROW = 1"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "EB_SEQ",
+        "TargetField": "EB_SEQ"
+      },
+      {
+        "SourceField": "ENTITY_SEQ",
+        "TargetField": "ENTITY_SEQ"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "CONTACT_FUNCTION",
+        "TargetField": "SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE"
+      },
+      {
+        "SourceField": "CONTACT_NAME",
+        "TargetField": "SUBSC_EB_ENTITY_CONTACT_NAME"
+      },
+      {
+        "SourceField": "PHONE",
+        "TargetField": "PER_PHONE"
+      },
+      {
+        "SourceField": "PHONE_EXT",
+        "TargetField": "PER_PHONE_EXT"
+      },
+      {
+        "SourceField": "FAX",
+        "TargetField": "PER_FAX"
+      },
+      {
+        "SourceField": "EMAIL",
+        "TargetField": "PER_EMAIL"
+      },
+      {
+        "SourceField": "URL",
+        "TargetField": "PER_URL"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 352,
+      "DataRegressionSetTestCaseNumber": 33,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 34,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_SUBSCRIBER_EB_ENTITY: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ, OCC, SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE, SUBSC_EB_ENTITY_CONTACT_NAME, PER_PHONE, PER_PHONE_EXT, PER_FAX, PER_EMAIL, PER_URL FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, p.EB_SEQ AS EB_SEQ, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH) AS ENTITY_SEQ, 1 AS OCC, t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE AS SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE, t.SUBSC_EB_ENTITY_CONTACT_NAME AS SUBSC_EB_ENTITY_CONTACT_NAME, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'TE' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'TE' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'TE' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_PHONE, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'EX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'EX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'EX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_PHONE_EXT, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'FX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'FX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'FX' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_FAX, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'EM' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'EM' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'EM' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_EMAIL, CASE WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'UR' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'UR' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'UR' THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 END AS PER_URL, CASE WHEN (t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE IS NOT NULL OR t.SUBSC_EB_ENTITY_COMM_NUMBER_1 IS NOT NULL) THEN 1 ELSE 0 END AS KEEP_ROW FROM RECON.EDI_271_SUBSCRIBER_EB_ENTITY t JOIN (SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ FROM RECON.EDI_271_SUBSCRIBER_EB t JOIN (SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q WHERE q.KEEP_ROW = 1"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "ENTITY_SEQ",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "EB_SEQ",
+          "ENTITY_SEQ",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 353,
+      "DataRegressionSetTestCaseNumber": 34,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 35,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_SUBSCRIBER_NAME matches 271 MEMBER",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, SUBSC_ENTITY_CODE, SUBSC_ENTITY_TYPE, SUBSC_LAST_NAME, SUBSC_FIRST_NAME, SUBSC_MIDDLE_NAME, SUBSC_ID_QUAL, SUBSC_ID_CODE, SUBSC_ADDRESS1, SUBSC_ADDRESS2, SUBSC_CITY, SUBSC_STATE, SUBSC_ZIP, INS01_RESPONSE_CODE, INS02_RELATIONSHIP_CODE, INS03_MAITENANCE_CODE, INS04_MAITENANCE_REASON_CODE, INS17_NUMBER, HI01_DIAG_CODE, HI02_DIAG_CODE, HI03_DIAG_CODE, HI04_DIAG_CODE, HI05_DIAG_CODE, HI06_DIAG_CODE, DMG01_QUAL, DMG02_DT_TIME, DMG03_GENDER, PRV01_PROVIDER_CODE, PRV03_REF_ID, MPI01_INFO_STATUS_CODE, MPI02_EMP_STATUS_CODE, MPI03_GOVT_AFF_CODE, MPI04_DESC, MPI05_MILITARY_SERVICE_RANK, MPI06_DT_QUAL, MPI07_START_DT, MPI07_END_DT FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, t.SUBSC_ENTITY_CODE AS SUBSC_ENTITY_CODE, t.SUBSC_ENTITY_TYPE AS SUBSC_ENTITY_TYPE, t.SUBSC_LAST_NAME AS SUBSC_LAST_NAME, t.SUBSC_FIRST_NAME AS SUBSC_FIRST_NAME, t.SUBSC_MIDDLE_NAME AS SUBSC_MIDDLE_NAME, t.SUBSC_ID_QUAL AS SUBSC_ID_QUAL, t.SUBSC_ID_CODE AS SUBSC_ID_CODE, t.SUBSC_ADDRESS1 AS SUBSC_ADDRESS1, t.SUBSC_ADDRESS2 AS SUBSC_ADDRESS2, t.SUBSC_CITY AS SUBSC_CITY, t.SUBSC_STATE AS SUBSC_STATE, t.SUBSC_ZIP AS SUBSC_ZIP, t.INS01_RESPONSE_CODE AS INS01_RESPONSE_CODE, t.INS02_RELATIONSHIP_CODE AS INS02_RELATIONSHIP_CODE, t.INS03_MAITENANCE_CODE AS INS03_MAITENANCE_CODE, t.INS04_MAITENANCE_REASON_CODE AS INS04_MAITENANCE_REASON_CODE, t.INS17_NUMBER AS INS17_NUMBER, t.HI01_DIAG_CODE AS HI01_DIAG_CODE, t.HI02_DIAG_CODE AS HI02_DIAG_CODE, t.HI03_DIAG_CODE AS HI03_DIAG_CODE, t.HI04_DIAG_CODE AS HI04_DIAG_CODE, t.HI05_DIAG_CODE AS HI05_DIAG_CODE, t.HI06_DIAG_CODE AS HI06_DIAG_CODE, t.DMG01_QUAL AS DMG01_QUAL, t.DMG02_DT_TIME AS DMG02_DT_TIME, t.DMG03_GENDER AS DMG03_GENDER, t.PRV01_PROVIDER_CODE AS PRV01_PROVIDER_CODE, t.PRV03_REF_ID AS PRV03_REF_ID, t.MPI01_INFO_STATUS_CODE AS MPI01_INFO_STATUS_CODE, t.MPI02_EMP_STATUS_CODE AS MPI02_EMP_STATUS_CODE, t.MPI03_GOVT_AFF_CODE AS MPI03_GOVT_AFF_CODE, t.MPI04_DESC AS MPI04_DESC, t.MPI05_MILITARY_SERVICE_RANK AS MPI05_MILITARY_SERVICE_RANK, t.MPI06_DT_QUAL AS MPI06_DT_QUAL, t.MPI07_START_DT AS MPI07_START_DT, t.MPI07_END_DT AS MPI07_END_DT FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "MEMBER_ENTITY_CODE",
+        "TargetField": "SUBSC_ENTITY_CODE"
+      },
+      {
+        "SourceField": "MEMBER_ENTITY_TYPE",
+        "TargetField": "SUBSC_ENTITY_TYPE"
+      },
+      {
+        "SourceField": "MEMBER_LAST_NAME",
+        "TargetField": "SUBSC_LAST_NAME"
+      },
+      {
+        "SourceField": "MEMBER_FIRST_NAME",
+        "TargetField": "SUBSC_FIRST_NAME"
+      },
+      {
+        "SourceField": "MEMBER_MIDDLE_NAME",
+        "TargetField": "SUBSC_MIDDLE_NAME"
+      },
+      {
+        "SourceField": "MEMBER_ID_QUALIFIER",
+        "TargetField": "SUBSC_ID_QUAL"
+      },
+      {
+        "SourceField": "MEMBER_ID",
+        "TargetField": "SUBSC_ID_CODE"
+      },
+      {
+        "SourceField": "MEMBER_ADDRESS_LINE1",
+        "TargetField": "SUBSC_ADDRESS1"
+      },
+      {
+        "SourceField": "MEMBER_ADDRESS_LINE2",
+        "TargetField": "SUBSC_ADDRESS2"
+      },
+      {
+        "SourceField": "MEMBER_CITY",
+        "TargetField": "SUBSC_CITY"
+      },
+      {
+        "SourceField": "MEMBER_STATE",
+        "TargetField": "SUBSC_STATE"
+      },
+      {
+        "SourceField": "MEMBER_ZIP",
+        "TargetField": "SUBSC_ZIP"
+      },
+      {
+        "SourceField": "INS_RESPONSE",
+        "TargetField": "INS01_RESPONSE_CODE"
+      },
+      {
+        "SourceField": "RELATIONSHIP",
+        "TargetField": "INS02_RELATIONSHIP_CODE"
+      },
+      {
+        "SourceField": "MAINTENANCE_TYPE",
+        "TargetField": "INS03_MAITENANCE_CODE"
+      },
+      {
+        "SourceField": "MAINTENANCE_REASON",
+        "TargetField": "INS04_MAITENANCE_REASON_CODE"
+      },
+      {
+        "SourceField": "BIRTH_SEQUENCE",
+        "TargetField": "INS17_NUMBER"
+      },
+      {
+        "SourceField": "DIAGNOSIS_CODE_1",
+        "TargetField": "HI01_DIAG_CODE"
+      },
+      {
+        "SourceField": "DIAGNOSIS_CODE_2",
+        "TargetField": "HI02_DIAG_CODE"
+      },
+      {
+        "SourceField": "DIAGNOSIS_CODE_3",
+        "TargetField": "HI03_DIAG_CODE"
+      },
+      {
+        "SourceField": "DIAGNOSIS_CODE_4",
+        "TargetField": "HI04_DIAG_CODE"
+      },
+      {
+        "SourceField": "DIAGNOSIS_CODE_5",
+        "TargetField": "HI05_DIAG_CODE"
+      },
+      {
+        "SourceField": "DIAGNOSIS_CODE_6",
+        "TargetField": "HI06_DIAG_CODE"
+      },
+      {
+        "SourceField": "DOB_FORMAT",
+        "TargetField": "DMG01_QUAL"
+      },
+      {
+        "SourceField": "DATE_OF_BIRTH",
+        "TargetField": "DMG02_DT_TIME"
+      },
+      {
+        "SourceField": "GENDER",
+        "TargetField": "DMG03_GENDER"
+      },
+      {
+        "SourceField": "MEMBER_PROVIDER_ROLE",
+        "TargetField": "PRV01_PROVIDER_CODE"
+      },
+      {
+        "SourceField": "MEMBER_TAXONOMY_CODE",
+        "TargetField": "PRV03_REF_ID"
+      },
+      {
+        "SourceField": "MILITARY_INFO_STATUS",
+        "TargetField": "MPI01_INFO_STATUS_CODE"
+      },
+      {
+        "SourceField": "EMPLOYMENT_STATUS",
+        "TargetField": "MPI02_EMP_STATUS_CODE"
+      },
+      {
+        "SourceField": "GOVT_AFFILIATION",
+        "TargetField": "MPI03_GOVT_AFF_CODE"
+      },
+      {
+        "SourceField": "MILITARY_DESC",
+        "TargetField": "MPI04_DESC"
+      },
+      {
+        "SourceField": "MILITARY_RANK",
+        "TargetField": "MPI05_MILITARY_SERVICE_RANK"
+      },
+      {
+        "SourceField": "SERVICE_DATE_FORMAT",
+        "TargetField": "MPI06_DT_QUAL"
+      },
+      {
+        "SourceField": "SERVICE_START",
+        "TargetField": "MPI07_START_DT"
+      },
+      {
+        "SourceField": "SERVICE_END",
+        "TargetField": "MPI07_END_DT"
+      }
+    ],
+    "DataFilters": [
+      {
+        "SourceField": "MEMBER_LEVEL",
+        "DefaultValue": "SUBSCRIBER",
+        "OperatorType": "="
+      },
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 354,
+      "DataRegressionSetTestCaseNumber": 35,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 36,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_SUBSCRIBER_NAME: no duplicate TRANSACTION_CONTROL_NUMBER",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, SUBSC_ENTITY_CODE, SUBSC_ENTITY_TYPE, SUBSC_LAST_NAME, SUBSC_FIRST_NAME, SUBSC_MIDDLE_NAME, SUBSC_ID_QUAL, SUBSC_ID_CODE, SUBSC_ADDRESS1, SUBSC_ADDRESS2, SUBSC_CITY, SUBSC_STATE, SUBSC_ZIP, INS01_RESPONSE_CODE, INS02_RELATIONSHIP_CODE, INS03_MAITENANCE_CODE, INS04_MAITENANCE_REASON_CODE, INS17_NUMBER, HI01_DIAG_CODE, HI02_DIAG_CODE, HI03_DIAG_CODE, HI04_DIAG_CODE, HI05_DIAG_CODE, HI06_DIAG_CODE, DMG01_QUAL, DMG02_DT_TIME, DMG03_GENDER, PRV01_PROVIDER_CODE, PRV03_REF_ID, MPI01_INFO_STATUS_CODE, MPI02_EMP_STATUS_CODE, MPI03_GOVT_AFF_CODE, MPI04_DESC, MPI05_MILITARY_SERVICE_RANK, MPI06_DT_QUAL, MPI07_START_DT, MPI07_END_DT FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, t.SUBSC_ENTITY_CODE AS SUBSC_ENTITY_CODE, t.SUBSC_ENTITY_TYPE AS SUBSC_ENTITY_TYPE, t.SUBSC_LAST_NAME AS SUBSC_LAST_NAME, t.SUBSC_FIRST_NAME AS SUBSC_FIRST_NAME, t.SUBSC_MIDDLE_NAME AS SUBSC_MIDDLE_NAME, t.SUBSC_ID_QUAL AS SUBSC_ID_QUAL, t.SUBSC_ID_CODE AS SUBSC_ID_CODE, t.SUBSC_ADDRESS1 AS SUBSC_ADDRESS1, t.SUBSC_ADDRESS2 AS SUBSC_ADDRESS2, t.SUBSC_CITY AS SUBSC_CITY, t.SUBSC_STATE AS SUBSC_STATE, t.SUBSC_ZIP AS SUBSC_ZIP, t.INS01_RESPONSE_CODE AS INS01_RESPONSE_CODE, t.INS02_RELATIONSHIP_CODE AS INS02_RELATIONSHIP_CODE, t.INS03_MAITENANCE_CODE AS INS03_MAITENANCE_CODE, t.INS04_MAITENANCE_REASON_CODE AS INS04_MAITENANCE_REASON_CODE, t.INS17_NUMBER AS INS17_NUMBER, t.HI01_DIAG_CODE AS HI01_DIAG_CODE, t.HI02_DIAG_CODE AS HI02_DIAG_CODE, t.HI03_DIAG_CODE AS HI03_DIAG_CODE, t.HI04_DIAG_CODE AS HI04_DIAG_CODE, t.HI05_DIAG_CODE AS HI05_DIAG_CODE, t.HI06_DIAG_CODE AS HI06_DIAG_CODE, t.DMG01_QUAL AS DMG01_QUAL, t.DMG02_DT_TIME AS DMG02_DT_TIME, t.DMG03_GENDER AS DMG03_GENDER, t.PRV01_PROVIDER_CODE AS PRV01_PROVIDER_CODE, t.PRV03_REF_ID AS PRV03_REF_ID, t.MPI01_INFO_STATUS_CODE AS MPI01_INFO_STATUS_CODE, t.MPI02_EMP_STATUS_CODE AS MPI02_EMP_STATUS_CODE, t.MPI03_GOVT_AFF_CODE AS MPI03_GOVT_AFF_CODE, t.MPI04_DESC AS MPI04_DESC, t.MPI05_MILITARY_SERVICE_RANK AS MPI05_MILITARY_SERVICE_RANK, t.MPI06_DT_QUAL AS MPI06_DT_QUAL, t.MPI07_START_DT AS MPI07_START_DT, t.MPI07_END_DT AS MPI07_END_DT FROM RECON.EDI_271_SUBSCRIBER_NAME t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "TRANSACTION_CONTROL_NUMBER should not have duplicate values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 355,
+      "DataRegressionSetTestCaseNumber": 36,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 37,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_SUBSCRIBER_TRN matches 271 MEMBER_TRACE",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER_TRACE"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, TRACE_TYPE_CODE, OCC, TRACE_NUMBER, TRACE_ENTITY_ID, TRACE_REFID FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_ID_NH, t.TRACE_TYPE_CODE ORDER BY t.EDI_271_SUBSCRIBER_TRN_ID_NH) AS OCC, t.TRACE_TYPE_CODE AS TRACE_TYPE_CODE, t.TRACE_NUMBER AS TRACE_NUMBER, t.TRACE_ENTITY_ID AS TRACE_ENTITY_ID, t.TRACE_REFID AS TRACE_REFID FROM RECON.EDI_271_SUBSCRIBER_TRN t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      },
+      {
+        "SourceField": "TRACE_TYPE",
+        "TargetField": "TRACE_TYPE_CODE"
+      },
+      {
+        "SourceField": "OCC",
+        "TargetField": "OCC"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "TRACE_NUMBER",
+        "TargetField": "TRACE_NUMBER"
+      },
+      {
+        "SourceField": "TRACE_ORIGINATOR_ID",
+        "TargetField": "TRACE_ENTITY_ID"
+      },
+      {
+        "SourceField": "TRACE_ORIGINATOR_SUPP_ID",
+        "TargetField": "TRACE_REFID"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 356,
+      "DataRegressionSetTestCaseNumber": 37,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 38,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_SUBSCRIBER_TRN: no duplicate TRANSACTION_CONTROL_NUMBER, TRACE_TYPE_CODE, OCC",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, TRACE_TYPE_CODE, OCC, TRACE_NUMBER, TRACE_ENTITY_ID, TRACE_REFID FROM (SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER, ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_ID_NH, t.TRACE_TYPE_CODE ORDER BY t.EDI_271_SUBSCRIBER_TRN_ID_NH) AS OCC, t.TRACE_TYPE_CODE AS TRACE_TYPE_CODE, t.TRACE_NUMBER AS TRACE_NUMBER, t.TRACE_ENTITY_ID AS TRACE_ENTITY_ID, t.TRACE_REFID AS TRACE_REFID FROM RECON.EDI_271_SUBSCRIBER_TRN t JOIN (SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_SUBSCRIBER t JOIN (SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_RECEIVER t JOIN (SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH, p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_INFO_SOURCE t JOIN (SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH, t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) p ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "TRACE_TYPE_CODE",
+          "OCC"
+        ],
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER",
+          "TRACE_TYPE_CODE",
+          "OCC"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "No two records should share the same TRANSACTION_CONTROL_NUMBER, TRACE_TYPE_CODE, OCC",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 357,
+      "DataRegressionSetTestCaseNumber": 38,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 39,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "EDI_271_TRANSET_HEADER matches 271 TRANSACTION",
+    "Viceversa": true,
+    "Source": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation",
+      "FileName": "R-BX4HZIFG-260427133629-2611700000001259FF-10-ISA-0001-.x12",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI271",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "TRANSACTION"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, SUBMITTER_TRAN_ID, SUBMITTER_DATE, SUBMITTER_TIME FROM (SELECT t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER, t.SUBMITTER_TRAN_ID AS SUBMITTER_TRAN_ID, t.SUBMITTER_DATE AS SUBMITTER_DATE, t.SUBMITTER_TIME AS SUBMITTER_TIME FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) q"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "TargetField": "TRANSACTION_CONTROL_NUMBER"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "REFERENCE_ID",
+        "TargetField": "SUBMITTER_TRAN_ID"
+      },
+      {
+        "SourceField": "TRANSACTION_DATE",
+        "TargetField": "SUBMITTER_DATE"
+      },
+      {
+        "SourceField": "TRANSACTION_TIME",
+        "TargetField": "SUBMITTER_TIME"
+      }
+    ],
+    "DataFilters": [
+      {
+        "TargetField": "FILE_DETAIL_ID_NH",
+        "DefaultValue": "12345",
+        "OperatorType": "="
+      }
+    ],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 358,
+      "DataRegressionSetTestCaseNumber": 39,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  },
+  {
+    "TestCaseNumber": 40,
+    "Module": "EDI271_RECON",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target EDI_271_TRANSET_HEADER: no duplicate TRANSACTION_CONTROL_NUMBER",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "RECON",
+      "QueryType": "QUERY",
+      "Query": "SELECT TRANSACTION_CONTROL_NUMBER, SUBMITTER_TRAN_ID, SUBMITTER_DATE, SUBMITTER_TIME FROM (SELECT t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER, t.SUBMITTER_TRAN_ID AS SUBMITTER_TRAN_ID, t.SUBMITTER_DATE AS SUBMITTER_DATE, t.SUBMITTER_TIME AS SUBMITTER_TIME FROM RECON.EDI_271_TRANSET_HEADER t WHERE t.FILE_DETAIL_ID_NH = :FILE_DETAIL_ID_NH) q"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "TRANSACTION_CONTROL_NUMBER",
+        "ResultFields": [
+          "TRANSACTION_CONTROL_NUMBER"
+        ]
+      }
+    ],
+    "DataFilters": [
+      {
+        "DefaultValue": "12345",
+        "OperatorType": "=",
+        "SourceField": "FILE_DETAIL_ID_NH"
+      }
+    ],
+    "ExpectedResult": "TRANSACTION_CONTROL_NUMBER should not have duplicate values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 359,
+      "DataRegressionSetTestCaseNumber": 40,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-20 16:57:16"
+    }
+  }
+]

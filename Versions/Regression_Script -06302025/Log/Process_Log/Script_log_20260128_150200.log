@@ -1,0 +1,24 @@
+2026-01-28 15:02:00,938 | INFO | ========== Starting Validation ==========
+2026-01-28 15:02:00,963 | INFO | Module :  M3P 
+2026-01-28 15:02:01,009 | INFO | Stage :  None 
+2026-01-28 15:02:01,029 | INFO | Cycle :  None
+2026-01-28 15:02:01,051 | INFO | Environment  : MONGODB_MCPQA1
+2026-01-28 15:02:01,870 | INFO | ========== [ Running TestCase 2: Checking MemberReceipt Data Validation after CapRx load ] ==========
+2026-01-28 15:02:55,420 | INFO | MongoDB cursor 'source_data' is empty.
+2026-01-28 15:03:51,072 | ERROR | [TC 2] Exception: 
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 195, in _execute_single_testcase
+    tgt_empty = is_cursor_empty(target_data, "target_data")
+                ^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit
+2026-01-28 15:03:51,152 | INFO | Execution time for TestCase 2: 109.26s
+2026-01-28 15:03:51,172 | INFO | Total Number of Testcases Executed:1, Pass:0, Fail:1
+2026-01-28 15:03:51,727 | INFO | Master combined log written to: MONGODB_MCPQA1_M3P_Log_20260128_200351.json
+2026-01-28 15:03:51,768 | INFO | Result.InsertData : 697a6ba70def77c1aba1ff75
+2026-01-28 15:03:54,045 | INFO | ========== Completed Validation ==========

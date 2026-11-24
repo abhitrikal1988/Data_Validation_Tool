@@ -1,0 +1,325 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for TOB_LOOKUP_ID, BUSINESS_ID, TYPE_OF_BILL_CODE, DESCRIPTION, DW_CREATED_DT, DW_MODIFIED_DT",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "TOB Lookup.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BUSINESS_ID, TYPE_OF_BILL_CODE, DESCRIPTION FROM DW.tob_lookup"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "TargetField": "BUSINESS_ID"
+      },
+      {
+        "SourceField": "TYPE_OF_BILL_CODE",
+        "TargetField": "TYPE_OF_BILL_CODE"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "DESCRIPTION",
+        "TargetField": "DESCRIPTION"
+      }
+    ],
+    "DataFilters": [],
+    "Module": "tob_lookup",
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 382,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:37:32"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in BUSINESS_ID, TYPE_OF_BILL_CODE, DESCRIPTION",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "TOB Lookup.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "TYPE_OF_BILL_CODE",
+        "ResultFields": [
+          "TYPE_OF_BILL_CODE"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "Module": "tob_lookup",
+    "ExpectedResult": "BUSINESS_ID, TYPE_OF_BILL_CODE should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 383,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:37:32"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on BUSINESS_ID and TYPE_OF_BILL_CODE",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "TOB Lookup.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "TYPE_OF_BILL_CODE",
+        "ResultFields": [
+          "TYPE_OF_BILL_CODE"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same BUSINESS_ID, TYPE_OF_BILL_CODE",
+    "DataFilters": [],
+    "Module": "tob_lookup",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 384,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:37:32"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "tob_lookup",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.tob_lookup: no duplicate BUSINESS_ID, TYPE_OF_BILL_CODE",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BUSINESS_ID, TYPE_OF_BILL_CODE FROM DW.tob_lookup"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "BUSINESS_ID",
+          "TYPE_OF_BILL_CODE"
+        ],
+        "ResultFields": [
+          "BUSINESS_ID",
+          "TYPE_OF_BILL_CODE"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same BUSINESS_ID, TYPE_OF_BILL_CODE",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 385,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:37:32"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "tob_lookup",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target DW.tob_lookup: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BUSINESS_ID, TYPE_OF_BILL_CODE, TOB_LOOKUP_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT FROM DW.tob_lookup"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "TYPE_OF_BILL_CODE",
+        "ResultFields": [
+          "TYPE_OF_BILL_CODE"
+        ]
+      },
+      {
+        "SourceField": "TOB_LOOKUP_ID",
+        "ResultFields": [
+          "TOB_LOOKUP_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_FILE_DETAIL_ID",
+        "ResultFields": [
+          "DW_FILE_DETAIL_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_CREATED_DT",
+        "ResultFields": [
+          "DW_CREATED_DT"
+        ]
+      },
+      {
+        "SourceField": "DW_MODIFIED_DT",
+        "ResultFields": [
+          "DW_MODIFIED_DT"
+        ]
+      }
+    ],
+    "ExpectedResult": "BUSINESS_ID, TYPE_OF_BILL_CODE, TOB_LOOKUP_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 386,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:37:32"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "tob_lookup",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "BUSINESS_ID has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "TOB Lookup.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CompareFields": [
+      {
+        "SourceField": "BUSINESS_ID"
+      }
+    ],
+    "ApprovedValues": [
+      "109",
+      "2066"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "BUSINESS_ID values other than approved ['109', '2066'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 387,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:37:32"
+    }
+  }
+]

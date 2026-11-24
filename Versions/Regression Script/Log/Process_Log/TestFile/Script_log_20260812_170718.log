@@ -1,0 +1,33 @@
+2026-08-12 17:07:18,538 | INFO | ========== Starting Validation ==========
+2026-08-12 17:07:18,539 | INFO | Module         : TestFile
+2026-08-12 17:07:18,540 | INFO | Stage          : TestPDF
+2026-08-12 17:07:18,540 | INFO | Cycle          : None
+2026-08-12 17:07:18,541 | INFO | Environment    : MCPQA1
+2026-08-12 17:07:18,541 | INFO | Runtime Filters: None — using DefaultValues
+2026-08-12 17:07:18,634 | INFO | Module 'TestFile': 1 TC(s) matched stage 'TestPDF'.
+2026-08-12 17:07:18,646 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-08-12 17:12:11,104 | INFO | ========== [ Running TestCase 1: Validate Test PDF against Oracle ] ==========
+2026-08-12 17:12:11,104 | INFO | TestCase 1: Source [ORACLE]:select * 
+  from spai.test_file_data
+2026-08-12 17:12:11,104 | ISSUE | Failed to create Oracle SessionPool for 'PBMQA3': ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-12 17:12:11,105 | ISSUE | Error acquiring Oracle connection: ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-12 17:12:11,105 | ISSUE | Error fetching source data (ORACLE): ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-12 17:12:11,105 | INFO | File_fetcher: Fetch attempt 1/2
+2026-08-12 17:12:11,105 | WARNING | File_fetcher: No FileName or FilePattern — defaulting to '*.pdf' based on FileConfig.Format='PDF'.
+2026-08-12 17:12:11,105 | INFO | File_fetcher: Pattern '*.pdf' matched 321 file(s)
+2026-08-12 17:12:11,106 | INFO | File_fetcher: Selected latest — 'Member_EOB_T9808048490_15921857_012025.pdf' (modified: 2025-02-12 06:49:41.305281, 463,056 bytes)
+2026-08-12 17:12:11,106 | INFO | File_fetcher: Reading local file — \\rxadvance\QA-Team\QA Documentation\Sairaj Pai\EOB\5WLQ6\Member_EOB_T9808048490_15921857_012025.pdf
+2026-08-12 17:12:11,106 | WARNING | PDF_parser: could not apply Aspose licence (Proxy error(InvalidOperationException): The license is not valid for this product.) — continuing in evaluation mode.
+2026-08-12 17:12:11,106 | ISSUE | PDF_parser: failed to open PDF — Proxy error(IndexOutOfRangeException): At most 4 elements (for any collection) can be viewed in evaluation mode.
+2026-08-12 17:12:11,106 | INFO | File_parser: 'Member_EOB_T9808048490_15921857_012025.pdf' — PDF parsed 0 row(s).
+2026-08-12 17:12:11,106 | ISSUE | File_parser: 'Member_EOB_T9808048490_15921857_012025.pdf' — 1 parse error(s), 0 schema error(s), 0 footer error(s).
+2026-08-12 17:12:11,106 | INFO | File_parser: Combined 1 file(s) — 0 total rows, 1 total error(s).
+2026-08-12 17:12:11,106 | ISSUE | File parse error — Row 0: Column '?':  | Raw: 
+2026-08-12 17:12:11,107 | INFO | Oracle data 'target_data' is an empty list.
+2026-08-12 17:12:11,107 | WARNING | Source and Target data both are empty. Skipping comparison.
+2026-08-12 17:12:11,107 | INFO | Execution time for TestCase 1: 292.46 seconds
+2026-08-12 17:12:11,117 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 0, Skippped : 1
+2026-08-12 17:12:11,118 | INFO | Total execution time: 292.47 seconds (4.9 minutes)
+2026-08-12 17:12:11,152 | INFO | Master combined log written to: MCPQA1_TestFile_Log_20260812_211211.json
+2026-08-12 17:12:11,160 | INFO | Result.InsertData : 6a7ce1ab4ee16af90928a59b
+2026-08-12 17:12:11,633 | INFO | ========== Completed Validation ==========

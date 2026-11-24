@@ -1,0 +1,145 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "FCL",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target on SUBSCRIBER_IND, BENEFIT_STATUS_CODE, MEDICARE_PLAN_CODE and 21 more",
+    "Viceversa": true,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "MBRPROFILE",
+      "QueryType": "QUERY",
+      "Query": "SELECT SUBSCRIBER_IND, FIRST_NM, BIRTH_DATE, BENEFIT_STATUS_CODE, MEDICARE_PLAN_CODE, EMPLOYMENT_STATUS_CODE, STUDENT_STATUS_CODE, HANDICAP_IND, DATE_OF_DEATH, CONFIDENT_CODE, BIRTH_SEQ_NUMBER, HIX_MEMBER_ID, POLICY_NUMBER, MAINT_EFFECTIVE_DT, SSN, GENDER_CODE, MARITAL_STATUS_CODE, CITIZENSHIP_STATUS_CODE, LAST_NM, MIDDLE_NM, PREFIX, SUFFIX, NB_FLG, MEDICAID FROM MBRPROFILE.MEMBER_PROFILE"
+    },
+    "Target": {
+      "Type": "LOCAL_PATH",
+      "Path": "\\\\rxadvance.com\\public\\Maheswar\\Files From 004",
+      "FileName": "new.txt",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI834",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ]
+      }
+    },
+    "JoinFields": [
+      {
+        "SourceField": "SUBSCRIBER_IND",
+        "TargetField": "SUBSCRIBER_ID"
+      },
+      {
+        "SourceField": "FIRST_NM",
+        "TargetField": "MEMBER_FIRST_NAME"
+      },
+      {
+        "SourceField": "BIRTH_DATE",
+        "TargetField": "DATE_OF_BIRTH"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "BENEFIT_STATUS_CODE",
+        "TargetField": "BENEFIT_STATUS"
+      },
+      {
+        "SourceField": "MEDICARE_PLAN_CODE",
+        "TargetField": "MEDICARE_PLAN_CODE"
+      },
+      {
+        "SourceField": "EMPLOYMENT_STATUS_CODE",
+        "TargetField": "EMPLOYMENT_STATUS"
+      },
+      {
+        "SourceField": "STUDENT_STATUS_CODE",
+        "TargetField": "STUDENT_STATUS"
+      },
+      {
+        "SourceField": "HANDICAP_IND",
+        "TargetField": "HANDICAP_INDICATOR"
+      },
+      {
+        "SourceField": "DATE_OF_DEATH",
+        "TargetField": "DEATH_DATE"
+      },
+      {
+        "SourceField": "CONFIDENT_CODE",
+        "TargetField": "CONFIDENTIALITY_CODE"
+      },
+      {
+        "SourceField": "BIRTH_SEQ_NUMBER",
+        "TargetField": "BIRTH_SEQUENCE"
+      },
+      {
+        "SourceField": "HIX_MEMBER_ID",
+        "TargetField": "MEMBER_ID"
+      },
+      {
+        "SourceField": "POLICY_NUMBER",
+        "TargetField": "GROUP_POLICY_NUMBER"
+      },
+      {
+        "SourceField": "MAINT_EFFECTIVE_DT",
+        "TargetField": "MAINTENANCE_EFFECTIVE_DATE"
+      },
+      {
+        "SourceField": "SSN",
+        "TargetField": "MEMBER_SSN"
+      },
+      {
+        "SourceField": "GENDER_CODE",
+        "TargetField": "GENDER"
+      },
+      {
+        "SourceField": "MARITAL_STATUS_CODE",
+        "TargetField": "MARITAL_STATUS"
+      },
+      {
+        "SourceField": "CITIZENSHIP_STATUS_CODE",
+        "TargetField": "CITIZENSHIP_STATUS"
+      },
+      {
+        "SourceField": "LAST_NM",
+        "TargetField": "MEMBER_LAST_NAME"
+      },
+      {
+        "SourceField": "MIDDLE_NM",
+        "TargetField": "MEMBER_MIDDLE_NAME"
+      },
+      {
+        "SourceField": "PREFIX",
+        "TargetField": "MEMBER_PREFIX"
+      },
+      {
+        "SourceField": "SUFFIX",
+        "TargetField": "MEMBER_SUFFIX"
+      },
+      {
+        "SourceField": "NB_FLG",
+        "TargetField": "SUBSCRIBER_NUMBER"
+      },
+      {
+        "SourceField": "MEDICAID",
+        "TargetField": "MEDICAID_BEGIN_DATE"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 447,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 16:20:31"
+    }
+  }
+]

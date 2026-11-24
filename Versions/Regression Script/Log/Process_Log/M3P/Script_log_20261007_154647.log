@@ -1,0 +1,23 @@
+2026-10-07 15:46:47,685 | INFO | ========== Starting Validation ==========
+2026-10-07 15:46:47,686 | INFO | Module         : M3P
+2026-10-07 15:46:47,687 | INFO | Stage          : None
+2026-10-07 15:46:47,688 | INFO | Cycle          : None
+2026-10-07 15:46:47,689 | INFO | Environment    : MCPQA1
+2026-10-07 15:46:47,690 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-07 15:46:47,780 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-10-07 15:46:47,791 | INFO | ========== [ Running TestCase 7: Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap ] ==========
+2026-10-07 15:46:47,791 | INFO | TestCase 7: Source: db.Test_M3P_MemberReceipt_EnrollmentStatus.find({})
+2026-10-07 15:46:47,791 | INFO | [TC 7] Source data sample (5 of 116 records):
+2026-10-07 15:46:47,791 | INFO |   1: {'EnrollmentStatus': 200006}
+2026-10-07 15:46:47,791 | INFO |   2: {'EnrollmentStatus': 200006}
+2026-10-07 15:46:47,791 | INFO |   3: {'EnrollmentStatus': 200006}
+2026-10-07 15:46:47,792 | INFO |   4: {'EnrollmentStatus': 0}
+2026-10-07 15:46:47,792 | INFO |   5: {'EnrollmentStatus': 200006}
+2026-10-07 15:46:47,792 | INFO | [TC 7] Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap
+2026-10-07 15:46:47,792 | INFO | [TC 7] PASS: Source returned 0 records — nothing unapproved found.
+2026-10-07 15:46:47,792 | INFO | Execution time for TestCase 7: 0.01 seconds
+2026-10-07 15:46:47,803 | INFO | Total Number of Testcases Executed : 1,Pass : 1, Fail : 0, Skippped : 0
+2026-10-07 15:46:47,804 | INFO | Total execution time: 0.03 seconds (0.0 minutes)
+2026-10-07 15:46:47,849 | INFO | Master combined log written to: MCPQA1_M3P_Log_20261007_194647.json
+2026-10-07 15:46:47,864 | INFO | Result.InsertData : 6ac6a1a7d3cfd828cb1a03c7
+2026-10-07 15:46:48,380 | INFO | ========== Completed Validation ==========

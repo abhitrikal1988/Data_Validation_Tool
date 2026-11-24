@@ -1,0 +1,261 @@
+
+from decimal import Decimal, InvalidOperation
+from collections import defaultdict
+import datetime
+
+
+class EDI835Service:
+
+    def __init__(self, db, tolerance="0.01"):
+        self.db = db
+        self.tolerance = Decimal(tolerance)
+
+    # =====================================================
+    # PUBLIC ENTRY POINT (THIS IS YOUR KEYWORD FUNCTION)
+    # =====================================================
+    def execute(self, file_query):
+
+        file_doc = self.db["edi_835_files"].find_one(file_query)
+
+        if not file_doc:
+            return self._fail("835 file not found")
+
+        edi_text = file_doc.get("edi_content")
+
+        if not edi_text:
+            return self._fail("No EDI content present")
+
+        if isinstance(edi_text, bytes):
+            edi_text = edi_text.decode("utf-8")
+
+        transactions = self._parse_edi(edi_text.strip())
+
+        results = []
+
+        for txn in transactions:
+            validation = self._validate_transaction(txn)
+            reconciliation = self._reconcile_with_db(txn)
+
+            results.append({
+                "control_number": txn["control_number"],
+                "validation": validation,
+                "reconciliation": reconciliation
+            })
+
+        self.db["edi_835_files"].update_one(
+            file_query,
+            {"$set": {
+                "835_validation_report": results,
+                "validated_at": datetime.datetime.utcnow()
+            }}
+        )
+
+        return {
+            "status": "SUCCESS",
+            "transactions_processed": len(transactions),
+            "details": results
+        }
+
+    # =====================================================
+    # EDI PARSER
+    # =====================================================
+    def _parse_edi(self, raw):
+
+        element_sep = raw[3]
+        segment_term = raw[105]
+
+        segments = [
+            s.strip().split(element_sep)
+            for s in raw.split(segment_term)
+            if s.strip()
+        ]
+
+        transactions = []
+        current_txn = None
+        current_claim = None
+        current_service = None
+
+        for seg in segments:
+
+            tag = seg[0]
+
+            if tag == "ST":
+                current_txn = {
+                    "control_number": seg[2],
+                    "bpr_amount": Decimal("0"),
+                    "claims": [],
+                    "plb": []
+                }
+
+            elif tag == "BPR":
+                current_txn["bpr_amount"] = self._to_decimal(seg[2])
+
+            elif tag == "CLP":
+                current_claim = {
+                    "claim_id": seg[1],
+                    "charge": self._to_decimal(seg[3]),
+                    "paid": self._to_decimal(seg[4]),
+                    "cas": Decimal("0"),
+                    "services": []
+                }
+                current_txn["claims"].append(current_claim)
+
+            elif tag == "CAS":
+                for i in range(3, len(seg), 3):
+                    if i + 1 < len(seg):
+                        amt = self._to_decimal(seg[i + 1])
+                        if current_service:
+                            current_service["cas"] += amt
+                        else:
+                            current_claim["cas"] += amt
+
+            elif tag == "SVC":
+                current_service = {
+                    "code": seg[1],
+                    "charge": self._to_decimal(seg[2]),
+                    "paid": self._to_decimal(seg[3]),
+                    "cas": Decimal("0")
+                }
+                current_claim["services"].append(current_service)
+
+            elif tag == "PLB":
+                for i in range(3, len(seg), 2):
+                    if i + 1 < len(seg):
+                        current_txn["plb"].append({
+                            "reason": seg[i],
+                            "amount": self._to_decimal(seg[i + 1])
+                        })
+
+            elif tag == "SE":
+                transactions.append(current_txn)
+                current_txn = None
+                current_claim = None
+                current_service = None
+
+        return transactions
+
+    # =====================================================
+    # VALIDATIONS
+    # =====================================================
+    def _validate_transaction(self, txn):
+
+        errors = []
+        warnings = []
+
+        clp_total = sum(c["paid"] for c in txn["claims"])
+        plb_total = sum(p["amount"] for p in txn["plb"])
+        expected_bpr = clp_total + plb_total
+
+        if not self._is_equal(txn["bpr_amount"], expected_bpr):
+            errors.append({
+                "type": "BPR_MISMATCH",
+                "bpr": float(txn["bpr_amount"]),
+                "expected": float(expected_bpr)
+            })
+
+        for claim in txn["claims"]:
+
+            expected_paid = claim["charge"] - claim["cas"]
+
+            if not self._is_equal(claim["paid"], expected_paid):
+                errors.append({
+                    "type": "CLAIM_MATH_ERROR",
+                    "claim_id": claim["claim_id"],
+                    "expected_paid": float(expected_paid),
+                    "actual_paid": float(claim["paid"])
+                })
+
+            svc_total = sum(s["paid"] for s in claim["services"])
+            if not self._is_equal(svc_total, claim["paid"]):
+                warnings.append({
+                    "type": "SERVICE_TOTAL_MISMATCH",
+                    "claim_id": claim["claim_id"],
+                    "svc_total": float(svc_total),
+                    "claim_paid": float(claim["paid"])
+                })
+
+            for svc in claim["services"]:
+                expected_svc_paid = svc["charge"] - svc["cas"]
+                if not self._is_equal(svc["paid"], expected_svc_paid):
+                    errors.append({
+                        "type": "SERVICE_MATH_ERROR",
+                        "claim_id": claim["claim_id"],
+                        "service_code": svc["code"]
+                    })
+
+        return {
+            "errors": errors,
+            "warnings": warnings
+        }
+
+    # =====================================================
+    # RECONCILIATION
+    # =====================================================
+    def _reconcile_with_db(self, txn):
+
+        discrepancies = []
+
+        for claim in txn["claims"]:
+
+            db_claim = self.db["claims_transactions"].find_one(
+                {"claim_id": claim["claim_id"]}
+            )
+
+            if not db_claim:
+                discrepancies.append({
+                    "type": "CLAIM_NOT_FOUND",
+                    "claim_id": claim["claim_id"]
+                })
+                continue
+
+            if not self._is_equal(
+                Decimal(str(db_claim["paid_amount"])),
+                claim["paid"]
+            ):
+                discrepancies.append({
+                    "type": "CLAIM_PAYMENT_MISMATCH",
+                    "claim_id": claim["claim_id"]
+                })
+
+            for svc in claim["services"]:
+                db_svc = next(
+                    (s for s in db_claim.get("services", [])
+                     if s["code"] == svc["code"]),
+                    None
+                )
+
+                if not db_svc:
+                    discrepancies.append({
+                        "type": "SERVICE_NOT_FOUND",
+                        "claim_id": claim["claim_id"],
+                        "service_code": svc["code"]
+                    })
+                    continue
+
+                if not self._is_equal(
+                    Decimal(str(db_svc["paid_amount"])),
+                    svc["paid"]
+                ):
+                    discrepancies.append({
+                        "type": "SERVICE_PAYMENT_MISMATCH",
+                        "claim_id": claim["claim_id"],
+                        "service_code": svc["code"]
+                    })
+
+        return discrepancies
+
+    # =====================================================
+    # HELPERS
+    # =====================================================
+    def _to_decimal(self, value):
+        try:
+            return Decimal(value)
+        except (InvalidOperation, TypeError):
+            return Decimal("0")
+
+    def _is_equal(self, a, b):
+        return abs(a - b) <= self.tolerance
+
+    def _fail(self, message):
+        return {"status": "FAIL", "reason": message}
+ 

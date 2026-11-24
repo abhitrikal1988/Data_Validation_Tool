@@ -1,0 +1,49 @@
+2025-11-18 16:43:14,511 | INFO | ========== Starting Validation ==========
+2025-11-18 16:43:14,531 | INFO | Module :  Test 
+2025-11-18 16:43:14,551 | INFO | Stage :  None 
+2025-11-18 16:43:14,570 | INFO | Cycle :  None
+2025-11-18 16:43:14,594 | INFO | Environment  : MONGODB_MCPQA1
+2025-11-18 16:44:57,189 | ERROR | Exception in getting validation rules
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 75, in testcase_details
+    data = self.ValidationList.getDataSort(raw_query, sort)
+           ^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit
+2025-11-18 16:44:57,213 | ERROR | Exception occurred during regression validation run: 
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 99, in run
+    self.testcase_details()
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 75, in testcase_details
+    data = self.ValidationList.getDataSort(raw_query, sort)
+           ^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit
+2025-11-18 16:44:57,234 | ERROR | Unexpected exception in __main__: 
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 270, in <module>
+    run_validation(args.module, args.stage, args.cycle, args.testcasenumber, test_data_environment)
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 261, in run_validation
+    Regression_inputs(module, stage, cycle, testcase_num, environment).run()
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 99, in run
+    self.testcase_details()
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 75, in testcase_details
+    data = self.ValidationList.getDataSort(raw_query, sort)
+           ^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit

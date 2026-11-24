@@ -1,0 +1,28 @@
+2025-11-18 16:26:47,056 | INFO | ========== Starting Validation ==========
+2025-11-18 16:26:47,675 | INFO | Module :  Test 
+2025-11-18 16:26:48,659 | INFO | Stage :  None 
+2025-11-18 16:26:49,353 | INFO | Cycle :  None
+2025-11-18 16:26:50,081 | INFO | Environment  : MONGODB_MCPQA1
+2025-11-18 16:30:13,134 | ERROR | Unexpected exception in __main__: 
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 269, in <module>
+    run_validation(args.module, args.stage, args.cycle, args.testcasenumber, test_data_environment)
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 259, in run_validation
+    Regression_inputs(module, stage, cycle, testcase_num, environment).run()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 47, in __init__
+    self.ValidationList = Collection(db_name, rg_collection_data, environment)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Libraries\MongoDB.py", line 64, in __init__
+    self.Client = self.connect_mongo(Environment)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Libraries\MongoDB.py", line 46, in connect_mongo
+    if replica_set:
+       ^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit

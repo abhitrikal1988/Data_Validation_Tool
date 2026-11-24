@@ -1,0 +1,2058 @@
+{
+    "TestCaseNumber" : 1,
+    "Module"         : "MCP Payments",
+    "Stage"          : "Report",
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate payment CSV file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "NullValues": ["NULL", "N/A", "", "-"],
+            "Columns"  : [
+                { "Name": "ClaimID",     "Type": "STRING"                                    },
+                { "Name": "PaidAmt",     "Type": "DECIMAL", "Transform": "STRIP_CURRENCY"   },
+                { "Name": "ServiceDate", "Type": "DATE",    "Transform": "MM/DD/YYYY"       }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",   "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+{
+    "TestCaseNumber" : 2,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate Oracle payments against vendor file on network drive",
+    "Source": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "Target": {
+        "Type"       : "UNC_PATH",
+        "Path"       : "\\\\server\\share\\payments\\",
+        "FilePattern": "*_payment_*.csv",
+        "FileConfig" : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "SourceName": "CLAIM_ID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "SourceName": "PAID_AMT", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "JoinFields": [
+        { "SourceField": "CLAIM_ID", "TargetField": "ClaimID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PAID_AMT", "TargetField": "PaidAmt", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "SourceField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 3,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Compare vendor SFTP file against internal network file",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "VENDOR_SFTP",
+        "Path"         : "/data/vendor/payments/",
+        "FilePattern"  : "*_vendor_payment_*.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "SourceName": "VENDOR_CLAIM_ID", "Type": "STRING"                                  },
+                { "Name": "PaidAmt", "SourceName": "VENDOR_PAID_AMT", "Type": "DECIMAL", "Transform": "STRIP_CURRENCY" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "UNC_PATH",
+        "Path"       : "\\\\server\\share\\internal\\",
+        "FilePattern": "*_internal_payment_*.csv",
+        "FileConfig" : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "SourceName": "CLAIM_ID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "SourceName": "PAID_AMT", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "ClaimID", "CaseSensitive": false }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PaidAmt", "Precision": 2 }
+    ],
+    "Viceversa": true
+}
+{
+    "TestCaseNumber" : 4,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Dynamic file location from Oracle — single file",
+    "Source": [
+        {
+            "Step"       : 1,
+            "Type"       : "ORACLE",
+            "Environment": "ORACLE_HTA_PROD",
+            "DB"         : "FIN",
+            "QueryType"  : "QUERY",
+            "Query"      : "SELECT FILE_LOCATION FROM FIN.FILE_REGISTRY WHERE EVENT_ID = :EventID AND ROWNUM = 1",
+            "OutputKey"  : "FileLocation"
+        },
+        {
+            "Step"         : 2,
+            "Type"         : "AUTO",
+            "InputKey"     : "FileLocation",
+            "CredentialKey": "HTA_PREPROD",
+            "FileConfig"   : {
+                "Format"   : "CSV",
+                "Delimiter": ",",
+                "Header"   : true,
+                "Columns"  : [
+                    { "Name": "ClaimID", "Type": "STRING"  },
+                    { "Name": "PaidAmt", "Type": "DECIMAL" }
+                ]
+            }
+        }
+    ],
+    "Target": {
+        "Type"       : "MONGODB",
+        "Environment": "MONGODB_HTA_PREPROD",
+        "DB"         : "FIN",
+        "QueryType"  : "VIEW",
+        "Query"      : "Payment_View"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "ClaimCore_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PaidAmount", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "SourceField": "EventID",         "Operator": "=", "DefaultValue": "" },
+        { "TargetField": "PaymentEvent_ID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+{
+    "TestCaseNumber" : 5,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Dynamic file location from Oracle — multiple files combined",
+    "Source": [
+        {
+            "Step"       : 1,
+            "Type"       : "ORACLE",
+            "Environment": "ORACLE_HTA_PROD",
+            "DB"         : "FIN",
+            "QueryType"  : "QUERY",
+            "Query"      : "SELECT FILE_LOCATION FROM FIN.FILE_REGISTRY WHERE EVENT_ID = :EventID",
+            "OutputKey"  : "FileLocation"
+        },
+        {
+            "Step"               : 2,
+            "Type"               : "AUTO",
+            "InputKey"           : "FileLocation",
+            "CredentialKey"      : "HTA_PREPROD",
+            "AddSourceFileColumn": true,
+            "FileConfig"         : {
+                "Format"   : "CSV",
+                "Delimiter": ",",
+                "Header"   : true,
+                "Columns"  : [
+                    { "Name": "ClaimID", "Type": "STRING"  },
+                    { "Name": "PaidAmt", "Type": "DECIMAL" }
+                ]
+            }
+        }
+    ],
+    "Target": {
+        "Type"       : "MONGODB",
+        "Environment": "MONGODB_HTA_PREPROD",
+        "DB"         : "FIN",
+        "QueryType"  : "VIEW",
+        "Query"      : "Payment_View"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "ClaimCore_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PaidAmount", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "SourceField": "EventID",         "Operator": "=", "DefaultValue": "" },
+        { "TargetField": "PaymentEvent_ID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 6,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Combine all monthly payment files and validate against Oracle",
+    "Source": {
+        "Type"               : "SFTP",
+        "CredentialKey"      : "HTA_PREPROD",
+        "Path"               : "/data/payments/2026/03/",
+        "FilePattern"        : "*_payment_*.csv",
+        "PickStrategy"       : "ALL",
+        "AddSourceFileColumn": true,
+        "FileConfig"         : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE MONTH = 3 AND YEAR = 2026"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 7,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Full row comparison — no natural key in file",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"            : "CSV",
+            "Delimiter"         : ",",
+            "Header"            : true,
+            "CaseSensitiveJoin" : false,
+            "DeduplicateSource" : false,
+            "Columns"           : [
+                { "Name": "ClaimID",     "Type": "STRING"  },
+                { "Name": "PaidAmt",     "Type": "DECIMAL" },
+                { "Name": "ServiceDate", "Type": "DATE",   "Transform": "MM/DD/YYYY" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT FROM FIN.PAYMENTS"
+    },
+    "JoinFields"  : "ALL",
+    "CompareFields": [],
+    "Viceversa"   : true
+}
+
+{
+    "TestCaseNumber" : 8,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate Excel payment report against MongoDB",
+    "Source": {
+        "Type"       : "UNC_PATH",
+        "Path"       : "\\\\server\\share\\reports\\",
+        "FileName"   : "payment_report_20260330.xlsx",
+        "FileConfig" : {
+            "Format"          : "EXCEL",
+            "Sheet"           : "Payments",
+            "Header"          : true,
+            "SkipRows"        : 1,
+            "FooterRows"      : 1,
+            "UseFormulaValues": true,
+            "IncludeHidden"   : false,
+            "Columns"         : [
+                { "Name": "ClaimID",     "SourceName": "Claim ID",     "Type": "STRING"                           },
+                { "Name": "PaidAmt",     "SourceName": "Paid Amount",  "Type": "DECIMAL"                         },
+                { "Name": "ServiceDate", "SourceName": "Service Date", "Type": "DATE",   "Transform": "MM/DD/YYYY" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "MONGODB",
+        "Environment": "MONGODB_HTA_PREPROD",
+        "DB"         : "FIN",
+        "QueryType"  : "VIEW",
+        "Query"      : "Payment_Report_View"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "ClaimCore_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PaidAmount",  "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "ServiceDate", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "TargetField": "PaymentEvent_ID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+{
+    "TestCaseNumber" : 9,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate fixed-width payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/fixed/",
+        "FileName"     : "payment_20260330.dat",
+        "FileConfig"   : {
+            "Format"          : "FIXED_WIDTH",
+            "Header"          : false,
+            "RecordTypeColumn": { "Position": 1, "Width": 1 },
+            "RecordSets"      : [
+                {
+                    "RecordType": "H",
+                    "Skip"      : true
+                },
+                {
+                    "RecordType": "D",
+                    "Skip"      : false,
+                    "Columns"   : [
+                        { "Name": "ClaimID",     "Position": 2,  "Width": 15, "Type": "STRING",  "Transform": "TRIM"              },
+                        { "Name": "PaidAmt",     "Position": 17, "Width": 12, "Type": "DECIMAL", "Transform": "IMPLIED_DECIMAL:2" },
+                        { "Name": "ServiceDate", "Position": 29, "Width": 8,  "Type": "DATE",    "Transform": "YYYYMMDD"          }
+                    ]
+                },
+                {
+                    "RecordType": "T",
+                    "Skip"      : true
+                }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID", "CaseSensitive": false }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",   "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 10,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate XML payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/xml/",
+        "FileName"     : "payment_20260330.xml",
+        "FileConfig"   : {
+            "Format"           : "XML",
+            "RecordTag"        : "ns:Claim",
+            "NamespaceAware"   : true,
+            "Namespaces"       : {
+                "ns": "http://example.com/claims"
+            },
+            "IncludeAttributes": true,
+            "RecordFilter"     : {
+                "Attribute": "type",
+                "Operator" : "=",
+                "Value"    : "original"
+            },
+            "FlattenDepth"     : 2,
+            "Columns"          : [
+                { "Name": "ClaimID",     "SourceName": "@id",             "Type": "STRING"  },
+                { "Name": "PaidAmt",     "SourceName": "Payment.PaidAmt", "Type": "DECIMAL" },
+                { "Name": "ServiceDate", "SourceName": "ServiceDate",     "Type": "DATE",   "Transform": "YYYYMMDD" },
+                { "Name": "NPI",         "SourceName": "Provider.NPI",    "Type": "STRING"  }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT, NPI FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",   "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT", "DateOnly" : true },
+        { "SourceField": "NPI",         "TargetField": "NPI"                           }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+{
+    "TestCaseNumber" : 11,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate JSON payment response against MongoDB",
+    "Source": {
+        "Type"         : "AUTO",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "https://api.example.com/payments/export?eventID=:EventID",
+        "FileConfig"   : {
+            "Format"    : "JSON",
+            "RecordPath": "response.data.claims",
+            "Columns"   : [
+                { "Name": "ClaimID",     "SourceName": "claimId",     "Type": "STRING"  },
+                { "Name": "PaidAmt",     "SourceName": "paidAmount",  "Type": "DECIMAL" },
+                { "Name": "ServiceDate", "SourceName": "serviceDate", "Type": "DATE",   "Transform": "YYYY-MM-DD" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "MONGODB",
+        "Environment": "MONGODB_HTA_PREPROD",
+        "DB"         : "FIN",
+        "QueryType"  : "VIEW",
+        "Query"      : "Payment_View"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "ClaimCore_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PaidAmount",  "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "ServiceDate", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "SourceField": "EventID",         "Operator": "=", "DefaultValue": "" },
+        { "TargetField": "PaymentEvent_ID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 12,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate Oracle CLOB file content against MongoDB",
+    "Source": {
+        "Type"       : "ORACLE_CLOB",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT FILE_CONTENT FROM FIN.FILES WHERE FILE_ID = :FileID",
+        "CLOBColumn" : "FILE_CONTENT",
+        "FileConfig" : {
+            "Format"   : "AUTO",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "MONGODB",
+        "Environment": "MONGODB_HTA_PREPROD",
+        "DB"         : "FIN",
+        "QueryType"  : "VIEW",
+        "Query"      : "Payment_View"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "ClaimCore_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PaidAmount", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "SourceField": "FileID",          "Operator": "=", "DefaultValue": "" },
+        { "TargetField": "PaymentEvent_ID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 13,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate HL7 ADT patient data against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/hl7/",
+        "FilePattern"  : "*_ADT_*.hl7",
+        "FileConfig"   : {
+            "Format"     : "HL7",
+            "MessageType": "ADT",
+            "Version"    : "2.5",
+            "RecordSets" : [
+                {
+                    "Segment": "PID",
+                    "Skip"   : false,
+                    "Columns": [
+                        { "Name": "PatientID", "SourceName": "PID.3.1", "Type": "STRING"               },
+                        { "Name": "LastName",  "SourceName": "PID.5.1", "Type": "STRING"               },
+                        { "Name": "FirstName", "SourceName": "PID.5.2", "Type": "STRING"               },
+                        { "Name": "DOB",       "SourceName": "PID.7",   "Type": "DATE", "Transform": "YYYYMMDD" },
+                        { "Name": "Gender",    "SourceName": "PID.8",   "Type": "STRING"               }
+                    ]
+                },
+                { "Segment": "MSH", "Skip": true },
+                { "Segment": "PV1", "Skip": true }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "MEMBER",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT PATIENT_ID, LAST_NAME, FIRST_NAME, DOB, GENDER FROM MEMBER.PATIENTS WHERE FACILITY_ID = :FacilityID"
+    },
+    "JoinFields": [
+        { "SourceField": "PatientID", "TargetField": "PATIENT_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "LastName",  "TargetField": "LAST_NAME",  "CaseSensitive": false },
+        { "SourceField": "FirstName", "TargetField": "FIRST_NAME", "CaseSensitive": false },
+        { "SourceField": "DOB",       "TargetField": "DOB",        "DateOnly"     : true  },
+        { "SourceField": "Gender",    "TargetField": "GENDER"                              }
+    ],
+    "DataFilters": [
+        { "TargetField": "FacilityID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 14,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate NCPDP D.0 pharmacy claims against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/ncpdp/",
+        "FilePattern"  : "*_pharmacy_*.ncpdp",
+        "FileConfig"   : {
+            "Format" : "NCPDP_D0",
+            "Version": "D.0",
+            "RecordSets": [
+                {
+                    "Segment": "C",
+                    "Skip"   : false,
+                    "Columns": [
+                        { "Name": "PatientID", "SourceName": "C2", "Type": "STRING", "Transform": "TRIM"     },
+                        { "Name": "DOB",       "SourceName": "C3", "Type": "DATE",   "Transform": "YYYYMMDD" }
+                    ]
+                },
+                {
+                    "Segment": "D",
+                    "Skip"   : false,
+                    "Columns": [
+                        { "Name": "NDC",               "SourceName": "D2", "Type": "STRING"                                    },
+                        { "Name": "QuantityDispensed", "SourceName": "D5", "Type": "DECIMAL", "Transform": "IMPLIED_DECIMAL:3" },
+                        { "Name": "DaysSupply",        "SourceName": "D8", "Type": "INTEGER"                                   }
+                    ]
+                },
+                { "Segment": "T", "Skip": true }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "CLAIM",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT PATIENT_ID, NDC, QTY_DISPENSED, DAYS_SUPPLY FROM CLAIM.PHARMACY_CLAIMS WHERE BATCH_ID = :BatchID"
+    },
+    "JoinFields": [
+        { "SourceField": "PatientID", "TargetField": "PATIENT_ID" },
+        { "SourceField": "NDC",       "TargetField": "NDC"        }
+    ],
+    "CompareFields": [
+        { "SourceField": "QuantityDispensed", "TargetField": "QTY_DISPENSED", "Precision": 3 },
+        { "SourceField": "DaysSupply",        "TargetField": "DAYS_SUPPLY"                   }
+    ],
+    "DataFilters": [
+        { "TargetField": "BatchID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 15,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate NCPDP SCRIPT prescriptions against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/script/",
+        "FilePattern"  : "*_newrx_*.xml",
+        "FileConfig"   : {
+            "Format"     : "NCPDP_SCRIPT",
+            "Version"    : "10.6",
+            "MessageType": "NewRx",
+            "Namespaces" : {
+                "ncpdp": "http://www.ncpdp.org/schema/script"
+            },
+            "RecordSets" : [
+                {
+                    "RecordTag": "NewRx",
+                    "Skip"     : false,
+                    "Columns"  : [
+                        { "Name": "PatientID",    "SourceName": "Body.NewRx.Patient.Identification.SocialSecurity",          "Type": "STRING"  },
+                        { "Name": "NDC",          "SourceName": "Body.NewRx.MedicationDispensed.DrugCoded.ProductCode.Code", "Type": "STRING"  },
+                        { "Name": "Quantity",     "SourceName": "Body.NewRx.MedicationDispensed.Quantity.Value",             "Type": "DECIMAL" },
+                        { "Name": "DaysSupply",   "SourceName": "Body.NewRx.MedicationDispensed.DaysSupply",                "Type": "INTEGER" },
+                        { "Name": "PrescriberNPI","SourceName": "Body.NewRx.Prescriber.Identification.NPI",                 "Type": "STRING"  }
+                    ]
+                },
+                { "RecordTag": "Status", "Skip": true },
+                { "RecordTag": "Error",  "Skip": true }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "RX",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT PATIENT_ID, NDC, QUANTITY, DAYS_SUPPLY, PRESCRIBER_NPI FROM RX.PRESCRIPTIONS WHERE BATCH_ID = :BatchID"
+    },
+    "JoinFields": [
+        { "SourceField": "PatientID", "TargetField": "PATIENT_ID" },
+        { "SourceField": "NDC",       "TargetField": "NDC"        }
+    ],
+    "CompareFields": [
+        { "SourceField": "Quantity",     "TargetField": "QUANTITY",       "Precision": 3 },
+        { "SourceField": "DaysSupply",   "TargetField": "DAYS_SUPPLY"                    },
+        { "SourceField": "PrescriberNPI","TargetField": "PRESCRIBER_NPI"                 }
+    ],
+    "DataFilters": [
+        { "TargetField": "BatchID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+{
+    "TestCaseNumber" : 16,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate PGP encrypted ZIP file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/secure/",
+        "FilePattern"  : "*_payment_*.csv.zip.pgp",
+        "FileConfig"   : {
+            "Format"       : "CSV",
+            "Delimiter"    : ",",
+            "Header"       : true,
+            "Compression"  : "ZIP",
+            "EncryptionKey": "PGP_HTA_PREPROD",
+            "Columns"      : [
+                { "Name": "ClaimID", "Type": "STRING"                                   },
+                { "Name": "PaidAmt", "Type": "DECIMAL", "Transform": "STRIP_CURRENCY"  }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+{
+    "TestCaseNumber" : 17,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate payment file with UTC timezone against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Timezone" : "UTC",
+            "Columns"  : [
+                { "Name": "ClaimID",       "Type": "STRING"                                         },
+                { "Name": "ProcessedDate", "Type": "DATETIME", "Transform": "YYYY-MM-DDTHH:MM:SS"  }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PROCESSED_DT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "ProcessedDate", "TargetField": "PROCESSED_DT", "DateOnly": false }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 18,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate payment file with conditional transforms",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                {
+                    "Name"     : "ClaimStatus",
+                    "Type"     : "STRING",
+                    "Transform": {
+                        "REPLACE_MAP": {
+                            "1": "PAID",
+                            "2": "DENIED",
+                            "3": "REVERSED",
+                            "4": "PENDING"
+                        }
+                    }
+                },
+                {
+                    "Name"     : "PaidAmt",
+                    "Type"     : "DECIMAL",
+                    "Transform": [
+                        {
+                            "Condition": { "Column": "ClaimStatus", "Operator": "=", "Value": "3" },
+                            "Apply"    : "PARENTHESES_NEGATIVE"
+                        },
+                        "STRIP_CURRENCY",
+                        "DECIMAL"
+                    ]
+                },
+                {
+                    "Name"     : "NPI",
+                    "Type"     : "STRING",
+                    "Transform": [
+                        {
+                            "Condition": { "Column": "NPI", "Operator": "=", "Value": "0000000000" },
+                            "Apply"    : "ZERO_TO_NULL"
+                        },
+                        "TRIM_LEADING_ZEROS"
+                    ]
+                }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, CLAIM_STATUS, PAID_AMT, NPI FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "ClaimStatus", "TargetField": "CLAIM_STATUS"                              },
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",    "Precision"     : 2         },
+        { "SourceField": "NPI",         "TargetField": "NPI",         "CaseSensitive" : false     }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 19,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate payment file with metadata header and footer",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"           : "CSV",
+            "Delimiter"        : ",",
+            "Header"           : true,
+            "SkipRows"         : 3,
+            "CommentChar"      : "#",
+            "FooterIdentifier" : "TRL",
+            "NullValues"       : ["NULL", "N/A", "", "-"],
+            "FooterValidation" : {
+                "Enabled"     : true,
+                "CountColumn" : 1,
+                "AmountColumn": 2
+            },
+            "Columns"          : [
+                { "Name": "ClaimID",     "Type": "STRING"                                   },
+                { "Name": "PaidAmt",     "Type": "DECIMAL", "Transform": "STRIP_CURRENCY"  },
+                { "Name": "ServiceDate", "Type": "DATE",    "Transform": "MM/DD/YYYY"      }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",   "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 20,
+    "ValidationType" : "Null_Check",
+    "TestDescription": "Check null values in payment CSV file",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"    : "CSV",
+            "Delimiter" : ",",
+            "Header"    : true,
+            "NullValues": ["NULL", "N/A", "", "-", "0"]
+        }
+    },
+    "CheckFields": [
+        { "Field": "ClaimID",     "Required": true  },
+        { "Field": "PaidAmt",     "Required": true  },
+        { "Field": "ServiceDate", "Required": true  },
+        { "Field": "NPI",         "Required": false }
+    ]
+}
+
+
+
+
+{
+    "TestCaseNumber" : 21,
+    "ValidationType" : "Duplicate_Check",
+    "TestDescription": "Check duplicate claims in payment CSV file",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true
+        }
+    },
+    "CheckFields": [
+        { "Field": "ClaimID"     },
+        { "Field": "ServiceDate" }
+    ]
+}
+{
+    "TestCaseNumber" : 22,
+    "ValidationType" : "Format_Check",
+    "TestDescription": "Validate payment file schema and field formats",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"      : "CSV",
+            "Delimiter"   : ",",
+            "Header"      : true,
+            "StrictSchema": true,
+            "Columns"     : [
+                { "Name": "ClaimID",     "Type": "STRING",  "Required": true  },
+                { "Name": "PaidAmt",     "Type": "DECIMAL", "Required": true  },
+                { "Name": "ServiceDate", "Type": "DATE",    "Required": true  },
+                { "Name": "NPI",         "Type": "STRING",  "Required": false }
+            ]
+        }
+    },
+    "CheckFields": [
+        { "Field": "NPI",         "Regex": "^\\d{10}$"               },
+        { "Field": "ServiceDate", "Regex": "^\\d{4}-\\d{2}-\\d{2}$" },
+        { "Field": "PaidAmt",     "Regex": "^\\d+\\.\\d{2}$"        }
+    ]
+}
+{
+    "TestCaseNumber" : 23,
+    "ValidationType" : "Record_Count",
+    "TestDescription": "Validate payment file row count and footer totals against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"          : "CSV",
+            "Delimiter"       : ",",
+            "Header"          : true,
+            "FooterRows"      : 1,
+            "FooterValidation": {
+                "Enabled"     : true,
+                "CountColumn" : 1,
+                "AmountColumn": 2
+            }
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT COUNT(*) FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "DataFilters": [
+        { "SourceField": "EventID", "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "ApprovedValues": [0]
+}
+{
+    "TestCaseNumber" : 24,
+    "ValidationType" : "InApprovedValue",
+    "TestDescription": "Validate claim status values in payment file",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true
+        }
+    },
+    "CompareFields": [
+        { "SourceField": "ClaimStatus" }
+    ],
+    "ApprovedValues": ["PAID", "DENIED", "REVERSED", "PENDING"]
+}
+
+{
+    "TestCaseNumber" : 25,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate S3 payment file against Oracle",
+    "Source": {
+        "Type"         : "S3",
+        "CredentialKey": "S3_HTA_PROD",
+        "Bucket"       : "hta-payments",
+        "FilePattern"  : "payments/2026/03/*_payment_*.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"                                  },
+                { "Name": "PaidAmt", "Type": "DECIMAL", "Transform": "STRIP_CURRENCY" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 26,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate Azure Blob payment file against MongoDB",
+    "Source": {
+        "Type"         : "AZURE_BLOB",
+        "CredentialKey": "AZURE_HTA_PREPROD",
+        "Path"         : "payments/2026/03/",
+        "FilePattern"  : "*_payment_*.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "MONGODB",
+        "Environment": "MONGODB_HTA_PREPROD",
+        "DB"         : "FIN",
+        "QueryType"  : "VIEW",
+        "Query"      : "Payment_View"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "ClaimCore_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PaidAmount", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "TargetField": "PaymentEvent_ID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 27,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate simple fixed-width payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/fixed/",
+        "FileName"     : "payment_20260330.txt",
+        "FileConfig"   : {
+            "Format" : "FIXED_WIDTH",
+            "Header" : false,
+            "Columns": [
+                { "Name": "ClaimID",     "Position": 1,  "Width": 15, "Type": "STRING",  "Transform": "TRIM"              },
+                { "Name": "PaidAmt",     "Position": 16, "Width": 12, "Type": "DECIMAL", "Transform": "IMPLIED_DECIMAL:2" },
+                { "Name": "ServiceDate", "Position": 28, "Width": 8,  "Type": "DATE",    "Transform": "YYYYMMDD"          },
+                { "Name": "NPI",         "Position": 36, "Width": 10, "Type": "STRING",  "Transform": "TRIM_LEADING_ZEROS"},
+                { "Name": "DaysSupply",  "Position": 46, "Width": 3,  "Type": "INTEGER", "Transform": "TRIM"              }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT, NPI, DAYS_SUPPLY FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",    "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT",  "DateOnly" : true },
+        { "SourceField": "NPI",         "TargetField": "NPI"                            },
+        { "SourceField": "DaysSupply",  "TargetField": "DAYS_SUPPLY"                    }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 28,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate fixed-width file with header row against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/fixed/",
+        "FileName"     : "payment_20260330.txt",
+        "FileConfig"   : {
+            "Format"  : "FIXED_WIDTH",
+            "Header"  : true,
+            "SkipRows": 0,
+            "Columns" : [
+                { "Name": "ClaimID",     "SourceName": "CLAIM_ID",    "Position": 1,  "Width": 15, "Type": "STRING",  "Transform": "TRIM"              },
+                { "Name": "PaidAmt",     "SourceName": "PAID_AMT",    "Position": 16, "Width": 12, "Type": "DECIMAL", "Transform": "IMPLIED_DECIMAL:2" },
+                { "Name": "ServiceDate", "SourceName": "SERVICE_DT",  "Position": 28, "Width": 8,  "Type": "DATE",    "Transform": "YYYYMMDD"          }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",   "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 29,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate fixed-width file with metadata rows and trailer",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/fixed/",
+        "FileName"     : "payment_20260330.txt",
+        "FileConfig"   : {
+            "Format"          : "FIXED_WIDTH",
+            "Header"          : false,
+            "SkipRows"        : 2,
+            "FooterRows"      : 1,
+            "FooterValidation": {
+                "Enabled"     : true,
+                "CountColumn" : 1,
+                "AmountColumn": 2
+            },
+            "Columns"         : [
+                { "Name": "ClaimID",     "Position": 1,  "Width": 15, "Type": "STRING",  "Transform": ["TRIM", "TRIM_LEADING_ZEROS"] },
+                { "Name": "PaidAmt",     "Position": 16, "Width": 12, "Type": "DECIMAL", "Transform": "IMPLIED_DECIMAL:2"            },
+                { "Name": "ServiceDate", "Position": 28, "Width": 8,  "Type": "DATE",    "Transform": "YYYYMMDD"                     },
+                { "Name": "ClaimStatus", "Position": 36, "Width": 2,  "Type": "STRING",  "Transform": {
+                    "REPLACE_MAP": {
+                        "01": "PAID",
+                        "02": "DENIED",
+                        "03": "REVERSED"
+                    }
+                }}
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT, CLAIM_STATUS FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",     "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT",   "DateOnly" : true },
+        { "SourceField": "ClaimStatus", "TargetField": "CLAIM_STATUS"                    }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+
+{
+    "TestCaseNumber" : 30,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate fixed-width multi-layout payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/fixed/",
+        "FileName"     : "payment_20260330.dat",
+        "FileConfig"   : {
+            "Format"          : "FIXED_WIDTH",
+            "Header"          : false,
+            "NullValues"      : ["", "000000000000", "00000000"],
+            "RecordTypeColumn": { "Position": 1, "Width": 1 },
+            "FooterValidation": {
+                "Enabled"     : true,
+                "CountColumn" : 2,
+                "AmountColumn": 3
+            },
+            "RecordSets"      : [
+                {
+                    "RecordType" : "H",
+                    "Description": "File Header",
+                    "Skip"       : true
+                },
+                {
+                    "RecordType" : "D",
+                    "Description": "Claim Detail",
+                    "Skip"       : false,
+                    "Columns"    : [
+                        { "Name": "ClaimID",     "Position": 2,  "Width": 15, "Type": "STRING",  "Required": true,  "Transform": "TRIM"              },
+                        { "Name": "PaidAmt",     "Position": 17, "Width": 12, "Type": "DECIMAL", "Required": true,  "Transform": "IMPLIED_DECIMAL:2" },
+                        { "Name": "ServiceDate", "Position": 29, "Width": 8,  "Type": "DATE",    "Required": true,  "Transform": "YYYYMMDD"          },
+                        { "Name": "NPI",         "Position": 37, "Width": 10, "Type": "STRING",  "Required": false, "Transform": "TRIM_LEADING_ZEROS"},
+                        { "Name": "DaysSupply",  "Position": 47, "Width": 3,  "Type": "INTEGER", "Required": false, "Transform": "TRIM"              }
+                    ]
+                },
+                {
+                    "RecordType" : "T",
+                    "Description": "File Trailer",
+                    "Skip"       : true
+                }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT, NPI, DAYS_SUPPLY FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID", "CaseSensitive": false }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",    "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT",  "DateOnly" : true },
+        { "SourceField": "NPI",         "TargetField": "NPI"                            },
+        { "SourceField": "DaysSupply",  "TargetField": "DAYS_SUPPLY"                    }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+
+{
+    "TestCaseNumber" : 31,
+    "ValidationType" : "Format_Check",
+    "TestDescription": "Validate fixed-width payment file schema and field formats",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/fixed/",
+        "FileName"     : "payment_20260330.dat",
+        "FileConfig"   : {
+            "Format"          : "FIXED_WIDTH",
+            "Header"          : false,
+            "StrictSchema"    : true,
+            "RecordTypeColumn": { "Position": 1, "Width": 1 },
+            "RecordSets"      : [
+                {
+                    "RecordType": "D",
+                    "Skip"      : false,
+                    "Columns"   : [
+                        { "Name": "ClaimID",     "Position": 2,  "Width": 15, "Type": "STRING",  "Required": true  },
+                        { "Name": "PaidAmt",     "Position": 17, "Width": 12, "Type": "DECIMAL", "Required": true  },
+                        { "Name": "ServiceDate", "Position": 29, "Width": 8,  "Type": "DATE",    "Required": true  },
+                        { "Name": "NPI",         "Position": 37, "Width": 10, "Type": "STRING",  "Required": false }
+                    ]
+                },
+                { "RecordType": "H", "Skip": true },
+                { "RecordType": "T", "Skip": true }
+            ]
+        }
+    },
+    "CheckFields": [
+        { "Field": "NPI",         "Regex": "^\\d{10}$"      },
+        { "Field": "ServiceDate", "Regex": "^\\d{8}$"       },
+        { "Field": "PaidAmt",     "Regex": "^\\d{12}$"      }
+    ]
+}
+
+
+{
+    "TestCaseNumber" : 32,
+    "ValidationType" : "Null_Check",
+    "TestDescription": "Check null values in fixed-width payment file",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/fixed/",
+        "FileName"     : "payment_20260330.dat",
+        "FileConfig"   : {
+            "Format"          : "FIXED_WIDTH",
+            "Header"          : false,
+            "NullValues"      : ["", "000000000000", "00000000", "          "],
+            "RecordTypeColumn": { "Position": 1, "Width": 1 },
+            "RecordSets"      : [
+                {
+                    "RecordType": "D",
+                    "Skip"      : false,
+                    "Columns"   : [
+                        { "Name": "ClaimID",     "Position": 2,  "Width": 15, "Type": "STRING"  },
+                        { "Name": "PaidAmt",     "Position": 17, "Width": 12, "Type": "DECIMAL" },
+                        { "Name": "ServiceDate", "Position": 29, "Width": 8,  "Type": "DATE"    },
+                        { "Name": "NPI",         "Position": 37, "Width": 10, "Type": "STRING"  }
+                    ]
+                },
+                { "RecordType": "H", "Skip": true },
+                { "RecordType": "T", "Skip": true }
+            ]
+        }
+    },
+    "CheckFields": [
+        { "Field": "ClaimID",     "Required": true  },
+        { "Field": "PaidAmt",     "Required": true  },
+        { "Field": "ServiceDate", "Required": true  },
+        { "Field": "NPI",         "Required": false }
+    ]
+}
+
+
+
+{
+    "TestCaseNumber" : 33,
+    "ValidationType" : "Record_Count",
+    "TestDescription": "Validate fixed-width file detail row count against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/fixed/",
+        "FileName"     : "payment_20260330.dat",
+        "FileConfig"   : {
+            "Format"          : "FIXED_WIDTH",
+            "Header"          : false,
+            "RecordTypeColumn": { "Position": 1, "Width": 1 },
+            "FooterValidation": {
+                "Enabled"     : true,
+                "CountColumn" : 2,
+                "AmountColumn": 3
+            },
+            "RecordSets"      : [
+                {
+                    "RecordType": "D",
+                    "Skip"      : false,
+                    "Columns"   : [
+                        { "Name": "ClaimID", "Position": 2, "Width": 15, "Type": "STRING" }
+                    ]
+                },
+                { "RecordType": "H", "Skip": true },
+                { "RecordType": "T", "Skip": true }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT COUNT(*) FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "DataFilters": [
+        { "SourceField": "EventID", "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "ApprovedValues": [0]
+}
+
+{
+    "TestCaseNumber" : 34,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate local path payment file against Oracle",
+    "Source": {
+        "Type"       : "LOCAL_PATH",
+        "Path"       : "C:\\data\\payments\\",
+        "FilePattern": "*_payment_*.csv",
+        "FileConfig" : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 35,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate FTP payment file against Oracle",
+    "Source": {
+        "Type"         : "FTP",
+        "CredentialKey": "FTP_HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FilePattern"  : "*_payment_*.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 36,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate MongoDB GridFS payment file against Oracle",
+    "Source": {
+        "Type"       : "MONGODB_GRIDFS",
+        "Environment": "MONGODB_HTA_PREPROD",
+        "DB"         : "MCP",
+        "Query"      : "fs",
+        "FileConfig" : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "SourceField": "metadata.eventID", "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 37,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate pipe delimited payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.txt",
+        "FileConfig"   : {
+            "Format"   : "PIPE",
+            "Delimiter": "|",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID",     "Type": "STRING"                                   },
+                { "Name": "PaidAmt",     "Type": "DECIMAL", "Transform": "STRIP_CURRENCY"  },
+                { "Name": "ServiceDate", "Type": "DATE",    "Transform": "MM/DD/YYYY"      }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",   "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 38,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate TSV payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.tsv",
+        "FileConfig"   : {
+            "Format"   : "TSV",
+            "Delimiter": "\t",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 39,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate GZIP compressed payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv.gz",
+        "FileConfig"   : {
+            "Format"     : "CSV",
+            "Delimiter"  : ",",
+            "Header"     : true,
+            "Compression": "GZIP",
+            "Columns"    : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 40,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate latin-1 encoded payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Encoding" : "latin-1",
+            "Columns"  : [
+                { "Name": "ClaimID",      "Type": "STRING"  },
+                { "Name": "ProviderName", "Type": "STRING", "Transform": "TRIM" },
+                { "Name": "PaidAmt",      "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PROVIDER_NAME, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "ProviderName", "TargetField": "PROVIDER_NAME", "CaseSensitive": false },
+        { "SourceField": "PaidAmt",      "TargetField": "PAID_AMT",      "Precision"    : 2    }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 41,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate payment amounts with tolerance",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"  },
+                { "Name": "PaidAmt", "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        {
+            "SourceField": "PaidAmt",
+            "TargetField": "PAID_AMT",
+            "Precision"  : 2,
+            "Tolerance"  : 0.01
+        }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+
+{
+    "TestCaseNumber" : 42,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate boolean fields in payment file against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID",      "Type": "STRING"                                  },
+                { "Name": "IsActive",     "Type": "BOOLEAN", "Transform": "BOOLEAN_YN"     },
+                { "Name": "IsProcessed",  "Type": "BOOLEAN", "Transform": "BOOLEAN_10"     },
+                { "Name": "IsEligible",   "Type": "BOOLEAN", "Transform": "BOOLEAN_TF"     },
+                { "Name": "IsEnrolled",   "Type": "BOOLEAN", "Transform": "BOOLEAN_AUTO"   }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, IS_ACTIVE, IS_PROCESSED, IS_ELIGIBLE, IS_ENROLLED FROM FIN.MEMBERS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "IsActive",    "TargetField": "IS_ACTIVE"    },
+        { "SourceField": "IsProcessed", "TargetField": "IS_PROCESSED" },
+        { "SourceField": "IsEligible",  "TargetField": "IS_ELIGIBLE"  },
+        { "SourceField": "IsEnrolled",  "TargetField": "IS_ENROLLED"  }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 43,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate European format amounts and scientific notation",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ";",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID",    "Type": "STRING"                                        },
+                { "Name": "EuroPaidAmt","Type": "DECIMAL", "Transform": "EUROPEAN_DECIMAL"     },
+                { "Name": "SciAmt",     "Type": "DECIMAL", "Transform": "SCIENTIFIC_NOTATION"  }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "EuroPaidAmt", "TargetField": "PAID_AMT", "Precision": 2 }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 44,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate complex CSV with quote and delimiter handling",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"               : "CSV",
+            "Delimiter"            : ",",
+            "MultiDelimiter"       : [",", "|"],
+            "QuoteChar"            : "\"",
+            "EscapeChar"           : "\\",
+            "SkipTrailingDelimiter": true,
+            "Header"               : true,
+            "OnColumnMismatch"     : "TRUNCATE",
+            "Columns"              : [
+                { "Name": "ClaimID",      "Type": "STRING"  },
+                { "Name": "ProviderName", "Type": "STRING", "Transform": "TRIM" },
+                { "Name": "PaidAmt",      "Type": "DECIMAL" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PROVIDER_NAME, PAID_AMT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "ProviderName", "TargetField": "PROVIDER_NAME", "CaseSensitive": false },
+        { "SourceField": "PaidAmt",      "TargetField": "PAID_AMT",      "Precision"    : 2    }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+
+{
+    "TestCaseNumber" : 45,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate file with mixed date formats using AUTO_DATE",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID",       "Type": "STRING"                              },
+                { "Name": "ServiceDate",   "Type": "DATE",  "Transform": "AUTO_DATE"    },
+                { "Name": "DischargeDate", "Type": "DATE",  "Transform": "AUTO_DATE"    },
+                { "Name": "AdmitDate",     "Type": "DATE",  "Transform": "AUTO_DATE"    }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, SERVICE_DT, DISCHARGE_DT, ADMIT_DT FROM FIN.CLAIMS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "ServiceDate",   "TargetField": "SERVICE_DT",   "DateOnly": true },
+        { "SourceField": "DischargeDate", "TargetField": "DISCHARGE_DT", "DateOnly": true },
+        { "SourceField": "AdmitDate",     "TargetField": "ADMIT_DT",     "DateOnly": true }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 46,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate NPI padding against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"   : "CSV",
+            "Delimiter": ",",
+            "Header"   : true,
+            "Columns"  : [
+                { "Name": "ClaimID", "Type": "STRING"                                       },
+                { "Name": "NPI",     "Type": "STRING", "Transform": "PAD_LEADING_ZEROS:10" },
+                { "Name": "TIN",     "Type": "STRING", "Transform": "PAD_LEADING_ZEROS:9"  }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, NPI, TIN FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "NPI", "TargetField": "NPI" },
+        { "SourceField": "TIN", "TargetField": "TIN" }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 47,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate XML with multiple record types against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/xml/",
+        "FileName"     : "payment_20260330.xml",
+        "FileConfig"   : {
+            "Format"           : "XML",
+            "NamespaceAware"   : true,
+            "Namespaces"       : {
+                "ns": "http://example.com/claims"
+            },
+            "IncludeAttributes": true,
+            "FlattenDepth"     : 2,
+            "RecordSets"       : [
+                {
+                    "RecordTag"   : "ns:Claim",
+                    "Description" : "Original Claims",
+                    "RecordFilter": { "Attribute": "type", "Operator": "=", "Value": "original" },
+                    "Skip"        : false,
+                    "Columns"     : [
+                        { "Name": "ClaimID",     "SourceName": "@id",             "Type": "STRING"  },
+                        { "Name": "PaidAmt",     "SourceName": "Payment.PaidAmt", "Type": "DECIMAL" },
+                        { "Name": "ServiceDate", "SourceName": "ServiceDate",     "Type": "DATE",   "Transform": "YYYYMMDD" }
+                    ]
+                },
+                {
+                    "RecordTag"   : "ns:Claim",
+                    "Description" : "Reversal Claims",
+                    "RecordFilter": { "Attribute": "type", "Operator": "=", "Value": "reversal" },
+                    "Skip"        : true
+                },
+                {
+                    "RecordTag"   : "ns:Adjustment",
+                    "Description" : "Adjustments",
+                    "Skip"        : true
+                }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID AND CLAIM_TYPE = 'ORIGINAL'"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",   "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}
+
+{
+    "TestCaseNumber" : 48,
+    "ValidationType" : "SRC_TGT",
+    "TestDescription": "Validate file with row type markers against Oracle",
+    "Source": {
+        "Type"         : "SFTP",
+        "CredentialKey": "HTA_PREPROD",
+        "Path"         : "/data/payments/",
+        "FileName"     : "payment_20260330.csv",
+        "FileConfig"   : {
+            "Format"          : "CSV",
+            "Delimiter"       : ",",
+            "Header"          : true,
+            "HeaderIdentifier": "HEADER",
+            "DataIdentifier"  : "DATA",
+            "FooterIdentifier": "TRAILER",
+            "StripIdentifier" : true,
+            "Columns"         : [
+                { "Name": "ClaimID",     "Type": "STRING"  },
+                { "Name": "PaidAmt",     "Type": "DECIMAL" },
+                { "Name": "ServiceDate", "Type": "DATE",   "Transform": "MM/DD/YYYY" }
+            ]
+        }
+    },
+    "Target": {
+        "Type"       : "ORACLE",
+        "Environment": "ORACLE_HTA_PROD",
+        "DB"         : "FIN",
+        "QueryType"  : "QUERY",
+        "Query"      : "SELECT CLAIM_ID, PAID_AMT, SERVICE_DT FROM FIN.PAYMENTS WHERE EVENT_ID = :EventID"
+    },
+    "JoinFields": [
+        { "SourceField": "ClaimID", "TargetField": "CLAIM_ID" }
+    ],
+    "CompareFields": [
+        { "SourceField": "PaidAmt",     "TargetField": "PAID_AMT",   "Precision": 2    },
+        { "SourceField": "ServiceDate", "TargetField": "SERVICE_DT", "DateOnly" : true }
+    ],
+    "DataFilters": [
+        { "TargetField": "EventID", "Operator": "=", "DefaultValue": "" }
+    ],
+    "Viceversa": true
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Cardholder ID field null check.",
+    "Module": "",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Key fields duplicate detection in source data (Cardholder ID).",
+    "Module": "",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Format_Check",
+    "TestDescription": "Date format validation for Election Start Date field.",
+    "Module": "",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Election End Date null check.",
+    "Module": "",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 4,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "DataFilters": []
+  }
+]

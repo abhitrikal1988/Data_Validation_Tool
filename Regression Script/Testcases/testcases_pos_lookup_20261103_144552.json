@@ -1,0 +1,222 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "pos_lookup",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target on mapped fields",
+    "Viceversa": true,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "C:\\Users\\Maheswar.Basireddy\\Documents",
+      "FileName": "Recon Rpt 3670 Batches 20260101 - 20260410_202604100848149.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT * FROM DW.zelis_recon"
+    },
+    "JoinFields": [],
+    "CompareFields": [],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INCOMPLETE",
+      "Detail": "not loaded",
+      "Errors": [
+        "missing JoinFields"
+      ],
+      "LoadedOn": "2026-11-03 14:45:52"
+    }
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "pos_lookup",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.zelis_recon: no duplicate ZELIS_RECON_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT ZELIS_RECON_ID FROM DW.zelis_recon"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "ZELIS_RECON_ID",
+        "ResultFields": [
+          "ZELIS_RECON_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "ZELIS_RECON_ID should not have duplicate values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 394,
+      "DataRegressionSetTestCaseNumber": 7,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-03 14:45:52"
+    }
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "pos_lookup",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target DW.zelis_recon: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT ZELIS_RECON_ID, C_FILE_KEY, C_DOC_ID, C_ENROLLEE_ID, C_PROVIDER_TAX_ID, C_BATCH_NUMBER, C_JOB_NUMBER, I_ENVELOPE_NUMBER, T_FILE_RECEIPT_DATE, T_RELEASED_DATE FROM DW.zelis_recon"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "ZELIS_RECON_ID",
+        "ResultFields": [
+          "ZELIS_RECON_ID"
+        ]
+      },
+      {
+        "SourceField": "C_FILE_KEY",
+        "ResultFields": [
+          "C_FILE_KEY"
+        ]
+      },
+      {
+        "SourceField": "C_DOC_ID",
+        "ResultFields": [
+          "C_DOC_ID"
+        ]
+      },
+      {
+        "SourceField": "C_ENROLLEE_ID",
+        "ResultFields": [
+          "C_ENROLLEE_ID"
+        ]
+      },
+      {
+        "SourceField": "C_PROVIDER_TAX_ID",
+        "ResultFields": [
+          "C_PROVIDER_TAX_ID"
+        ]
+      },
+      {
+        "SourceField": "C_BATCH_NUMBER",
+        "ResultFields": [
+          "C_BATCH_NUMBER"
+        ]
+      },
+      {
+        "SourceField": "C_JOB_NUMBER",
+        "ResultFields": [
+          "C_JOB_NUMBER"
+        ]
+      },
+      {
+        "SourceField": "I_ENVELOPE_NUMBER",
+        "ResultFields": [
+          "I_ENVELOPE_NUMBER"
+        ]
+      },
+      {
+        "SourceField": "T_FILE_RECEIPT_DATE",
+        "ResultFields": [
+          "T_FILE_RECEIPT_DATE"
+        ]
+      },
+      {
+        "SourceField": "T_RELEASED_DATE",
+        "ResultFields": [
+          "T_RELEASED_DATE"
+        ]
+      }
+    ],
+    "ExpectedResult": "ZELIS_RECON_ID, C_FILE_KEY, C_DOC_ID, C_ENROLLEE_ID, C_PROVIDER_TAX_ID, C_BATCH_NUMBER, C_JOB_NUMBER, I_ENVELOPE_NUMBER, T_FILE_RECEIPT_DATE, T_RELEASED_DATE should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 395,
+      "DataRegressionSetTestCaseNumber": 8,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-03 14:45:52"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "pos_lookup",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "File Recon Rpt 3670 Batches 20260101 - 20260410_202604100848149.xlsx: no row repeated in every field",
+    "Viceversa": false,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "C:\\Users\\Maheswar.Basireddy\\Documents",
+      "FileName": "Recon Rpt 3670 Batches 20260101 - 20260410_202604100848149.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "ALL",
+        "ResultFields": [
+          "ALL"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "No two rows of the file should be identical in every field",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 396,
+      "DataRegressionSetTestCaseNumber": 9,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-03 14:45:52"
+    }
+  }
+]

@@ -1,0 +1,777 @@
+[
+    {
+        "DataValidationLog_ID": 138,
+        "Module": "M3P",
+        "Stage": "Initial Testing",
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Enrollment Data comparison between M3P and PBM",
+                "Result": "Fail",
+                "StartTime": "2026-11-12 21:09:50.270483",
+                "EndTime": "2026-11-12 21:09:59.729966",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:09:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source: db.Test_M3PMemberReceipt_PBM.find({})"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:09:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:select m.card_id\n  ,me.start_dt\n  ,me.end_dt \n  from claim.mbr_enroll_other me\n  ,claim.member m \n  where me.member_id_rx = m.member_id_rx \n  and me.enroll_type = 12531 \n  and nvl(me.delete_flg, 'N') = 'N'"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:09:52",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 61, Total target ORACLE records: 3"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'Cardholder_ID': 'EH013557701'}"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'Cardholder_ID': 'T9808000657'}"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'Cardholder_ID': 'T9808000661'}"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'Cardholder_ID': 'T9808000661'}"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'Cardholder_ID': 'T9808000661'}"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 59"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'CARD_ID': 'PPO1000101'}"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 1"
+                    }
+                ],
+                "Stage": "Initial Testing",
+                "MissingFields": [
+                    "Cardholder_ID",
+                    "CARD_ID"
+                ],
+                "MismatchFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Checking MemberReceipt Data Validation after CapRx load",
+                "Result": "Fail",
+                "StartTime": "2026-11-12 21:09:50.272684",
+                "EndTime": "2026-11-12 21:09:51.253124",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:09:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source: db.Test_M3P_Stg_Data_CAPRX.find({})"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:09:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target: db.Test_M3PMemberReceipt_CAPRX.find({})"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:09:51",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source data empty and Target having data. Please check SRC."
+                    }
+                ],
+                "Stage": "Initial Testing",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Checking CapRX Data Validation into STG collection",
+                "Result": "Fail",
+                "StartTime": "2026-11-12 21:09:50.272684",
+                "EndTime": "2026-11-12 21:09:59.695974",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:09:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source: db.Test_M3P_Cap_Data.find({})"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:09:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target: db.Test_M3P_Stg_Data.find({})"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:09:51",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 426, Total target MONGODB records: 426"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Effective_End vs Effective_End: 1152 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808017057', 'Effective_Begin': NaT}: Effective_End=NaT != Effective_End=2025-12-31 00:00:00"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808017966', 'Effective_Begin': Timestamp('2025-01-28 00:00:00')}: Effective_End=2025-12-31 00:00:00 != Effective_End=NaT"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Effective_End=2025-12-31 00:00:00 != Effective_End=NaT"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Effective_End=2025-12-31 00:00:00 != Effective_End=NaT"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Effective_End=2025-12-31 00:00:00 != Effective_End=NaT"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field M3P_Election_Status vs M3P_Election_Status: 100 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=Y != M3P_Election_Status=<NA>"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=Y != M3P_Election_Status=<NA>"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=Y != M3P_Election_Status=<NA>"
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=Y != M3P_Election_Status=<NA>"
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=<NA> != M3P_Election_Status=Y"
+                    },
+                    {
+                        "Log_ID": 13,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field M3P_Program_Year vs M3P_Program_Year: 16 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 14,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=nan != M3P_Program_Year=2025.0"
+                    },
+                    {
+                        "Log_ID": 15,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=nan != M3P_Program_Year=2025.0"
+                    },
+                    {
+                        "Log_ID": 16,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=2025.0 != M3P_Program_Year=nan"
+                    },
+                    {
+                        "Log_ID": 17,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=2025.0 != M3P_Program_Year=nan"
+                    },
+                    {
+                        "Log_ID": 18,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=2025.0 != M3P_Program_Year=nan"
+                    },
+                    {
+                        "Log_ID": 19,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Discontinuation_Reason vs Discontinuation_Reason: 442 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 20,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=<NA> != Discontinuation_Reason=3 Involuntary Termination-Failure to pay"
+                    },
+                    {
+                        "Log_ID": 21,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=<NA> != Discontinuation_Reason=3 Involuntary Termination-Failure to pay"
+                    },
+                    {
+                        "Log_ID": 22,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=<NA> != Discontinuation_Reason=3 Involuntary Termination-Failure to pay"
+                    },
+                    {
+                        "Log_ID": 23,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=3 Involuntary Termination -  failure to pay != Discontinuation_Reason=<NA>"
+                    },
+                    {
+                        "Log_ID": 24,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=3 Involuntary Termination -  failure to pay != Discontinuation_Reason=<NA>"
+                    },
+                    {
+                        "Log_ID": 25,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Reinstatement_Reason vs Reinstatement_Reason: 52 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 26,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7.0 != Reinstatement_Reason=7 Good Cause, Other,sponsor discretion"
+                    },
+                    {
+                        "Log_ID": 27,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7.0 != Reinstatement_Reason=7 Good Cause, Other,sponsor discretion"
+                    },
+                    {
+                        "Log_ID": 28,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7.0 != Reinstatement_Reason=7 Good Cause, Other,sponsor discretion"
+                    },
+                    {
+                        "Log_ID": 29,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7.0 != Reinstatement_Reason=7 Good Cause, Other,sponsor discretion"
+                    },
+                    {
+                        "Log_ID": 30,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7.0 != Reinstatement_Reason=7 Good Cause, Other,sponsor discretion"
+                    },
+                    {
+                        "Log_ID": 31,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Record_ID vs Record_ID: 1040 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 32,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=10057325"
+                    },
+                    {
+                        "Log_ID": 33,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=1026138"
+                    },
+                    {
+                        "Log_ID": 34,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=8243015"
+                    },
+                    {
+                        "Log_ID": 35,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=8419895"
+                    },
+                    {
+                        "Log_ID": 36,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=9453676"
+                    },
+                    {
+                        "Log_ID": 37,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 2802"
+                    },
+                    {
+                        "Log_ID": 38,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 39,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field Effective_End vs Effective_End: 1152 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 40,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808017057', 'Effective_Begin': NaT}: Effective_End=2025-12-31 00:00:00 != Effective_End=NaT"
+                    },
+                    {
+                        "Log_ID": 41,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808017966', 'Effective_Begin': Timestamp('2025-01-28 00:00:00')}: Effective_End=NaT != Effective_End=2025-12-31 00:00:00"
+                    },
+                    {
+                        "Log_ID": 42,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Effective_End=NaT != Effective_End=2025-12-31 00:00:00"
+                    },
+                    {
+                        "Log_ID": 43,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Effective_End=NaT != Effective_End=2025-12-31 00:00:00"
+                    },
+                    {
+                        "Log_ID": 44,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Effective_End=NaT != Effective_End=2025-12-31 00:00:00"
+                    },
+                    {
+                        "Log_ID": 45,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field M3P_Election_Status vs M3P_Election_Status: 100 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 46,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=Y != M3P_Election_Status=<NA>"
+                    },
+                    {
+                        "Log_ID": 47,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=Y != M3P_Election_Status=<NA>"
+                    },
+                    {
+                        "Log_ID": 48,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=Y != M3P_Election_Status=<NA>"
+                    },
+                    {
+                        "Log_ID": 49,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=Y != M3P_Election_Status=<NA>"
+                    },
+                    {
+                        "Log_ID": 50,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808020807', 'Effective_Begin': Timestamp('2025-01-17 00:00:00')}: M3P_Election_Status=<NA> != M3P_Election_Status=Y"
+                    },
+                    {
+                        "Log_ID": 51,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field M3P_Program_Year vs M3P_Program_Year: 16 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 52,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=nan != M3P_Program_Year=2025.0"
+                    },
+                    {
+                        "Log_ID": 53,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=nan != M3P_Program_Year=2025.0"
+                    },
+                    {
+                        "Log_ID": 54,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=2025.0 != M3P_Program_Year=nan"
+                    },
+                    {
+                        "Log_ID": 55,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=2025.0 != M3P_Program_Year=nan"
+                    },
+                    {
+                        "Log_ID": 56,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808083443', 'Effective_Begin': Timestamp('2025-01-10 00:00:00')}: M3P_Program_Year=2025.0 != M3P_Program_Year=nan"
+                    },
+                    {
+                        "Log_ID": 57,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field Discontinuation_Reason vs Discontinuation_Reason: 442 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 58,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=<NA> != Discontinuation_Reason=3 Involuntary Termination -  failure to pay"
+                    },
+                    {
+                        "Log_ID": 59,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=<NA> != Discontinuation_Reason=3 Involuntary Termination -  failure to pay"
+                    },
+                    {
+                        "Log_ID": 60,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=<NA> != Discontinuation_Reason=3 Involuntary Termination -  failure to pay"
+                    },
+                    {
+                        "Log_ID": 61,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=3 Involuntary Termination-Failure to pay != Discontinuation_Reason=<NA>"
+                    },
+                    {
+                        "Log_ID": 62,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Discontinuation_Reason=3 Involuntary Termination-Failure to pay != Discontinuation_Reason=<NA>"
+                    },
+                    {
+                        "Log_ID": 63,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field Reinstatement_Reason vs Reinstatement_Reason: 52 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 64,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7 Good Cause, Other,sponsor discretion != Reinstatement_Reason=7.0"
+                    },
+                    {
+                        "Log_ID": 65,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7 Good Cause, Other,sponsor discretion != Reinstatement_Reason=7.0"
+                    },
+                    {
+                        "Log_ID": 66,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7 Good Cause, Other,sponsor discretion != Reinstatement_Reason=7.0"
+                    },
+                    {
+                        "Log_ID": 67,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7 Good Cause, Other,sponsor discretion != Reinstatement_Reason=7.0"
+                    },
+                    {
+                        "Log_ID": 68,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808063678', 'Effective_Begin': Timestamp('2025-05-15 00:00:00')}: Reinstatement_Reason=7 Good Cause, Other,sponsor discretion != Reinstatement_Reason=7.0"
+                    },
+                    {
+                        "Log_ID": 69,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field Record_ID vs Record_ID: 1040 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 70,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=10057325"
+                    },
+                    {
+                        "Log_ID": 71,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=1026138"
+                    },
+                    {
+                        "Log_ID": 72,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=8243015"
+                    },
+                    {
+                        "Log_ID": 73,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=8419895"
+                    },
+                    {
+                        "Log_ID": 74,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2025-01-01 00:00:00')}: Record_ID=10052204 != Record_ID=9453676"
+                    },
+                    {
+                        "Log_ID": 75,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 2802"
+                    },
+                    {
+                        "Log_ID": 76,
+                        "LogTime": "2026-11-12 21:09:59",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "Initial Testing",
+                "MismatchFields": [
+                    "Effective_End",
+                    "M3P_Election_Status",
+                    "M3P_Program_Year",
+                    "Discontinuation_Reason",
+                    "Reinstatement_Reason",
+                    "Record_ID"
+                ],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "Checking TBD Records in MemberReceipt Collection",
+                "Result": "Fail",
+                "StartTime": "2026-11-12 21:09:50.273685",
+                "EndTime": "2026-11-12 21:09:51.407227",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:09:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source: db.Test_TBD_M3PMemberReceipt.find({})"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:09:51",
+                        "Type": "ERROR",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: 100,  Approved Count: 0"
+                    }
+                ],
+                "Stage": "Initial Testing",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Checking duplicate records of phone sequence",
+                "Result": "Pass",
+                "StartTime": "2026-11-12 21:09:50.274684",
+                "EndTime": "2026-11-12 21:09:51.246937",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:09:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source: db.Test_Duplicate_Phone_Sequence_M3PMember.find({})"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:09:51",
+                        "Type": "INFO",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: 0, Approved Count: 0"
+                    }
+                ],
+                "Stage": "Initial Testing",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-11-12 21:10:00.147919"
+        }
+    }
+]

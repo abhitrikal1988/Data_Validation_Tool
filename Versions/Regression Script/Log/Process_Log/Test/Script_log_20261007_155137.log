@@ -1,0 +1,21 @@
+2026-10-07 15:51:37,575 | INFO | ========== Starting Validation ==========
+2026-10-07 15:51:37,576 | INFO | Module         : Test
+2026-10-07 15:51:37,577 | INFO | Stage          : None
+2026-10-07 15:51:37,578 | INFO | Cycle          : None
+2026-10-07 15:51:37,580 | INFO | Environment    : MCPQA1
+2026-10-07 15:51:37,581 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-07 15:51:37,664 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-10-07 15:51:37,672 | INFO | ========== [ Running TestCase 11: Data Comparison between SRC and TGT ] ==========
+2026-10-07 15:51:37,673 | INFO | TestCase 11: Source [ORACLE]:select * 
+  from stg.amz_network_temp_1_qa
+2026-10-07 15:51:37,673 | INFO | TestCase 11: Target [ORACLE]:select * 
+  from stg.amz_network_temp_qa
+2026-10-07 15:51:37,673 | ISSUE | Error fetching source data (ORACLE): 'ORACLE_PBMQA3'
+2026-10-07 15:51:37,673 | ISSUE | Error fetching target data (ORACLE): 'ORACLE_PBMQA3'
+2026-10-07 15:51:37,673 | WARNING | Source and Target data both are empty. Skipping comparison.
+2026-10-07 15:51:37,674 | INFO | Execution time for TestCase 11: 0.01 seconds
+2026-10-07 15:51:37,680 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 0, Skippped : 1
+2026-10-07 15:51:37,681 | INFO | Total execution time: 0.02 seconds (0.0 minutes)
+2026-10-07 15:51:37,717 | INFO | Master combined log written to: MCPQA1_Test_Log_20261007_195137.json
+2026-10-07 15:51:37,725 | INFO | Result.InsertData : 6ac6a2c969d98688cb53b85f
+2026-10-07 15:51:38,239 | INFO | ========== Completed Validation ==========

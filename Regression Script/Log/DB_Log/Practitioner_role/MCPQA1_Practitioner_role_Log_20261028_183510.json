@@ -1,0 +1,112 @@
+[
+    {
+        "DataValidationLog_ID": 103,
+        "Module": "Practitioner_role",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "LocationProvider matches InterOP.PractitionerRole on provider, NPI, practice, span, location and business",
+                "Result": "Fail",
+                "StartTime": "2026-10-28 18:33:49.782753",
+                "EndTime": "2026-10-28 18:35:09.239566",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-28 18:33:49",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.LocationProvider.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"MCPProvider_ID\": 1, \"NPI\": 1, \"PracticeName\": 1, \"Span.StartDate\": 1, \"Span.EndDate\": 1, \"Location.Location_ID\": 1, \"Location.Location_Name\": 1, \"Business.Business_ID\": 1, \"Business.BusinessName\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-28 18:33:49",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [MONGODB PIPELINE] db.PractitionerRole.aggregate:\n[\n  {\"$unwind\": {\"path\": \"$Location\", \"preserveNullAndEmptyArrays\": true}},\n  {\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"McpProviderId\": 1, \"NPI\": 1, \"PracticeName\": 1, \"Span.StartDate\": 1, \"Span.EndDate\": 1, \"Location.LocationId\": 1, \"Location.Detail.LocationName\": 1, \"Business.Business_ID\": 1, \"Business.BusinessName\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-28 18:34:11",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 726461, Total target MONGODB records: 100540"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-28 18:35:00",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'LocationProvider_ID': 176780}"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-28 18:35:00",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'LocationProvider_ID': 176781}"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-28 18:35:00",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'LocationProvider_ID': 176782}"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-28 18:35:00",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'LocationProvider_ID': 176783}"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-28 18:35:00",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'LocationProvider_ID': 176784}"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-28 18:35:01",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-28 18:35:01",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 625921"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-10-28 18:35:08",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-10-28 18:35:08",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MissingFields": [
+                    "LocationProvider_ID"
+                ],
+                "MismatchFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-28 18:35:10.347874"
+        }
+    }
+]

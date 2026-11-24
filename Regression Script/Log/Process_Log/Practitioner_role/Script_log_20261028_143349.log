@@ -1,0 +1,49 @@
+2026-10-28 14:33:49,686 | INFO | ========== Starting Validation ==========
+2026-10-28 14:33:49,687 | INFO | Module         : Practitioner_role
+2026-10-28 14:33:49,688 | INFO | Stage          : None
+2026-10-28 14:33:49,689 | INFO | Cycle          : None
+2026-10-28 14:33:49,691 | INFO | Environment    : MCPQA1
+2026-10-28 14:33:49,692 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-28 14:33:49,782 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-10-28 14:35:10,305 | INFO | ========== [ Running TestCase 1: LocationProvider matches InterOP.PractitionerRole on provider, NPI, practice, span, location and business ] ==========
+2026-10-28 14:35:10,305 | INFO | TestCase 1: Source [MONGODB PIPELINE] db.LocationProvider.aggregate:
+[
+  {"$project": {"_id": 0, "LocationProvider_ID": 1, "MCPProvider_ID": 1, "NPI": 1, "PracticeName": 1, "Span.StartDate": 1, "Span.EndDate": 1, "Location.Location_ID": 1, "Location.Location_Name": 1, "Business.Business_ID": 1, "Business.BusinessName": 1}}
+]
+2026-10-28 14:35:10,306 | INFO | TestCase 1: Target [MONGODB PIPELINE] db.PractitionerRole.aggregate:
+[
+  {"$unwind": {"path": "$Location", "preserveNullAndEmptyArrays": true}},
+  {"$project": {"_id": 0, "LocationProvider_ID": 1, "McpProviderId": 1, "NPI": 1, "PracticeName": 1, "Span.StartDate": 1, "Span.EndDate": 1, "Location.LocationId": 1, "Location.Detail.LocationName": 1, "Business.Business_ID": 1, "Business.BusinessName": 1}}
+]
+2026-10-28 14:35:10,307 | INFO | [TC 1] Source data sample (5 of 726461 records):
+2026-10-28 14:35:10,307 | INFO |   1: {'LocationProvider_ID': 143866, 'NPI': '1720735418', 'PracticeName': 'Novant Health Urology', 'Span.StartDate': datetime.datetime(2023, 1, 1, 5, 0, tzinfo=<UTC>), 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'MCPProvider_ID': 203467, 'Location.Location_ID': 38388, 'Location.Location_Name': 'Novant Health Urology', 'Business.Business_ID': 109, 'Business.BusinessName': 'HealthTeam Advantage'}
+2026-10-28 14:35:10,307 | INFO |   2: {'LocationProvider_ID': 143867, 'NPI': '1558897488', 'PracticeName': 'Novant Health Urology', 'Span.StartDate': datetime.datetime(2023, 1, 1, 5, 0, tzinfo=<UTC>), 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'MCPProvider_ID': 203430, 'Location.Location_ID': 38388, 'Location.Location_Name': 'Novant Health Urology', 'Business.Business_ID': 109, 'Business.BusinessName': 'HealthTeam Advantage'}
+2026-10-28 14:35:10,307 | INFO |   3: {'LocationProvider_ID': 149343, 'NPI': '1720173420', 'PracticeName': 'Novant Health Urology', 'Span.StartDate': datetime.datetime(2023, 1, 1, 5, 0, tzinfo=<UTC>), 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'MCPProvider_ID': 187040, 'Location.Location_ID': 38388, 'Location.Location_Name': 'Novant Health Urology', 'Business.Business_ID': 109, 'Business.BusinessName': 'HealthTeam Advantage'}
+2026-10-28 14:35:10,307 | INFO |   4: {'LocationProvider_ID': 804162, 'NPI': '1720216336', 'PracticeName': 'Novant Health Urology', 'Span.StartDate': datetime.datetime(2023, 1, 1, 5, 0, tzinfo=<UTC>), 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'MCPProvider_ID': 203465, 'Location.Location_ID': 38388, 'Location.Location_Name': 'Novant Health Urology', 'Business.Business_ID': 109, 'Business.BusinessName': 'HealthTeam Advantage'}
+2026-10-28 14:35:10,308 | INFO |   5: {'LocationProvider_ID': 72814, 'NPI': '1043226640', 'PracticeName': 'Uptown Chiropractic', 'Span.StartDate': datetime.datetime(2016, 1, 1, 5, 0, tzinfo=<UTC>), 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'MCPProvider_ID': 189932, 'Location.Location_ID': 20160, 'Location.Location_Name': 'Uptown Chiropractic', 'Business.Business_ID': 109, 'Business.BusinessName': 'HealthTeam Advantage'}
+2026-10-28 14:35:10,308 | INFO | [TC 1] Target data sample (5 of 100540 records):
+2026-10-28 14:35:10,308 | INFO |   1: {'Business.BusinessName': 'HealthTeam Advantage', 'Business.Business_ID': 109, 'Location.LocationId': 38388, 'Location.Detail.LocationName': 'Novant Health Urology', 'LocationProvider_ID': 143866, 'McpProviderId': 203467, 'NPI': '1720735418', 'PracticeName': 'Novant Health Urology', 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'Span.StartDate': datetime.datetime(2023, 1, 1, 5, 0, tzinfo=<UTC>)}
+2026-10-28 14:35:10,308 | INFO |   2: {'Business.BusinessName': 'HealthTeam Advantage', 'Business.Business_ID': 109, 'Location.LocationId': 25251, 'Location.Detail.LocationName': 'Novant Health Urology', 'LocationProvider_ID': 100633, 'McpProviderId': 203467, 'NPI': '1720735418', 'PracticeName': 'Novant Health Urology', 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'Span.StartDate': datetime.datetime(2023, 1, 1, 5, 0, tzinfo=<UTC>)}
+2026-10-28 14:35:10,309 | INFO |   3: {'Business.BusinessName': 'HealthTeam Advantage', 'Business.Business_ID': 109, 'Location.LocationId': 19376, 'Location.Detail.LocationName': 'ENT Carolina', 'LocationProvider_ID': 69056, 'McpProviderId': 183991, 'NPI': '1386932465', 'PracticeName': 'ENT Carolina', 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'Span.StartDate': datetime.datetime(2019, 1, 1, 5, 0, tzinfo=<UTC>)}
+2026-10-28 14:35:10,309 | INFO |   4: {'Business.BusinessName': 'HealthTeam Advantage', 'Business.Business_ID': 109, 'Location.LocationId': 19377, 'Location.Detail.LocationName': 'ENT Carolina - Belmont', 'LocationProvider_ID': 69068, 'McpProviderId': 183991, 'NPI': '1386932465', 'PracticeName': 'ENT Carolina - Belmont', 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'Span.StartDate': datetime.datetime(2019, 1, 1, 5, 0, tzinfo=<UTC>)}
+2026-10-28 14:35:10,309 | INFO |   5: {'Business.BusinessName': 'HealthTeam Advantage', 'Business.Business_ID': 109, 'Location.LocationId': 19378, 'Location.Detail.LocationName': 'ENT Carolina - Shelby', 'LocationProvider_ID': 69076, 'McpProviderId': 183991, 'NPI': '1386932465', 'PracticeName': 'ENT Carolina - Shelby', 'Span.EndDate': datetime.datetime(2099, 12, 31, 5, 0, tzinfo=<UTC>), 'Span.StartDate': datetime.datetime(2019, 1, 1, 5, 0, tzinfo=<UTC>)}
+2026-10-28 14:35:10,309 | INFO | [SRC->TGT]  - Total source MONGODB records: 726461
+2026-10-28 14:35:10,310 | INFO | [SRC->TGT]  - Total target MONGODB records: 100540
+2026-10-28 14:35:10,310 | ISSUE | [SRC->TGT] Missing in Target: {'LocationProvider_ID': 176780}
+2026-10-28 14:35:10,310 | ISSUE | [SRC->TGT] Missing in Target: {'LocationProvider_ID': 176781}
+2026-10-28 14:35:10,310 | ISSUE | [SRC->TGT] Missing in Target: {'LocationProvider_ID': 176782}
+2026-10-28 14:35:10,311 | ISSUE | [SRC->TGT] Missing in Target: {'LocationProvider_ID': 176783}
+2026-10-28 14:35:10,311 | ISSUE | [SRC->TGT] Missing in Target: {'LocationProvider_ID': 176784}
+2026-10-28 14:35:10,311 | ISSUE | Total Missing Records: 625921
+2026-10-28 14:35:10,311 | INFO | Filtered 625921 records missing in TGT before reverse check.
+2026-10-28 14:35:10,311 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-28 14:35:10,311 | INFO | [TGT->SRC]  - Total source MONGODB records: 100540
+2026-10-28 14:35:10,312 | INFO | [TGT->SRC]  - Total target MONGODB records: 100540
+2026-10-28 14:35:10,312 | INFO | Data comparison process completed.
+2026-10-28 14:35:10,312 | ISSUE | [TestCase 1] Test Result: FAIL
+2026-10-28 14:35:10,312 | INFO | Execution time for TestCase 1: 79.46 seconds
+2026-10-28 14:35:10,338 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 1, Skippped : 0
+2026-10-28 14:35:10,339 | INFO | Total execution time: 80.56 seconds (1.3 minutes)
+2026-10-28 14:35:10,385 | INFO | Master combined log written to: MCPQA1_Practitioner_role_Log_20261028_183510.json
+2026-10-28 14:35:10,394 | INFO | Result.InsertData : 6ae2405e8a040bdabec5544a
+2026-10-28 14:35:11,050 | INFO | ========== Completed Validation ==========

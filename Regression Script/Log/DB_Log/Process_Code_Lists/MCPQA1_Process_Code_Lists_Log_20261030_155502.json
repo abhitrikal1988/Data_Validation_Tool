@@ -1,0 +1,68 @@
+[
+    {
+        "DataValidationLog_ID": 107,
+        "Module": "Process_Code_Lists",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for Process_Code_Lists",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 15:54:57.762563",
+                "EndTime": "2026-10-30 15:55:02.822907",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 15:54:57",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT BUSINESS_ID\n  ,PROCESS_CODE\n  ,PROCESS_CODE_TYPE \n  FROM DW.PROCESS_CODES_LIST \n  WHERE dw_file_detail_id >= 2066"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 15:54:58",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source LOCAL_PATH records: 1108, Total target ORACLE records: 1108"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 15:55:02",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 15:55:02",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 15:55:02",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-30 15:55:02",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-30 15:55:02.847422"
+        }
+    }
+]

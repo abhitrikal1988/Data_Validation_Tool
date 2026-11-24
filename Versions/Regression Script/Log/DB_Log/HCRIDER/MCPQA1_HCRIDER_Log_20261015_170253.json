@@ -1,0 +1,220 @@
+[
+    {
+        "DataValidationLog_ID": 94,
+        "Module": "HCRIDER",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for HC_RIDER_ID, RIDER_NAME, START_DT, END_DT, RIDER_AMOUNT, PLAN_RIDER_TYPE, CREATED_DT, MODIFIED_DT, CANCELED_FLG",
+                "Result": "Pass",
+                "StartTime": "2026-10-15 17:02:46.321210",
+                "EndTime": "2026-10-15 17:02:53.839859",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-15 17:02:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT HC_RIDER_ID_NH\n  ,HEALTH_COVERAGE_ID_NH\n  ,RIDER_START_DT\n  ,CREATED_DT\n  ,PLAN_RIDER_NAME\n  ,RIDER_END_DT\n  ,PLAN_RIDER_AMOUNT\n  ,PLAN_RIDER_TYPE\n  ,MODIFIED_DT\n  ,CANCELED_FLG \n  FROM MBRPROFILE.HC_RIDER"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-15 17:02:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT HC_RIDER_ID\n  ,HEALTH_COVERAGE_ID_NH\n  ,START_DT\n  ,CREATED_DT\n  ,RIDER_NAME\n  ,END_DT\n  ,RIDER_AMOUNT\n  ,PLAN_RIDER_TYPE\n  ,MODIFIED_DT\n  ,CANCELED_FLG \n  FROM DW.HC_RIDER"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source ORACLE records: 217, Total target ORACLE records: 217"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-15 17:02:53",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-15 17:02:53",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-15 17:02:53",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-15 17:02:53",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Check for null values in HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, PLAN_RIDER_ID_NH, RIDER_START_DT, RIDER_END_DT, PLAN_RIDER_AMOUNT, PLAN_RIDER_TYPE, CREATED_DT, MODIFIED_DT, CANCELED_FLG",
+                "Result": "Pass",
+                "StartTime": "2026-10-15 17:02:46.323492",
+                "EndTime": "2026-10-15 17:02:48.786516",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-15 17:02:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT HC_RIDER_ID_NH\n  ,HEALTH_COVERAGE_ID_NH\n  ,RIDER_START_DT\n  ,CREATED_DT\n  ,PLAN_RIDER_ID_NH \n  FROM MBRPROFILE.HC_RIDER"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-15 17:02:46",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Checking fields: ['HC_RIDER_ID_NH', 'HEALTH_COVERAGE_ID_NH', 'RIDER_START_DT', 'CREATED_DT', 'PLAN_RIDER_ID_NH']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'HC_RIDER_ID_NH': No nulls found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'HEALTH_COVERAGE_ID_NH': No nulls found."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'RIDER_START_DT': No nulls found."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'CREATED_DT': No nulls found."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'PLAN_RIDER_ID_NH': No nulls found."
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Check for duplicate records on HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, PLAN_RIDER_ID_NH",
+                "Result": "Fail",
+                "StartTime": "2026-10-15 17:02:46.323492",
+                "EndTime": "2026-10-15 17:02:49.126248",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-15 17:02:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT HC_RIDER_ID_NH\n  ,HEALTH_COVERAGE_ID_NH\n  ,RIDER_START_DT\n  ,CREATED_DT \n  FROM MBRPROFILE.HC_RIDER"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-15 17:02:46",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: ['HC_RIDER_ID_NH', 'HEALTH_COVERAGE_ID_NH', 'RIDER_START_DT', 'CREATED_DT']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'HC_RIDER_ID_NH': No duplicates found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "ERROR",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'HEALTH_COVERAGE_ID_NH': 34 duplicate value(s) across 127 record(s). Sample: HEALTH_COVERAGE_ID_NH: 3341990, HEALTH_COVERAGE_ID_NH: 3341990, HEALTH_COVERAGE_ID_NH: 3341990, HEALTH_COVERAGE_ID_NH: 3341990, HEALTH_COVERAGE_ID_NH: 3348990"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-15 17:02:49",
+                        "Type": "ERROR",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'RIDER_START_DT': 16 duplicate value(s) across 213 record(s). Sample: RIDER_START_DT: 2024-08-01 00:00:00, RIDER_START_DT: 2024-08-01 00:00:00, RIDER_START_DT: 2024-08-01 00:00:00, RIDER_START_DT: 2024-08-01 00:00:00, RIDER_START_DT: 2025-05-01 00:00:00"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-15 17:02:49",
+                        "Type": "ERROR",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'CREATED_DT': 3 duplicate value(s) across 9 record(s). Sample: CREATED_DT: 2024-09-20 07:01:31, CREATED_DT: 2024-09-20 07:01:31, CREATED_DT: 2024-09-20 07:01:31, CREATED_DT: 2024-09-20 07:01:31, CREATED_DT: 2024-09-24 15:06:02"
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [
+                    "HEALTH_COVERAGE_ID_NH",
+                    "RIDER_START_DT",
+                    "CREATED_DT"
+                ],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "CREATED_BY has only approved values",
+                "Result": "Fail",
+                "StartTime": "2026-10-15 17:02:46.324460",
+                "EndTime": "2026-10-15 17:02:48.920577",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-15 17:02:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT CREATED_BY \n  FROM MBRPROFILE.HC_RIDER"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-15 17:02:48",
+                        "Type": "ERROR",
+                        "RunType": "InApprovedValue",
+                        "Detail": "Unapproved values found: '[2673, 2673]'"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-15 17:02:53.877192"
+        }
+    }
+]

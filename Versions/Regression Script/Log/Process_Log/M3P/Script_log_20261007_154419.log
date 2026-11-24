@@ -1,0 +1,18 @@
+2026-10-07 15:44:20,026 | INFO | ========== Starting Validation ==========
+2026-10-07 15:44:20,028 | INFO | Module         : M3P
+2026-10-07 15:44:20,028 | INFO | Stage          : None
+2026-10-07 15:44:20,029 | INFO | Cycle          : None
+2026-10-07 15:44:20,030 | INFO | Environment    : MCPQA1
+2026-10-07 15:44:20,031 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-07 15:44:20,158 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-10-07 15:44:20,205 | INFO | ========== [ Running TestCase 7: Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap ] ==========
+2026-10-07 15:44:20,205 | INFO | TestCase 7: Source: db.Test_M3P_MemberReceipt_EnrollmentStatus.find({})
+2026-10-07 15:44:20,205 | ISSUE | Error fetching source data (MONGODB): 'MONGODB_MCPQA1'
+2026-10-07 15:44:20,206 | INFO | [TC 7] Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap
+2026-10-07 15:44:20,206 | WARNING | [TC 7] Unknown data type: <class 'NoneType'>. Marking as FAIL.
+2026-10-07 15:44:20,206 | INFO | Execution time for TestCase 7: 0.05 seconds
+2026-10-07 15:44:20,213 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 1, Skippped : 0
+2026-10-07 15:44:20,214 | INFO | Total execution time: 0.06 seconds (0.0 minutes)
+2026-10-07 15:44:20,251 | INFO | Master combined log written to: MCPQA1_M3P_Log_20261007_194420.json
+2026-10-07 15:44:20,261 | INFO | Result.InsertData : 6ac6a114760c565c601fff0c
+2026-10-07 15:44:23,732 | INFO | ========== Completed Validation ==========

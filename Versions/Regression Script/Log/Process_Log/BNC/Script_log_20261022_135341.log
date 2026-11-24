@@ -1,0 +1,198 @@
+2026-10-22 13:53:41,572 | INFO | ========== Starting Validation ==========
+2026-10-22 13:53:41,574 | INFO | Module         : BNC
+2026-10-22 13:53:41,575 | INFO | Stage          : None
+2026-10-22 13:53:41,576 | INFO | Cycle          : None
+2026-10-22 13:53:41,577 | INFO | Environment    : MCPQA1
+2026-10-22 13:53:41,578 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-22 13:53:41,661 | INFO | Parallel execution started — 5 active thread(s) (requested: 5, test cases: 6).
+2026-10-22 13:54:36,617 | INFO | ========== [ Running TestCase 1: BNC_CONTRACT matches BNC_NEW.Contract.Details[] ] ==========
+2026-10-22 13:54:36,617 | INFO | TestCase 1: Source [MONGODB PIPELINE] db.BNC_NEW.aggregate:
+[
+  {"$unwind": "$Contract.Details"},
+  {"$project": {"_id": 0, "BNC_ID": 1, "Contract.Details.BNCContractDetails_ID": 1, "BenefitPlan_ID": 1, "Network_ID": 1, "BillingProvider_ID": 1, "Contract.Details.Contract_ID": 1, "Contract.Details.PCPType": 1, "Contract.Details.Span.StartDate": 1, "Contract.Details.Span.EndDate": 1, "Business.Business_ID": 1}}
+]
+2026-10-22 13:54:36,617 | INFO | TestCase 1: Target [ORACLE]:SELECT BNC_ID
+  ,BNC_CONTRACT_DETAILS_ID
+  ,BENEFIT_PLAN_ID
+  ,NETWORK_ID
+  ,BILLING_PROVIDER_ID
+  ,CONTRACT_ID
+  ,PCP_TYPE
+  ,START_DATE
+  ,END_DATE
+  ,BUSINESS_ID 
+  FROM DW.BNC_CONTRACT
+2026-10-22 13:54:36,617 | INFO | [TC 1] Source data sample (5 of 402137 records):
+2026-10-22 13:54:36,617 | INFO |   1: {'BNC_ID': 62231, 'BenefitPlan_ID': 10435, 'Network_ID': 10112, 'BillingProvider_ID': 197681, 'Contract.Details.BNCContractDetails_ID': 292292, 'Contract.Details.Contract_ID': 405, 'Contract.Details.PCPType': 'Both', 'Contract.Details.Span.StartDate': datetime.datetime(2021, 9, 1, 0, 0, tzinfo=<UTC>), 'Contract.Details.Span.EndDate': datetime.datetime(2099, 12, 31, 0, 0, tzinfo=<UTC>), 'Business.Business_ID': 109}
+2026-10-22 13:54:36,619 | INFO |   2: {'BNC_ID': 62232, 'BenefitPlan_ID': 10434, 'Network_ID': 10113, 'BillingProvider_ID': 185612, 'Contract.Details.BNCContractDetails_ID': 234747, 'Contract.Details.Contract_ID': 850, 'Contract.Details.PCPType': 'BOTH', 'Contract.Details.Span.StartDate': datetime.datetime(2016, 1, 1, 0, 0, tzinfo=<UTC>), 'Contract.Details.Span.EndDate': datetime.datetime(2021, 12, 31, 0, 0, tzinfo=<UTC>), 'Business.Business_ID': 109}
+2026-10-22 13:54:36,619 | INFO |   3: {'BNC_ID': 62232, 'BenefitPlan_ID': 10434, 'Network_ID': 10113, 'BillingProvider_ID': 185612, 'Contract.Details.BNCContractDetails_ID': 655854, 'Contract.Details.Contract_ID': 850, 'Contract.Details.PCPType': 'Both', 'Contract.Details.Span.StartDate': datetime.datetime(2022, 1, 1, 0, 0, tzinfo=<UTC>), 'Contract.Details.Span.EndDate': datetime.datetime(2099, 12, 31, 0, 0, tzinfo=<UTC>), 'Business.Business_ID': 109}
+2026-10-22 13:54:36,619 | INFO |   4: {'BNC_ID': 62233, 'BenefitPlan_ID': 10434, 'Network_ID': 10112, 'BillingProvider_ID': 189738, 'Contract.Details.BNCContractDetails_ID': 291320, 'Contract.Details.Contract_ID': 609, 'Contract.Details.PCPType': 'BOTH', 'Contract.Details.Span.StartDate': datetime.datetime(2016, 1, 1, 0, 0, tzinfo=<UTC>), 'Contract.Details.Span.EndDate': datetime.datetime(2099, 12, 31, 0, 0, tzinfo=<UTC>), 'Business.Business_ID': 109}
+2026-10-22 13:54:36,619 | INFO |   5: {'BNC_ID': 62234, 'BenefitPlan_ID': 10433, 'Network_ID': 10112, 'BillingProvider_ID': 199543, 'Contract.Details.BNCContractDetails_ID': 295270, 'Contract.Details.Contract_ID': 695, 'Contract.Details.PCPType': 'BOTH', 'Contract.Details.Span.StartDate': datetime.datetime(2020, 10, 1, 0, 0, tzinfo=<UTC>), 'Contract.Details.Span.EndDate': datetime.datetime(2099, 12, 31, 0, 0, tzinfo=<UTC>), 'Business.Business_ID': 109}
+2026-10-22 13:54:36,619 | INFO | [TC 1] Target data sample (5 of 402699 records):
+2026-10-22 13:54:36,619 | INFO |   1: {'BNC_ID': 62231, 'BNC_CONTRACT_DETAILS_ID': 292292, 'BENEFIT_PLAN_ID': 10435, 'NETWORK_ID': 10112, 'BILLING_PROVIDER_ID': 197681, 'CONTRACT_ID': 405, 'PCP_TYPE': 'Both', 'START_DATE': datetime.datetime(2021, 9, 1, 0, 0), 'END_DATE': datetime.datetime(2099, 12, 31, 0, 0), 'BUSINESS_ID': 109}
+2026-10-22 13:54:36,619 | INFO |   2: {'BNC_ID': 62232, 'BNC_CONTRACT_DETAILS_ID': 234747, 'BENEFIT_PLAN_ID': 10434, 'NETWORK_ID': 10113, 'BILLING_PROVIDER_ID': 185612, 'CONTRACT_ID': 850, 'PCP_TYPE': 'BOTH', 'START_DATE': datetime.datetime(2016, 1, 1, 0, 0), 'END_DATE': datetime.datetime(2021, 12, 31, 0, 0), 'BUSINESS_ID': 109}
+2026-10-22 13:54:36,621 | INFO |   3: {'BNC_ID': 62232, 'BNC_CONTRACT_DETAILS_ID': 655854, 'BENEFIT_PLAN_ID': 10434, 'NETWORK_ID': 10113, 'BILLING_PROVIDER_ID': 185612, 'CONTRACT_ID': 850, 'PCP_TYPE': 'Both', 'START_DATE': datetime.datetime(2022, 1, 1, 0, 0), 'END_DATE': datetime.datetime(2099, 12, 31, 0, 0), 'BUSINESS_ID': 109}
+2026-10-22 13:54:36,621 | INFO |   4: {'BNC_ID': 62233, 'BNC_CONTRACT_DETAILS_ID': 291320, 'BENEFIT_PLAN_ID': 10434, 'NETWORK_ID': 10112, 'BILLING_PROVIDER_ID': 189738, 'CONTRACT_ID': 609, 'PCP_TYPE': 'BOTH', 'START_DATE': datetime.datetime(2016, 1, 1, 0, 0), 'END_DATE': datetime.datetime(2099, 12, 31, 0, 0), 'BUSINESS_ID': 109}
+2026-10-22 13:54:36,621 | INFO |   5: {'BNC_ID': 62234, 'BNC_CONTRACT_DETAILS_ID': 295270, 'BENEFIT_PLAN_ID': 10433, 'NETWORK_ID': 10112, 'BILLING_PROVIDER_ID': 199543, 'CONTRACT_ID': 695, 'PCP_TYPE': 'BOTH', 'START_DATE': datetime.datetime(2020, 10, 1, 0, 0), 'END_DATE': datetime.datetime(2099, 12, 31, 0, 0), 'BUSINESS_ID': 109}
+2026-10-22 13:54:36,622 | INFO | [SRC->TGT]  - Total source MONGODB records: 402137
+2026-10-22 13:54:36,622 | INFO | [SRC->TGT]  - Total target ORACLE records: 402699
+2026-10-22 13:54:36,622 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 493897, 'Contract.Details.BNCContractDetails_ID': 1035043}
+2026-10-22 13:54:36,622 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 493898, 'Contract.Details.BNCContractDetails_ID': 1035044}
+2026-10-22 13:54:36,622 | ISSUE | Total Missing Records: 2
+2026-10-22 13:54:36,622 | INFO | Filtered 2 records missing in TGT before reverse check.
+2026-10-22 13:54:36,623 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-22 13:54:36,623 | INFO | [TGT->SRC]  - Total source ORACLE records: 402699
+2026-10-22 13:54:36,623 | INFO | [TGT->SRC]  - Total target MONGODB records: 402135
+2026-10-22 13:54:36,623 | ISSUE | [TGT->SRC] Missing in Source: {'BNC_ID': 62936, 'BNC_CONTRACT_DETAILS_ID': 0}
+2026-10-22 13:54:36,623 | ISSUE | [TGT->SRC] Missing in Source: {'BNC_ID': 63876, 'BNC_CONTRACT_DETAILS_ID': 0}
+2026-10-22 13:54:36,623 | ISSUE | [TGT->SRC] Missing in Source: {'BNC_ID': 70169, 'BNC_CONTRACT_DETAILS_ID': 0}
+2026-10-22 13:54:36,623 | ISSUE | [TGT->SRC] Missing in Source: {'BNC_ID': 72826, 'BNC_CONTRACT_DETAILS_ID': 0}
+2026-10-22 13:54:36,624 | ISSUE | [TGT->SRC] Missing in Source: {'BNC_ID': 72851, 'BNC_CONTRACT_DETAILS_ID': 0}
+2026-10-22 13:54:36,624 | ISSUE | Total Missing Records: 564
+2026-10-22 13:54:36,624 | INFO | Data comparison process completed.
+2026-10-22 13:54:36,624 | ISSUE | [TestCase 1] Test Result: FAIL
+2026-10-22 13:54:36,625 | INFO | Execution time for TestCase 1: 54.56 seconds
+2026-10-22 13:54:03,356 | INFO | ========== [ Running TestCase 2: BNC_CONTRACT_LOC matches BNC_NEW.Contract.Details.Locations[] ] ==========
+2026-10-22 13:54:03,357 | INFO | TestCase 2: Source [MONGODB PIPELINE] db.BNC_NEW.aggregate:
+[
+  {"$unwind": "$Contract.Details"},
+  {"$unwind": "$Contract.Details.Locations"},
+  {"$project": {"_id": 0, "BNC_ID": 1, "Contract.Details.BNCContractDetails_ID": 1, "Business.Business_ID": 1}}
+]
+2026-10-22 13:54:03,357 | INFO | TestCase 2: Target [ORACLE]:SELECT BNC_ID
+  ,BNC_CONTRACT_DETAILS_ID
+  ,BUSINESS_ID 
+  FROM DW.BNC_CONTRACT_LOC
+2026-10-22 13:54:03,357 | INFO | [TC 2] Source data sample (5 of 402137 records):
+2026-10-22 13:54:03,357 | INFO |   1: {'BNC_ID': 62231, 'Contract.Details.BNCContractDetails_ID': 292292, 'Business.Business_ID': 109}
+2026-10-22 13:54:03,357 | INFO |   2: {'BNC_ID': 62232, 'Contract.Details.BNCContractDetails_ID': 234747, 'Business.Business_ID': 109}
+2026-10-22 13:54:03,357 | INFO |   3: {'BNC_ID': 62232, 'Contract.Details.BNCContractDetails_ID': 655854, 'Business.Business_ID': 109}
+2026-10-22 13:54:03,358 | INFO |   4: {'BNC_ID': 62233, 'Contract.Details.BNCContractDetails_ID': 291320, 'Business.Business_ID': 109}
+2026-10-22 13:54:03,358 | INFO |   5: {'BNC_ID': 62234, 'Contract.Details.BNCContractDetails_ID': 295270, 'Business.Business_ID': 109}
+2026-10-22 13:54:03,358 | INFO | [TC 2] Target data sample (5 of 5 records):
+2026-10-22 13:54:03,358 | INFO |   1: {'BNC_ID': 62231, 'BNC_CONTRACT_DETAILS_ID': 292292, 'BUSINESS_ID': 109}
+2026-10-22 13:54:03,358 | INFO |   2: {'BNC_ID': 62247, 'BNC_CONTRACT_DETAILS_ID': 295774, 'BUSINESS_ID': 109}
+2026-10-22 13:54:03,358 | INFO |   3: {'BNC_ID': 65284, 'BNC_CONTRACT_DETAILS_ID': 298720, 'BUSINESS_ID': 109}
+2026-10-22 13:54:03,359 | INFO |   4: {'BNC_ID': 493875, 'BNC_CONTRACT_DETAILS_ID': 1035018, 'BUSINESS_ID': 109}
+2026-10-22 13:54:03,359 | INFO |   5: {'BNC_ID': 493885, 'BNC_CONTRACT_DETAILS_ID': 1035030, 'BUSINESS_ID': 109}
+2026-10-22 13:54:03,359 | INFO | [SRC->TGT]  - Total source MONGODB records: 402137
+2026-10-22 13:54:03,359 | INFO | [SRC->TGT]  - Total target ORACLE records: 5
+2026-10-22 13:54:03,359 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62023, 'Contract.Details.BNCContractDetails_ID': 293592}
+2026-10-22 13:54:03,359 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62024, 'Contract.Details.BNCContractDetails_ID': 300898}
+2026-10-22 13:54:03,359 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62025, 'Contract.Details.BNCContractDetails_ID': 290612}
+2026-10-22 13:54:03,360 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62026, 'Contract.Details.BNCContractDetails_ID': 304928}
+2026-10-22 13:54:03,360 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62027, 'Contract.Details.BNCContractDetails_ID': 39502}
+2026-10-22 13:54:03,360 | ISSUE | Total Missing Records: 402132
+2026-10-22 13:54:03,360 | INFO | Filtered 402132 records missing in TGT before reverse check.
+2026-10-22 13:54:03,360 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-22 13:54:03,360 | INFO | [TGT->SRC]  - Total source ORACLE records: 5
+2026-10-22 13:54:03,360 | INFO | [TGT->SRC]  - Total target MONGODB records: 5
+2026-10-22 13:54:03,361 | INFO | Data comparison process completed.
+2026-10-22 13:54:03,361 | ISSUE | [TestCase 2] Test Result: FAIL
+2026-10-22 13:54:03,361 | INFO | Execution time for TestCase 2: 21.60 seconds
+2026-10-22 13:54:04,292 | INFO | ========== [ Running TestCase 3: BNC_CONTRACT_REND_PROV matches BNC_NEW.Contract.Details.RenderingProviders[] ] ==========
+2026-10-22 13:54:04,293 | INFO | TestCase 3: Source [MONGODB PIPELINE] db.BNC_NEW.aggregate:
+[
+  {"$unwind": "$Contract.Details"},
+  {"$unwind": "$Contract.Details.RenderingProviders"},
+  {"$project": {"_id": 0, "BNC_ID": 1, "Contract.Details.BNCContractDetails_ID": 1, "Business.Business_ID": 1}}
+]
+2026-10-22 13:54:04,293 | INFO | TestCase 3: Target [ORACLE]:SELECT BNC_ID
+  ,BNC_CONTRACT_DETAILS_ID
+  ,BUSINESS_ID 
+  FROM DW.BNC_CONTRACT_REND_PROV
+2026-10-22 13:54:04,293 | INFO | [TC 3] Source data sample (5 of 402190 records):
+2026-10-22 13:54:04,293 | INFO |   1: {'BNC_ID': 62231, 'Contract.Details.BNCContractDetails_ID': 292292, 'Business.Business_ID': 109}
+2026-10-22 13:54:04,293 | INFO |   2: {'BNC_ID': 62232, 'Contract.Details.BNCContractDetails_ID': 234747, 'Business.Business_ID': 109}
+2026-10-22 13:54:04,293 | INFO |   3: {'BNC_ID': 62232, 'Contract.Details.BNCContractDetails_ID': 655854, 'Business.Business_ID': 109}
+2026-10-22 13:54:04,294 | INFO |   4: {'BNC_ID': 62233, 'Contract.Details.BNCContractDetails_ID': 291320, 'Business.Business_ID': 109}
+2026-10-22 13:54:04,294 | INFO |   5: {'BNC_ID': 62233, 'Contract.Details.BNCContractDetails_ID': 291320, 'Business.Business_ID': 109}
+2026-10-22 13:54:04,294 | INFO | [TC 3] Target data sample (5 of 18 records):
+2026-10-22 13:54:04,294 | INFO |   1: {'BNC_ID': 62232, 'BNC_CONTRACT_DETAILS_ID': 655854, 'BUSINESS_ID': 109}
+2026-10-22 13:54:04,294 | INFO |   2: {'BNC_ID': 62233, 'BNC_CONTRACT_DETAILS_ID': 291320, 'BUSINESS_ID': 109}
+2026-10-22 13:54:04,294 | INFO |   3: {'BNC_ID': 62234, 'BNC_CONTRACT_DETAILS_ID': 295270, 'BUSINESS_ID': 109}
+2026-10-22 13:54:04,295 | INFO |   4: {'BNC_ID': 62236, 'BNC_CONTRACT_DETAILS_ID': 290312, 'BUSINESS_ID': 109}
+2026-10-22 13:54:04,295 | INFO |   5: {'BNC_ID': 62237, 'BNC_CONTRACT_DETAILS_ID': 296590, 'BUSINESS_ID': 109}
+2026-10-22 13:54:04,295 | INFO | [SRC->TGT]  - Total source MONGODB records: 402190
+2026-10-22 13:54:04,295 | INFO | [SRC->TGT]  - Total target ORACLE records: 18
+2026-10-22 13:54:04,296 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62023, 'Contract.Details.BNCContractDetails_ID': 293592}
+2026-10-22 13:54:04,296 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62024, 'Contract.Details.BNCContractDetails_ID': 300898}
+2026-10-22 13:54:04,296 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62025, 'Contract.Details.BNCContractDetails_ID': 290612}
+2026-10-22 13:54:04,296 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62026, 'Contract.Details.BNCContractDetails_ID': 304928}
+2026-10-22 13:54:04,296 | ISSUE | [SRC->TGT] Missing in Target: {'BNC_ID': 62027, 'Contract.Details.BNCContractDetails_ID': 39502}
+2026-10-22 13:54:04,296 | ISSUE | Total Missing Records: 402119
+2026-10-22 13:54:04,296 | INFO | Filtered 402118 records missing in TGT before reverse check.
+2026-10-22 13:54:04,296 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-22 13:54:04,297 | INFO | [TGT->SRC]  - Total source ORACLE records: 18
+2026-10-22 13:54:04,298 | INFO | [TGT->SRC]  - Total target MONGODB records: 71
+2026-10-22 13:54:04,298 | INFO | Data comparison process completed.
+2026-10-22 13:54:04,299 | ISSUE | [TestCase 3] Test Result: FAIL
+2026-10-22 13:54:04,299 | INFO | Execution time for TestCase 3: 22.55 seconds
+2026-10-22 13:53:43,240 | INFO | ========== [ Running TestCase 4: Target DW.BNC_CONTRACT: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID ] ==========
+2026-10-22 13:53:43,255 | INFO | TestCase 4: Source [ORACLE]:SELECT BNC_ID
+  ,BNC_CONTRACT_DETAILS_ID 
+  FROM DW.BNC_CONTRACT
+2026-10-22 13:53:44,111 | INFO | TestCase 4: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-10-22 13:53:44,191 | INFO | Source [ORACLE] Duplicate_Check sample for 'BNC_ID, BNC_CONTRACT_DETAILS_ID':
+SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    FROM (SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT)
+                    WHERE BNC_ID IS NOT NULL AND BNC_CONTRACT_DETAILS_ID IS NOT NULL
+                    AND (BNC_ID, BNC_CONTRACT_DETAILS_ID) IN (
+                        
+                    SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    FROM (SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT)
+                    WHERE BNC_ID IS NOT NULL AND BNC_CONTRACT_DETAILS_ID IS NOT NULL
+                    GROUP BY BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-22 13:53:44,191 | INFO | TestCase 4: Field 'BNC_ID, BNC_CONTRACT_DETAILS_ID': No duplicates found.
+2026-10-22 13:53:44,286 | INFO | Execution time for TestCase 4: 0.78 seconds
+2026-10-22 13:53:41,921 | INFO | ========== [ Running TestCase 5: Target DW.BNC_CONTRACT_LOC: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID ] ==========
+2026-10-22 13:53:41,921 | INFO | TestCase 5: Source [ORACLE]:SELECT BNC_ID
+  ,BNC_CONTRACT_DETAILS_ID 
+  FROM DW.BNC_CONTRACT_LOC
+2026-10-22 13:53:41,921 | INFO | TestCase 5: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-10-22 13:53:41,921 | INFO | Source [ORACLE] Duplicate_Check sample for 'BNC_ID, BNC_CONTRACT_DETAILS_ID':
+SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    FROM (SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT_LOC)
+                    WHERE BNC_ID IS NOT NULL AND BNC_CONTRACT_DETAILS_ID IS NOT NULL
+                    AND (BNC_ID, BNC_CONTRACT_DETAILS_ID) IN (
+                        
+                    SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    FROM (SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT_LOC)
+                    WHERE BNC_ID IS NOT NULL AND BNC_CONTRACT_DETAILS_ID IS NOT NULL
+                    GROUP BY BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-22 13:53:41,921 | INFO | TestCase 5: Field 'BNC_ID, BNC_CONTRACT_DETAILS_ID': No duplicates found.
+2026-10-22 13:53:41,922 | INFO | Execution time for TestCase 5: 0.26 seconds
+2026-10-22 13:53:41,942 | INFO | ========== [ Running TestCase 6: Target DW.BNC_CONTRACT_REND_PROV: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID ] ==========
+2026-10-22 13:53:41,942 | INFO | TestCase 6: Source [ORACLE]:SELECT BNC_ID
+  ,BNC_CONTRACT_DETAILS_ID 
+  FROM DW.BNC_CONTRACT_REND_PROV
+2026-10-22 13:53:41,942 | INFO | TestCase 6: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-10-22 13:53:41,943 | INFO | Source [ORACLE] Duplicate_Check sample for 'BNC_ID, BNC_CONTRACT_DETAILS_ID':
+SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    FROM (SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT_REND_PROV)
+                    WHERE BNC_ID IS NOT NULL AND BNC_CONTRACT_DETAILS_ID IS NOT NULL
+                    AND (BNC_ID, BNC_CONTRACT_DETAILS_ID) IN (
+                        
+                    SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    FROM (SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT_REND_PROV)
+                    WHERE BNC_ID IS NOT NULL AND BNC_CONTRACT_DETAILS_ID IS NOT NULL
+                    GROUP BY BNC_ID, BNC_CONTRACT_DETAILS_ID
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-22 13:53:41,943 | INFO | TestCase 6: Field 'BNC_ID, BNC_CONTRACT_DETAILS_ID': No duplicates found.
+2026-10-22 13:53:41,943 | INFO | Execution time for TestCase 6: 0.02 seconds
+2026-10-22 13:54:36,715 | INFO | Total Number of Testcases Executed : 6,Pass : 3, Fail : 3, Skippped : 0
+2026-10-22 13:54:36,717 | INFO | Total execution time: 55.06 seconds (0.9 minutes)
+2026-10-22 13:54:36,766 | INFO | Master combined log written to: MCPQA1_BNC_Log_20261022_175436.json
+2026-10-22 13:54:36,775 | INFO | Result.InsertData : 6ada4ddcd4d26e7de2a4002a
+2026-10-22 13:54:39,866 | INFO | ========== Completed Validation ==========

@@ -1,0 +1,16 @@
+2025-11-18 17:12:08,928 | INFO | ========== Starting Validation ==========
+2025-11-18 17:12:08,948 | INFO | Module :  Test 
+2025-11-18 17:12:08,967 | INFO | Stage :  None 
+2025-11-18 17:12:08,991 | INFO | Cycle :  None
+2025-11-18 17:12:09,010 | INFO | Environment  : MONGODB_MCPQA1
+2025-11-18 17:12:10,455 | INFO | ========== [ Running TestCase 11: Data Comparison between SRC and TGT ] ==========
+2025-11-18 17:14:54,112 | ERROR | Error fetching source data (ORACLE): 
+2025-11-18 17:14:56,349 | ERROR | Error fetching target data (ORACLE): DPY-6005: cannot connect to database (CONNECTION_ID=A5mczDE6yzvuXJ4qa4JaNQ==).
+[WinError 10061] No connection could be made because the target machine actively refused it
+2025-11-18 17:14:56,369 | WARNING | Unknown data type for 'source_data': <class 'NoneType'>. Assuming not empty.
+2025-11-18 17:14:56,390 | WARNING | Unknown data type for 'target_data': <class 'NoneType'>. Assuming not empty.
+2025-11-18 17:14:56,410 | INFO |  Execution time for TestCase 11: 165.93 seconds
+2025-11-18 17:14:56,429 | INFO |  Total Number of Testcases Executed:1,Pass :1, Fail : 0
+2025-11-18 17:14:56,969 | INFO | Master combined log written to: MONGODB_MCPQA1_Test_Log_20251118_221456.json
+2025-11-18 17:14:57,016 | INFO | Result.InsertData : 691cefe0191f7db4bf879e4d
+2025-11-18 17:14:59,436 | INFO | ========== Completed Validation ==========

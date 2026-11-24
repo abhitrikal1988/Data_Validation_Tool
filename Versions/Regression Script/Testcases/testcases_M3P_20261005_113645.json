@@ -1,0 +1,175 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for Cardholder_ID, Effective_Begin, Effective_End, Plan_ID, Relationship_Code, Eligibility_ID, CMS_Contract_ID, Benefit, M3P_Election_Status, M3P_Request_Date, Signature_Date, M3P_Program_Year, Discontinuation_Reason, Reinstatement_Reason, Record_ID",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3P_Cap_Data",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3P_Stg_Data",
+      "QueryType": "COLLECTION"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": "Cardholder_ID"
+      },
+      {
+        "SourceField": "Plan_ID",
+        "TargetField": "Plan_ID"
+      },
+      {
+        "SourceField": "Relationship_Code",
+        "TargetField": "Relationship_Code"
+      },
+      {
+        "SourceField": "Eligibility_ID",
+        "TargetField": "Eligibility_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Effective_Begin",
+        "TargetField": "Effective_Begin"
+      },
+      {
+        "SourceField": "Effective_End",
+        "TargetField": "Effective_End"
+      },
+      {
+        "SourceField": "CMS_Contract_ID",
+        "TargetField": "CMS_Contract_ID"
+      },
+      {
+        "SourceField": "Benefit",
+        "TargetField": "Benefit"
+      },
+      {
+        "SourceField": "M3P_Election_Status",
+        "TargetField": "M3P_Election_Status"
+      },
+      {
+        "SourceField": "M3P_Request_Date",
+        "TargetField": "M3P_Request_Date"
+      },
+      {
+        "SourceField": "Signature_Date",
+        "TargetField": "Signature_Date"
+      },
+      {
+        "SourceField": "M3P_Program_Year",
+        "TargetField": "M3P_Program_Year"
+      },
+      {
+        "SourceField": "Discontinuation_Reason",
+        "TargetField": "Discontinuation_Reason"
+      },
+      {
+        "SourceField": "Reinstatement_Reason",
+        "TargetField": "Reinstatement_Reason"
+      },
+      {
+        "SourceField": "Record_ID",
+        "TargetField": "Record_ID"
+      }
+    ],
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Record_Count",
+    "TestDescription": "Compare row counts between source and target",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3P_Cap_Data",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3P_Stg_Data",
+      "QueryType": "COLLECTION"
+    },
+    "ApprovedValues": [
+      "0"
+    ],
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in Cardholder_ID",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3P_Cap_Data",
+      "QueryType": "COLLECTION"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Effective_Begin",
+        "ResultFields": [
+          "Effective_Begin"
+        ]
+      },
+      {
+        "SourceField": "Effective_End",
+        "ResultFields": [
+          "Effective_End"
+        ]
+      },
+      {
+        "SourceField": "M3P_Election_Status",
+        "ResultFields": [
+          "M3P_Election_Status"
+        ]
+      },
+      {
+        "SourceField": "M3P_Request_Date",
+        "ResultFields": [
+          "M3P_Request_Date"
+        ]
+      },
+      {
+        "SourceField": "Signature_Date",
+        "ResultFields": [
+          "Signature_Date"
+        ]
+      },
+      {
+        "SourceField": "M3P_Program_Year",
+        "ResultFields": [
+          "M3P_Program_Year"
+        ]
+      },
+      {
+        "SourceField": "Discontinuation_Reason",
+        "ResultFields": [
+          "Discontinuation_Reason"
+        ]
+      },
+      {
+        "SourceField": "Reinstatement_Reason",
+        "ResultFields": [
+          "Reinstatement_Reason"
+        ]
+      }
+    ],
+    "DataFilters": []
+  }
+]

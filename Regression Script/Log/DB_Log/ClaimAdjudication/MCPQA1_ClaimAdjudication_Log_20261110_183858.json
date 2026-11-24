@@ -1,0 +1,77 @@
+[
+    {
+        "DataValidationLog_ID": 136,
+        "Module": "ClaimAdjudication",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target on CLAIM_TYPE, BILLING_PROVIDER_ID, SUBSCRIBER_HL and 21 more",
+                "Result": "Fail",
+                "StartTime": "2026-11-10 18:38:50.943239",
+                "EndTime": "2026-11-10 18:38:58.884286",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-10 18:38:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [MONGODB PIPELINE] db.ClaimCore.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"ClaimId\": {\"$ifNull\": [\"$Professional.PatientControlNumber\", \"$UB.PatientControlNumber\"]}, \"ClaimType\": 1, \"EasyLookups.T837BillingProvider.T837BillingProvider_ID\": 1, \"HoldDetail.Hold\": 1, \"MCPMember.Subscriber_ID\": 1, \"UB.ServicingLocation.NPI\": 1, \"Professional.PatientSignatureCode\": 1, \"UB.ReleaseOfInformationCode\": 1, \"Professional.RelatedCause.RelatedCause1\": 1, \"Professional.RelatedCause.RelatedCause2\": 1, \"Professional.RelatedCause.RelatedCause3\": 1, \"Professional.SpecialProgramIndicator\": 1, \"UB.DelayReasonCode\": 1, \"UB.InstitutionalClaimCode.AdmissionTypeCode\": 1, \"UB.InstitutionalClaimCode.AdmissionSourceCode\": 1, \"UB.InstitutionalClaimCode.PatientStatusCode\": 1, \"Professional.ContractInformation.ContractTypeCode\": 1, \"Professional.ContractInformation.ContractAmount\": 1, \"Professional.ContractInformation.ContractPCT\": 1, \"Professional.ContractInformation.ContractCode\": 1, \"Professional.ClaimRepricingDetails.PricingMethodolgy\": 1, \"UB.ClaimRepricingDetails.ApprovedDRGCode\": 1, \"UB.AdmissionDate\": 1, \"Professional.PatietPaidAmount\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-10 18:38:52",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source LOCAL_PATH records: 2, Total target MONGODB records: 39319"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-10 18:38:58",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'CLAIM_ID': 'P01A0001'}"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-10 18:38:58",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'CLAIM_ID': 'P01B0001'}"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-10 18:38:58",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-10 18:38:58",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 2"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-10 18:38:58",
+                        "Type": "ERROR",
+                        "RunType": "Compare Data",
+                        "Detail": "Exception:Cannot perform reduction 'any' with string dtype"
+                    }
+                ],
+                "Stage": "",
+                "MissingFields": [
+                    "CLAIM_ID"
+                ],
+                "MismatchFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "mahesh.thirmandas",
+            "InsertedDate": "2026-11-10 18:38:58.963823"
+        }
+    }
+]

@@ -1,0 +1,201 @@
+2026-10-15 13:02:46,154 | INFO | ========== Starting Validation ==========
+2026-10-15 13:02:46,156 | INFO | Module         : HCRIDER
+2026-10-15 13:02:46,156 | INFO | Stage          : None
+2026-10-15 13:02:46,157 | INFO | Cycle          : None
+2026-10-15 13:02:46,158 | INFO | Environment    : MCPQA1
+2026-10-15 13:02:46,158 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-15 13:02:46,325 | INFO | Parallel execution started — 4 active thread(s) (requested: 5, test cases: 4).
+2026-10-15 13:02:53,839 | INFO | ========== [ Running TestCase 1: Compare source and target for HC_RIDER_ID, RIDER_NAME, START_DT, END_DT, RIDER_AMOUNT, PLAN_RIDER_TYPE, CREATED_DT, MODIFIED_DT, CANCELED_FLG ] ==========
+2026-10-15 13:02:53,839 | INFO | TestCase 1: Source [ORACLE]:SELECT HC_RIDER_ID_NH
+  ,HEALTH_COVERAGE_ID_NH
+  ,RIDER_START_DT
+  ,CREATED_DT
+  ,PLAN_RIDER_NAME
+  ,RIDER_END_DT
+  ,PLAN_RIDER_AMOUNT
+  ,PLAN_RIDER_TYPE
+  ,MODIFIED_DT
+  ,CANCELED_FLG 
+  FROM MBRPROFILE.HC_RIDER
+2026-10-15 13:02:53,840 | INFO | TestCase 1: Target [ORACLE]:SELECT HC_RIDER_ID
+  ,HEALTH_COVERAGE_ID_NH
+  ,START_DT
+  ,CREATED_DT
+  ,RIDER_NAME
+  ,END_DT
+  ,RIDER_AMOUNT
+  ,PLAN_RIDER_TYPE
+  ,MODIFIED_DT
+  ,CANCELED_FLG 
+  FROM DW.HC_RIDER
+2026-10-15 13:02:53,840 | INFO | [TC 1] Source data sample (5 of 217 records):
+2026-10-15 13:02:53,840 | INFO |   1: {'HC_RIDER_ID_NH': 41, 'HEALTH_COVERAGE_ID_NH': 3394534, 'RIDER_START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 19, 4, 50, 8), 'PLAN_RIDER_NAME': 'dental', 'RIDER_END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'PLAN_RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 19, 4, 50, 8), 'CANCELED_FLG': 'Y'}
+2026-10-15 13:02:53,840 | INFO |   2: {'HC_RIDER_ID_NH': 81, 'HEALTH_COVERAGE_ID_NH': 3326990, 'RIDER_START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 19, 9, 55, 46), 'PLAN_RIDER_NAME': 'dental', 'RIDER_END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'PLAN_RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 19, 9, 55, 46), 'CANCELED_FLG': 'N'}
+2026-10-15 13:02:53,840 | INFO |   3: {'HC_RIDER_ID_NH': 181, 'HEALTH_COVERAGE_ID_NH': 3297990, 'RIDER_START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 20, 8, 27, 27), 'PLAN_RIDER_NAME': 'dental', 'RIDER_END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'PLAN_RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 20, 8, 27, 27), 'CANCELED_FLG': 'N'}
+2026-10-15 13:02:53,840 | INFO |   4: {'HC_RIDER_ID_NH': 261, 'HEALTH_COVERAGE_ID_NH': 3324490, 'RIDER_START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 20, 11, 45, 50), 'PLAN_RIDER_NAME': 'dental', 'RIDER_END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'PLAN_RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 20, 11, 45, 50), 'CANCELED_FLG': 'N'}
+2026-10-15 13:02:53,841 | INFO |   5: {'HC_RIDER_ID_NH': 341, 'HEALTH_COVERAGE_ID_NH': 3419347, 'RIDER_START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 20, 15, 32, 32), 'PLAN_RIDER_NAME': 'dental', 'RIDER_END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'PLAN_RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 20, 15, 32, 32), 'CANCELED_FLG': 'Y'}
+2026-10-15 13:02:53,841 | INFO | [TC 1] Target data sample (5 of 217 records):
+2026-10-15 13:02:53,841 | INFO |   1: {'HC_RIDER_ID': 41, 'HEALTH_COVERAGE_ID_NH': 3394534, 'START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 19, 4, 50, 8), 'RIDER_NAME': 'dental', 'END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 19, 4, 50, 8), 'CANCELED_FLG': 'Y'}
+2026-10-15 13:02:53,841 | INFO |   2: {'HC_RIDER_ID': 81, 'HEALTH_COVERAGE_ID_NH': 3326990, 'START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 19, 9, 55, 46), 'RIDER_NAME': 'dental', 'END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 19, 9, 55, 46), 'CANCELED_FLG': 'N'}
+2026-10-15 13:02:53,841 | INFO |   3: {'HC_RIDER_ID': 181, 'HEALTH_COVERAGE_ID_NH': 3297990, 'START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 20, 8, 27, 27), 'RIDER_NAME': 'dental', 'END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 20, 8, 27, 27), 'CANCELED_FLG': 'N'}
+2026-10-15 13:02:53,841 | INFO |   4: {'HC_RIDER_ID': 261, 'HEALTH_COVERAGE_ID_NH': 3324490, 'START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 20, 11, 45, 50), 'RIDER_NAME': 'dental', 'END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 20, 11, 45, 50), 'CANCELED_FLG': 'N'}
+2026-10-15 13:02:53,842 | INFO |   5: {'HC_RIDER_ID': 341, 'HEALTH_COVERAGE_ID_NH': 3419347, 'START_DT': datetime.datetime(2024, 10, 1, 0, 0), 'CREATED_DT': datetime.datetime(2024, 9, 20, 15, 32, 32), 'RIDER_NAME': 'dental', 'END_DT': datetime.datetime(2024, 12, 31, 0, 0), 'RIDER_AMOUNT': 40, 'PLAN_RIDER_TYPE': 'DEN', 'MODIFIED_DT': datetime.datetime(2024, 9, 20, 15, 32, 32), 'CANCELED_FLG': 'Y'}
+2026-10-15 13:02:53,842 | INFO | [SRC->TGT]  - Total source ORACLE records: 217
+2026-10-15 13:02:53,842 | INFO | [SRC->TGT]  - Total target ORACLE records: 217
+2026-10-15 13:02:53,842 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-15 13:02:53,843 | INFO | [TGT->SRC]  - Total source ORACLE records: 217
+2026-10-15 13:02:53,843 | INFO | [TGT->SRC]  - Total target ORACLE records: 217
+2026-10-15 13:02:53,843 | INFO | Data comparison process completed.
+2026-10-15 13:02:53,843 | INFO | [TestCase 1] Test Result: PASS
+2026-10-15 13:02:53,843 | INFO | Execution time for TestCase 1: 7.52 seconds
+2026-10-15 13:02:48,787 | INFO | ========== [ Running TestCase 2: Check for null values in HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, PLAN_RIDER_ID_NH, RIDER_START_DT, RIDER_END_DT, PLAN_RIDER_AMOUNT, PLAN_RIDER_TYPE, CREATED_DT, MODIFIED_DT, CANCELED_FLG ] ==========
+2026-10-15 13:02:48,787 | INFO | TestCase 2: Source [ORACLE]:SELECT HC_RIDER_ID_NH
+  ,HEALTH_COVERAGE_ID_NH
+  ,RIDER_START_DT
+  ,CREATED_DT
+  ,PLAN_RIDER_ID_NH 
+  FROM MBRPROFILE.HC_RIDER
+2026-10-15 13:02:48,788 | INFO | TestCase 2: Null_Check started — pushing null filter to ORACLE per field
+2026-10-15 13:02:48,788 | INFO | Oracle Null_Check query: SELECT * FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT, PLAN_RIDER_ID_NH FROM MBRPROFILE.HC_RIDER) WHERE (HC_RIDER_ID_NH IS NULL OR TRIM(TO_CHAR(HC_RIDER_ID_NH)) = '') OR (HEALTH_COVERAGE_ID_NH IS NULL OR TRIM(TO_CHAR(HEALTH_COVERAGE_ID_NH)) = '') OR (RIDER_START_DT IS NULL OR TRIM(TO_CHAR(RIDER_START_DT)) = '') OR (CREATED_DT IS NULL OR TRIM(TO_CHAR(CREATED_DT)) = '') OR (PLAN_RIDER_ID_NH IS NULL OR TRIM(TO_CHAR(PLAN_RIDER_ID_NH)) = '')
+2026-10-15 13:02:48,788 | INFO | TestCase 2: Field 'HC_RIDER_ID_NH': No nulls found.
+2026-10-15 13:02:48,788 | INFO | TestCase 2: Field 'HEALTH_COVERAGE_ID_NH': No nulls found.
+2026-10-15 13:02:48,788 | INFO | TestCase 2: Field 'RIDER_START_DT': No nulls found.
+2026-10-15 13:02:48,788 | INFO | TestCase 2: Field 'CREATED_DT': No nulls found.
+2026-10-15 13:02:48,789 | INFO | TestCase 2: Field 'PLAN_RIDER_ID_NH': No nulls found.
+2026-10-15 13:02:48,789 | INFO | Execution time for TestCase 2: 2.46 seconds
+2026-10-15 13:02:49,126 | INFO | ========== [ Running TestCase 3: Check for duplicate records on HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, PLAN_RIDER_ID_NH ] ==========
+2026-10-15 13:02:49,126 | INFO | TestCase 3: Source [ORACLE]:SELECT HC_RIDER_ID_NH
+  ,HEALTH_COVERAGE_ID_NH
+  ,RIDER_START_DT
+  ,CREATED_DT 
+  FROM MBRPROFILE.HC_RIDER
+2026-10-15 13:02:49,127 | INFO | TestCase 3: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-10-15 13:02:49,127 | INFO | Source [ORACLE] Duplicate_Check sample for 'HC_RIDER_ID_NH':
+SELECT HC_RIDER_ID_NH
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE HC_RIDER_ID_NH IS NOT NULL
+                    AND (HC_RIDER_ID_NH) IN (
+                        
+                    SELECT HC_RIDER_ID_NH
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE HC_RIDER_ID_NH IS NOT NULL
+                    GROUP BY HC_RIDER_ID_NH
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-15 13:02:49,127 | INFO | TestCase 3: Field 'HC_RIDER_ID_NH': No duplicates found.
+2026-10-15 13:02:49,127 | INFO | Source [ORACLE] Duplicate_Check sample for 'HEALTH_COVERAGE_ID_NH':
+SELECT HEALTH_COVERAGE_ID_NH
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE HEALTH_COVERAGE_ID_NH IS NOT NULL
+                    AND (HEALTH_COVERAGE_ID_NH) IN (
+                        
+                    SELECT HEALTH_COVERAGE_ID_NH
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE HEALTH_COVERAGE_ID_NH IS NOT NULL
+                    GROUP BY HEALTH_COVERAGE_ID_NH
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-15 13:02:49,127 | INFO | Source [ORACLE] Duplicate_Check count for 'HEALTH_COVERAGE_ID_NH':
+SELECT COUNT(*) AS DUP_COUNT
+                    FROM (
+                        
+                    SELECT HEALTH_COVERAGE_ID_NH
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE HEALTH_COVERAGE_ID_NH IS NOT NULL
+                    GROUP BY HEALTH_COVERAGE_ID_NH
+                    HAVING COUNT(*) > 1
+                
+                    )
+2026-10-15 13:02:49,128 | ISSUE | TestCase 3: Field 'HEALTH_COVERAGE_ID_NH': 34 duplicate value(s) found across 127 record(s). First 5 records:
+HEALTH_COVERAGE_ID_NH: 3341990
+HEALTH_COVERAGE_ID_NH: 3341990
+HEALTH_COVERAGE_ID_NH: 3341990
+HEALTH_COVERAGE_ID_NH: 3341990
+HEALTH_COVERAGE_ID_NH: 3348990
+
+2026-10-15 13:02:49,128 | INFO | Source [ORACLE] Duplicate_Check sample for 'RIDER_START_DT':
+SELECT RIDER_START_DT
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE RIDER_START_DT IS NOT NULL
+                    AND (RIDER_START_DT) IN (
+                        
+                    SELECT RIDER_START_DT
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE RIDER_START_DT IS NOT NULL
+                    GROUP BY RIDER_START_DT
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-15 13:02:49,128 | INFO | Source [ORACLE] Duplicate_Check count for 'RIDER_START_DT':
+SELECT COUNT(*) AS DUP_COUNT
+                    FROM (
+                        
+                    SELECT RIDER_START_DT
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE RIDER_START_DT IS NOT NULL
+                    GROUP BY RIDER_START_DT
+                    HAVING COUNT(*) > 1
+                
+                    )
+2026-10-15 13:02:49,128 | ISSUE | TestCase 3: Field 'RIDER_START_DT': 16 duplicate value(s) found across 213 record(s). First 5 records:
+RIDER_START_DT: 2024-08-01 00:00:00
+RIDER_START_DT: 2024-08-01 00:00:00
+RIDER_START_DT: 2024-08-01 00:00:00
+RIDER_START_DT: 2024-08-01 00:00:00
+RIDER_START_DT: 2025-05-01 00:00:00
+
+2026-10-15 13:02:49,129 | INFO | Source [ORACLE] Duplicate_Check sample for 'CREATED_DT':
+SELECT CREATED_DT
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE CREATED_DT IS NOT NULL
+                    AND (CREATED_DT) IN (
+                        
+                    SELECT CREATED_DT
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE CREATED_DT IS NOT NULL
+                    GROUP BY CREATED_DT
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-15 13:02:49,130 | INFO | Source [ORACLE] Duplicate_Check count for 'CREATED_DT':
+SELECT COUNT(*) AS DUP_COUNT
+                    FROM (
+                        
+                    SELECT CREATED_DT
+                    FROM (SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER)
+                    WHERE CREATED_DT IS NOT NULL
+                    GROUP BY CREATED_DT
+                    HAVING COUNT(*) > 1
+                
+                    )
+2026-10-15 13:02:49,131 | ISSUE | TestCase 3: Field 'CREATED_DT': 3 duplicate value(s) found across 9 record(s). First 5 records:
+CREATED_DT: 2024-09-20 07:01:31
+CREATED_DT: 2024-09-20 07:01:31
+CREATED_DT: 2024-09-20 07:01:31
+CREATED_DT: 2024-09-20 07:01:31
+CREATED_DT: 2024-09-24 15:06:02
+
+2026-10-15 13:02:49,131 | INFO | Execution time for TestCase 3: 2.80 seconds
+2026-10-15 13:02:48,920 | INFO | ========== [ Running TestCase 4: CREATED_BY has only approved values ] ==========
+2026-10-15 13:02:48,920 | INFO | TestCase 4: Source [ORACLE]:SELECT CREATED_BY 
+  FROM MBRPROFILE.HC_RIDER
+2026-10-15 13:02:48,920 | INFO | [TC 4] Source data sample (5 of 217 records):
+2026-10-15 13:02:48,920 | INFO |   1: {'CREATED_BY': 0}
+2026-10-15 13:02:48,921 | INFO |   2: {'CREATED_BY': 0}
+2026-10-15 13:02:48,921 | INFO |   3: {'CREATED_BY': 0}
+2026-10-15 13:02:48,921 | INFO |   4: {'CREATED_BY': 0}
+2026-10-15 13:02:48,921 | INFO |   5: {'CREATED_BY': 0}
+2026-10-15 13:02:48,921 | INFO | [TC 4] CREATED_BY has only approved values
+2026-10-15 13:02:48,921 | ISSUE | [TC 4] FAIL: Unapproved values found: '[2673, 2673]'
+2026-10-15 13:02:48,922 | INFO | Execution time for TestCase 4: 2.59 seconds
+2026-10-15 13:02:53,872 | INFO | Total Number of Testcases Executed : 4,Pass : 2, Fail : 2, Skippped : 0
+2026-10-15 13:02:53,873 | INFO | Total execution time: 7.55 seconds (0.1 minutes)
+2026-10-15 13:02:53,913 | INFO | Master combined log written to: MCPQA1_HCRIDER_Log_20261015_170253.json
+2026-10-15 13:02:53,925 | INFO | Result.InsertData : 6ad1073d34fe8cfacb2de139
+2026-10-15 13:02:57,579 | INFO | ========== Completed Validation ==========

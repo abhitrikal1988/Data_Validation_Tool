@@ -1,0 +1,33 @@
+2026-10-30 11:33:14,116 | INFO | ========== Starting Validation ==========
+2026-10-30 11:33:14,117 | INFO | Module         : Process_Code_Lists
+2026-10-30 11:33:14,117 | INFO | Stage          : None
+2026-10-30 11:33:14,118 | INFO | Cycle          : None
+2026-10-30 11:33:14,119 | INFO | Environment    : MCPQA1
+2026-10-30 11:33:14,120 | INFO | Runtime Filters: {'dw_file_detail_id': '2066'}
+2026-10-30 11:33:14,195 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-10-30 11:33:15,087 | INFO | ========== [ Running TestCase 1: Compare source and target for Process_Code_Lists ] ==========
+2026-10-30 11:33:15,087 | INFO | TestCase 1: Target [ORACLE]:SELECT BUSINESS_ID
+  ,PROCESS_CODE
+  ,PROCESS_CODE_TYPE 
+  FROM DW.PROCESS_CODES_LIST 
+  WHERE dw_file_detail_id >= :dw_file_detail_id
+2026-10-30 11:33:15,087 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 11:33:15,087 | INFO | File_fetcher: Reading local file — P:\Maheswar\Process_Code_Lists.xlsx
+2026-10-30 11:33:15,088 | INFO | File_fetcher: 'Process_Code_Lists.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 11:33:15,088 | INFO | File_parser: 'Process_Code_Lists.xlsx' — Excel parsed 1108 row(s), 0 parse error(s).
+2026-10-30 11:33:15,088 | INFO | File_parser: 'Process_Code_Lists.xlsx' — parse complete, 1108 row(s), no errors.
+2026-10-30 11:33:15,088 | INFO | File_parser: Combined 1 file(s) — 1108 total rows, 0 total error(s).
+2026-10-30 11:33:15,088 | ISSUE | Error fetching target data (ORACLE): ORA-01008: not all variables bound
+2026-10-30 11:33:15,089 | INFO | [TC 1] Source data sample (5 of 1108 records):
+2026-10-30 11:33:15,089 | INFO |   1: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'BN146'}
+2026-10-30 11:33:15,089 | INFO |   2: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL125'}
+2026-10-30 11:33:15,089 | INFO |   3: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL126'}
+2026-10-30 11:33:15,089 | INFO |   4: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL138'}
+2026-10-30 11:33:15,089 | INFO |   5: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL139'}
+2026-10-30 11:33:15,089 | ISSUE | Target data empty and Source having data. Please check TGT.
+2026-10-30 11:33:15,089 | INFO | Execution time for TestCase 1: 0.89 seconds
+2026-10-30 11:33:15,104 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 1, Skippped : 0
+2026-10-30 11:33:15,105 | INFO | Total execution time: 0.91 seconds (0.0 minutes)
+2026-10-30 11:33:15,125 | INFO | Master combined log written to: MCPQA1_Process_Code_Lists_Log_20261030_153315.json
+2026-10-30 11:33:15,130 | INFO | Result.InsertData : 6ae4b8bbea81c2d393ac792b
+2026-10-30 11:33:15,539 | INFO | ========== Completed Validation ==========

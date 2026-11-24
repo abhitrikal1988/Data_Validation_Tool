@@ -1,0 +1,264 @@
+[
+  {
+    "ValidationType": "Record_Count",
+    "TestDescription": "Check source row count",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Audit.InsertedByID\": 1}}]"
+    },
+    "ApprovedValues": [
+      "2404"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Should return 2404 records",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 304,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 15:21:47"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in key fields",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": {\"$ifNull\": [\"$Contract_ID\", null]}, \"Status.StatusID\": {\"$ifNull\": [\"$Status.StatusID\", null]}, \"Business.Business_ID\": {\"$ifNull\": [\"$Business.Business_ID\", null]}, \"Span.StartDate\": {\"$ifNull\": [\"$Span.StartDate\", null]}, \"Audit.InsertedByID\": {\"$ifNull\": [\"$Audit.InsertedByID\", null]}}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Contract_ID",
+        "ResultFields": [
+          "Contract_ID"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      },
+      {
+        "SourceField": "Audit.InsertedByID",
+        "ResultFields": [
+          "Audit.InsertedByID"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Contract_ID, Status.StatusID, Business.Business_ID, Span.StartDate, Audit.InsertedByID should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "UPDATED",
+      "RegressionSet_ID": 302,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "changed: TestDescription",
+      "LoadedOn": "2026-10-08 15:21:47"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on key fields",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Audit.InsertedByID\": 1, \"Audit.InsertedDate\": 1, \"Audit.ModifiedByID\": 1, \"Audit.ModifiedDate\": 1}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Contract_ID",
+        "ResultFields": [
+          "Contract_ID"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      },
+      {
+        "SourceField": "Audit.InsertedByID",
+        "ResultFields": [
+          "Audit.InsertedByID"
+        ]
+      },
+      {
+        "SourceField": "Audit.InsertedDate",
+        "ResultFields": [
+          "Audit.InsertedDate"
+        ]
+      },
+      {
+        "SourceField": "Audit.ModifiedByID",
+        "ResultFields": [
+          "Audit.ModifiedByID"
+        ]
+      },
+      {
+        "SourceField": "Audit.ModifiedDate",
+        "ResultFields": [
+          "Audit.ModifiedDate"
+        ]
+      }
+    ],
+    "ExpectedResult": "Contract_ID, Status.StatusID, Business.Business_ID, Span.StartDate, Audit.InsertedByID, Audit.InsertedDate, Audit.ModifiedByID, Audit.ModifiedDate should not have duplicate values",
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "UPDATED",
+      "RegressionSet_ID": 303,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "changed: CheckFields, ExpectedResult, Source, TestDescription",
+      "LoadedOn": "2026-10-08 15:21:47"
+    }
+  },
+  {
+    "ValidationType": "Format_Check",
+    "TestDescription": "Check for format in columns with detected patterns",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 4,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "CheckFields": [],
+    "ExpectedResult": " values should match the expected format",
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INCOMPLETE",
+      "Detail": "not loaded",
+      "Errors": [
+        "missing CheckFields"
+      ],
+      "LoadedOn": "2026-10-08 15:21:47"
+    }
+  },
+  {
+    "ValidationType": "DataFilter",
+    "TestDescription": "Apply data filters",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 5,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INVALID",
+      "Detail": "not loaded",
+      "Errors": [
+        "ValidationType 'DataFilter' is not recognised \u2014 use one of SRC_TGT, Record_Count, Null_Check, Duplicate_Check, Format_Check, InApprovedValue, EDI835_Format, EDI835_Balance, EDI835_Data"
+      ],
+      "LoadedOn": "2026-10-08 15:21:47"
+    }
+  },
+  {
+    "ValidationType": "JoinFields",
+    "TestDescription": "Identify rows for join",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 6,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INVALID",
+      "Detail": "not loaded",
+      "Errors": [
+        "ValidationType 'JoinFields' is not recognised \u2014 use one of SRC_TGT, Record_Count, Null_Check, Duplicate_Check, Format_Check, InApprovedValue, EDI835_Format, EDI835_Balance, EDI835_Data"
+      ],
+      "LoadedOn": "2026-10-08 15:21:47"
+    }
+  },
+  {
+    "ValidationType": "CompareFields",
+    "TestDescription": "Verify values",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 7,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INVALID",
+      "Detail": "not loaded",
+      "Errors": [
+        "ValidationType 'CompareFields' is not recognised \u2014 use one of SRC_TGT, Record_Count, Null_Check, Duplicate_Check, Format_Check, InApprovedValue, EDI835_Format, EDI835_Balance, EDI835_Data"
+      ],
+      "LoadedOn": "2026-10-08 15:21:47"
+    }
+  }
+]

@@ -1,0 +1,45 @@
+2026-10-30 11:54:57,681 | INFO | ========== Starting Validation ==========
+2026-10-30 11:54:57,682 | INFO | Module         : Process_Code_Lists
+2026-10-30 11:54:57,683 | INFO | Stage          : None
+2026-10-30 11:54:57,683 | INFO | Cycle          : None
+2026-10-30 11:54:57,684 | INFO | Environment    : MCPQA1
+2026-10-30 11:54:57,685 | INFO | Runtime Filters: {'dw_file_detail_id': '2066'}
+2026-10-30 11:54:57,764 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-10-30 11:55:02,822 | INFO | ========== [ Running TestCase 1: Compare source and target for Process_Code_Lists ] ==========
+2026-10-30 11:55:02,822 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-10-30 11:55:02,823 | INFO | TestCase 1: Target [ORACLE]:SELECT BUSINESS_ID
+  ,PROCESS_CODE
+  ,PROCESS_CODE_TYPE 
+  FROM DW.PROCESS_CODES_LIST 
+  WHERE dw_file_detail_id >= 2066
+2026-10-30 11:55:02,823 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 11:55:02,823 | INFO | File_fetcher: Reading local file — P:\Maheswar\Process_Code_Lists.xlsx
+2026-10-30 11:55:02,823 | INFO | File_fetcher: 'Process_Code_Lists.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 11:55:02,823 | INFO | File_parser: 'Process_Code_Lists.xlsx' — Excel parsed 1108 row(s), 0 parse error(s).
+2026-10-30 11:55:02,823 | INFO | File_parser: 'Process_Code_Lists.xlsx' — parse complete, 1108 row(s), no errors.
+2026-10-30 11:55:02,824 | INFO | File_parser: Combined 1 file(s) — 1108 total rows, 0 total error(s).
+2026-10-30 11:55:02,824 | INFO | [TC 1] Source data sample (5 of 1108 records):
+2026-10-30 11:55:02,824 | INFO |   1: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'BN146'}
+2026-10-30 11:55:02,824 | INFO |   2: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL125'}
+2026-10-30 11:55:02,824 | INFO |   3: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL126'}
+2026-10-30 11:55:02,824 | INFO |   4: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL138'}
+2026-10-30 11:55:02,824 | INFO |   5: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL139'}
+2026-10-30 11:55:02,824 | INFO | [TC 1] Target data sample (5 of 1108 records):
+2026-10-30 11:55:02,825 | INFO |   1: {'BUSINESS_ID': 109, 'PROCESS_CODE': 'BN146', 'PROCESS_CODE_TYPE': 'Not A True Denial'}
+2026-10-30 11:55:02,825 | INFO |   2: {'BUSINESS_ID': 109, 'PROCESS_CODE': 'CL125', 'PROCESS_CODE_TYPE': 'Not A True Denial'}
+2026-10-30 11:55:02,825 | INFO |   3: {'BUSINESS_ID': 109, 'PROCESS_CODE': 'CL126', 'PROCESS_CODE_TYPE': 'Not A True Denial'}
+2026-10-30 11:55:02,825 | INFO |   4: {'BUSINESS_ID': 109, 'PROCESS_CODE': 'CL138', 'PROCESS_CODE_TYPE': 'Not A True Denial'}
+2026-10-30 11:55:02,825 | INFO |   5: {'BUSINESS_ID': 109, 'PROCESS_CODE': 'CL139', 'PROCESS_CODE_TYPE': 'Not A True Denial'}
+2026-10-30 11:55:02,825 | INFO | [SRC->TGT]  - Total source LOCAL_PATH records: 1108
+2026-10-30 11:55:02,825 | INFO | [SRC->TGT]  - Total target ORACLE records: 1108
+2026-10-30 11:55:02,826 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-30 11:55:02,826 | INFO | [TGT->SRC]  - Total source ORACLE records: 1108
+2026-10-30 11:55:02,826 | INFO | [TGT->SRC]  - Total target LOCAL_PATH records: 1108
+2026-10-30 11:55:02,826 | INFO | Data comparison process completed.
+2026-10-30 11:55:02,826 | INFO | [TestCase 1] Test Result: PASS
+2026-10-30 11:55:02,826 | INFO | Execution time for TestCase 1: 5.06 seconds
+2026-10-30 11:55:02,843 | INFO | Total Number of Testcases Executed : 1,Pass : 1, Fail : 0, Skippped : 0
+2026-10-30 11:55:02,844 | INFO | Total execution time: 5.08 seconds (0.1 minutes)
+2026-10-30 11:55:02,877 | INFO | Master combined log written to: MCPQA1_Process_Code_Lists_Log_20261030_155502.json
+2026-10-30 11:55:02,884 | INFO | Result.InsertData : 6ae4bdd6ce0139e6fd226df2
+2026-10-30 11:55:03,308 | INFO | ========== Completed Validation ==========

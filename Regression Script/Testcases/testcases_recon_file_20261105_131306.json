@@ -1,0 +1,471 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "recon_file",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target on cFileKey, cOriginalFileName, cDocId and 58 more",
+    "Viceversa": true,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "C:\\Users\\Maheswar.Basireddy\\Documents",
+      "FileName": "Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS, C_FILE_KEY, C_ORIGINAL_FILE_NAME, C_DOC_ID, C_GH_1, C_GH_2, C_GH_3, C_GH_4, C_GH_5, C_GH_6, C_GH_7, C_GH_8, C_GH_9, C_GH_10, C_ENROLLEE_ID, C_MASTER_C_NAME, C_ENROLLEE_NAME, C_PROVIDER_TAX_ID, C_DOCUMENT_TYPE, C_DOCUMENT_TYPE_DESCRIPTION, C_DOCUMENT_EXTENSIONS, C_BATCH_NUMBER, I_ENVELOPE_NUMBER, C_DELIVERY_TYPE, Y_SHIPPING_AMOUNT, C_TRACKING_NUMBER, I_PAGE_QUANTITY, C_STATUS, T_FILE_RECEIPT_DATE, T_RELEASED_DATE, T_SHIP_DATE, C_USERNAME, T_DATE_TIME, C_PAPER_STOCK_DESC, C_PURGE_REASON, C_PURGE_REASON_DESC, C_RECIPIENT_TYPE, C_CLAIM_TYPE, C_CHECK_NUMBER, Y_CHECK_AMOUNT, C_PAYEE_NAME, C_PULL_CODE, SPOILED_TOUCH_AND_TOSS, REISSUED_TOUCH_AND_TOSS, C_REPORTING_ROLLUP_VALUE_1, C_REPORTING_ROLLUP_VALUE_2, C_REPORTING_ROLLUP_VALUE_3, C_REPORTING_ROLLUP_VALUE_4, C_REPORTING_ROLLUP_VALUE_5, C_REPORTING_ROLLUP_VALUE_6, C_REPORTING_ROLLUP_VALUE_7, C_REPORTING_ROLLUP_VALUE_8, C_REPORTING_ROLLUP_VALUE_9, C_REPORTING_ROLLUP_VALUE_10, C_DOCUMENT_INDEX_1, C_DOCUMENT_INDEX_2, C_DOCUMENT_INDEX_3, C_DOCUMENT_INDEX_4, DOCUMENT_WORKFLOW_ID, DOCUMENT_STATE_ID FROM DW.zelis_recon"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "cJobNumber",
+        "TargetField": "C_JOB_NUMBER"
+      },
+      {
+        "SourceField": "cClaimNumbers",
+        "TargetField": "C_CLAIM_NUMBERS"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "cFileKey",
+        "TargetField": "C_FILE_KEY"
+      },
+      {
+        "SourceField": "cOriginalFileName",
+        "TargetField": "C_ORIGINAL_FILE_NAME"
+      },
+      {
+        "SourceField": "cDocId",
+        "TargetField": "C_DOC_ID"
+      },
+      {
+        "SourceField": "cGh1",
+        "TargetField": "C_GH_1"
+      },
+      {
+        "SourceField": "cGh2",
+        "TargetField": "C_GH_2"
+      },
+      {
+        "SourceField": "cGh3",
+        "TargetField": "C_GH_3"
+      },
+      {
+        "SourceField": "cGh4",
+        "TargetField": "C_GH_4"
+      },
+      {
+        "SourceField": "cGh5",
+        "TargetField": "C_GH_5"
+      },
+      {
+        "SourceField": "cGh6",
+        "TargetField": "C_GH_6"
+      },
+      {
+        "SourceField": "cGh7",
+        "TargetField": "C_GH_7"
+      },
+      {
+        "SourceField": "cGh8",
+        "TargetField": "C_GH_8"
+      },
+      {
+        "SourceField": "cGh9",
+        "TargetField": "C_GH_9"
+      },
+      {
+        "SourceField": "cGh10",
+        "TargetField": "C_GH_10"
+      },
+      {
+        "SourceField": "cEnrolleeId",
+        "TargetField": "C_ENROLLEE_ID"
+      },
+      {
+        "SourceField": "Master.cName",
+        "TargetField": "C_MASTER_C_NAME"
+      },
+      {
+        "SourceField": "cEnrolleeName",
+        "TargetField": "C_ENROLLEE_NAME"
+      },
+      {
+        "SourceField": "cProviderTaxId",
+        "TargetField": "C_PROVIDER_TAX_ID"
+      },
+      {
+        "SourceField": "cDocumentType",
+        "TargetField": "C_DOCUMENT_TYPE"
+      },
+      {
+        "SourceField": "cDocumentTypeDescription",
+        "TargetField": "C_DOCUMENT_TYPE_DESCRIPTION"
+      },
+      {
+        "SourceField": "cDocumentExtensions",
+        "TargetField": "C_DOCUMENT_EXTENSIONS"
+      },
+      {
+        "SourceField": "cBatchNumber",
+        "TargetField": "C_BATCH_NUMBER"
+      },
+      {
+        "SourceField": "iEnvelopeNumber",
+        "TargetField": "I_ENVELOPE_NUMBER"
+      },
+      {
+        "SourceField": "cDeliveryType",
+        "TargetField": "C_DELIVERY_TYPE"
+      },
+      {
+        "SourceField": "yShippingAmount",
+        "TargetField": "Y_SHIPPING_AMOUNT"
+      },
+      {
+        "SourceField": "cTrackingNumber",
+        "TargetField": "C_TRACKING_NUMBER"
+      },
+      {
+        "SourceField": "iPageQuantity",
+        "TargetField": "I_PAGE_QUANTITY"
+      },
+      {
+        "SourceField": "cStatus",
+        "TargetField": "C_STATUS"
+      },
+      {
+        "SourceField": "tFileReceiptDate",
+        "TargetField": "T_FILE_RECEIPT_DATE"
+      },
+      {
+        "SourceField": "tReleasedDate",
+        "TargetField": "T_RELEASED_DATE"
+      },
+      {
+        "SourceField": "tShipDate",
+        "TargetField": "T_SHIP_DATE"
+      },
+      {
+        "SourceField": "cUsername",
+        "TargetField": "C_USERNAME"
+      },
+      {
+        "SourceField": "tDateTime",
+        "TargetField": "T_DATE_TIME"
+      },
+      {
+        "SourceField": "cPaperStockDesc",
+        "TargetField": "C_PAPER_STOCK_DESC"
+      },
+      {
+        "SourceField": "cPurgeReason",
+        "TargetField": "C_PURGE_REASON"
+      },
+      {
+        "SourceField": "cPurgeReasonDesc",
+        "TargetField": "C_PURGE_REASON_DESC"
+      },
+      {
+        "SourceField": "cRecipientType",
+        "TargetField": "C_RECIPIENT_TYPE"
+      },
+      {
+        "SourceField": "cClaimType",
+        "TargetField": "C_CLAIM_TYPE"
+      },
+      {
+        "SourceField": "cCheckNumber",
+        "TargetField": "C_CHECK_NUMBER"
+      },
+      {
+        "SourceField": "yCheckAmount",
+        "TargetField": "Y_CHECK_AMOUNT"
+      },
+      {
+        "SourceField": "cPayeeName",
+        "TargetField": "C_PAYEE_NAME"
+      },
+      {
+        "SourceField": "cPullCode",
+        "TargetField": "C_PULL_CODE"
+      },
+      {
+        "SourceField": "SpoiledTouchAndToss",
+        "TargetField": "SPOILED_TOUCH_AND_TOSS"
+      },
+      {
+        "SourceField": "ReissuedTouchAndToss",
+        "TargetField": "REISSUED_TOUCH_AND_TOSS"
+      },
+      {
+        "SourceField": "cReportingRollupValue1",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_1"
+      },
+      {
+        "SourceField": "cReportingRollupValue2",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_2"
+      },
+      {
+        "SourceField": "cReportingRollupValue3",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_3"
+      },
+      {
+        "SourceField": "cReportingRollupValue4",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_4"
+      },
+      {
+        "SourceField": "cReportingRollupValue5",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_5"
+      },
+      {
+        "SourceField": "cReportingRollupValue6",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_6"
+      },
+      {
+        "SourceField": "cReportingRollupValue7",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_7"
+      },
+      {
+        "SourceField": "cReportingRollupValue8",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_8"
+      },
+      {
+        "SourceField": "cReportingRollupValue9",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_9"
+      },
+      {
+        "SourceField": "cReportingRollupValue10",
+        "TargetField": "C_REPORTING_ROLLUP_VALUE_10"
+      },
+      {
+        "SourceField": "cDocumentIndex1",
+        "TargetField": "C_DOCUMENT_INDEX_1"
+      },
+      {
+        "SourceField": "cDocumentIndex2",
+        "TargetField": "C_DOCUMENT_INDEX_2"
+      },
+      {
+        "SourceField": "cDocumentIndex3",
+        "TargetField": "C_DOCUMENT_INDEX_3"
+      },
+      {
+        "SourceField": "cDocumentIndex4",
+        "TargetField": "C_DOCUMENT_INDEX_4"
+      },
+      {
+        "SourceField": "Document WorkflowID",
+        "TargetField": "DOCUMENT_WORKFLOW_ID"
+      },
+      {
+        "SourceField": "Document StateID",
+        "TargetField": "DOCUMENT_STATE_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 407,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 13:13:06"
+    }
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "recon_file",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.zelis_recon: no duplicate C_JOB_NUMBER, C_CLAIM_NUMBERS",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS FROM DW.zelis_recon"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "C_JOB_NUMBER",
+          "C_CLAIM_NUMBERS"
+        ],
+        "ResultFields": [
+          "C_JOB_NUMBER",
+          "C_CLAIM_NUMBERS"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same C_JOB_NUMBER, C_CLAIM_NUMBERS",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 408,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 13:13:06"
+    }
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "recon_file",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target DW.zelis_recon: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT C_CLAIM_NUMBERS, ZELIS_RECON_ID, C_FILE_KEY, C_DOC_ID, I_ENVELOPE_NUMBER, T_FILE_RECEIPT_DATE, C_CHECK_NUMBER, DOCUMENT_STATE_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT FROM DW.zelis_recon"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "C_CLAIM_NUMBERS",
+        "ResultFields": [
+          "C_CLAIM_NUMBERS"
+        ]
+      },
+      {
+        "SourceField": "ZELIS_RECON_ID",
+        "ResultFields": [
+          "ZELIS_RECON_ID"
+        ]
+      },
+      {
+        "SourceField": "C_FILE_KEY",
+        "ResultFields": [
+          "C_FILE_KEY"
+        ]
+      },
+      {
+        "SourceField": "C_DOC_ID",
+        "ResultFields": [
+          "C_DOC_ID"
+        ]
+      },
+      {
+        "SourceField": "I_ENVELOPE_NUMBER",
+        "ResultFields": [
+          "I_ENVELOPE_NUMBER"
+        ]
+      },
+      {
+        "SourceField": "T_FILE_RECEIPT_DATE",
+        "ResultFields": [
+          "T_FILE_RECEIPT_DATE"
+        ]
+      },
+      {
+        "SourceField": "C_CHECK_NUMBER",
+        "ResultFields": [
+          "C_CHECK_NUMBER"
+        ]
+      },
+      {
+        "SourceField": "DOCUMENT_STATE_ID",
+        "ResultFields": [
+          "DOCUMENT_STATE_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_FILE_DETAIL_ID",
+        "ResultFields": [
+          "DW_FILE_DETAIL_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_CREATED_DT",
+        "ResultFields": [
+          "DW_CREATED_DT"
+        ]
+      }
+    ],
+    "ExpectedResult": "C_CLAIM_NUMBERS, ZELIS_RECON_ID, C_FILE_KEY, C_DOC_ID, I_ENVELOPE_NUMBER, T_FILE_RECEIPT_DATE, C_CHECK_NUMBER, DOCUMENT_STATE_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 409,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 13:13:06"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "recon_file",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "File Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv: no row repeated in every field",
+    "Viceversa": false,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "C:\\Users\\Maheswar.Basireddy\\Documents",
+      "FileName": "Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "ALL",
+        "ResultFields": [
+          "ALL"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "No two rows of the file should be identical in every field",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 410,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 13:13:06"
+    }
+  }
+]

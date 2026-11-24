@@ -1,0 +1,33 @@
+2026-07-29 15:02:25,146 | INFO | ========== Starting Validation ==========
+2026-07-29 15:02:25,146 | INFO | Module         : M3P
+2026-07-29 15:02:25,147 | INFO | Stage          : None
+2026-07-29 15:02:25,148 | INFO | Cycle          : None
+2026-07-29 15:02:25,148 | INFO | Environment    : MCPQA1
+2026-07-29 15:02:25,149 | INFO | Runtime Filters: None — using DefaultValues
+2026-07-29 15:02:25,156 | ERROR | Unexpected exception in __main__: 'MCPQA1'
+Traceback (most recent call last):
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Script\Data_Validation.py", line 1023, in <module>
+    run_validation(
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Script\Data_Validation.py", line 1012, in run_validation
+    Regression_inputs(
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Script\Data_Validation.py", line 49, in __init__
+    self.ValidationList = Collection(db_name, rg_collection_data, environment)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\MongoDB.py", line 96, in __init__
+    self.Client = self.connect_mongo(Environment)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\MongoDB.py", line 90, in connect_mongo
+    return _get_client(Environment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\MongoDB.py", line 46, in _get_client
+    username=cr.mongo_db_user_name(Environment)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\Read_config.py", line 33, in mongo_db_user_name
+    return self.get_conf_data(environment, 'mongo_db_username')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\Read_config.py", line 25, in get_conf_data
+    section_variable = config_obj[section_name]
+                       ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\configparser.py", line 979, in __getitem__
+    raise KeyError(key)
+KeyError: 'MCPQA1'

@@ -1,0 +1,34 @@
+2026-01-28 13:46:44,781 | INFO | ========== Starting Validation ==========
+2026-01-28 13:46:44,800 | INFO | Module :  Test 
+2026-01-28 13:46:44,819 | INFO | Stage :  None 
+2026-01-28 13:46:44,838 | INFO | Cycle :  None
+2026-01-28 13:46:44,857 | INFO | Environment  : MONGODB_MCPQA1
+2026-01-28 13:46:45,631 | INFO | ========== [ Running TestCase 11: Data Comparison between SRC and TGT ] ==========
+2026-01-28 13:46:45,698 | ERROR | [TC 11] Exception: 'NoneType' object has no attribute 'upper'
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 202, in _execute_single_testcase
+    source_data, target_data = self._fetch_source_target_parallel(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 147, in _fetch_source_target_parallel
+    return f_src.result(), f_tgt.result()
+           ^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 125, in _fetch_with_cache
+    data, _ = get_data(
+              ^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Libraries\data_fetcher.py", line 29, in get_data
+    targetEnvKey = targetEnvKey.upper()
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'upper'
+2026-01-28 13:46:45,973 | INFO | Execution time for TestCase 11: 0.32s
+2026-01-28 13:46:45,994 | INFO | Total Number of Testcases Executed:1, Pass:0, Fail:1
+2026-01-28 13:46:46,438 | INFO | Master combined log written to: MONGODB_MCPQA1_Test_Log_20260128_184646.json
+2026-01-28 13:46:46,484 | INFO | Result.InsertData : 697a5996ce93a2a08a1a2f8d
+2026-01-28 13:46:51,000 | INFO | ========== Completed Validation ==========

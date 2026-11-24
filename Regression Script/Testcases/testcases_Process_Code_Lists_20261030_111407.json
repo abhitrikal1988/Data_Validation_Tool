@@ -1,0 +1,360 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for Process_Code_Lists",
+    "Module": "Process_Code_Lists",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "Process_Code_Lists.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE FROM DW.PROCESS_CODES_LIST"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "TargetField": "BUSINESS_ID"
+      },
+      {
+        "SourceField": "PROCESSCODE",
+        "TargetField": "PROCESS_CODE"
+      },
+      {
+        "SourceField": "TYPE",
+        "TargetField": "PROCESS_CODE_TYPE"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "TargetField": "BUSINESS_ID"
+      },
+      {
+        "SourceField": "TYPE",
+        "TargetField": "PROCESS_CODE_TYPE"
+      },
+      {
+        "SourceField": "PROCESSCODE",
+        "TargetField": "PROCESS_CODE"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 376,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:14:07"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in key fields",
+    "Module": "Process_Code_Lists",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "Process_Code_Lists.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "PROCESSCODE",
+        "ResultFields": [
+          "PROCESSCODE"
+        ]
+      },
+      {
+        "SourceField": "TYPE",
+        "ResultFields": [
+          "TYPE"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "BUSINESS_ID, PROCESSCODE, TYPE should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 377,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:14:07"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on key fields",
+    "Module": "Process_Code_Lists",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "Process_Code_Lists.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "PROCESSCODE",
+        "ResultFields": [
+          "PROCESSCODE"
+        ]
+      },
+      {
+        "SourceField": "TYPE",
+        "ResultFields": [
+          "TYPE"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same BUSINESS_ID, PROCESSCODE, TYPE",
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 378,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:14:07"
+    }
+  },
+  {
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "BUSINESS_ID has only approved values",
+    "Module": "Process_Code_Lists",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 4,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "Process_Code_Lists.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CompareFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "ApprovedValues": [
+      "109"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "BUSINESS_ID values other than approved ['109'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 379,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:14:07"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "Process_Code_Lists",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.PROCESS_CODES_LIST: no duplicate BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE FROM DW.PROCESS_CODES_LIST"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "BUSINESS_ID",
+          "PROCESS_CODE",
+          "PROCESS_CODE_TYPE"
+        ],
+        "ResultFields": [
+          "BUSINESS_ID",
+          "PROCESS_CODE",
+          "PROCESS_CODE_TYPE"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 380,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:14:07"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "Process_Code_Lists",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target DW.PROCESS_CODES_LIST: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BUSINESS_ID, PROCESS_CODE_TYPE, PROCESS_CODE, PROCESS_CODES_LIST_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT FROM DW.PROCESS_CODES_LIST"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "PROCESS_CODE_TYPE",
+        "ResultFields": [
+          "PROCESS_CODE_TYPE"
+        ]
+      },
+      {
+        "SourceField": "PROCESS_CODE",
+        "ResultFields": [
+          "PROCESS_CODE"
+        ]
+      },
+      {
+        "SourceField": "PROCESS_CODES_LIST_ID",
+        "ResultFields": [
+          "PROCESS_CODES_LIST_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_FILE_DETAIL_ID",
+        "ResultFields": [
+          "DW_FILE_DETAIL_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_CREATED_DT",
+        "ResultFields": [
+          "DW_CREATED_DT"
+        ]
+      },
+      {
+        "SourceField": "DW_MODIFIED_DT",
+        "ResultFields": [
+          "DW_MODIFIED_DT"
+        ]
+      }
+    ],
+    "ExpectedResult": "BUSINESS_ID, PROCESS_CODE_TYPE, PROCESS_CODE, PROCESS_CODES_LIST_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 381,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:14:07"
+    }
+  }
+]

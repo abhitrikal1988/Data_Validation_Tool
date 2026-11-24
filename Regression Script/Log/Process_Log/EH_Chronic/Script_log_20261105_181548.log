@@ -1,0 +1,23 @@
+2026-11-05 18:15:48,442 | INFO | ========== Starting Validation ==========
+2026-11-05 18:15:48,444 | INFO | Module         : EH_Chronic
+2026-11-05 18:15:48,446 | INFO | Stage          : None
+2026-11-05 18:15:48,446 | INFO | Cycle          : None
+2026-11-05 18:15:48,448 | INFO | Environment    : MCPQA1
+2026-11-05 18:15:48,448 | INFO | Runtime Filters: None — using DefaultValues
+2026-11-05 18:15:48,597 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-11-05 18:16:00,540 | INFO | ========== [ Running TestCase 2: Check for duplicate records on key fields ] ==========
+2026-11-05 18:16:00,540 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 18:16:00,540 | INFO | File_fetcher: Reading local file — \\rxadvance.com\qa-team\QA Documentation\QA DB Repository\EH_Chronic\eH_Chronic_Condition_Codes updated_2027.xlsx
+2026-11-05 18:16:00,540 | INFO | File_fetcher: 'eH_Chronic_Condition_Codes updated_2027.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-11-05 18:16:00,540 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — Excel parsed 73427 row(s), 0 parse error(s).
+2026-11-05 18:16:00,540 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — parse complete, 73427 row(s), no errors.
+2026-11-05 18:16:00,540 | INFO | File_parser: Combined 1 file(s) — 73427 total rows, 0 total error(s).
+2026-11-05 18:16:00,540 | ISSUE | TestCase 2: Duplicate_Check — 2 duplicate row(s) on ['CODE'].
+2026-11-05 18:16:00,540 | ISSUE | TestCase 2: Duplicate — {'CODE': 'I12'}
+2026-11-05 18:16:00,540 | ISSUE | TestCase 2: Duplicate — {'CODE': 'I12'}
+2026-11-05 18:16:00,540 | INFO | Execution time for TestCase 2: 11.94 seconds
+2026-11-05 18:16:00,552 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 1, Skippped : 0
+2026-11-05 18:16:00,553 | INFO | Total execution time: 11.96 seconds (0.2 minutes)
+2026-11-05 18:16:00,586 | INFO | Master combined log written to: MCPQA1_EH_Chronic_Log_20261105_231600.json
+2026-11-05 18:16:00,592 | INFO | Result.InsertData : 6aed0e30a5a349f9e6ffe0de
+2026-11-05 18:16:01,050 | INFO | ========== Completed Validation ==========

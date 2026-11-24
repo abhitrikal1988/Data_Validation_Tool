@@ -1,0 +1,61 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Validate M3P Member Receipt data from MongoDB collection against CSV file.",
+    "Module": "",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "JoinFields": [],
+    "CompareFields": [],
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "ElectionStartDate field should not contain null values in the source data from MongoDB.",
+    "Module": "",
+    "Stage": "",
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "DataFilters": []
+  }
+]

@@ -1,0 +1,33 @@
+[
+    {
+        "DataValidationLog_ID": 81,
+        "Module": "M3P",
+        "Stage": "Initial Testing",
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 7,
+                "TestCaseName": "Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap",
+                "Result": "Pass",
+                "StartTime": "2026-10-07 19:46:47.779603",
+                "EndTime": "2026-10-07 19:46:47.791109",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-07 19:46:47",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source: db.Test_M3P_MemberReceipt_EnrollmentStatus.find({})"
+                    }
+                ],
+                "Stage": "Initial Testing",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-07 19:46:47.809693"
+        }
+    }
+]

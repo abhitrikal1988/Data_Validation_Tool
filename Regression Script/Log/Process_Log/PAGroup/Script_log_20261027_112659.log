@@ -1,0 +1,102 @@
+2026-10-27 11:26:59,194 | INFO | ========== Starting Validation ==========
+2026-10-27 11:26:59,196 | INFO | Module         : PAGroup
+2026-10-27 11:26:59,197 | INFO | Stage          : None
+2026-10-27 11:26:59,198 | INFO | Cycle          : None
+2026-10-27 11:26:59,200 | INFO | Environment    : MCPQA1
+2026-10-27 11:26:59,201 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-27 11:26:59,295 | INFO | Parallel execution started — 2 active thread(s) (requested: 5, test cases: 2).
+2026-10-27 11:27:03,764 | INFO | ========== [ Running TestCase 1: Compare MONGODB and ORACLE PAGroup ] ==========
+2026-10-27 11:27:03,764 | INFO | TestCase 1: Source [MONGODB PIPELINE] db.PAGroup.aggregate:
+[
+  {"$project": {"_id": 0, "PAGroup_ID": 1, "Business.Business_ID": 1, "Status.StatusID": 1, "Name": 1, "Description": 1}}
+]
+2026-10-27 11:27:03,764 | INFO | TestCase 1: Target [ORACLE]:SELECT PA_GROUP_ID
+  ,BUSINESS_ID
+  ,STATUS_ID
+  ,PA_GROUP_NAME
+  ,DESCRIPTION 
+  FROM DW.PA_GROUP
+2026-10-27 11:27:03,764 | INFO | [TC 1] Source data sample (5 of 76 records):
+2026-10-27 11:27:03,764 | INFO |   1: {'PAGroup_ID': 3635, 'Name': 'Ambulance Transport', 'Description': 'Ambulance Transport', 'Business.Business_ID': 109, 'Status.StatusID': 6}
+2026-10-27 11:27:03,765 | INFO |   2: {'PAGroup_ID': 3636, 'Name': 'Auditory Implants', 'Description': 'Auditory Implants\r\n', 'Business.Business_ID': 109, 'Status.StatusID': 6}
+2026-10-27 11:27:03,765 | INFO |   3: {'PAGroup_ID': 3637, 'Name': 'Bariatrics Surgery', 'Description': 'Bariatrics Surgery', 'Business.Business_ID': 109, 'Status.StatusID': 6}
+2026-10-27 11:27:03,765 | INFO |   4: {'PAGroup_ID': 3638, 'Name': 'Cardiovascular Surgery', 'Description': 'Cardiovascular Surgery', 'Business.Business_ID': 109, 'Status.StatusID': 6}
+2026-10-27 11:27:03,765 | INFO |   5: {'PAGroup_ID': 3639, 'Name': 'Chronic Low Back Pain Treatment', 'Description': 'Chronic Low Back Pain Treatment', 'Business.Business_ID': 109, 'Status.StatusID': 6}
+2026-10-27 11:27:03,765 | INFO | [TC 1] Target data sample (5 of 76 records):
+2026-10-27 11:27:03,765 | INFO |   1: {'PA_GROUP_ID': 3635, 'BUSINESS_ID': 109, 'STATUS_ID': 6, 'PA_GROUP_NAME': 'Ambulance Transport', 'DESCRIPTION': 'Ambulance Transport'}
+2026-10-27 11:27:03,765 | INFO |   2: {'PA_GROUP_ID': 3636, 'BUSINESS_ID': 109, 'STATUS_ID': 6, 'PA_GROUP_NAME': 'Auditory Implants', 'DESCRIPTION': 'Auditory Implants\r\n'}
+2026-10-27 11:27:03,765 | INFO |   3: {'PA_GROUP_ID': 3637, 'BUSINESS_ID': 109, 'STATUS_ID': 6, 'PA_GROUP_NAME': 'Bariatrics Surgery', 'DESCRIPTION': 'Bariatrics Surgery'}
+2026-10-27 11:27:03,766 | INFO |   4: {'PA_GROUP_ID': 3638, 'BUSINESS_ID': 109, 'STATUS_ID': 6, 'PA_GROUP_NAME': 'Cardiovascular Surgery', 'DESCRIPTION': 'Cardiovascular Surgery'}
+2026-10-27 11:27:03,766 | INFO |   5: {'PA_GROUP_ID': 3639, 'BUSINESS_ID': 109, 'STATUS_ID': 6, 'PA_GROUP_NAME': 'Chronic Low Back Pain Treatment', 'DESCRIPTION': 'Chronic Low Back Pain Treatment'}
+2026-10-27 11:27:03,766 | INFO | [SRC->TGT]  - Total source MONGODB records: 76
+2026-10-27 11:27:03,766 | INFO | [SRC->TGT]  - Total target ORACLE records: 76
+2026-10-27 11:27:03,766 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-27 11:27:03,766 | INFO | [TGT->SRC]  - Total source ORACLE records: 76
+2026-10-27 11:27:03,766 | INFO | [TGT->SRC]  - Total target MONGODB records: 76
+2026-10-27 11:27:03,766 | INFO | Data comparison process completed.
+2026-10-27 11:27:03,766 | INFO | [TestCase 1] Test Result: PASS
+2026-10-27 11:27:03,767 | INFO | Execution time for TestCase 1: 4.47 seconds
+2026-10-27 11:27:04,552 | INFO | ========== [ Running TestCase 6: PA_GROUP_DOMAINS matches PAGroup.Domains[] ] ==========
+2026-10-27 11:27:04,552 | INFO | TestCase 6: Source [MONGODB PIPELINE] db.PAGroup.aggregate:
+[
+  {"$unwind": "$Domains"},
+  {"$project": {"_id": 0, "PAGroup_ID": 1, "Domains.ServiceDomain_ID": 1, "Domains.ServiceDomain": 1, "Domains.ExpressionGroupNum": 1, "Domains.AppliesToFormType": 1, "Business.Business_ID": 1}}
+]
+2026-10-27 11:27:04,552 | INFO | TestCase 6: Target [ORACLE]:SELECT PA_GROUP_ID
+  ,SERVICE_DOMAIN_ID
+  ,SERVICE_DOMAIN
+  ,EXPR_GROUP_NUM
+  ,APPLIES_TO_FORM_TYPE
+  ,BUSINESS_ID 
+  FROM DW.PA_GROUP_DOMAINS
+2026-10-27 11:27:04,552 | INFO | [TC 6] Source data sample (5 of 190 records):
+2026-10-27 11:27:04,552 | INFO |   1: {'PAGroup_ID': 3635, 'Business.Business_ID': 109, 'Domains.ServiceDomain_ID': 1000000, 'Domains.ServiceDomain': 'Claim Line Service Code', 'Domains.ExpressionGroupNum': 1, 'Domains.AppliesToFormType': 'BOTH'}
+2026-10-27 11:27:04,553 | INFO |   2: {'PAGroup_ID': 3636, 'Business.Business_ID': 109, 'Domains.ServiceDomain_ID': 1000000, 'Domains.ServiceDomain': 'Claim Line Service Code', 'Domains.ExpressionGroupNum': 1, 'Domains.AppliesToFormType': 'BOTH'}
+2026-10-27 11:27:04,553 | INFO |   3: {'PAGroup_ID': 3637, 'Business.Business_ID': 109, 'Domains.ServiceDomain_ID': 1000000, 'Domains.ServiceDomain': 'Claim Line Service Code', 'Domains.ExpressionGroupNum': 1, 'Domains.AppliesToFormType': 'BOTH'}
+2026-10-27 11:27:04,553 | INFO |   4: {'PAGroup_ID': 3638, 'Business.Business_ID': 109, 'Domains.ServiceDomain_ID': 1000000, 'Domains.ServiceDomain': 'Claim Line Service Code', 'Domains.ExpressionGroupNum': 1, 'Domains.AppliesToFormType': 'BOTH'}
+2026-10-27 11:27:04,553 | INFO |   5: {'PAGroup_ID': 3639, 'Business.Business_ID': 109, 'Domains.ServiceDomain_ID': 1000000, 'Domains.ServiceDomain': 'Claim Line Service Code', 'Domains.ExpressionGroupNum': 1, 'Domains.AppliesToFormType': 'BOTH'}
+2026-10-27 11:27:04,553 | INFO | [TC 6] Target data sample (5 of 24526 records):
+2026-10-27 11:27:04,553 | INFO |   1: {'PA_GROUP_ID': 4031, 'SERVICE_DOMAIN_ID': 1000000, 'SERVICE_DOMAIN': 'Claim Line Service Code', 'EXPR_GROUP_NUM': 1, 'APPLIES_TO_FORM_TYPE': 'BOTH', 'BUSINESS_ID': 2066}
+2026-10-27 11:27:04,553 | INFO |   2: {'PA_GROUP_ID': 4031, 'SERVICE_DOMAIN_ID': 1000000, 'SERVICE_DOMAIN': 'Claim Line Service Code', 'EXPR_GROUP_NUM': 1, 'APPLIES_TO_FORM_TYPE': 'BOTH', 'BUSINESS_ID': 2066}
+2026-10-27 11:27:04,554 | INFO |   3: {'PA_GROUP_ID': 4031, 'SERVICE_DOMAIN_ID': 1000000, 'SERVICE_DOMAIN': 'Claim Line Service Code', 'EXPR_GROUP_NUM': 1, 'APPLIES_TO_FORM_TYPE': 'BOTH', 'BUSINESS_ID': 2066}
+2026-10-27 11:27:04,554 | INFO |   4: {'PA_GROUP_ID': 4031, 'SERVICE_DOMAIN_ID': 1000000, 'SERVICE_DOMAIN': 'Claim Line Service Code', 'EXPR_GROUP_NUM': 1, 'APPLIES_TO_FORM_TYPE': 'BOTH', 'BUSINESS_ID': 2066}
+2026-10-27 11:27:04,554 | INFO |   5: {'PA_GROUP_ID': 4031, 'SERVICE_DOMAIN_ID': 1000000, 'SERVICE_DOMAIN': 'Claim Line Service Code', 'EXPR_GROUP_NUM': 1, 'APPLIES_TO_FORM_TYPE': 'BOTH', 'BUSINESS_ID': 2066}
+2026-10-27 11:27:04,554 | INFO | [SRC->TGT]  - Total source MONGODB records: 190
+2026-10-27 11:27:04,554 | INFO | [SRC->TGT]  - Total target ORACLE records: 24526
+2026-10-27 11:27:04,554 | ISSUE | [SRC->TGT] Field Domains.ExpressionGroupNum vs EXPR_GROUP_NUM: 79314 mismatch(es), showing first 5
+2026-10-27 11:27:04,554 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=2
+2026-10-27 11:27:04,554 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=2
+2026-10-27 11:27:04,555 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=2
+2026-10-27 11:27:04,555 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=3
+2026-10-27 11:27:04,555 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=4
+2026-10-27 11:27:04,555 | ISSUE | [SRC->TGT] Field Domains.AppliesToFormType vs APPLIES_TO_FORM_TYPE: 200 mismatch(es), showing first 5
+2026-10-27 11:27:04,555 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=BOTH != APPLIES_TO_FORM_TYPE=UB04
+2026-10-27 11:27:04,555 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=BOTH != APPLIES_TO_FORM_TYPE=UB04
+2026-10-27 11:27:04,555 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=BOTH != APPLIES_TO_FORM_TYPE=UB04
+2026-10-27 11:27:04,556 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=UB04 != APPLIES_TO_FORM_TYPE=BOTH
+2026-10-27 11:27:04,556 | ISSUE | [SRC->TGT] Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=UB04 != APPLIES_TO_FORM_TYPE=BOTH
+2026-10-27 11:27:04,556 | ISSUE | Total Mismatches: 79514
+2026-10-27 11:27:04,556 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-27 11:27:04,556 | INFO | [TGT->SRC]  - Total source ORACLE records: 24526
+2026-10-27 11:27:04,556 | INFO | [TGT->SRC]  - Total target MONGODB records: 190
+2026-10-27 11:27:04,556 | ISSUE | [TGT->SRC] Field EXPR_GROUP_NUM vs Domains.ExpressionGroupNum: 79314 mismatch(es), showing first 5
+2026-10-27 11:27:04,556 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=2
+2026-10-27 11:27:04,556 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=3
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=4
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=5
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=6
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Field APPLIES_TO_FORM_TYPE vs Domains.AppliesToFormType: 200 mismatch(es), showing first 5
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04
+2026-10-27 11:27:04,557 | ISSUE | [TGT->SRC] Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04
+2026-10-27 11:27:04,558 | ISSUE | Total Mismatches: 79514
+2026-10-27 11:27:04,558 | INFO | Data comparison process completed.
+2026-10-27 11:27:04,558 | ISSUE | [TestCase 6] Test Result: FAIL
+2026-10-27 11:27:04,558 | INFO | Execution time for TestCase 6: 5.25 seconds
+2026-10-27 11:27:04,622 | INFO | Total Number of Testcases Executed : 2,Pass : 1, Fail : 1, Skippped : 0
+2026-10-27 11:27:04,623 | INFO | Total execution time: 5.33 seconds (0.1 minutes)
+2026-10-27 11:27:04,665 | INFO | Master combined log written to: MCPQA1_PAGroup_Log_20261027_152704.json
+2026-10-27 11:27:04,674 | INFO | Result.InsertData : 6ae0c2c83fbd6c265f526488
+2026-10-27 11:27:08,339 | INFO | ========== Completed Validation ==========

@@ -1,0 +1,198 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Ensure that there are no null values in the 'Cardholder_ID' and 'ElectionStartDate' fields.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": "MONGODB",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "JoinFields": [],
+    "CompareFields": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ],
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Verify that there are no duplicate 'Cardholder_ID' records in the source data.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": "MONGODB",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "JoinFields": [],
+    "CompareFields": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": ""
+      }
+    ],
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Validate that 'ElectionStartDate' and 'ElectionEndDate' fields contain only date values in the format YYYYMMDD.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": "MONGODB",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "JoinFields": [],
+    "CompareFields": [
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": ""
+      }
+    ],
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Record_Count",
+    "TestDescription": "Check if the row count in source data matches with target data.",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": "MONGODB",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "JoinFields": [],
+    "CompareFields": [
+      {
+        "SourceField": "",
+        "TargetField": ""
+      }
+    ],
+    "DataFilters": []
+  }
+]

@@ -1,0 +1,4806 @@
+#File_fetcher.py
+
+import os
+import io
+import re
+import time
+import uuid
+import ftplib
+import logging
+import tempfile
+import fnmatch
+from pathlib import Path
+from datetime import datetime
+
+logger = logging.getLogger()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Supported retrieval types
+# ─────────────────────────────────────────────────────────────────────────────
+FILE_TYPES = {
+    "CSV", "PIPE", "TSV", "FIXED_WIDTH", "EXCEL",
+    "JSON", "XML", "HL7", "NCPDP_D0", "NCPDP_SCRIPT",
+    "LOCAL_PATH", "UNC_PATH", "SFTP", "FTP",
+    "S3", "AZURE_BLOB", "ORACLE_CLOB", "MONGODB_GRIDFS",
+    "API_CALL", "AUTO"
+}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Config helper
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _get_config(credential_key: str) -> dict:
+    """
+    Reads all config values for a credential key from environment.ini.
+    Returns dict of all key-value pairs under that section.
+    """
+    from .Read_config import config_read
+    cr      = config_read()
+    section = credential_key.upper()
+    try:
+        # Read all known connection fields
+        fields = [
+            "sftp_host", "sftp_port", "sftp_user", "sftp_password",
+            "sftp_private_key", "sftp_passphrase", "sftp_verify_host",
+            "sftp_connect_timeout_secs", "sftp_read_timeout_secs",
+            "ftp_host", "ftp_port", "ftp_user", "ftp_password",
+            "ftp_passive", "ftp_tls", "ftp_timeout_secs",
+            "s3_access_key", "s3_secret_key", "s3_use_iam_role",
+            "s3_role_arn", "s3_region", "s3_timeout_secs",
+            "azure_connection_string", "azure_account", "azure_key",
+            "azure_sas_token", "azure_use_managed_identity", "azure_timeout_secs",
+            "api_url", "api_key", "api_token", "api_timeout_secs",
+        ]
+        config = {}
+        for field in fields:
+            try:
+                config[field] = cr.get_conf_data(section, field)
+            except Exception:
+                config[field] = ""
+        return config
+    except Exception:
+        return {}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Auto-detection
+# ─────────────────────────────────────────────────────────────────────────────
+
+def detect_location_type(location: str, step: dict = None) -> str:
+    """
+    Auto-detects retrieval type from location value.
+    Explicit Type in step always overrides.
+
+    Returns one of: API_CALL, AZURE_BLOB, S3, SFTP, FTP,
+                    UNC_PATH, LOCAL_PATH, ORACLE_CLOB,
+                    MONGODB_GRIDFS, AUTO
+    """
+    location = (location or "").strip()
+    step     = step or {}
+
+    # Explicit type overrides auto-detection
+    explicit = (step.get("Type") or "").upper()
+    if explicit and explicit != "AUTO":
+        return explicit
+
+    # Azure Blob (check before https)
+    if "blob.core.windows.net" in location:
+        return "AZURE_BLOB"
+
+    # HTTPS / HTTP — API call
+    if location.startswith(("https://", "http://")):
+        return "API_CALL"
+
+    # S3
+    if location.startswith("s3://"):
+        return "S3"
+
+    # SFTP explicit
+    if location.startswith("sftp://"):
+        return "SFTP"
+
+    # FTP explicit
+    if location.startswith(("ftp://", "ftps://")):
+        return "FTP"
+
+    # UNC path — Windows network share
+    if location.startswith(("\\\\", "//")):
+        return "UNC_PATH"
+
+    # Windows local path — drive letter
+    if len(location) > 1 and location[1] == ":":
+        return "LOCAL_PATH"
+
+    # Oracle CLOB reference
+    if any(kw in location.upper() for kw in ["SELECT ", "WHERE ", "FROM "]):
+        return "ORACLE_CLOB"
+
+    # MongoDB GridFS
+    if location.startswith("gridfs://"):
+        return "MONGODB_GRIDFS"
+
+    # Unix path — use SFTP if Host defined in step
+    if location.startswith("/"):
+        if step.get("Host") or step.get("CredentialKey"):
+            return "SFTP"
+        return "LOCAL_PATH"
+
+    # Cannot determine — default to LOCAL_PATH
+    logger.warning(
+        f"File_fetcher: Cannot auto-detect location type for '{location}' — "
+        f"defaulting to LOCAL_PATH."
+    )
+    return "LOCAL_PATH"
+
+
+def detect_compression(content: bytes) -> str:
+    """
+    Detects compression format from magic bytes.
+    Returns: ZIP, GZIP, BZIP2, TAR_GZ, or None
+    """
+    if not content or len(content) < 4:
+        return None
+
+    # ZIP
+    if content[:4] == b"PK\x03\x04":
+        return "ZIP"
+
+    # GZIP
+    if content[:2] == b"\x1f\x8b":
+        return "GZIP"
+
+    # BZIP2
+    if content[:3] == b"BZh":
+        return "BZIP2"
+
+    return None
+
+
+def detect_encryption(content: bytes) -> str:
+    """
+    Detects PGP encryption from magic bytes or ASCII armor.
+    Returns: PGP or None
+    """
+    if not content:
+        return None
+
+    # ASCII armored PGP
+    try:
+        sample = content[:100].decode("utf-8", errors="ignore")
+        if "-----BEGIN PGP" in sample:
+            return "PGP"
+    except Exception:
+        pass
+
+    # Binary PGP
+    if len(content) >= 2 and content[0] in (0x85, 0xc1, 0xc2, 0xc3):
+        return "PGP"
+
+    return None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Decompression
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _decompress(content: bytes, compression: str,
+                inner_filename: str = None) -> bytes:
+    """
+    Decompresses content using specified or auto-detected method.
+    For ZIP with multiple files uses inner_filename to select correct file.
+    """
+    import zipfile
+    import gzip
+    import bz2
+
+    compression = (compression or "").upper()
+
+    if compression == "AUTO" or not compression:
+        compression = detect_compression(content) or "NONE"
+
+    if compression == "NONE":
+        return content
+
+    if compression == "ZIP":
+        with zipfile.ZipFile(io.BytesIO(content)) as zf:
+            names = zf.namelist()
+            if not names:
+                raise ValueError("ZIP file is empty.")
+
+            # Select file inside ZIP
+            if inner_filename:
+                # Try exact match first
+                if inner_filename in names:
+                    target = inner_filename
+                else:
+                    # Try pattern match
+                    matched = [
+                        n for n in names
+                        if fnmatch.fnmatch(n.lower(), inner_filename.lower())
+                    ]
+                    if not matched:
+                        raise ValueError(
+                            f"File '{inner_filename}' not found in ZIP. "
+                            f"Available: {names}"
+                        )
+                    target = matched[0]
+            elif len(names) == 1:
+                target = names[0]
+            else:
+                # Multiple files — pick first non-directory
+                data_files = [n for n in names if not n.endswith("/")]
+                if not data_files:
+                    raise ValueError("ZIP contains only directories.")
+                if len(data_files) > 1:
+                    raise ValueError(
+                        f"ZIP contains multiple files — specify FileName to select: {data_files}"
+                    )
+                target = data_files[0]
+
+            logger.info(f"File_fetcher: Extracting '{target}' from ZIP.")
+            return zf.read(target)
+
+    elif compression == "GZIP":
+        return gzip.decompress(content)
+
+    elif compression == "BZIP2":
+        return bz2.decompress(content)
+
+    elif compression == "TAR_GZ":
+        import tarfile
+        with tarfile.open(fileobj=io.BytesIO(content), mode="r:gz") as tf:
+            members = [m for m in tf.getmembers() if m.isfile()]
+            if not members:
+                raise ValueError("TAR.GZ archive is empty.")
+            if len(members) == 1:
+                f = tf.extractfile(members[0])
+                return f.read()
+            # Multiple files — use inner_filename
+            if inner_filename:
+                matched = [
+                    m for m in members
+                    if fnmatch.fnmatch(m.name, inner_filename)
+                ]
+                if matched:
+                    f = tf.extractfile(matched[0])
+                    return f.read()
+            raise ValueError(
+                f"TAR.GZ contains multiple files — specify FileName: "
+                f"{[m.name for m in members]}"
+            )
+
+    else:
+        raise ValueError(f"Unsupported compression format: {compression}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Decryption
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _decrypt(content: bytes, encryption_key: str) -> bytes:
+    """
+    Decrypts PGP encrypted content using private key from config.
+    Requires pgpy library: pip install pgpy
+    """
+    if not encryption_key:
+        return content
+
+    try:
+        import pgpy
+    except ImportError:
+        raise ImportError(
+            "pgpy library required for PGP decryption. "
+            "Install with: pip install pgpy"
+        )
+
+    from .Read_config import config_read
+    cr = config_read()
+
+    try:
+        key_path   = cr.get_conf_data(encryption_key.upper(), "private_key_path")
+        passphrase = cr.get_conf_data(encryption_key.upper(), "passphrase")
+    except Exception:
+        raise ValueError(
+            f"PGP credentials not found for key '{encryption_key}'. "
+            f"Add [{{encryption_key}}] section with private_key_path and passphrase "
+            f"to environment.ini."
+        )
+
+    key, _ = pgpy.PGPKey.from_file(key_path)
+
+    with key.unlock(passphrase):
+        try:
+            # Try ASCII armored
+            message   = pgpy.PGPMessage.from_blob(content)
+            decrypted = key.decrypt(message)
+            result    = decrypted.message
+            if isinstance(result, str):
+                return result.encode("utf-8")
+            return result
+        except Exception as e:
+            raise ValueError(f"PGP decryption failed: {e}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Secure temp file handling
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TempFileManager:
+    """
+    Manages temp files with secure deletion on cleanup.
+    Used as context manager:
+
+        with TempFileManager() as tmp:
+            path = tmp.create("content_bytes")
+            # use path
+        # file securely deleted on exit
+    """
+
+    def __init__(self, secure_delete: bool = True, passes: int = 1):
+        self._files        = []
+        self._secure_delete = secure_delete
+        self._passes       = passes
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.cleanup()
+
+    def create(self, content: bytes, suffix: str = ".tmp") -> str:
+        fd, path = tempfile.mkstemp(suffix=suffix, prefix="edi_work_")
+        try:
+            with os.fdopen(fd, "wb") as f:
+                f.write(content)
+        except Exception:
+            os.close(fd)
+            raise
+        self._files.append(path)
+        logger.info(
+            f"File_fetcher: Temp file created — {path} "
+            f"({len(content):,} bytes)"
+        )
+        return path
+
+    def cleanup(self):
+        for path in self._files:
+            try:
+                if os.path.exists(path):
+                    if self._secure_delete:
+                        self._overwrite(path)
+                    os.remove(path)
+                    logger.info(
+                        f"File_fetcher: Temp file "
+                        f"{'securely ' if self._secure_delete else ''}deleted — {path}"
+                    )
+            except Exception as e:
+                logger.warning(
+                    f"File_fetcher: Failed to delete temp file {path}: {e} — "
+                    f"manual cleanup required."
+                )
+        self._files = []
+
+    def _overwrite(self, path: str):
+        size = os.path.getsize(path)
+        for _ in range(self._passes):
+            with open(path, "wb") as f:
+                f.write(b"\x00" * size)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Retry decorator
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _with_retry(func, attempts: int = 2, wait_minutes: float = 5):
+    """
+    Retries func up to attempts times with wait_minutes gap.
+    Raises last exception if all attempts fail.
+    """
+    last_error = None
+    for attempt in range(1, attempts + 1):
+        try:
+            logger.info(f"File_fetcher: Fetch attempt {attempt}/{attempts}")
+            return func()
+        except Exception as e:
+            last_error = e
+            if attempt < attempts:
+                wait_secs = wait_minutes * 60
+                logger.issue(
+                    f"File_fetcher: Attempt {attempt} failed — {e}. "
+                    f"Retrying in {wait_minutes} minute(s)..."
+                )
+                time.sleep(wait_secs)
+            else:
+                logger.issue(
+                    f"File_fetcher: All {attempts} attempt(s) failed — {e}"
+                )
+
+    raise last_error
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# File selection helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _select_file(files: list, filename: str = None,
+                 file_pattern: str = None,
+                 pick_strategy: str = "LATEST") -> list:
+    """
+    Selects file(s) from a list of (name, modified_dt, size) tuples.
+
+    Rules:
+        filename specified    → exact match
+        file_pattern specified → pattern match, apply pick_strategy
+        both specified        → filename takes priority
+        neither               → error
+
+    pick_strategy:
+        LATEST → return single latest modified file
+        ALL    → return all matching files
+
+    Returns list of selected filenames.
+    """
+    if not files:
+        raise ValueError("No files found in the specified location.")
+
+    # Exact filename match
+    if filename:
+        matched = [f for f in files if f[0] == filename or
+                   os.path.basename(f[0]) == filename]
+        if not matched:
+            raise FileNotFoundError(
+                f"File '{filename}' not found. "
+                f"Available: {[f[0] for f in files[:10]]}"
+            )
+        return [matched[0][0]]
+
+    # Pattern match
+    if file_pattern:
+        matched = [
+            f for f in files
+            if fnmatch.fnmatch(
+                os.path.basename(f[0]).lower(),
+                file_pattern.lower()
+            )
+        ]
+        if not matched:
+            raise FileNotFoundError(
+                f"No files matching pattern '{file_pattern}'. "
+                f"Available: {[f[0] for f in files[:10]]}"
+            )
+
+        logger.info(
+            f"File_fetcher: Pattern '{file_pattern}' matched "
+            f"{len(matched)} file(s)"
+        )
+
+        if (pick_strategy or "LATEST").upper() == "ALL":
+            # Sort by modified date for consistent ordering
+            matched.sort(key=lambda f: f[1] or datetime.min, reverse=True)
+            for f in matched:
+                logger.info(
+                    f"File_fetcher: Using '{f[0]}' "
+                    f"(modified: {f[1]}, {f[2]:,} bytes)"
+                )
+            return [f[0] for f in matched]
+        else:
+            # LATEST — sort by modified date, pick newest
+            # Handle None modified dates
+            matched.sort(
+                key=lambda f: f[1] or datetime.min,
+                reverse=True
+            )
+            # Warn if tie
+            if (len(matched) > 1 and
+                    matched[0][1] and matched[1][1] and
+                    matched[0][1] == matched[1][1]):
+                logger.warning(
+                    f"File_fetcher: Two files have same modified time — "
+                    f"picking alphabetically last: {matched[0][0]}"
+                )
+            selected = matched[0]
+            logger.info(
+                f"File_fetcher: Selected latest — '{selected[0]}' "
+                f"(modified: {selected[1]}, {selected[2]:,} bytes)"
+            )
+            return [selected[0]]
+
+    raise ValueError(
+        "Either FileName or FilePattern must be specified in Source."
+    )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Retrievers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _fetch_local(source: dict) -> list:
+    """
+    Fetches file(s) from LOCAL_PATH or UNC_PATH.
+    Returns list of (filename, bytes) tuples.
+    """
+    path         = source.get("Path", "")
+    filename     = source.get("FileName", "")
+    file_pattern = source.get("FilePattern", "")
+    pick_strategy= source.get("PickStrategy", "LATEST")
+
+    if not path:
+        raise ValueError("Source.Path is required for LOCAL_PATH / UNC_PATH.")
+
+    base_path = Path(path)
+    if not base_path.exists():
+        raise FileNotFoundError(f"Path not found: {path}")
+
+    # List files with metadata
+    files = []
+    for f in base_path.iterdir():
+        if f.is_file():
+            stat     = f.stat()
+            modified = datetime.fromtimestamp(stat.st_mtime)
+            files.append((f.name, modified, stat.st_size))
+
+    selected = _select_file(files, filename, file_pattern, pick_strategy)
+
+    result = []
+    for name in selected:
+        full_path = base_path / name
+        logger.info(f"File_fetcher: Reading local file — {full_path}")
+        content = full_path.read_bytes()
+        result.append((name, content))
+
+    return result
+
+
+def _fetch_sftp(source: dict) -> list:
+    """
+    Fetches file(s) from SFTP server.
+    Returns list of (filename, bytes) tuples.
+    """
+    import paramiko
+
+    credential_key = source.get("CredentialKey", "")
+    path           = source.get("Path", "")
+    filename       = source.get("FileName", "")
+    file_pattern   = source.get("FilePattern", "")
+    pick_strategy  = source.get("PickStrategy", "LATEST")
+    host           = source.get("Host", "")
+    port           = int(source.get("Port", 0) or 0)
+    config         = _get_config(credential_key) if credential_key else {}
+
+    # Connection details — step overrides config
+    sftp_host    = host or config.get("sftp_host", "")
+    sftp_port    = port or int(config.get("sftp_port", "22") or 22)
+    sftp_user    = config.get("sftp_user", "")
+    sftp_pass    = config.get("sftp_password", "")
+    key_path     = config.get("sftp_private_key", "")
+    passphrase   = config.get("sftp_passphrase", "")
+    verify_host  = (config.get("sftp_verify_host", "true") or "true").lower() == "true"
+    conn_timeout = int(config.get("sftp_connect_timeout_secs", "30") or 30)
+    read_timeout = int(config.get("sftp_read_timeout_secs",    "300") or 300)
+
+    if not sftp_host:
+        raise ValueError(
+            f"SFTP host not configured for CredentialKey '{credential_key}'. "
+            f"Add sftp_host to [{credential_key}] in environment.ini."
+        )
+
+    # Build SSH client
+    ssh = paramiko.SSHClient()
+
+    if verify_host:
+        ssh.load_system_host_keys()
+        ssh.set_missing_host_key_policy(paramiko.RejectPolicy())
+    else:
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    # Auth — private key takes priority over password
+    connect_kwargs = {
+        "hostname": sftp_host,
+        "port"    : sftp_port,
+        "username": sftp_user,
+        "timeout" : conn_timeout
+    }
+
+    if key_path:
+        pkey = paramiko.RSAKey.from_private_key_file(
+            key_path,
+            password=passphrase or None
+        )
+        connect_kwargs["pkey"] = pkey
+        logger.info(
+            f"File_fetcher: SFTP connecting to {sftp_host}:{sftp_port} "
+            f"(key auth)"
+        )
+    elif sftp_pass:
+        connect_kwargs["password"] = sftp_pass
+        logger.info(
+            f"File_fetcher: SFTP connecting to {sftp_host}:{sftp_port} "
+            f"(password auth)"
+        )
+    else:
+        raise ValueError(
+            f"No SFTP credentials configured for '{credential_key}'. "
+            f"Add sftp_password or sftp_private_key to environment.ini."
+        )
+
+    ssh.connect(**connect_kwargs)
+    sftp = ssh.open_sftp()
+    sftp.sock.settimeout(read_timeout)
+
+    try:
+        # List files in remote directory
+        remote_files = []
+        for attr in sftp.listdir_attr(path):
+            if not stat_is_dir(attr):
+                modified = (
+                    datetime.fromtimestamp(attr.st_mtime)
+                    if attr.st_mtime else None
+                )
+                remote_files.append(
+                    (attr.filename, modified, attr.st_size or 0)
+                )
+
+        selected = _select_file(
+            remote_files, filename, file_pattern, pick_strategy
+        )
+
+        result = []
+        for name in selected:
+            remote_path = path.rstrip("/") + "/" + name
+            logger.info(
+                f"File_fetcher: SFTP downloading — {remote_path}"
+            )
+            buf = io.BytesIO()
+            sftp.getfo(remote_path, buf)
+            result.append((name, buf.getvalue()))
+
+        return result
+
+    finally:
+        sftp.close()
+        ssh.close()
+
+
+def stat_is_dir(attr) -> bool:
+    """Checks if paramiko SFTPAttributes is a directory."""
+    import stat
+    return stat.S_ISDIR(attr.st_mode) if attr.st_mode else False
+
+
+def _fetch_ftp(source: dict) -> list:
+    """
+    Fetches file(s) from FTP server.
+    Returns list of (filename, bytes) tuples.
+    """
+    credential_key = source.get("CredentialKey", "")
+    path           = source.get("Path", "")
+    filename       = source.get("FileName", "")
+    file_pattern   = source.get("FilePattern", "")
+    pick_strategy  = source.get("PickStrategy", "LATEST")
+    config         = _get_config(credential_key) if credential_key else {}
+
+    ftp_host    = source.get("Host", "") or config.get("ftp_host", "")
+    ftp_port    = int(source.get("Port", 0) or config.get("ftp_port", "21") or 21)
+    ftp_user    = config.get("ftp_user", "")
+    ftp_pass    = config.get("ftp_password", "")
+    ftp_passive = (config.get("ftp_passive", "true") or "true").lower() == "true"
+    ftp_tls     = (config.get("ftp_tls", "true") or "true").lower() == "true"
+    ftp_timeout = int(config.get("ftp_timeout_secs", "300") or 300)
+
+    if not ftp_host:
+        raise ValueError(
+            f"FTP host not configured for CredentialKey '{credential_key}'."
+        )
+
+    if ftp_tls:
+        ftp = ftplib.FTP_TLS(timeout=ftp_timeout)
+        ftp.connect(ftp_host, ftp_port)
+        ftp.auth()
+        ftp.login(ftp_user, ftp_pass)
+        ftp.prot_p()
+    else:
+        ftp = ftplib.FTP(timeout=ftp_timeout)
+        ftp.connect(ftp_host, ftp_port)
+        ftp.login(ftp_user, ftp_pass)
+
+    ftp.set_pasv(ftp_passive)
+
+    try:
+        ftp.cwd(path)
+
+        # List files with modification times
+        remote_files = []
+        lines = []
+        ftp.retrlines("LIST", lines.append)
+
+        for line in lines:
+            parts = line.split(None, 8)
+            if len(parts) >= 9:
+                name     = parts[8]
+                size     = int(parts[4]) if parts[4].isdigit() else 0
+                modified = None
+                try:
+                    # Try to parse modification time
+                    date_str = " ".join(parts[5:8])
+                    modified = datetime.strptime(date_str, "%b %d %H:%M")
+                    modified = modified.replace(year=datetime.now().year)
+                except Exception:
+                    pass
+                remote_files.append((name, modified, size))
+
+        selected = _select_file(
+            remote_files, filename, file_pattern, pick_strategy
+        )
+
+        result = []
+        for name in selected:
+            logger.info(f"File_fetcher: FTP downloading — {path}/{name}")
+            buf = io.BytesIO()
+            ftp.retrbinary(f"RETR {name}", buf.write)
+            result.append((name, buf.getvalue()))
+
+        return result
+
+    finally:
+        ftp.quit()
+
+
+def _fetch_s3(source: dict) -> list:
+    """
+    Fetches file(s) from AWS S3.
+    Returns list of (filename, bytes) tuples.
+    """
+    try:
+        import boto3
+        from botocore.exceptions import ClientError
+    except ImportError:
+        raise ImportError(
+            "boto3 library required for S3 access. "
+            "Install with: pip install boto3"
+        )
+
+    credential_key = source.get("CredentialKey", "")
+    bucket         = source.get("Bucket", "")
+    path           = source.get("Path", "").strip("/")
+    filename       = source.get("FileName", "")
+    file_pattern   = source.get("FilePattern", "")
+    pick_strategy  = source.get("PickStrategy", "LATEST")
+    config         = _get_config(credential_key) if credential_key else {}
+
+    region          = config.get("s3_region", "us-east-1") or "us-east-1"
+    access_key      = config.get("s3_access_key", "")
+    secret_key      = config.get("s3_secret_key", "")
+    use_iam         = (config.get("s3_use_iam_role", "false") or "false").lower() == "true"
+    role_arn        = config.get("s3_role_arn", "")
+    timeout         = int(config.get("s3_timeout_secs", "300") or 300)
+
+    # Build S3 client
+    if use_iam:
+        s3 = boto3.client("s3", region_name=region)
+    elif role_arn:
+        sts      = boto3.client("sts")
+        assumed  = sts.assume_role(
+            RoleArn=role_arn,
+            RoleSessionName=f"file_validator_{uuid.uuid4().hex[:8]}"
+        )
+        creds    = assumed["Credentials"]
+        s3 = boto3.client(
+            "s3",
+            region_name=region,
+            aws_access_key_id=creds["AccessKeyId"],
+            aws_secret_access_key=creds["SecretAccessKey"],
+            aws_session_token=creds["SessionToken"]
+        )
+    elif access_key and secret_key:
+        s3 = boto3.client(
+            "s3",
+            region_name=region,
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key
+        )
+    else:
+        raise ValueError(
+            f"No S3 credentials configured for '{credential_key}'. "
+            f"Set s3_use_iam_role, s3_role_arn, or s3_access_key/s3_secret_key."
+        )
+
+    # Build prefix for listing
+    prefix = f"{path}/" if path else ""
+
+    # List objects
+    paginator = s3.get_paginator("list_objects_v2")
+    s3_files  = []
+
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page.get("Contents", []):
+            key      = obj["Key"]
+            name     = os.path.basename(key)
+            modified = obj.get("LastModified")
+            size     = obj.get("Size", 0)
+            if name:
+                s3_files.append((name, modified, size, key))
+
+    # Filter by pattern
+    if file_pattern:
+        s3_files = [
+            f for f in s3_files
+            if fnmatch.fnmatch(f[0].lower(), file_pattern.lower())
+        ]
+
+    if not s3_files:
+        raise FileNotFoundError(
+            f"No files found in s3://{bucket}/{prefix} "
+            f"matching pattern '{file_pattern}'."
+        )
+
+    # Select file(s)
+    file_tuples = [(f[0], f[1], f[2]) for f in s3_files]
+    selected_names = _select_file(
+        file_tuples, filename, file_pattern, pick_strategy
+    )
+
+    result = []
+    for name in selected_names:
+        # Find full key for this filename
+        matching_keys = [f[3] for f in s3_files if f[0] == name]
+        if not matching_keys:
+            continue
+        key = matching_keys[0]
+        logger.info(f"File_fetcher: S3 downloading — s3://{bucket}/{key}")
+        response = s3.get_object(Bucket=bucket, Key=key)
+        content  = response["Body"].read()
+        result.append((name, content))
+
+    return result
+
+
+def _fetch_azure_blob(source: dict) -> list:
+    """
+    Fetches file(s) from Azure Blob Storage.
+    Returns list of (filename, bytes) tuples.
+    """
+    try:
+        from azure.storage.blob import BlobServiceClient
+    except ImportError:
+        raise ImportError(
+            "azure-storage-blob library required for Azure Blob access. "
+            "Install with: pip install azure-storage-blob"
+        )
+
+    credential_key = source.get("CredentialKey", "")
+    path           = source.get("Path", "").strip("/")
+    filename       = source.get("FileName", "")
+    file_pattern   = source.get("FilePattern", "")
+    pick_strategy  = source.get("PickStrategy", "LATEST")
+    config         = _get_config(credential_key) if credential_key else {}
+
+    conn_str    = config.get("azure_connection_string", "")
+    account     = config.get("azure_account", "")
+    key         = config.get("azure_key", "")
+    sas_token   = config.get("azure_sas_token", "")
+    use_managed = (
+        config.get("azure_use_managed_identity", "false") or "false"
+    ).lower() == "true"
+
+    # Parse container from path
+    path_parts = path.strip("/").split("/", 1)
+    container  = path_parts[0]
+    blob_prefix = path_parts[1] if len(path_parts) > 1 else ""
+
+    # Build client
+    if use_managed:
+        from azure.identity import ManagedIdentityCredential
+        service_client = BlobServiceClient(
+            account_url=f"https://{account}.blob.core.windows.net",
+            credential=ManagedIdentityCredential()
+        )
+    elif conn_str:
+        service_client = BlobServiceClient.from_connection_string(conn_str)
+    elif sas_token:
+        service_client = BlobServiceClient(
+            account_url=f"https://{account}.blob.core.windows.net",
+            credential=sas_token
+        )
+    elif account and key:
+        service_client = BlobServiceClient(
+            account_url=f"https://{account}.blob.core.windows.net",
+            credential=key
+        )
+    else:
+        raise ValueError(
+            f"No Azure credentials configured for '{credential_key}'."
+        )
+
+    container_client = service_client.get_container_client(container)
+
+    # List blobs
+    blobs      = container_client.list_blobs(name_starts_with=blob_prefix)
+    blob_files = []
+
+    for blob in blobs:
+        name     = os.path.basename(blob.name)
+        modified = blob.last_modified
+        size     = blob.size or 0
+        if name:
+            blob_files.append((name, modified, size, blob.name))
+
+    if not blob_files:
+        raise FileNotFoundError(
+            f"No blobs found in container '{container}' "
+            f"with prefix '{blob_prefix}'."
+        )
+
+    # Select file(s)
+    file_tuples    = [(f[0], f[1], f[2]) for f in blob_files]
+    selected_names = _select_file(
+        file_tuples, filename, file_pattern, pick_strategy
+    )
+
+    result = []
+    for name in selected_names:
+        matching = [f[3] for f in blob_files if f[0] == name]
+        if not matching:
+            continue
+        blob_name    = matching[0]
+        blob_client  = container_client.get_blob_client(blob_name)
+        logger.info(
+            f"File_fetcher: Azure Blob downloading — "
+            f"{container}/{blob_name}"
+        )
+        content = blob_client.download_blob().readall()
+        result.append((name, content))
+
+    return result
+
+
+def _fetch_oracle_clob(source: dict) -> list:
+    """
+    Fetches file content from Oracle CLOB column.
+    Returns list of (filename, bytes) tuples.
+    """
+    from .OracleDB import OracleConnection
+
+    environment = (source.get("Environment") or "").upper()
+    query       = source.get("Query", "")
+    clob_column = source.get("CLOBColumn", "")
+    chunk_size  = 65536
+
+    if not query or not clob_column:
+        raise ValueError(
+            "Source.Query and Source.CLOBColumn are required for ORACLE_CLOB."
+        )
+
+    conn   = OracleConnection(environment)
+    result = conn.fetchAllDict(query)
+
+    if not result:
+        raise ValueError(
+            f"Oracle CLOB query returned no rows: {query}"
+        )
+
+    contents = []
+    for i, row in enumerate(result):
+        clob = row.get(clob_column) or row.get(clob_column.upper())
+        if clob is None:
+            raise ValueError(
+                f"Column '{clob_column}' not found or null in row {i+1}."
+            )
+
+        # Stream CLOB content
+        if hasattr(clob, "read"):
+            # cx_Oracle LOB object — stream in chunks
+            content = b""
+            offset  = 1
+            while True:
+                chunk = clob.read(offset, chunk_size)
+                if not chunk:
+                    break
+                if isinstance(chunk, str):
+                    chunk = chunk.encode("utf-8")
+                content += chunk
+                offset  += chunk_size
+        elif isinstance(clob, str):
+            content = clob.encode("utf-8")
+        elif isinstance(clob, bytes):
+            content = clob
+        else:
+            content = str(clob).encode("utf-8")
+
+        logger.info(
+            f"File_fetcher: Oracle CLOB retrieved — "
+            f"row {i+1}, {len(content):,} bytes"
+        )
+        contents.append((f"clob_row_{i+1}.tmp", content))
+
+    return contents
+
+
+def _fetch_mongodb_gridfs(source: dict) -> list:
+    """
+    Fetches file(s) from MongoDB GridFS.
+    Returns list of (filename, bytes) tuples.
+    """
+    try:
+        import gridfs
+    except ImportError:
+        raise ImportError(
+            "pymongo required for GridFS access. "
+            "Install with: pip install pymongo"
+        )
+
+    from .MongoDB import Collection
+
+    environment = (source.get("Environment") or "").upper()
+    db          = source.get("DB", "")
+    bucket_name = source.get("Query", "fs") or "fs"
+    chunk_size  = 65536
+
+    # Build filter from DataFilters passed in context
+    mongo_filter = source.get("_mongo_filter", {})
+
+    from pymongo import MongoClient
+    from .Read_config import config_read
+    cr  = config_read()
+
+    try:
+        uri = cr.get_conf_data(environment, "mongodb_uri")
+    except Exception:
+        raise ValueError(
+            f"MongoDB URI not configured for environment '{environment}'."
+        )
+
+    client    = MongoClient(uri)
+    database  = client[db]
+    fs        = gridfs.GridFS(database, collection=bucket_name)
+
+    grid_files = list(fs.find(mongo_filter))
+
+    if not grid_files:
+        raise FileNotFoundError(
+            f"No files found in GridFS bucket '{bucket_name}' "
+            f"with filter {mongo_filter}."
+        )
+
+    result = []
+    for gf in grid_files:
+        logger.info(
+            f"File_fetcher: GridFS downloading — "
+            f"{gf.filename} ({gf.length:,} bytes)"
+        )
+        content = b""
+        while True:
+            chunk = gf.read(chunk_size)
+            if not chunk:
+                break
+            content += chunk
+        result.append((gf.filename or f"gridfs_{gf._id}.tmp", content))
+
+    return result
+
+
+def _fetch_api(source: dict) -> list:
+    """
+    Fetches file from REST API.
+    Returns list of (filename, bytes) tuples.
+    """
+    import requests
+
+    credential_key = source.get("CredentialKey", "")
+    path           = source.get("Path", "")
+    config         = _get_config(credential_key) if credential_key else {}
+
+    api_url     = path or config.get("api_url", "")
+    api_key     = config.get("api_key", "")
+    api_token   = config.get("api_token", "")
+    api_timeout = int(config.get("api_timeout_secs", "120") or 120)
+
+    if not api_url:
+        raise ValueError(
+            f"API URL not configured. Set api_url in [{credential_key}] "
+            f"or provide Path in Source."
+        )
+
+    headers = {}
+    if api_token:
+        headers["Authorization"] = f"Bearer {api_token}"
+    elif api_key:
+        headers["X-API-Key"] = api_key
+
+    logger.info(f"File_fetcher: API GET ******")
+
+    response = requests.get(api_url, headers=headers, timeout=api_timeout)
+
+    if response.status_code != 200:
+        raise ValueError(
+            f"API returned HTTP {response.status_code}: "
+            f"{response.text[:200]}"
+        )
+
+    # Extract filename from content-disposition
+    disposition = response.headers.get("content-disposition", "")
+    filename    = "api_download.tmp"
+    if "filename=" in disposition:
+        filename = (
+            disposition.split("filename=")[1]
+            .split(";")[0].strip().strip('"')
+        )
+
+    logger.info(
+        f"File_fetcher: Downloaded '{filename}' — "
+        f"{len(response.content):,} bytes."
+    )
+
+    return [(filename, response.content)]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Main entry point
+# ─────────────────────────────────────────────────────────────────────────────
+
+def fetch_file(source: dict,
+               retry_attempts: int = 2,
+               retry_wait_minutes: float = 5) -> list:
+    """
+    Fetches file(s) from any supported source type.
+    Handles auto-detection, retry, decryption and decompression.
+
+    Args:
+        source             : Source dict from test case document
+        retry_attempts     : Number of fetch attempts (default 2)
+        retry_wait_minutes : Minutes between retry attempts (default 5)
+
+    Returns:
+        List of (filename, bytes) tuples — one per file fetched.
+        For PickStrategy=LATEST — always single item list.
+        For PickStrategy=ALL    — one item per matching file.
+
+    Raises:
+        ValueError, FileNotFoundError on failure after all retries.
+    """
+    source_type  = (source.get("Type") or "").upper()
+    file_config  = source.get("FileConfig") or {}
+    compression  = (file_config.get("Compression") or "").upper()
+    encryption   = file_config.get("EncryptionKey", "")
+    inner_file   = source.get("FileName", "")
+
+    # Map format types to retrieval type when no explicit location type
+    format_only_types = {
+        "CSV", "PIPE", "TSV", "FIXED_WIDTH",
+        "EXCEL", "JSON", "XML", "HL7",
+        "NCPDP_D0", "NCPDP_SCRIPT"
+    }
+    if source_type in format_only_types:
+        source_type = detect_location_type(
+            source.get("Path", "") or source.get("Bucket", ""),
+            source
+        )
+
+    # Fetcher dispatch
+    fetcher_map = {
+        "LOCAL_PATH"     : _fetch_local,
+        "UNC_PATH"       : _fetch_local,
+        "SFTP"           : _fetch_sftp,
+        "FTP"            : _fetch_ftp,
+        "S3"             : _fetch_s3,
+        "AZURE_BLOB"     : _fetch_azure_blob,
+        "ORACLE_CLOB"    : _fetch_oracle_clob,
+        "MONGODB_GRIDFS" : _fetch_mongodb_gridfs,
+        "API_CALL"       : _fetch_api,
+    }
+
+    # Handle AUTO — detect from location value
+    if source_type == "AUTO":
+        location    = source.get("Path", "") or source.get("Bucket", "")
+        source_type = detect_location_type(location, source)
+
+    fetcher = fetcher_map.get(source_type)
+    if not fetcher:
+        raise ValueError(
+            f"Unsupported Source.Type '{source_type}'. "
+            f"Supported: {sorted(fetcher_map.keys())}"
+        )
+
+    # Fetch with retry
+    def _fetch():
+        return fetcher(source)
+
+    raw_files = _with_retry(
+        _fetch,
+        attempts=retry_attempts,
+        wait_minutes=retry_wait_minutes
+    )
+
+    # Process each file — decrypt then decompress
+    processed = []
+    for filename, content in raw_files:
+        # Auto-detect encryption
+        if not encryption:
+            enc_detected = detect_encryption(content)
+            if enc_detected:
+                logger.warning(
+                    f"File_fetcher: File '{filename}' appears encrypted "
+                    f"but no EncryptionKey specified — proceeding without decryption."
+                )
+        else:
+            logger.info(
+                f"File_fetcher: Decrypting '{filename}' "
+                f"using key '{encryption}'"
+            )
+            content = _decrypt(content, encryption)
+            logger.info(
+                f"File_fetcher: Decryption successful — '{filename}'"
+            )
+
+        # Auto-detect compression
+        if not compression or compression == "AUTO":
+            comp_detected = detect_compression(content)
+            if comp_detected:
+                logger.info(
+                    f"File_fetcher: Compression detected — "
+                    f"'{filename}' ({comp_detected})"
+                )
+                content = _decompress(content, comp_detected, inner_file)
+                logger.info(
+                    f"File_fetcher: Decompressed '{filename}' — "
+                    f"{len(content):,} bytes"
+                )
+        elif compression and compression != "NONE":
+            content = _decompress(content, compression, inner_file)
+            logger.info(
+                f"File_fetcher: Decompressed '{filename}' — "
+                f"{len(content):,} bytes"
+            )
+
+        processed.append((filename, content))
+
+    return processed
+	
+	
+
+
+
+
+
+================================================================================
+
+
+
+
+#data_fetcher.py
+
+
+=================================================================================
+
+
+
+
+	
+	
+import json
+import pdb
+
+from Libraries.MongoDB import Collection
+from Libraries.OracleDB import OracleConnection
+from .Read_config import config_read, Timezone
+cr = config_read()
+missing = cr.missing_count("No_Of_Records_Display")
+import logging
+import subprocess
+import tempfile
+import os
+
+logger = logging.getLogger()
+
+def get_data(sourceType, sourceDB, sourceQuery, sourceEnvKey,
+             targetType, targetDB, targetQuery, targetEnvKey,
+             sourceQueryType, targetQueryType,
+             source_filter=None, target_filter=None,
+             source_def=None, target_def=None):
+    """
+    Fetches data from source and target.
+    Query can be a string or list of strings — list joined with space.
+
+    New optional params (zero impact on existing calls):
+        source_def : Full Source dict from test case — used when sourceType
+                     is a file type (SFTP, CSV, LOCAL_PATH etc.)
+        target_def : Full Target dict from test case — used when targetType
+                     is a file type.
+
+    File types auto-routed to File_parser.fetch_and_parse().
+    Result returned as list of dicts — same format as Oracle/MongoDB.
+    """
+    source_data, target_data = None, None
+    source_filter = source_filter or {}
+    target_filter = target_filter or {}
+
+    # File type detection
+    from .File_fetcher import FILE_TYPES as _FILE_TYPES
+
+    # ── Normalise query — list → string joined with space ─────────────────
+    if isinstance(sourceQuery, list):
+        sourceQuery = " ".join(sourceQuery)
+    if isinstance(targetQuery, list):
+        targetQuery = " ".join(targetQuery)
+
+    # ── Source ────────────────────────────────────────────────────────────
+    try:
+        src_type_upper = (sourceType or "").upper()
+
+        if src_type_upper in _FILE_TYPES and source_def:
+            # File source — fetch and parse
+            source_data = _fetch_file_data(source_def)
+
+        elif src_type_upper == "MONGODB":
+            sourceEnvKey = sourceEnvKey.upper()
+            if sourceQueryType.upper() in ("VIEW", "COLLECTION"):
+                source_view = Collection(sourceDB, sourceQuery, sourceEnvKey)
+                source_data = source_view.getData(source_filter)
+            elif sourceQueryType.upper() == "JAVA_SCRIPT":
+                execute_js_from_query(sourceQuery, 125)
+
+        elif src_type_upper == "ORACLE":
+            sourceEnvKey = sourceEnvKey.upper()
+            source_connection = OracleConnection(sourceEnvKey)
+            if "select " not in (sourceQuery or "").lower():
+                if "." in (sourceQuery or ""):
+                    sourceQuery = "Select * from " + sourceQuery
+                else:
+                    sourceQuery = "Select * from " + sourceDB + "." + sourceQuery
+            source_data = source_connection.fetchAllDict(sourceQuery)
+
+    except Exception as e:
+        logger.issue(f"Error fetching source data ({sourceType}): {e}")
+
+    # ── Target ────────────────────────────────────────────────────────────
+    try:
+        tgt_type_upper = (targetType or "").upper()
+
+        if tgt_type_upper in _FILE_TYPES and target_def:
+            # File target — fetch and parse
+            target_data = _fetch_file_data(target_def)
+
+        elif tgt_type_upper == "MONGODB":
+            targetEnvKey = targetEnvKey.upper()
+            target_view  = Collection(targetDB, targetQuery, targetEnvKey)
+            target_data  = target_view.getData(target_filter)
+
+        elif tgt_type_upper == "ORACLE":
+            targetEnvKey = targetEnvKey.upper()
+            target_connection = OracleConnection(targetEnvKey)
+            if "select " not in (targetQuery or "").lower():
+                if "." in (targetQuery or ""):
+                    targetQuery = "Select * from " + targetQuery
+                else:
+                    targetQuery = "Select * from " + targetDB + "." + targetQuery
+            target_data = target_connection.fetchAllDict(targetQuery)
+
+    except Exception as e:
+        logger.issue(f"Error fetching target data ({targetType}): {e}")
+
+    return source_data, target_data
+
+
+def _fetch_file_data(source_def: dict) -> list:
+    """
+    Fetches and parses a file source definition.
+    Returns list of dicts — same format as Oracle/MongoDB results.
+    Raises on parse errors so test case is marked FAIL.
+    """
+    from .File_parser import fetch_and_parse
+
+    result = fetch_and_parse(
+        source             = source_def,
+        retry_attempts     = _get_file_config_int("retry_attempts", 2),
+        retry_wait_minutes = _get_file_config_float("retry_wait_minutes", 5),
+        add_source_file_column = source_def.get("AddSourceFileColumn", False)
+    )
+
+    # Log parse errors and fail if any
+    if result["parse_errors"]:
+        for err in result["parse_errors"]:
+            logger.issue(
+                f"File parse error — Row {err.get('RowNumber', '?')}: "
+                f"Column '{err.get('Column', '?')}': {err.get('Reason', '')} "
+                f"| Raw: {str(err.get('RawContent', ''))[:100]}"
+            )
+
+    if result["schema_errors"]:
+        for err in result["schema_errors"]:
+            logger.issue(f"File schema error — {err}")
+        raise ValueError(
+            f"Schema validation failed — "
+            f"{len(result['schema_errors'])} error(s). "
+            f"Cannot proceed with comparison."
+        )
+
+    if result["footer_errors"]:
+        for err in result["footer_errors"]:
+            logger.issue(f"File footer validation error — {err}")
+
+    df = result["dataframe"]
+    if df.empty:
+        return []
+
+    # Convert DataFrame to list of dicts — same as Oracle/MongoDB
+    return df.to_dict(orient="records")
+
+
+def _get_file_config_int(key: str, default: int) -> int:
+    """Reads integer file processing config from environment.ini."""
+    try:
+        val = cr.get_conf_data("FILE_PROCESSING", key)
+        return int(val) if val else default
+    except Exception:
+        return default
+
+
+def _get_file_config_float(key: str, default: float) -> float:
+    """Reads float file processing config from environment.ini."""
+    try:
+        val = cr.get_conf_data("FILE_PROCESSING", key)
+        return float(val) if val else default
+    except Exception:
+        return default
+
+
+def get_count(sourceType, sourceDB, sourceQuery, sourceEnvKey,
+              targetType, targetDB, targetQuery, targetEnvKey,
+              sourceQueryType, targetQueryType,
+              source_filter=None, target_filter=None,
+              source_def=None, target_def=None):
+    """
+    Fetches counts from source and target.
+    Query can be a string or list of strings — list joined with space.
+
+    New optional params (zero impact on existing calls):
+        source_def : Full Source dict — used when sourceType is a file type.
+        target_def : Full Target dict — used when targetType is a file type.
+
+    File row count returned as integer directly.
+    """
+    source_data, target_data = None, None
+    source_filter = source_filter or {}
+    target_filter = target_filter or {}
+
+    from .File_fetcher import FILE_TYPES as _FILE_TYPES
+
+    # ── Normalise query — list → string joined with space ─────────────────
+    if isinstance(sourceQuery, list):
+        sourceQuery = " ".join(sourceQuery)
+    if isinstance(targetQuery, list):
+        targetQuery = " ".join(targetQuery)
+
+    # ── Source ────────────────────────────────────────────────────────────
+    try:
+        src_type_upper = (sourceType or "").upper()
+
+        if src_type_upper in _FILE_TYPES and source_def:
+            # File source — count rows
+            rows        = _fetch_file_data(source_def)
+            source_data = len(rows) if rows is not None else 0
+            logger.info(
+                f"File_fetcher: Source file row count = {source_data}"
+            )
+
+        elif src_type_upper == "MONGODB":
+            sourceEnvKey = sourceEnvKey.upper()
+            if sourceQueryType.upper() in ("VIEW", "COLLECTION"):
+                source_view = Collection(sourceDB, sourceQuery, sourceEnvKey)
+                source_data = source_view.getDataCount(source_filter)
+            elif sourceQueryType.upper() == "JAVA_SCRIPT":
+                execute_js_from_query(sourceQuery, 101)
+
+        elif src_type_upper == "ORACLE":
+            sourceEnvKey      = sourceEnvKey.upper()
+            source_connection = OracleConnection(sourceEnvKey)
+            if "select " not in (sourceQuery or "").lower():
+                if "." in (sourceQuery or ""):
+                    sourceQuery = "Select count(*) from " + sourceQuery
+                else:
+                    sourceQuery = "Select count(*) from " + sourceDB + "." + sourceQuery
+            source_data = source_connection.fetchOne(sourceQuery)
+
+    except Exception as e:
+        logger.issue(f"Error fetching source count ({sourceType}): {e}")
+
+    # ── Target ────────────────────────────────────────────────────────────
+    try:
+        tgt_type_upper = (targetType or "").upper()
+
+        if tgt_type_upper in _FILE_TYPES and target_def:
+            # File target — count rows
+            rows        = _fetch_file_data(target_def)
+            target_data = len(rows) if rows is not None else 0
+            logger.info(
+                f"File_fetcher: Target file row count = {target_data}"
+            )
+
+        elif tgt_type_upper == "MONGODB":
+            targetEnvKey = targetEnvKey.upper()
+            target_view  = Collection(targetDB, targetQuery, targetEnvKey)
+            target_data  = target_view.getDataCount(target_filter)
+
+        elif tgt_type_upper == "ORACLE":
+            targetEnvKey      = targetEnvKey.upper()
+            target_connection = OracleConnection(targetEnvKey)
+            if "select " not in (targetQuery or "").lower():
+                if "." in (targetQuery or ""):
+                    targetQuery = "Select count(*) from " + targetQuery
+                else:
+                    targetQuery = "Select count(*) from " + targetDB + "." + targetQuery
+            target_data = target_connection.fetchOne(targetQuery)
+
+    except Exception as e:
+        logger.issue(f"Error fetching target count ({targetType}): {e}")
+
+    return source_data, target_data
+
+def get_next_sequence_id(environment):
+    try:
+        sequence_collection = Collection("Quality", "ValidationSequenceNums", environment)
+        seq_record = sequence_collection.find_one({"SequenceCode": "DataValidationLog_ID"})
+        if not seq_record:
+            raise Exception("Sequence record not found for DataValidationLog_ID")
+        current_id = seq_record.get("SequenceNbr", 0)
+        new_id = current_id + 1
+        sequence_collection.UpdateData({"SequenceCode": "DataValidationLog_ID"}, {"$set": {"SequenceNbr": new_id}})
+        return new_id
+    except Exception as e:
+        logger.issue(f"Error fetching target data : {e}")
+
+
+def execute_js_from_query(js_code_string, payment_event_id):
+    js_path = None  # Define early to avoid reference error
+
+    try:
+        # Step 1: Write JS code to a temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.js', mode='w', encoding='utf-8') as temp_js_file:
+            temp_js_file.write(js_code_string)
+            js_path = temp_js_file.name
+
+        # Step 2: Construct the mongosh command
+        command = [
+            r"C:\Program Files\mongosh\mongosh.exe",
+            "--eval", f"var paymentEventID={payment_event_id}",
+            js_path
+        ]
+
+        # Step 3: Execute the command
+        result = subprocess.run(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=60  # avoid hanging
+        )
+
+        # Step 4: Output or handle result
+        print("MongoDB Script Output:\n", result.stdout.strip())
+        if result.stderr.strip():
+            print("Errors:\n", result.stderr.strip())
+
+    except FileNotFoundError as e:
+        print(f"[ERROR] mongosh not found: {e}")
+
+    except subprocess.TimeoutExpired:
+        print("[ERROR] Script timed out while executing.")
+
+    except Exception as e:
+        print(f"[ERROR] Unexpected failure: {e}")
+
+    finally:
+        # Step 5: Cleanup
+        if js_path and os.path.exists(js_path):
+            os.remove(js_path)
+
+
+def _detect_array_paths(collection, field_path: str) -> list:
+    """
+    Determines which path segments need $unwind by sampling documents
+    that contain the top-level key and checking for list values.
+
+    Samples up to 5 documents to handle mixed schemas (some docs store
+    a field as array, others as dict — takes the first array hit).
+
+    Returns list of dot-notation paths that need $unwind, in order.
+    Returns [] for flat fields (no arrays anywhere in the path).
+    """
+    try:
+        top_key = field_path.split(".")[0]
+        parts   = field_path.split(".")
+
+        # Sample docs that have the top-level key
+        docs = list(collection.find({top_key: {"$exists": True}}).limit(5))
+        if not docs:
+            logger.debug(
+                f"_detect_array_paths: '{top_key}' not found in any sampled "
+                f"document — treating '{field_path}' as flat."
+            )
+            return []
+
+        # Walk each sampled doc — take first one that reveals an array
+        for sample in docs:
+            current      = sample
+            path_so_far  = []
+            unwind_paths = []
+
+            for part in parts[:-1]:
+                if isinstance(current, dict):
+                    current = current.get(part)
+                elif isinstance(current, list):
+                    current = (
+                        current[0].get(part)
+                        if current and isinstance(current[0], dict)
+                        else None
+                    )
+                else:
+                    current = None
+                    break
+
+                if current is None:
+                    break
+
+                path_so_far.append(part)
+
+                if isinstance(current, list):
+                    unwind_paths.append(".".join(path_so_far))
+                    current = current[0] if current and isinstance(current[0], dict) else {}
+
+            if unwind_paths:
+                logger.debug(
+                    f"_detect_array_paths: '{field_path}' → unwind paths: {unwind_paths}"
+                )
+                return unwind_paths
+
+        # No sample showed an array — treat as flat
+        logger.debug(
+            f"_detect_array_paths: '{field_path}' → no arrays detected in "
+            f"{len(docs)} sampled doc(s) — treating as flat."
+        )
+        return []
+
+    except Exception as e:
+        logger.warning(f"Could not detect array paths for '{field_path}': {e}")
+        return []
+
+
+def get_null_data(sourceType, sourceDB, sourceQuery, sourceEnvKey,
+                  sourceQueryType, check_fields, data_filters=None):
+    """
+    Fetches only records where any of the specified fields are null or empty.
+    Query can be a string or list of strings — list joined with space.
+
+    For flat fields    : uses .find() with $or null filter.
+    For array-nested   : uses .aggregate() with $unwind + $match pushed to DB,
+                         so MongoDB filters before sending data across the wire.
+    Mixed (flat+array) : always uses pipeline path for consistency.
+    """
+    source_data  = None
+    sourceEnvKey = sourceEnvKey.upper()
+    data_filters = data_filters or {}
+
+    # ── Normalise query — list → string joined with space
+    if isinstance(sourceQuery, list):
+        sourceQuery = " ".join(sourceQuery)
+
+    # ── Build null field list ─────────────────────────────────────────────────
+    null_fields = []
+    for f in check_fields:
+        src = f.get("SourceField", "")
+        if isinstance(src, list):
+            null_fields.extend([s for s in src if s])
+        elif src:
+            null_fields.append(src)
+
+    # ── Build result fields ───────────────────────────────────────────────────
+    result_fields = set()
+    for f in check_fields:
+        res = f.get("ResultFields", [])
+        if isinstance(res, str):
+            result_fields.add(res)
+        elif isinstance(res, list):
+            result_fields.update(res)
+    result_fields.update(null_fields)
+    result_fields = [f for f in result_fields if f]
+
+    try:
+        # ── MongoDB ───────────────────────────────────────────────────────────
+        if sourceType and sourceType.upper() == "MONGODB":
+            if sourceQueryType.upper() in ("VIEW", "COLLECTION"):
+
+                source_view = Collection(sourceDB, sourceQuery, sourceEnvKey)
+
+                # ── Classify fields: flat vs array-nested ─────────────────────
+                flat_fields         = []
+                array_nested_fields = []  # list of (field, [unwind_paths])
+
+                for field in null_fields:
+                    array_paths = _detect_array_paths(source_view.DbCollection, field)
+
+                    if not array_paths and "." in field:
+                        # Sampling returned flat but field is dotted —
+                        # do one extra check: is the top-level key ever a list?
+                        top_key = field.split(".")[0]
+                        probe   = source_view.DbCollection.find_one(
+                            {top_key: {"$type": "array"}}
+                        )
+                        if probe is not None:
+                            array_paths = [top_key]
+                            logger.debug(
+                                f"_detect_array_paths fallback: '{field}' — "
+                                f"'{top_key}' confirmed as array via $type probe. "
+                                f"Using unwind: {array_paths}"
+                            )
+
+                    if array_paths:
+                        array_nested_fields.append((field, array_paths))
+                    else:
+                        flat_fields.append(field)
+
+                # ── Projection — top-level keys only ──────────────────────────
+                projection = {}
+                for f in result_fields:
+                    projection[f.split(".")[0]] = 1
+                projection["_id"] = 0
+
+                if not array_nested_fields:
+                    # ── Fast path — all fields are flat, use .find() ──────────
+                    null_filter = {
+                        "$or": (
+                            [{field: None} for field in flat_fields] +
+                            [{field: ""}   for field in flat_fields]
+                        )
+                    }
+                    mongo_filter = (
+                        {"$and": [data_filters, null_filter]}
+                        if data_filters else null_filter
+                    )
+                    logger.info(
+                        f"Source [MONGODB]: db.{sourceQuery}.find(\n"
+                        f"{json.dumps(mongo_filter, indent=2, default=str)}\n)"
+                    )
+                    source_data = source_view.getDataView(mongo_filter, projection)
+
+                else:
+                    # ── Pipeline path — array-nested fields need $unwind ──────
+                    # Pushing the null filter past $unwind means MongoDB only
+                    # returns documents where the nested field is actually null —
+                    # no full collection scan into Python.
+
+                    pipeline = []
+
+                    # Stage 1: apply DataFilters early to cut the scan
+                    if data_filters:
+                        pipeline.append({"$match": data_filters})
+
+                    # Stage 2: $unwind every array path found (deduplicated)
+                    seen_unwinds = []
+                    for _field, unwind_paths in array_nested_fields:
+                        for path in unwind_paths:
+                            stage = {"$unwind": f"${path}"}
+                            if stage not in seen_unwinds:
+                                seen_unwinds.append(stage)
+                                pipeline.append(stage)
+
+                    # Stage 3: $match — any field is null / empty / missing
+                    null_conditions = []
+                    for field in flat_fields:
+                        null_conditions.append({field: None})
+                        null_conditions.append({field: ""})
+                    for field, _ in array_nested_fields:
+                        null_conditions.append({field: None})
+                        null_conditions.append({field: ""})
+                        null_conditions.append({field: {"$exists": False}})
+
+                    if null_conditions:
+                        pipeline.append({"$match": {"$or": null_conditions}})
+
+                    # Stage 4: project only the fields we need
+                    pipeline.append({"$project": projection})
+
+                    pipeline_str = json.dumps(pipeline, indent=2, default=str)
+                    logger.info(
+                        f"Source [MONGODB PIPELINE]: "
+                        f"db.{sourceQuery}.aggregate(\n{pipeline_str}\n)"
+                    )
+                    source_data = source_view.getPipeData(pipeline)
+
+        # ── Oracle ────────────────────────────────────────────────────────────
+        elif sourceType and sourceType.upper() == "ORACLE":
+            source_connection = OracleConnection(sourceEnvKey)
+
+            if "select " in sourceQuery.lower():
+                base_query = f"SELECT * FROM ({sourceQuery})"
+            elif "." in sourceQuery:
+                base_query = f"SELECT * FROM {sourceQuery}"
+            else:
+                base_query = f"SELECT * FROM {sourceDB}.{sourceQuery}"
+
+            null_conditions = []
+            for field in null_fields:
+                null_conditions.append(
+                    f"({field} IS NULL OR TRIM(TO_CHAR({field})) = '')"
+                )
+
+            null_where = " OR ".join(null_conditions)
+
+            if data_filters:
+                where_clause = f"{data_filters} AND ({null_where})"
+            else:
+                where_clause = null_where
+
+            final_query = f"{base_query} WHERE {where_clause}"
+
+            logger.info(f"Oracle Null_Check query: {final_query}")
+            source_data = source_connection.fetchAllDict(final_query)
+
+    except Exception as e:
+        logger.issue(f"Error fetching null check data ({sourceType}): {e}")
+
+    return source_data
+
+
+def get_duplicate_data(sourceType, sourceDB, sourceQuery, sourceEnvKey,
+                       sourceQueryType, check_fields, data_filters=None):
+    """
+    Fetches duplicate records per field independently.
+    Each field is queried separately:
+      - Sample  : capped at `missing` records/groups — for display
+      - Count   : exact total duplicate value + record count — for reporting
+
+    Returns dict:
+        {
+            field_label: {
+                "sample"      : list of records (Oracle) or list of groups (MongoDB),
+                "total_count" : int — total number of duplicate values,
+                "total_recs"  : int — total records involved in duplicates,
+                "capped"      : bool
+            }
+        }
+    """
+    sourceEnvKey = sourceEnvKey.upper()
+    results      = {}
+    data_filters = data_filters or {}
+    max_records  = int(missing)
+
+    if isinstance(sourceQuery, list):
+        sourceQuery = " ".join(sourceQuery)
+
+    for field_def in check_fields:
+        src_field     = field_def.get("SourceField", "")
+        result_fields = field_def.get("ResultFields", [])
+
+        if isinstance(src_field, str):
+            src_fields = [src_field] if src_field else []
+        else:
+            src_fields = [f for f in src_field if f]
+
+        if isinstance(result_fields, str):
+            result_fields = [result_fields] if result_fields else []
+
+        for sf in src_fields:
+            if sf not in result_fields:
+                result_fields = [sf] + result_fields
+
+        if not src_fields:
+            continue
+
+        field_label = ", ".join(src_fields)
+
+        try:
+            # ── Oracle ────────────────────────────────────────────────────────
+            if sourceType and sourceType.upper() == "ORACLE":
+                source_connection = OracleConnection(sourceEnvKey)
+
+                if "select " in sourceQuery.lower():
+                    table_ref = f"({sourceQuery})"
+                elif "." in sourceQuery:
+                    table_ref = sourceQuery
+                else:
+                    table_ref = f"{sourceDB}.{sourceQuery}"
+
+                select_cols   = ", ".join(result_fields)
+                group_by_cols = ", ".join(src_fields)
+
+                null_exclusion = " AND ".join(
+                    f"{sf} IS NOT NULL" for sf in src_fields
+                )
+
+                subquery_where = (
+                    f"{data_filters} AND {null_exclusion}"
+                    if data_filters else null_exclusion
+                )
+
+                dup_subquery = f"""
+                    SELECT {group_by_cols}
+                    FROM {table_ref}
+                    WHERE {subquery_where}
+                    GROUP BY {group_by_cols}
+                    HAVING COUNT(*) > 1
+                """
+
+                # ── Sample query — capped at max_records ──────────────────────
+                sample_query = f"""
+                    SELECT {select_cols}
+                    FROM {table_ref}
+                    WHERE {subquery_where}
+                    AND ({group_by_cols}) IN (
+                        {dup_subquery}
+                    )
+                    AND ROWNUM <= {max_records}
+                """
+
+                logger.info(
+                    f"Source [ORACLE] Duplicate_Check sample for '{field_label}':\n"
+                    f"{sample_query.strip()}"
+                )
+
+                sample_data = source_connection.fetchAllDict(sample_query)
+
+                if not sample_data:
+                    results[field_label] = {
+                        "sample"     : [],
+                        "total_count": 0,
+                        "total_recs" : 0,
+                        "capped"     : False
+                    }
+                    continue
+
+                # ── Count query — exact number of duplicate values ─────────────
+                count_query = f"""
+                    SELECT COUNT(*) AS DUP_COUNT
+                    FROM (
+                        {dup_subquery}
+                    )
+                """
+
+                logger.info(
+                    f"Source [ORACLE] Duplicate_Check count for '{field_label}':\n"
+                    f"{count_query.strip()}"
+                )
+
+                count_result = source_connection.fetchAllDict(count_query)
+                total_count  = (
+                    count_result[0].get("DUP_COUNT", 0)
+                    if count_result else 0
+                )
+
+                # ── Records count — total rows involved in duplicates ──────────
+                recs_query = f"""
+                    SELECT COUNT(*) AS REC_COUNT
+                    FROM {table_ref}
+                    WHERE {subquery_where}
+                    AND ({group_by_cols}) IN (
+                        {dup_subquery}
+                    )
+                """
+
+                recs_result = source_connection.fetchAllDict(recs_query)
+                total_recs  = (
+                    recs_result[0].get("REC_COUNT", 0)
+                    if recs_result else 0
+                )
+
+                results[field_label] = {
+                    "sample"     : sample_data,
+                    "total_count": total_count,
+                    "total_recs" : total_recs,
+                    "capped"     : total_count >= COUNT_CAP
+                }
+
+            # ── MongoDB ───────────────────────────────────────────────────────
+            elif sourceType and sourceType.upper() == "MONGODB":
+                if sourceQueryType.upper() in ("VIEW", "COLLECTION"):
+
+                    source_col = Collection(sourceDB, sourceQuery, sourceEnvKey)
+
+                    if len(src_fields) == 1:
+                        group_id = f"${src_fields[0]}"
+                    else:
+                        group_id = {
+                            sf.replace(".", "_"): f"${sf}"
+                            for sf in src_fields
+                        }
+
+                    push_doc = {}
+                    for rf in result_fields:
+                        top_key           = rf.split(".")[0]
+                        push_doc[top_key] = f"${top_key}"
+
+                    null_conditions = []
+                    for sf in src_fields:
+                        null_conditions.extend([
+                            {sf: {"$ne": None}},
+                            {sf: {"$ne": ""}},
+                            {sf: {"$exists": True}}
+                        ])
+
+                    match_conditions = null_conditions.copy()
+                    if data_filters:
+                        match_conditions.append(data_filters)
+
+                    # ── Sample pipeline — capped at max_records groups ─────────
+                    sample_pipeline = [
+                        {"$match": {"$and": match_conditions}},
+                        {
+                            "$group": {
+                                "_id"  : group_id,
+                                "count": {"$sum": 1},
+                                "docs" : {"$push": push_doc}
+                            }
+                        },
+                        {"$match": {"count": {"$gt": 1}}},
+                        {"$sort" : {"count": -1}},
+                        {"$limit": max_records}
+                    ]
+
+                    logger.info(
+                        f"Source [MONGODB PIPELINE] Duplicate_Check sample "
+                        f"for '{field_label}':\n"
+                        f"db.{sourceQuery}.aggregate(\n"
+                        f"{json.dumps(sample_pipeline, indent=2, default=str)}\n)"
+                    )
+
+                    sample_data = list(source_col.getPipeData(sample_pipeline))
+
+                    if not sample_data:
+                        results[field_label] = {
+                            "sample"     : [],
+                            "total_count": 0,
+                            "total_recs" : 0,
+                            "capped"     : False
+                        }
+                        continue
+
+                    # ── Count pipeline — exact dup value + record counts ───────
+                    count_pipeline = [
+                        {"$match": {"$and": match_conditions}},
+                        {
+                            "$group": {
+                                "_id"  : group_id,
+                                "count": {"$sum": 1}
+                            }
+                        },
+                        {"$match": {"count": {"$gt": 1}}},
+                        {
+                            "$group": {
+                                "_id"     : None,
+                                "dup_vals": {"$sum": 1},
+                                "dup_recs": {"$sum": "$count"}
+                            }
+                        }
+                    ]
+
+                    logger.info(
+                        f"Source [MONGODB PIPELINE] Duplicate_Check count "
+                        f"for '{field_label}':\n"
+                        f"db.{sourceQuery}.aggregate(\n"
+                        f"{json.dumps(count_pipeline, indent=2, default=str)}\n)"
+                    )
+
+                    count_result = list(source_col.getPipeData(count_pipeline))
+                    total_count  = (
+                        count_result[0].get("dup_vals", 0)
+                        if count_result else 0
+                    )
+                    total_recs   = (
+                        count_result[0].get("dup_recs", 0)
+                        if count_result else 0
+                    )
+
+                    results[field_label] = {
+                        "sample"     : sample_data,
+                        "total_count": total_count,
+                        "total_recs" : total_recs,
+                        "capped"     : total_count >= COUNT_CAP
+                    }
+
+        except Exception as e:
+            logger.issue(
+                f"Error fetching duplicate data for '{field_label}' ({sourceType}): {e}"
+            )
+            results[field_label] = None
+
+    return results
+
+FORMAT_DATE_REGEX_MAP = {
+    "UTC"        : r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:?\d{2})?$",
+    "EST"        : r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:?\d{2})?$",
+    "YYYY-MM-DD" : r"^\d{4}-\d{2}-\d{2}$",
+    "MM/DD/YYYY" : r"^\d{2}/\d{2}/\d{4}$",
+    "DD/MM/YYYY" : r"^\d{2}/\d{2}/\d{4}$",
+    "YYYY/MM/DD" : r"^\d{4}/\d{2}/\d{2}$",
+    "MM-DD-YYYY" : r"^\d{2}-\d{2}-\d{4}$",
+    "YYYYMMDD"   : r"^\d{8}$",
+}
+
+COUNT_CAP = 100000
+
+
+def _build_oracle_format_filter(field, format_type, pattern, value) -> str:
+    format_type = (format_type or "").upper()
+    if format_type == "REGEX":
+        return f"NOT REGEXP_LIKE({field}, '{pattern}')"
+    elif format_type == "DATE_FORMAT":
+        date_regex = FORMAT_DATE_REGEX_MAP.get((value or "").upper(), "")
+        if date_regex:
+            return f"NOT REGEXP_LIKE(TO_CHAR({field}), '{date_regex}')"
+        return f"TO_DATE(TO_CHAR({field}), 'YYYY-MM-DD') IS NULL"
+    elif format_type == "NUMERIC_RANGE":
+        try:
+            parts     = (value or "").split("-")
+            low, high = float(parts[0].strip()), float(parts[1].strip())
+            return f"({field} < {low} OR {field} > {high})"
+        except Exception:
+            return "1=0"
+    elif format_type == "LENGTH":
+        try:
+            return f"LENGTH(TRIM(TO_CHAR({field}))) != {int(value)}"
+        except Exception:
+            return "1=0"
+    return "1=0"
+
+
+def _build_mongo_format_filter(field, format_type, pattern, value) -> dict:
+    format_type = (format_type or "").upper()
+    if format_type == "REGEX":
+        return {field: {"$not": {"$regex": pattern}}}
+    elif format_type == "DATE_FORMAT":
+        date_regex = FORMAT_DATE_REGEX_MAP.get((value or "").upper(), "")
+        if date_regex:
+            return {field: {"$not": {"$regex": date_regex}}}
+        return {field: {"$not": {"$type": "date"}}}
+    elif format_type == "NUMERIC_RANGE":
+        try:
+            parts     = (value or "").split("-")
+            low, high = float(parts[0].strip()), float(parts[1].strip())
+            return {"$or": [{field: {"$lt": low}}, {field: {"$gt": high}}]}
+        except Exception:
+            return {}
+    elif format_type == "LENGTH":
+        try:
+            return {
+                "$expr": {
+                    "$ne": [
+                        {"$strLenCP": {"$toString": f"${field}"}},
+                        int(value)
+                    ]
+                }
+            }
+        except Exception:
+            return {}
+    return {}
+
+
+def _dedup_fields(fields: list) -> list:
+    seen   = set()
+    result = []
+    for f in fields:
+        if f.lower() not in seen:
+            seen.add(f.lower())
+            result.append(f)
+    return result
+
+
+def get_format_data(sourceType, sourceDB, sourceQuery, sourceEnvKey,
+                    sourceQueryType, check_fields, data_filters=None):
+    """
+    Fetches only records that FAIL format rules.
+    Query can be a string or list of strings — list joined with space.
+    """
+    sourceEnvKey = sourceEnvKey.upper()
+    results      = {}
+    data_filters = data_filters or {}
+    max_records  = int(missing)
+
+    # ── Normalise query — list → string joined with space
+    if isinstance(sourceQuery, list):
+        sourceQuery = " ".join(sourceQuery)
+
+    for field_def in check_fields:
+        field         = field_def.get("SourceField", "")
+        format_type   = field_def.get("FormatType", "")
+        pattern       = field_def.get("Pattern", "")
+        value         = field_def.get("Value", "")
+        result_fields = field_def.get("ResultFields", [])
+
+        if isinstance(result_fields, str):
+            result_fields = [result_fields]
+        else:
+            result_fields = list(result_fields)
+
+        if field and field.lower() not in [rf.lower() for rf in result_fields]:
+            result_fields = [field] + result_fields
+
+        result_fields = _dedup_fields(result_fields)
+
+        if not field:
+            continue
+
+        try:
+            # ── Oracle ────────────────────────────────────────────────────────
+            if sourceType and sourceType.upper() == "ORACLE":
+                source_connection = OracleConnection(sourceEnvKey)
+
+                if "select " in sourceQuery.lower():
+                    table_ref = f"({sourceQuery})"
+                elif "." in sourceQuery:
+                    table_ref = sourceQuery
+                else:
+                    table_ref = f"{sourceDB}.{sourceQuery}"
+
+                select_cols  = ", ".join(result_fields)
+                format_where = _build_oracle_format_filter(
+                    field, format_type, pattern, value
+                )
+
+                conditions = []
+                if data_filters:
+                    conditions.append(data_filters)
+                conditions.append(f"{field} IS NOT NULL")
+                conditions.append(format_where)
+
+                where_clause = ' AND '.join(conditions)
+
+                sample_query = f"""
+                    SELECT {select_cols}
+                    FROM {table_ref}
+                    WHERE {where_clause}
+                    AND ROWNUM <= {max_records}
+                """
+
+                logger.info(
+                    f"Oracle Format_Check query for '{field}' [{format_type}]: "
+                    f"{sample_query.strip()}"
+                )
+
+                sample_data = source_connection.fetchAllDict(sample_query)
+
+                if not sample_data:
+                    results[field] = {"sample": [], "total_count": 0, "capped": False}
+                    continue
+
+                count_query = f"""
+                    SELECT COUNT(*) AS FAIL_COUNT
+                    FROM (
+                        SELECT 1
+                        FROM {table_ref}
+                        WHERE {where_clause}
+                        AND ROWNUM <= {COUNT_CAP}
+                    )
+                """
+
+                logger.info(
+                    f"Oracle Format_Check count query for '{field}' [{format_type}]: "
+                    f"{count_query.strip()}"
+                )
+
+                count_result = source_connection.fetchAllDict(count_query)
+                raw_count    = (
+                    count_result[0].get("FAIL_COUNT", len(sample_data))
+                    if count_result else len(sample_data)
+                )
+                capped = raw_count >= COUNT_CAP
+
+                results[field] = {
+                    "sample"      : sample_data,
+                    "total_count" : raw_count,
+                    "capped"      : capped
+                }
+
+            # ── MongoDB ───────────────────────────────────────────────────────
+            elif sourceType and sourceType.upper() == "MONGODB":
+                if sourceQueryType.upper() in ("VIEW", "COLLECTION"):
+
+                    format_filter = _build_mongo_format_filter(
+                        field, format_type, pattern, value
+                    )
+
+                    if not format_filter:
+                        logger.warning(
+                            f"MongoDB Format_Check: empty filter for '{field}' — skipping."
+                        )
+                        results[field] = {"sample": [], "total_count": 0, "capped": False}
+                        continue
+
+                    and_conditions = []
+                    if data_filters:
+                        and_conditions.append(data_filters)
+                    and_conditions.extend([
+                        {field: {"$ne": None}},
+                        {field: {"$ne": ""}},
+                        {field: {"$exists": True}},
+                        format_filter
+                    ])
+
+                    mongo_filter = {"$and": and_conditions}
+
+                    projection = {}
+                    for rf in result_fields:
+                        projection[rf.split(".")[0]] = 1
+                    projection["_id"] = 0
+
+                    logger.info(
+                        f"Source [MONGODB]: db.{sourceQuery}.find(\n"
+                        f"{json.dumps(mongo_filter, indent=2, default=str)}\n)"
+                    )
+
+                    source_view = Collection(sourceDB, sourceQuery, sourceEnvKey)
+
+                    sample_data = list(
+                        source_view.getDataView(mongo_filter, projection).limit(max_records)
+                    )
+
+                    if not sample_data:
+                        results[field] = {"sample": [], "total_count": 0, "capped": False}
+                        continue
+
+                    total_count = source_view.getDataCount(mongo_filter)
+                    capped      = total_count >= COUNT_CAP
+
+                    results[field] = {
+                        "sample"      : sample_data,
+                        "total_count" : total_count,
+                        "capped"      : capped
+                    }
+
+        except Exception as e:
+            logger.issue(
+                f"Error fetching format check data for '{field}' ({sourceType}): {e}"
+            )
+            results[field] = None
+
+    return results
+	
+	
+	
+======================================================================================
+
+File_parser.py
+
+
+=======================================================================================
+
+	import io
+import re
+import logging
+import chardet
+import pandas as pd
+from decimal import Decimal, InvalidOperation
+from datetime import datetime, timezone
+
+logger = logging.getLogger()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Encoding detection
+# ─────────────────────────────────────────────────────────────────────────────
+
+def detect_encoding(content: bytes, specified: str = None) -> str:
+    """
+    Detects file encoding.
+    If specified — use that directly.
+    Otherwise auto-detect via chardet with confidence threshold.
+    """
+    if specified:
+        return specified
+
+    result     = chardet.detect(content[:65536])
+    encoding   = result.get("encoding") or "utf-8"
+    confidence = result.get("confidence") or 0
+
+    if confidence < 0.90:
+        logger.warning(
+            f"File_parser: Encoding detection confidence low "
+            f"({confidence:.0%}) — detected '{encoding}', "
+            f"defaulting to utf-8."
+        )
+        return "utf-8"
+
+    logger.info(
+        f"File_parser: Encoding detected — '{encoding}' "
+        f"(confidence {confidence:.0%})"
+    )
+    return encoding
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Transform engine
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Date format patterns
+DATE_FORMATS = {
+    "YYYYMMDD"     : "%Y%m%d",
+    "MMDDYYYY"     : "%m%d%Y",
+    "MM/DD/YYYY"   : "%m/%d/%Y",
+    "DD/MM/YYYY"   : "%d/%m/%Y",
+    "YYYY-MM-DD"   : "%Y-%m-%d",
+    "YYYY/MM/DD"   : "%Y/%m/%d",
+    "MM-DD-YYYY"   : "%m-%d-%Y",
+    "DD-MON-YYYY"  : "%d-%b-%Y",
+    "DD-MON-YY"    : "%d-%b-%y",
+    "MM/DD/YY"     : "%m/%d/%y",
+}
+
+DATETIME_FORMATS = {
+    "YYYY-MM-DD HH:MM:SS"  : "%Y-%m-%d %H:%M:%S",
+    "YYYY-MM-DDTHH:MM:SS"  : "%Y-%m-%dT%H:%M:%S",
+    "MM/DD/YYYY HH:MM:SS"  : "%m/%d/%Y %H:%M:%S",
+    "YYYYMMDDHHMMSS"       : "%Y%m%d%H%M%S",
+}
+
+ALL_DATE_FORMATS = list(DATE_FORMATS.values()) + list(DATETIME_FORMATS.values())
+
+
+def _parse_date(value: str, fmt: str = None) -> datetime:
+    """
+    Parses a date string using specified or auto-detected format.
+    Handles two-digit years with pivot year 1950.
+    """
+    value = (value or "").strip()
+    if not value:
+        return None
+
+    formats_to_try = []
+
+    if fmt:
+        # Map friendly name to strptime format
+        strptime_fmt = (
+            DATE_FORMATS.get(fmt) or
+            DATETIME_FORMATS.get(fmt) or
+            fmt  # assume it's already a strptime format
+        )
+        formats_to_try = [strptime_fmt]
+    else:
+        formats_to_try = ALL_DATE_FORMATS
+
+    for strptime_fmt in formats_to_try:
+        try:
+            dt = datetime.strptime(value, strptime_fmt)
+            # Handle two-digit year pivot
+            if dt.year < 100:
+                dt = dt.replace(year=dt.year + (2000 if dt.year < 50 else 1900))
+            return dt
+        except ValueError:
+            continue
+
+    raise ValueError(f"Cannot parse date '{value}' — no matching format found.")
+
+
+def _apply_single_transform(value, transform: str, row: dict = None):
+    """
+    Applies a single named transform to a value.
+    row is passed for conditional transforms that reference other columns.
+    """
+    if value is None:
+        return None
+
+    t = (transform or "").upper().strip()
+
+    # String transforms
+    if t == "TRIM":
+        return str(value).strip()
+    if t == "UPPERCASE":
+        return str(value).upper()
+    if t == "LOWERCASE":
+        return str(value).lower()
+    if t == "TRIM_LEADING_ZEROS":
+        return str(value).lstrip("0") or "0"
+    if t.startswith("PAD_LEADING_ZEROS:"):
+        n = int(t.split(":")[1])
+        return str(value).zfill(n)
+
+    # Numeric transforms
+    if t == "STRIP_CURRENCY":
+        cleaned = re.sub(r"[$£€¥,]", "", str(value)).strip()
+        return cleaned
+    if t == "STRIP_COMMAS":
+        return str(value).replace(",", "")
+    if t == "PARENTHESES_NEGATIVE":
+        s = str(value).strip()
+        if s.startswith("(") and s.endswith(")"):
+            return "-" + s[1:-1]
+        return s
+    if t == "EUROPEAN_DECIMAL":
+        # 1.234,56 → 1234.56
+        s = str(value).strip()
+        s = s.replace(".", "").replace(",", ".")
+        return s
+    if t == "SCIENTIFIC_NOTATION":
+        try:
+            return str(float(str(value)))
+        except Exception:
+            return value
+    if t.startswith("IMPLIED_DECIMAL:"):
+        places = int(t.split(":")[1])
+        try:
+            num = int(str(value).strip())
+            return str(Decimal(num) / Decimal(10 ** places))
+        except Exception:
+            return value
+    if t == "DECIMAL":
+        try:
+            return float(str(value).strip())
+        except Exception:
+            return value
+    if t == "INTEGER":
+        try:
+            return int(str(value).strip())
+        except Exception:
+            return value
+    if t == "ZERO_TO_NULL":
+        s = str(value).strip()
+        return None if s in ("0", "0.0", "0.00") else value
+
+    # Boolean transforms
+    TRUE_VALUES  = {"y", "yes", "1", "t", "true", "x"}
+    FALSE_VALUES = {"n", "no",  "0", "f", "false", " ", ""}
+
+    if t in ("BOOLEAN_YN", "BOOLEAN_YESNO", "BOOLEAN_10",
+             "BOOLEAN_TF", "BOOLEAN_TRUEFALSE", "BOOLEAN_X",
+             "BOOLEAN_AUTO"):
+        s = str(value).strip().lower()
+        if s in TRUE_VALUES:
+            return True
+        if s in FALSE_VALUES:
+            return False
+        logger.warning(
+            f"File_parser: Boolean transform '{t}' — "
+            f"unrecognised value '{value}' — kept as-is."
+        )
+        return value
+
+    # Date transforms
+    if t in DATE_FORMATS or t in DATETIME_FORMATS:
+        try:
+            return _parse_date(str(value), t)
+        except Exception:
+            return value
+
+    if t == "AUTO_DATE":
+        try:
+            return _parse_date(str(value), None)
+        except Exception:
+            return value
+
+    logger.warning(f"File_parser: Unknown transform '{transform}' — skipped.")
+    return value
+
+
+def _evaluate_condition(row: dict, condition: dict) -> bool:
+    """
+    Evaluates a condition against a row dict.
+    Returns True if condition is met.
+    """
+    col      = condition.get("Column", "")
+    operator = (condition.get("Operator") or "=").upper()
+    value    = condition.get("Value")
+
+    row_value = row.get(col)
+    if row_value is None:
+        row_value = ""
+
+    row_str = str(row_value).strip()
+    val_str = str(value).strip() if value is not None else ""
+
+    if operator == "=":
+        return row_str == val_str
+    if operator == "!=":
+        return row_str != val_str
+    if operator == ">":
+        try:
+            return float(row_str) > float(val_str)
+        except Exception:
+            return row_str > val_str
+    if operator == ">=":
+        try:
+            return float(row_str) >= float(val_str)
+        except Exception:
+            return row_str >= val_str
+    if operator == "<":
+        try:
+            return float(row_str) < float(val_str)
+        except Exception:
+            return row_str < val_str
+    if operator == "<=":
+        try:
+            return float(row_str) <= float(val_str)
+        except Exception:
+            return row_str <= val_str
+    if operator == "IN":
+        values = [v.strip() for v in val_str.split(",")]
+        return row_str in values
+    if operator == "NOT IN":
+        values = [v.strip() for v in val_str.split(",")]
+        return row_str not in values
+    if operator == "IS NULL":
+        return not row_str
+    if operator == "IS NOT NULL":
+        return bool(row_str)
+    if operator == "STARTS_WITH":
+        return row_str.startswith(val_str)
+    if operator == "ENDS_WITH":
+        return row_str.endswith(val_str)
+    if operator == "CONTAINS":
+        return val_str in row_str
+
+    return False
+
+
+def apply_transforms(value, transforms, row: dict = None):
+    """
+    Applies transforms to a value.
+    Transforms can be:
+        str                 — single transform
+        list                — multiple transforms or conditional transforms
+        dict with REPLACE_MAP — value mapping
+
+    Stops pipeline if value becomes None.
+    """
+    if transforms is None:
+        return value
+
+    # Normalise to list
+    if isinstance(transforms, str):
+        transforms = [transforms]
+    elif isinstance(transforms, dict):
+        transforms = [transforms]
+
+    for transform in transforms:
+        if value is None:
+            break
+
+        if isinstance(transform, str):
+            # Simple transform — always apply
+            value = _apply_single_transform(value, transform, row)
+
+        elif isinstance(transform, dict):
+            if "REPLACE_MAP" in transform:
+                # Value mapping
+                mapping  = transform["REPLACE_MAP"]
+                str_val  = str(value).strip()
+                value    = mapping.get(str_val, value)
+
+            elif "Condition" in transform:
+                # Conditional transform
+                condition = transform.get("Condition", {})
+                apply_t   = transform.get("Apply")
+                if _evaluate_condition(row or {}, condition):
+                    if isinstance(apply_t, dict) and "REPLACE" in apply_t:
+                        value = apply_t["REPLACE"]
+                    elif apply_t:
+                        value = _apply_single_transform(value, apply_t, row)
+
+    return value
+
+
+def _normalise_null(value, null_values: list) -> object:
+    """
+    Converts value to None if it matches any null representation.
+    Empty string and whitespace-only always treated as null.
+    """
+    if value is None:
+        return None
+
+    s = str(value).strip()
+
+    if not s:
+        return None
+
+    if null_values:
+        for nv in null_values:
+            if s == str(nv).strip():
+                return None
+
+    return value
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Row processing
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _process_row(row: dict, columns_config: list,
+                 null_values: list) -> tuple:
+    """
+    Applies column config (rename, null, transform, type) to a row dict.
+
+    Returns:
+        (processed_row, parse_errors)
+        parse_errors is list of error dicts — empty if no errors
+    """
+    if not columns_config:
+        # No column config — apply null values only
+        return (
+            {k: _normalise_null(v, null_values) for k, v in row.items()},
+            []
+        )
+
+    processed   = {}
+    parse_errors = []
+
+    for col_def in columns_config:
+        name        = col_def.get("Name", "")
+        source_name = col_def.get("SourceName", "") or name
+        col_type    = (col_def.get("Type") or "STRING").upper()
+        required    = col_def.get("Required", False)
+        transforms  = col_def.get("Transform")
+        col_nulls   = col_def.get("NullValues", null_values)
+
+        # Get raw value — try SourceName then Name
+        raw = row.get(source_name)
+        if raw is None and source_name != name:
+            raw = row.get(name)
+
+        # Null normalisation
+        value = _normalise_null(raw, col_nulls)
+
+        # Required check
+        if required and value is None:
+            parse_errors.append({
+                "Column": name,
+                "Value" : raw,
+                "Reason": f"Required column '{name}' is null."
+            })
+            processed[name] = None
+            continue
+
+        if value is None:
+            processed[name] = None
+            continue
+
+        # Apply transforms
+        try:
+            value = apply_transforms(value, transforms, row)
+        except Exception as e:
+            parse_errors.append({
+                "Column": name,
+                "Value" : raw,
+                "Reason": f"Transform failed: {e}"
+            })
+            processed[name] = None
+            continue
+
+        # Type conversion
+        if value is not None:
+            try:
+                if col_type == "INTEGER":
+                    value = int(str(value).strip())
+                elif col_type == "DECIMAL":
+                    value = float(Decimal(str(value).strip()))
+                elif col_type == "DATE":
+                    if not isinstance(value, datetime):
+                        value = _parse_date(str(value))
+                elif col_type == "DATETIME":
+                    if not isinstance(value, datetime):
+                        value = _parse_date(str(value))
+                elif col_type == "BOOLEAN":
+                    if not isinstance(value, bool):
+                        value = apply_transforms(value, "BOOLEAN_AUTO")
+                else:
+                    value = str(value)
+            except Exception as e:
+                parse_errors.append({
+                    "Column": name,
+                    "Value" : raw,
+                    "Reason": f"Type conversion to {col_type} failed: {e}"
+                })
+                processed[name] = None
+                continue
+
+        processed[name] = value
+
+    return processed, parse_errors
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Pre-processing — strip empty, comment, header, footer rows
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _preprocess_lines(lines: list, file_config: dict) -> tuple:
+    """
+    Pre-processes raw lines:
+        1. Skip empty rows
+        2. Skip comment rows
+        3. Skip SkipRows
+        4. Identify header row
+        5. Identify footer rows
+        6. Strip row type markers (StripIdentifier)
+        7. Filter data rows (DataIdentifier)
+
+    Returns:
+        (header_line, data_lines, footer_lines, skipped_counts)
+    """
+    skip_rows         = int(file_config.get("SkipRows", 0) or 0)
+    footer_rows       = int(file_config.get("FooterRows", 0) or 0)
+    header_identifier = file_config.get("HeaderIdentifier")
+    data_identifier   = file_config.get("DataIdentifier")
+    footer_identifier = file_config.get("FooterIdentifier")
+    strip_identifier  = file_config.get("StripIdentifier", False)
+    comment_char      = file_config.get("CommentChar")
+    has_header        = file_config.get("Header", True)
+
+    # Normalise comment chars
+    comment_chars = []
+    if comment_char:
+        if isinstance(comment_char, list):
+            comment_chars = comment_char
+        else:
+            comment_chars = [comment_char]
+
+    skipped_empty   = 0
+    skipped_comment = 0
+    working_lines   = []
+
+    for line in lines:
+        stripped = line.strip()
+
+        # Skip empty
+        if not stripped:
+            skipped_empty += 1
+            continue
+
+        # Skip comments
+        is_comment = False
+        for cc in comment_chars:
+            if stripped.startswith(cc):
+                is_comment = True
+                break
+        if is_comment:
+            skipped_comment += 1
+            continue
+
+        working_lines.append(line)
+
+    # Skip leading metadata rows
+    working_lines = working_lines[skip_rows:]
+
+    # Identify header
+    header_line  = None
+    data_start   = 0
+
+    if header_identifier:
+        # Find first line matching header identifier
+        for i, line in enumerate(working_lines):
+            if line.strip().startswith(header_identifier):
+                header_line = line
+                if strip_identifier:
+                    # Remove identifier prefix
+                    header_line = ",".join(
+                        line.strip().split(",")[1:]
+                    )
+                data_start = i + 1
+                break
+    elif has_header and working_lines:
+        header_line = working_lines[0]
+        data_start  = 1
+
+    remaining = working_lines[data_start:]
+
+    # Identify and separate footer rows
+    footer_lines = []
+    if footer_identifier:
+        data_lines_filtered = []
+        for line in remaining:
+            if line.strip().startswith(footer_identifier):
+                footer_lines.append(line)
+            else:
+                data_lines_filtered.append(line)
+        remaining = data_lines_filtered
+    elif footer_rows > 0:
+        footer_lines = remaining[-footer_rows:]
+        remaining    = remaining[:-footer_rows]
+
+    # Filter by data identifier
+    if data_identifier:
+        filtered = []
+        for line in remaining:
+            if line.strip().startswith(data_identifier):
+                if strip_identifier:
+                    line = ",".join(line.strip().split(",")[1:])
+                filtered.append(line)
+        remaining = filtered
+
+    logger.info(
+        f"File_parser: Pre-processing — "
+        f"skipped {skipped_empty} empty, "
+        f"{skipped_comment} comment rows. "
+        f"Data rows: {len(remaining)}"
+    )
+
+    return header_line, remaining, footer_lines, {
+        "empty"  : skipped_empty,
+        "comment": skipped_comment
+    }
+
+
+def _validate_footer(footer_lines: list, data_df: pd.DataFrame,
+                     footer_config: dict, delimiter: str,
+                     test_case_number: int = None) -> list:
+    """
+    Validates footer record count and amount total against parsed data.
+    Returns list of validation errors.
+    """
+    errors      = []
+    count_col   = footer_config.get("CountColumn")
+    amount_col  = footer_config.get("AmountColumn")
+
+    if not footer_lines:
+        return errors
+
+    # Parse first footer line
+    footer_parts = footer_lines[0].strip().split(delimiter)
+
+    if count_col is not None:
+        try:
+            idx             = int(count_col) - 1
+            declared_count  = int(footer_parts[idx].strip())
+            actual_count    = len(data_df)
+            if declared_count != actual_count:
+                errors.append(
+                    f"Footer record count mismatch: "
+                    f"declared={declared_count}, actual={actual_count}"
+                )
+            else:
+                logger.info(
+                    f"File_parser: Footer count validation — "
+                    f"{declared_count} records ✓"
+                )
+        except Exception as e:
+            errors.append(f"Footer count validation failed: {e}")
+
+    if amount_col is not None:
+        try:
+            idx             = int(amount_col) - 1
+            declared_amount = Decimal(str(footer_parts[idx]).strip())
+            # Sum first numeric column that looks like an amount
+            # Use CompareFields info if available — for now sum all numeric cols
+            numeric_cols = data_df.select_dtypes(include=["float64", "int64"]).columns
+            if len(numeric_cols) > 0:
+                actual_amount = Decimal(str(data_df[numeric_cols[0]].sum()))
+                if declared_amount != actual_amount:
+                    errors.append(
+                        f"Footer amount mismatch: "
+                        f"declared={declared_amount}, actual={actual_amount}"
+                    )
+                else:
+                    logger.info(
+                        f"File_parser: Footer amount validation — "
+                        f"{declared_amount} ✓"
+                    )
+        except Exception as e:
+            errors.append(f"Footer amount validation failed: {e}")
+
+    return errors
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Schema validation
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _validate_schema(file_columns: list, config_columns: list,
+                     strict: bool = False) -> list:
+    """
+    Validates file columns against configured column definitions.
+
+    Rules:
+        Required column missing from file → error
+        Extra columns in file + strict    → error
+        Extra columns in file + not strict → warning
+
+    Returns list of schema errors.
+    """
+    errors = []
+
+    if not config_columns:
+        return errors
+
+    config_names = set()
+    for col in config_columns:
+        source_name = col.get("SourceName", "") or col.get("Name", "")
+        if source_name:
+            config_names.add(source_name)
+
+    file_col_set = set(file_columns)
+
+    # Check required columns present
+    for col in config_columns:
+        source_name = col.get("SourceName", "") or col.get("Name", "")
+        required    = col.get("Required", False)
+        if required and source_name and source_name not in file_col_set:
+            errors.append(
+                f"Required column '{source_name}' not found in file. "
+                f"Available: {list(file_col_set)}"
+            )
+
+    # Check for extra columns
+    extra = file_col_set - config_names
+    if extra:
+        if strict:
+            errors.append(
+                f"StrictSchema violation — extra columns in file: {sorted(extra)}"
+            )
+        else:
+            logger.warning(
+                f"File_parser: Extra columns in file (ignored): {sorted(extra)}"
+            )
+
+    if not errors:
+        logger.info(
+            f"File_parser: Schema validation PASS — "
+            f"all required columns present."
+        )
+
+    return errors
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Format parsers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _parse_delimited(content: bytes, file_config: dict,
+                     filename: str = "") -> tuple:
+    """
+    Parses CSV, PIPE, TSV and other delimited formats.
+    Returns (DataFrame, parse_errors, schema_errors, footer_errors)
+    """
+    encoding              = detect_encoding(content, file_config.get("Encoding"))
+    delimiter             = file_config.get("Delimiter", ",") or ","
+    quote_char            = file_config.get("QuoteChar", '"') or '"'
+    escape_char           = file_config.get("EscapeChar")
+    skip_trailing         = file_config.get("SkipTrailingDelimiter", False)
+    null_values           = file_config.get("NullValues", []) or []
+    columns_config        = file_config.get("Columns", []) or []
+    strict_schema         = file_config.get("StrictSchema", False)
+    on_col_mismatch       = (file_config.get("OnColumnMismatch") or "FAIL").upper()
+    footer_validation_cfg = file_config.get("FooterValidation", {}) or {}
+    deduplicate           = file_config.get("DeduplicateSource", False)
+
+    # Handle TSV
+    fmt = (file_config.get("Format") or "CSV").upper()
+    if fmt == "TSV":
+        delimiter = "\t"
+
+    text  = content.decode(encoding, errors="replace")
+    lines = text.splitlines()
+
+    header_line, data_lines, footer_lines, skipped = _preprocess_lines(
+        lines, file_config
+    )
+
+    # Build CSV text for pandas
+    csv_lines = []
+    if header_line:
+        csv_lines.append(header_line)
+    csv_lines.extend(data_lines)
+
+    csv_text = "\n".join(csv_lines)
+
+    # Parse with pandas
+    try:
+        df = pd.read_csv(
+            io.StringIO(csv_text),
+            sep          = delimiter,
+            quotechar    = quote_char,
+            escapechar   = escape_char,
+            header       = 0 if header_line else None,
+            dtype        = str,
+            keep_default_na = False,
+            on_bad_lines = "warn" if on_col_mismatch == "TRUNCATE" else "error"
+        )
+    except Exception as e:
+        raise ValueError(f"Failed to parse delimited file '{filename}': {e}")
+
+    # Strip trailing delimiter column
+    if skip_trailing:
+        last_col = df.columns[-1]
+        if df[last_col].isna().all() or (df[last_col] == "").all():
+            df = df.drop(columns=[last_col])
+
+    # Schema validation
+    schema_errors = _validate_schema(
+        list(df.columns), columns_config, strict_schema
+    )
+    if schema_errors:
+        return pd.DataFrame(), [], schema_errors, []
+
+    # Process rows
+    parse_errors = []
+    processed_rows = []
+
+    for row_idx, row in df.iterrows():
+        row_dict = row.to_dict()
+        processed, errors = _process_row(
+            row_dict, columns_config, null_values
+        )
+        if errors:
+            for err in errors:
+                err["RowNumber"]   = row_idx + 2  # +2 for header + 1-based
+                err["RawContent"]  = delimiter.join(
+                    str(v) for v in row_dict.values()
+                )
+            parse_errors.extend(errors)
+        else:
+            processed_rows.append(processed)
+
+    result_df = pd.DataFrame(processed_rows) if processed_rows else pd.DataFrame()
+
+    # Deduplicate
+    if deduplicate and not result_df.empty:
+        before = len(result_df)
+        result_df = result_df.drop_duplicates()
+        after  = len(result_df)
+        if before != after:
+            logger.warning(
+                f"File_parser: Deduplicated {before - after} duplicate row(s)."
+            )
+
+    # Footer validation
+    footer_errors = []
+    if footer_validation_cfg.get("Enabled") and footer_lines:
+        footer_errors = _validate_footer(
+            footer_lines, result_df,
+            footer_validation_cfg, delimiter
+        )
+
+    logger.info(
+        f"File_parser: '{filename}' — "
+        f"parsed {len(result_df)} row(s), "
+        f"{len(parse_errors)} parse error(s)."
+    )
+
+    return result_df, parse_errors, schema_errors, footer_errors
+
+
+def _parse_fixed_width(content: bytes, file_config: dict,
+                       filename: str = "") -> tuple:
+    """
+    Parses fixed-width files.
+    Supports single layout and multi-layout (RecordSets).
+    Returns (DataFrame, parse_errors, schema_errors, footer_errors)
+    """
+    encoding      = detect_encoding(content, file_config.get("Encoding"))
+    null_values   = file_config.get("NullValues", []) or []
+    record_sets   = file_config.get("RecordSets") or []
+    rec_type_col  = file_config.get("RecordTypeColumn") or {}
+    footer_config = file_config.get("FooterValidation", {}) or {}
+
+    text  = content.decode(encoding, errors="replace")
+    lines = text.splitlines()
+
+    _, data_lines, footer_lines, _ = _preprocess_lines(lines, file_config)
+
+    parse_errors = []
+    all_rows     = []
+
+    if record_sets:
+        # Multi-layout — identify record type per row
+        rt_pos   = int(rec_type_col.get("Position", 1)) - 1
+        rt_width = int(rec_type_col.get("Width", 1))
+
+        # Build lookup — record_type → columns_config
+        rt_map = {}
+        for rs in record_sets:
+            rt     = rs.get("RecordType", "")
+            skip   = rs.get("Skip", False)
+            cols   = rs.get("Columns", [])
+            rt_map[rt] = {"skip": skip, "columns": cols}
+
+        for row_idx, line in enumerate(data_lines):
+            if len(line) <= rt_pos:
+                continue
+
+            rt = line[rt_pos:rt_pos + rt_width].strip()
+            rs_def = rt_map.get(rt)
+
+            if rs_def is None:
+                logger.warning(
+                    f"File_parser: Unknown record type '{rt}' "
+                    f"at row {row_idx + 1} — skipped."
+                )
+                continue
+
+            if rs_def["skip"]:
+                continue
+
+            # Extract fields by position
+            row_dict = {}
+            for col_def in rs_def["columns"]:
+                pos   = int(col_def.get("Position", 1)) - 1
+                width = int(col_def.get("Width", 1))
+                name  = col_def.get("SourceName", "") or col_def.get("Name", "")
+                raw   = line[pos:pos + width] if len(line) >= pos + width else ""
+                row_dict[name] = raw
+
+            columns_config = rs_def["columns"]
+            processed, errors = _process_row(
+                row_dict, columns_config, null_values
+            )
+            if errors:
+                for err in errors:
+                    err["RowNumber"]  = row_idx + 1
+                    err["RawContent"] = line
+                parse_errors.extend(errors)
+            else:
+                all_rows.append(processed)
+
+    else:
+        # Single layout
+        columns_config = file_config.get("Columns", []) or []
+        for row_idx, line in enumerate(data_lines):
+            row_dict = {}
+            for col_def in columns_config:
+                pos   = int(col_def.get("Position", 1)) - 1
+                width = int(col_def.get("Width", 1))
+                name  = col_def.get("SourceName", "") or col_def.get("Name", "")
+                raw   = line[pos:pos + width] if len(line) >= pos + width else ""
+                row_dict[name] = raw
+
+            processed, errors = _process_row(
+                row_dict, columns_config, null_values
+            )
+            if errors:
+                for err in errors:
+                    err["RowNumber"]  = row_idx + 1
+                    err["RawContent"] = line
+                parse_errors.extend(errors)
+            else:
+                all_rows.append(processed)
+
+    result_df = pd.DataFrame(all_rows) if all_rows else pd.DataFrame()
+
+    # Footer validation
+    footer_errors = []
+    if footer_config.get("Enabled") and footer_lines:
+        footer_errors = _validate_footer(
+            footer_lines, result_df, footer_config, " "
+        )
+
+    logger.info(
+        f"File_parser: '{filename}' — "
+        f"fixed-width parsed {len(result_df)} row(s), "
+        f"{len(parse_errors)} parse error(s)."
+    )
+
+    return result_df, parse_errors, [], footer_errors
+
+
+def _parse_excel(content: bytes, file_config: dict,
+                 filename: str = "") -> tuple:
+    """
+    Parses Excel XLSX/XLS files.
+    Returns (DataFrame, parse_errors, schema_errors, footer_errors)
+    """
+    sheet             = file_config.get("Sheet", 0)
+    skip_rows         = int(file_config.get("SkipRows", 0) or 0)
+    footer_rows       = int(file_config.get("FooterRows", 0) or 0)
+    has_header        = file_config.get("Header", True)
+    use_formula_vals  = file_config.get("UseFormulaValues", True)
+    include_hidden    = file_config.get("IncludeHidden", False)
+    password          = file_config.get("Password")
+    named_range       = file_config.get("NamedRange")
+    null_values       = file_config.get("NullValues", []) or []
+    columns_config    = file_config.get("Columns", []) or []
+    strict_schema     = file_config.get("StrictSchema", False)
+    footer_config     = file_config.get("FooterValidation", {}) or {}
+
+    # Handle password protected Excel
+    if password:
+        try:
+            import msoffcrypto
+            encrypted = io.BytesIO(content)
+            decrypted = io.BytesIO()
+            office    = msoffcrypto.OfficeFile(encrypted)
+            office.load_key(password=password)
+            office.decrypt(decrypted)
+            content   = decrypted.getvalue()
+        except ImportError:
+            raise ImportError(
+                "msoffcrypto-tool required for password-protected Excel. "
+                "Install with: pip install msoffcrypto-tool"
+            )
+
+    # Read Excel
+    try:
+        if sheet == "ALL":
+            xl   = pd.ExcelFile(io.BytesIO(content))
+            dfs  = []
+            for sheet_name in xl.sheet_names:
+                df = pd.read_excel(
+                    io.BytesIO(content),
+                    sheet_name = sheet_name,
+                    skiprows   = skip_rows,
+                    header     = 0 if has_header else None,
+                    dtype      = str
+                )
+                df["_sheet"] = sheet_name
+                dfs.append(df)
+            df = pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
+        else:
+            df = pd.read_excel(
+                io.BytesIO(content),
+                sheet_name = sheet,
+                skiprows   = skip_rows,
+                header     = 0 if has_header else None,
+                dtype      = str
+            )
+    except Exception as e:
+        raise ValueError(f"Failed to parse Excel file '{filename}': {e}")
+
+    # Remove footer rows
+    if footer_rows > 0:
+        footer_df = df.tail(footer_rows)
+        df        = df.iloc[:-footer_rows]
+    else:
+        footer_df = pd.DataFrame()
+
+    # Drop hidden rows if needed — pandas doesn't expose row visibility
+    # openpyxl needed for hidden row detection
+    if not include_hidden:
+        # Best effort — drop rows where all values are NaN
+        df = df.dropna(how="all")
+
+    df = df.fillna("")
+
+    # Schema validation
+    schema_errors = _validate_schema(
+        list(df.columns), columns_config, strict_schema
+    )
+    if schema_errors:
+        return pd.DataFrame(), [], schema_errors, []
+
+    # Process rows
+    parse_errors   = []
+    processed_rows = []
+
+    for row_idx, row in df.iterrows():
+        row_dict = row.to_dict()
+        processed, errors = _process_row(
+            row_dict, columns_config, null_values
+        )
+        if errors:
+            for err in errors:
+                err["RowNumber"]  = row_idx + skip_rows + 2
+                err["RawContent"] = str(row_dict)
+            parse_errors.extend(errors)
+        else:
+            processed_rows.append(processed)
+
+    result_df = pd.DataFrame(processed_rows) if processed_rows else pd.DataFrame()
+
+    # Footer validation
+    footer_errors = []
+    if footer_config.get("Enabled") and not footer_df.empty:
+        footer_lines  = [",".join(str(v) for v in row) for _, row in footer_df.iterrows()]
+        footer_errors = _validate_footer(
+            footer_lines, result_df, footer_config, ","
+        )
+
+    logger.info(
+        f"File_parser: '{filename}' — "
+        f"Excel parsed {len(result_df)} row(s), "
+        f"{len(parse_errors)} parse error(s)."
+    )
+
+    return result_df, parse_errors, schema_errors, footer_errors
+
+
+def _parse_json(content: bytes, file_config: dict,
+                filename: str = "") -> tuple:
+    """
+    Parses JSON files.
+    Handles nested structures via RecordPath.
+    Returns (DataFrame, parse_errors, schema_errors, footer_errors)
+    """
+    import json
+
+    encoding       = detect_encoding(content, file_config.get("Encoding"))
+    record_path    = file_config.get("RecordPath")
+    null_values    = file_config.get("NullValues", []) or []
+    columns_config = file_config.get("Columns", []) or []
+    strict_schema  = file_config.get("StrictSchema", False)
+
+    text = content.decode(encoding, errors="replace")
+
+    try:
+        data = json.loads(text)
+    except Exception as e:
+        raise ValueError(f"Failed to parse JSON file '{filename}': {e}")
+
+    # Navigate to record path
+    if record_path:
+        for key in record_path.split("."):
+            if isinstance(data, list):
+                # Explode array
+                data = [item.get(key) for item in data if isinstance(item, dict)]
+                data = [item for sublist in data
+                        for item in (sublist if isinstance(sublist, list)
+                                     else [sublist])]
+            elif isinstance(data, dict):
+                data = data.get(key)
+            else:
+                raise ValueError(
+                    f"Cannot navigate RecordPath '{record_path}' — "
+                    f"unexpected type at '{key}'."
+                )
+
+    if not isinstance(data, list):
+        data = [data] if data else []
+
+    # Flatten to DataFrame
+    try:
+        df = pd.json_normalize(data)
+        df = df.fillna("").astype(str)
+    except Exception as e:
+        raise ValueError(f"Failed to normalize JSON '{filename}': {e}")
+
+    # Schema validation
+    schema_errors = _validate_schema(
+        list(df.columns), columns_config, strict_schema
+    )
+    if schema_errors:
+        return pd.DataFrame(), [], schema_errors, []
+
+    # Process rows
+    parse_errors   = []
+    processed_rows = []
+
+    for row_idx, row in df.iterrows():
+        row_dict  = row.to_dict()
+        processed, errors = _process_row(
+            row_dict, columns_config, null_values
+        )
+        if errors:
+            for err in errors:
+                err["RowNumber"]  = row_idx + 1
+                err["RawContent"] = str(row_dict)
+            parse_errors.extend(errors)
+        else:
+            processed_rows.append(processed)
+
+    result_df = pd.DataFrame(processed_rows) if processed_rows else pd.DataFrame()
+
+    logger.info(
+        f"File_parser: '{filename}' — "
+        f"JSON parsed {len(result_df)} row(s)."
+    )
+
+    return result_df, parse_errors, schema_errors, []
+
+
+def _parse_xml(content: bytes, file_config: dict,
+               filename: str = "") -> tuple:
+    """
+    Parses XML files.
+    Supports namespaces, attributes, multiple RecordSets, nested flattening.
+    Returns (DataFrame, parse_errors, schema_errors, footer_errors)
+    """
+    import xml.etree.ElementTree as ET
+
+    encoding          = detect_encoding(content, file_config.get("Encoding"))
+    record_tag        = file_config.get("RecordTag", "")
+    record_sets       = file_config.get("RecordSets") or []
+    namespace_aware   = file_config.get("NamespaceAware", False)
+    namespaces        = file_config.get("Namespaces") or {}
+    include_attrs     = file_config.get("IncludeAttributes", False)
+    record_filter     = file_config.get("RecordFilter")
+    flatten_depth     = int(file_config.get("FlattenDepth", 2) or 2)
+    null_values       = file_config.get("NullValues", []) or []
+    columns_config    = file_config.get("Columns", []) or []
+    strict_schema     = file_config.get("StrictSchema", False)
+
+    text = content.decode(encoding, errors="replace")
+
+    try:
+        root = ET.fromstring(text)
+    except Exception as e:
+        raise ValueError(f"Failed to parse XML '{filename}': {e}")
+
+    # Strip namespaces if not namespace-aware
+    if not namespace_aware:
+        for elem in root.iter():
+            elem.tag = elem.tag.split("}")[1] if "}" in elem.tag else elem.tag
+
+    def _elem_to_dict(elem, depth=0, prefix=""):
+        """Recursively flattens XML element to dict."""
+        result = {}
+
+        # Attributes
+        if include_attrs:
+            for attr_name, attr_val in elem.attrib.items():
+                key = f"@{attr_name}"
+                result[f"{prefix}{key}" if prefix else key] = attr_val
+
+        # Child elements
+        for child in elem:
+            tag = child.tag.split("}")[1] if "}" in child.tag else child.tag
+            child_key = f"{prefix}{tag}" if prefix else tag
+
+            if len(child) > 0 and depth < flatten_depth:
+                # Has children — recurse
+                child_dict = _elem_to_dict(child, depth + 1, f"{child_key}.")
+                result.update(child_dict)
+            else:
+                result[child_key] = child.text or ""
+
+        # Direct text
+        if elem.text and elem.text.strip():
+            result[prefix.rstrip(".") or elem.tag] = elem.text.strip()
+
+        return result
+
+    def _matches_filter(elem, flt):
+        """Checks if element matches RecordFilter."""
+        if not flt:
+            return True
+        attr     = flt.get("Attribute", "")
+        operator = flt.get("Operator", "=")
+        value    = str(flt.get("Value", ""))
+        elem_val = elem.attrib.get(attr, "")
+        if operator == "=":
+            return elem_val == value
+        if operator == "!=":
+            return elem_val != value
+        if operator == "IN":
+            return elem_val in [v.strip() for v in value.split(",")]
+        return True
+
+    parse_errors   = []
+    processed_rows = []
+
+    # Determine which record sets to process
+    active_record_sets = []
+
+    if record_sets:
+        for rs in record_sets:
+            if not rs.get("Skip", False):
+                active_record_sets.append(rs)
+    elif record_tag:
+        active_record_sets = [{
+            "RecordTag"   : record_tag,
+            "RecordFilter": record_filter,
+            "Columns"     : columns_config,
+            "Skip"        : False
+        }]
+
+    for rs in active_record_sets:
+        rt         = rs.get("RecordTag", "")
+        rs_filter  = rs.get("RecordFilter")
+        rs_columns = rs.get("Columns", columns_config)
+
+        # Find elements matching tag
+        # Try with namespace prefix first, then without
+        elements = root.findall(f".//{rt}", namespaces)
+        if not elements:
+            # Try stripping namespace
+            plain_tag = rt.split(":")[-1] if ":" in rt else rt
+            elements  = root.findall(f".//{plain_tag}")
+
+        for elem in elements:
+            if not _matches_filter(elem, rs_filter):
+                continue
+
+            row_dict           = _elem_to_dict(elem)
+            processed, errors  = _process_row(
+                row_dict, rs_columns, null_values
+            )
+            if errors:
+                for err in errors:
+                    err["RawContent"] = ET.tostring(elem, encoding="unicode")
+                parse_errors.extend(errors)
+            else:
+                processed_rows.append(processed)
+
+    result_df = pd.DataFrame(processed_rows) if processed_rows else pd.DataFrame()
+
+    # Schema validation on first record set only
+    schema_errors = []
+    if active_record_sets and not result_df.empty:
+        schema_errors = _validate_schema(
+            list(result_df.columns),
+            active_record_sets[0].get("Columns", columns_config),
+            strict_schema
+        )
+
+    logger.info(
+        f"File_parser: '{filename}' — "
+        f"XML parsed {len(result_df)} row(s)."
+    )
+
+    return result_df, parse_errors, schema_errors, []
+
+
+def _parse_hl7(content: bytes, file_config: dict,
+               filename: str = "") -> tuple:
+    """
+    Parses HL7 v2.x messages.
+    Groups segments by MSH (one row per message).
+    Returns (DataFrame, parse_errors, schema_errors, footer_errors)
+    """
+    encoding     = detect_encoding(content, file_config.get("Encoding"))
+    record_sets  = file_config.get("RecordSets", []) or []
+    null_values  = file_config.get("NullValues", []) or []
+    version      = file_config.get("Version")
+
+    text = content.decode(encoding, errors="replace")
+
+    # Split into messages by MSH
+    # HL7 uses \r as segment terminator
+    text = text.replace("\r\n", "\r").replace("\n", "\r")
+    segments_raw = [s.strip() for s in text.split("\r") if s.strip()]
+
+    # Group into messages
+    messages = []
+    current  = []
+    for seg in segments_raw:
+        if seg.startswith("MSH"):
+            if current:
+                messages.append(current)
+            current = [seg]
+        else:
+            if current:
+                current.append(seg)
+    if current:
+        messages.append(current)
+
+    if not messages:
+        raise ValueError(f"No HL7 messages found in '{filename}'.")
+
+    # Build segment config lookup
+    seg_map = {}
+    for rs in record_sets:
+        seg_id = rs.get("Segment", "")
+        skip   = rs.get("Skip", False)
+        cols   = rs.get("Columns", [])
+        seg_map[seg_id.upper()] = {"skip": skip, "columns": cols}
+
+    parse_errors   = []
+    processed_rows = []
+
+    for msg_idx, segments in enumerate(messages):
+        # Parse each segment in message
+        seg_data = {}
+
+        for seg in segments:
+            # Detect field separator from MSH
+            if seg.startswith("MSH"):
+                field_sep = seg[3] if len(seg) > 3 else "|"
+                comp_sep  = seg[4] if len(seg) > 4 else "^"
+            else:
+                field_sep = "|"
+                comp_sep  = "^"
+
+            parts  = seg.split(field_sep)
+            seg_id = parts[0].upper()
+
+            if seg_id not in seg_map or seg_map[seg_id]["skip"]:
+                continue
+
+            # Extract fields by notation SEG.field.component
+            seg_data[seg_id] = {}
+            for col_def in seg_map[seg_id]["columns"]:
+                source_name = col_def.get("SourceName", "")
+                # Parse notation e.g. PID.3.1
+                notation_parts = source_name.split(".")
+                if len(notation_parts) >= 2:
+                    field_idx = int(notation_parts[1]) - 1
+                    # MSH field 1 is field separator itself — adjust
+                    if seg_id == "MSH":
+                        field_idx += 1
+                    field_val = parts[field_idx] if len(parts) > field_idx else ""
+                    if len(notation_parts) >= 3:
+                        comp_idx  = int(notation_parts[2]) - 1
+                        comps     = field_val.split(comp_sep)
+                        field_val = comps[comp_idx] if len(comps) > comp_idx else ""
+                    seg_data[seg_id][source_name] = field_val
+
+        # Flatten all segments into one row
+        row_dict = {}
+        for seg_id, fields in seg_data.items():
+            row_dict.update(fields)
+
+        if not row_dict:
+            continue
+
+        # Process with column configs from all non-skipped segments
+        all_columns = []
+        for rs in record_sets:
+            if not rs.get("Skip", False):
+                all_columns.extend(rs.get("Columns", []))
+
+        processed, errors = _process_row(row_dict, all_columns, null_values)
+        if errors:
+            for err in errors:
+                err["RowNumber"]  = msg_idx + 1
+                err["RawContent"] = "|".join(segments[:2])
+            parse_errors.extend(errors)
+        else:
+            processed_rows.append(processed)
+
+    result_df = pd.DataFrame(processed_rows) if processed_rows else pd.DataFrame()
+
+    logger.info(
+        f"File_parser: '{filename}' — "
+        f"HL7 parsed {len(result_df)} message(s)."
+    )
+
+    return result_df, parse_errors, [], []
+
+
+def _parse_ncpdp_d0(content: bytes, file_config: dict,
+                    filename: str = "") -> tuple:
+    """
+    Parses NCPDP D.0 fixed-length qualifier format.
+    Returns (DataFrame, parse_errors, schema_errors, footer_errors)
+    """
+    encoding    = detect_encoding(content, file_config.get("Encoding"))
+    record_sets = file_config.get("RecordSets", []) or []
+    null_values = file_config.get("NullValues", []) or []
+
+    text = content.decode(encoding, errors="replace")
+
+    # NCPDP D.0 field lengths — standard positions
+    # This is a subset — full dictionary from NCPDP spec
+    NCPDP_FIELD_LENGTHS = {
+        "AM": 2,   # Transaction count
+        "EM": 2,   # Segment ID
+        "BN": 8,   # Processor control number
+        "C2": 20,  # Patient ID
+        "C3": 8,   # Date of birth
+        "C4": 1,   # Patient gender
+        "C5": 2,   # Patient relationship
+        "D1": 7,   # Date of service
+        "D2": 11,  # Product/service ID
+        "D3": 2,   # Quantity dispensed
+        "D5": 10,  # Quantity dispensed (decimal)
+        "D6": 4,   # Days supply
+        "D7": 2,   # Compound code
+        "D8": 3,   # Days supply
+        "D9": 1,   # DAW product selection code
+        "E1": 15,  # Prescriber ID
+        "E2": 2,   # Prescriber ID qualifier
+        "EE": 10,  # Primary care provider ID
+    }
+
+    # Build segment config lookup
+    seg_map = {}
+    for rs in record_sets:
+        seg_id = rs.get("Segment", "").upper()
+        skip   = rs.get("Skip", False)
+        cols   = rs.get("Columns", [])
+        seg_map[seg_id] = {"skip": skip, "columns": cols}
+
+    parse_errors   = []
+    processed_rows = []
+
+    # Split into transactions — each starts with a segment identifier
+    # NCPDP D.0 transactions are typically separated by newlines
+    transactions = [t.strip() for t in text.split("\n") if t.strip()]
+
+    for tx_idx, transaction in enumerate(transactions):
+        # Parse qualifier-value pairs
+        tx_data = {}
+        i = 0
+        while i < len(transaction) - 1:
+            qualifier = transaction[i:i+2]
+            length    = NCPDP_FIELD_LENGTHS.get(qualifier)
+            if length is None:
+                i += 1
+                continue
+            value    = transaction[i+2:i+2+length]
+            tx_data[qualifier] = value.strip()
+            i += 2 + length
+
+        # Determine segment type from EM field or first qualifier
+        seg_id = tx_data.get("EM", tx_data.get("AM", "")).strip().upper()
+
+        if seg_id not in seg_map or seg_map[seg_id]["skip"]:
+            continue
+
+        columns_config = seg_map[seg_id]["columns"]
+        processed, errors = _process_row(tx_data, columns_config, null_values)
+
+        if errors:
+            for err in errors:
+                err["RowNumber"]  = tx_idx + 1
+                err["RawContent"] = transaction[:50]
+            parse_errors.extend(errors)
+        else:
+            processed_rows.append(processed)
+
+    result_df = pd.DataFrame(processed_rows) if processed_rows else pd.DataFrame()
+
+    logger.info(
+        f"File_parser: '{filename}' — "
+        f"NCPDP D.0 parsed {len(result_df)} transaction(s)."
+    )
+
+    return result_df, parse_errors, [], []
+
+
+def _parse_ncpdp_script(content: bytes, file_config: dict,
+                        filename: str = "") -> tuple:
+    """
+    Parses NCPDP SCRIPT XML format.
+    Delegates to XML parser with SCRIPT-specific defaults.
+    """
+    # SCRIPT is XML — use XML parser
+    # Add default namespace if not specified
+    if not file_config.get("Namespaces"):
+        version = file_config.get("Version", "10.6")
+        file_config = dict(file_config)
+        file_config["Namespaces"] = {
+            "ncpdp": f"http://www.ncpdp.org/schema/script/{version}"
+        }
+        file_config["NamespaceAware"] = True
+
+    return _parse_xml(content, file_config, filename)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Main entry point
+# ─────────────────────────────────────────────────────────────────────────────
+
+def parse_file(filename: str, content: bytes,
+               file_config: dict) -> dict:
+    """
+    Parses file content into a DataFrame using FileConfig.
+
+    Args:
+        filename    : Original filename (for logging/audit)
+        content     : Raw file bytes (after decryption/decompression)
+        file_config : FileConfig dict from test case document
+
+    Returns dict:
+    {
+        "dataframe"    : pd.DataFrame,
+        "parse_errors" : list of error dicts,
+        "schema_errors": list of schema error strings,
+        "footer_errors": list of footer validation errors,
+        "row_count"    : int,
+        "error_count"  : int,
+        "filename"     : str,
+        "encoding"     : str
+    }
+
+    Note: parse_errors does NOT fail silently.
+    Caller should check error_count > 0 and fail test case.
+    """
+    file_config = file_config or {}
+    fmt = (file_config.get("Format") or "AUTO").upper()
+
+    # Auto-detect format from content
+    if fmt == "AUTO":
+        fmt = _detect_format(content, filename)
+        logger.info(f"File_parser: Format auto-detected — '{fmt}'")
+
+    # Detect encoding for audit
+    encoding = detect_encoding(
+        content[:65536], file_config.get("Encoding")
+    )
+
+    # Dispatch to format parser
+    parser_map = {
+        "CSV"          : _parse_delimited,
+        "PIPE"         : _parse_delimited,
+        "TSV"          : _parse_delimited,
+        "FIXED_WIDTH"  : _parse_fixed_width,
+        "EXCEL"        : _parse_excel,
+        "JSON"         : _parse_json,
+        "XML"          : _parse_xml,
+        "HL7"          : _parse_hl7,
+        "NCPDP_D0"     : _parse_ncpdp_d0,
+        "NCPDP_SCRIPT" : _parse_ncpdp_script,
+    }
+
+    parser = parser_map.get(fmt)
+    if not parser:
+        raise ValueError(
+            f"Unsupported FileConfig.Format '{fmt}'. "
+            f"Supported: {sorted(parser_map.keys())}"
+        )
+
+    df, parse_errors, schema_errors, footer_errors = parser(
+        content, file_config, filename
+    )
+
+    # Log summary
+    total_errors = len(parse_errors) + len(schema_errors) + len(footer_errors)
+    if total_errors > 0:
+        logger.issue(
+            f"File_parser: '{filename}' — "
+            f"{len(parse_errors)} parse error(s), "
+            f"{len(schema_errors)} schema error(s), "
+            f"{len(footer_errors)} footer error(s)."
+        )
+    else:
+        logger.info(
+            f"File_parser: '{filename}' — "
+            f"parse complete, {len(df)} row(s), no errors."
+        )
+
+    return {
+        "dataframe"    : df,
+        "parse_errors" : parse_errors,
+        "schema_errors": schema_errors,
+        "footer_errors": footer_errors,
+        "row_count"    : len(df),
+        "error_count"  : total_errors,
+        "filename"     : filename,
+        "encoding"     : encoding,
+        "format"       : fmt
+    }
+
+
+def _detect_format(content: bytes, filename: str = "") -> str:
+    """
+    Auto-detects file format from content and filename extension.
+    """
+    # Try filename extension first
+    ext = (filename or "").lower().rsplit(".", 1)[-1]
+    ext_map = {
+        "csv"  : "CSV",
+        "txt"  : "CSV",
+        "tsv"  : "TSV",
+        "tab"  : "TSV",
+        "xlsx" : "EXCEL",
+        "xls"  : "EXCEL",
+        "xlsm" : "EXCEL",
+        "json" : "JSON",
+        "xml"  : "XML",
+        "hl7"  : "HL7",
+        "dat"  : "FIXED_WIDTH",
+    }
+    if ext in ext_map:
+        return ext_map[ext]
+
+    # Try content sniffing
+    try:
+        sample = content[:500].decode("utf-8", errors="ignore").strip()
+
+        if sample.startswith("<"):
+            if "ncpdp" in sample.lower():
+                return "NCPDP_SCRIPT"
+            return "XML"
+
+        if sample.startswith(("{", "[")):
+            return "JSON"
+
+        if sample.startswith("MSH|"):
+            return "HL7"
+
+        if "|" in sample.split("\n")[0]:
+            return "PIPE"
+
+        if "\t" in sample.split("\n")[0]:
+            return "TSV"
+
+        if "," in sample.split("\n")[0]:
+            return "CSV"
+
+    except Exception:
+        pass
+
+    return "CSV"
+
+
+def fetch_and_parse(source: dict,
+                    retry_attempts: int = 2,
+                    retry_wait_minutes: float = 5,
+                    add_source_file_column: bool = False) -> dict:
+    """
+    Convenience function — fetches and parses in one call.
+    Handles multiple files (PickStrategy=ALL) by combining DataFrames.
+
+    Returns same structure as parse_file() but with combined DataFrame.
+    """
+    from .File_fetcher import fetch_file
+
+    file_config = source.get("FileConfig") or {}
+    add_col     = add_source_file_column or source.get("AddSourceFileColumn", False)
+
+    raw_files = fetch_file(
+        source,
+        retry_attempts=retry_attempts,
+        retry_wait_minutes=retry_wait_minutes
+    )
+
+    if not raw_files:
+        raise ValueError("No files retrieved from source.")
+
+    all_dfs         = []
+    all_parse_errors = []
+    all_schema_errors = []
+    all_footer_errors = []
+
+    for filename, content in raw_files:
+        result = parse_file(filename, content, file_config)
+
+        df = result["dataframe"]
+        if add_col and not df.empty:
+            df["SourceFile"] = filename
+
+        all_dfs.append(df)
+        all_parse_errors.extend(result["parse_errors"])
+        all_schema_errors.extend(result["schema_errors"])
+        all_footer_errors.extend(result["footer_errors"])
+
+    # Combine all DataFrames
+    if all_dfs:
+        # Schema consistency check for multiple files
+        if len(all_dfs) > 1:
+            first_cols = set(all_dfs[0].columns)
+            for i, df in enumerate(all_dfs[1:], 2):
+                if set(df.columns) != first_cols:
+                    raise ValueError(
+                        f"Schema inconsistency across files — "
+                        f"file {i} has different columns: "
+                        f"expected {sorted(first_cols)}, "
+                        f"got {sorted(df.columns)}"
+                    )
+
+        combined_df = pd.concat(all_dfs, ignore_index=True)
+    else:
+        combined_df = pd.DataFrame()
+
+    total_errors = (
+        len(all_parse_errors) +
+        len(all_schema_errors) +
+        len(all_footer_errors)
+    )
+
+    logger.info(
+        f"File_parser: Combined {len(raw_files)} file(s) — "
+        f"{len(combined_df)} total rows, "
+        f"{total_errors} total error(s)."
+    )
+
+    return {
+        "dataframe"    : combined_df,
+        "parse_errors" : all_parse_errors,
+        "schema_errors": all_schema_errors,
+        "footer_errors": all_footer_errors,
+        "row_count"    : len(combined_df),
+        "error_count"  : total_errors,
+        "files"        : [f[0] for f in raw_files],
+        "file_count"   : len(raw_files)
+    }
+	
+===================================================================
+
+Comparison_vice_versa_changes.py
+
+===================================================================
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# FILE: Libraries/Comparison_vice_versa_with_log_info.py
+# Three surgical changes to support file comparison options.
+# Apply each FIND/REPLACE exactly as shown.
+# ═════════════════════════════════════════════════════════════════════════════
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 1 — JoinFields="ALL" expansion
+# Location: inside compare_data(), at the very start before src_df/tgt_df
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# FIND:
+#
+#         src_df = pd.DataFrame(source_data)
+#         tgt_df = pd.DataFrame(target_data)
+#         # logger.info("Source and Target dataframes created.")
+#         result_forward,missing_records_tgt =run_comparison(src_df, tgt_df,sourceType, targetType, join_fields, compare_fields, direction="SRC->TGT")
+#
+# REPLACE WITH:
+#
+#         src_df = pd.DataFrame(source_data)
+#         tgt_df = pd.DataFrame(target_data)
+#
+#         # Expand JoinFields="ALL" — use all source columns as composite key
+#         if join_fields == "ALL" or join_fields == ["ALL"]:
+#             _exclude = {"SourceFile", "_chunk_seq", "_row_seq"}
+#             join_fields = [
+#                 {"SourceField": col, "TargetField": col}
+#                 for col in src_df.columns
+#                 if col not in _exclude
+#             ]
+#             compare_fields = []  # ALL mode — join covers everything, no separate compare
+#
+#         result_forward,missing_records_tgt =run_comparison(src_df, tgt_df,sourceType, targetType, join_fields, compare_fields, direction="SRC->TGT")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 2 — CaseSensitive join key normalisation
+# Location: inside run_comparison(), in normalize_join_keys() call block
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# The existing normalize_join_key_types() call handles dtype coercion.
+# Add case-insensitive normalisation AFTER it for string join keys.
+#
+# FIND:
+#
+#             # Coerce join-key dtypes to be comparable (use RESOLVED names)
+#             normalize_join_key_types(src_df, tgt_df_renamed, src_keys_resolved)
+#
+#             # Normalize compare columns BEFORE merge
+#             normalize_compare_columns(src_df, tgt_df_renamed, field_map)
+#
+# REPLACE WITH:
+#
+#             # Coerce join-key dtypes to be comparable (use RESOLVED names)
+#             normalize_join_key_types(src_df, tgt_df_renamed, src_keys_resolved)
+#
+#             # Case-insensitive join key normalisation
+#             for jf, src_key in zip(join_fields, src_keys_resolved):
+#                 if not jf.get("CaseSensitive", True):
+#                     if src_key in src_df.columns:
+#                         src_df[src_key] = src_df[src_key].astype(str).str.upper()
+#                     if src_key in tgt_df_renamed.columns:
+#                         tgt_df_renamed[src_key] = tgt_df_renamed[src_key].astype(str).str.upper()
+#
+#             # Normalize compare columns BEFORE merge
+#             normalize_compare_columns(src_df, tgt_df_renamed, field_map)
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 3 — Per-field Precision, Tolerance, DateOnly, CaseSensitive
+# Location: inside run_comparison(), in the mismatch detection block
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# The existing mismatch detection uses a vectorized mask approach per field.
+# We need to add per-field option handling for fields that specify
+# Precision, Tolerance, DateOnly, or CaseSensitive=False.
+#
+# For fields with none of these options set — existing vectorized path
+# runs unchanged (zero performance impact).
+#
+# FIND the mismatch detection block inside run_comparison():
+#
+#                 if not both_df.empty:
+#                     for f in field_map:
+#                         s_field = f["SourceField"]
+#                         t_field = f["TargetField"]
+#
+#                         # Resolve actual column names after merge suffixing
+#                         s_col = f"{s_field}_src" if f"{s_field}_src" in both_df.columns else s_field
+#                         t_col = f"{t_field}_tgt" if f"{t_field}_tgt" in both_df.columns else t_field
+#
+#                         if s_col not in both_df.columns or t_col not in both_df.columns:
+#                             continue
+#
+#                         s_series = both_df[s_col]
+#                         t_series = both_df[t_col]
+#
+#                         # Vectorized: both-NaN → match; one-NaN or value differs → mismatch
+#                         both_na       = s_series.isna() & t_series.isna()
+#                         mismatch_mask = ((s_series != t_series) | (s_series.isna() ^ t_series.isna())) & ~both_na
+#
+#                         field_diff_count = int(mismatch_mask.sum())
+#                         if field_diff_count == 0:
+#                             continue
+#
+#                         difference_count += field_diff_count
+#                         differences_found = True
+#
+#                         # Iterate only the mismatch rows, up to the configured limit
+#                         for _, row in both_df[mismatch_mask].iterrows():
+#                             if mismatch_log_count >= int(mismatch):
+#                                 break
+#                             join_key_vals = {k: row.get(k) for k in src_keys}
+#                             s_val = row.get(s_col, pd.NA)
+#                             t_val = row.get(t_col, pd.NA)
+#                             msg   = f"Mismatch at {join_key_vals}: {s_field}={s_val} != {t_field}={t_val}"
+#                             logger.issue(f"[{direction}] {msg}")
+#                             if log_doc:
+#                                 append_log_entry(log_doc, "Error", direction, msg)
+#                                 if "MismatchFields" not in log_doc:
+#                                     log_doc["MismatchFields"] = []
+#                                 if s_field not in log_doc["MismatchFields"]:
+#                                     log_doc["MismatchFields"].append(s_field)
+#                             mismatch_log_count += 1
+#
+# REPLACE WITH:
+#
+#                 if not both_df.empty:
+#                     for f in field_map:
+#                         s_field    = f["SourceField"]
+#                         t_field    = f["TargetField"]
+#                         precision  = f.get("Precision")
+#                         tolerance  = f.get("Tolerance", 0.0)
+#                         date_only  = f.get("DateOnly", False)
+#                         case_sens  = f.get("CaseSensitive", True)
+#
+#                         # Resolve actual column names after merge suffixing
+#                         s_col = f"{s_field}_src" if f"{s_field}_src" in both_df.columns else s_field
+#                         t_col = f"{t_field}_tgt" if f"{t_field}_tgt" in both_df.columns else t_field
+#
+#                         if s_col not in both_df.columns or t_col not in both_df.columns:
+#                             continue
+#
+#                         s_series = both_df[s_col]
+#                         t_series = both_df[t_col]
+#
+#                         # ── Per-field options path ────────────────────────────────
+#                         has_options = (
+#                             precision  is not None or
+#                             float(tolerance or 0) != 0.0 or
+#                             date_only or
+#                             not case_sens
+#                         )
+#
+#                         if has_options:
+#                             # Row-level comparison needed for per-field options
+#                             mismatch_mask = _apply_field_options_mask(
+#                                 s_series, t_series, f
+#                             )
+#                         else:
+#                             # Existing fast vectorized path — unchanged
+#                             both_na       = s_series.isna() & t_series.isna()
+#                             mismatch_mask = (
+#                                 (s_series != t_series) |
+#                                 (s_series.isna() ^ t_series.isna())
+#                             ) & ~both_na
+#
+#                         field_diff_count = int(mismatch_mask.sum())
+#                         if field_diff_count == 0:
+#                             continue
+#
+#                         difference_count += field_diff_count
+#                         differences_found = True
+#
+#                         # Iterate only the mismatch rows, up to the configured limit
+#                         for _, row in both_df[mismatch_mask].iterrows():
+#                             if mismatch_log_count >= int(mismatch):
+#                                 break
+#                             join_key_vals = {k: row.get(k) for k in src_keys}
+#                             s_val = row.get(s_col, pd.NA)
+#                             t_val = row.get(t_col, pd.NA)
+#                             msg   = f"Mismatch at {join_key_vals}: {s_field}={s_val} != {t_field}={t_val}"
+#                             logger.issue(f"[{direction}] {msg}")
+#                             if log_doc:
+#                                 append_log_entry(log_doc, "Error", direction, msg)
+#                                 if "MismatchFields" not in log_doc:
+#                                     log_doc["MismatchFields"] = []
+#                                 if s_field not in log_doc["MismatchFields"]:
+#                                     log_doc["MismatchFields"].append(s_field)
+#                             mismatch_log_count += 1
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 4 — Add _apply_field_options_mask() helper
+# Location: add near top of file, after the existing helper functions
+#           (after _either_datetime_like, before compare_data_in_process)
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# PASTE this function into the file:
+
+from decimal import Decimal, ROUND_HALF_UP
+
+def _apply_field_options_mask(s_series: "pd.Series",
+                               t_series: "pd.Series",
+                               field_def: dict) -> "pd.Series":
+    """
+    Builds a boolean mismatch mask for a single compare field,
+    applying per-field options: Precision, Tolerance, DateOnly, CaseSensitive.
+
+    Called only when at least one option is set — otherwise the existing
+    fast vectorized path runs instead (zero performance impact on standard fields).
+
+    Returns:
+        pd.Series of bool — True where values differ (mismatch).
+    """
+    precision = field_def.get("Precision")
+    tolerance = float(field_def.get("Tolerance") or 0.0)
+    date_only = field_def.get("DateOnly", False)
+    case_sens = field_def.get("CaseSensitive", True)
+
+    def _compare_single(s_val, t_val) -> bool:
+        """Returns True if values are DIFFERENT (mismatch)."""
+        # Both null → match
+        s_none = s_val is None or (isinstance(s_val, float) and pd.isna(s_val))
+        t_none = t_val is None or (isinstance(t_val, float) and pd.isna(t_val))
+
+        if s_none and t_none:
+            return False   # both null — match
+        if s_none != t_none:
+            return True    # one null — mismatch
+
+        # Date-only — strip time component
+        if date_only:
+            try:
+                from datetime import datetime as _dt
+                if hasattr(s_val, 'date'):
+                    s_val = s_val.date()
+                elif isinstance(s_val, str):
+                    s_val = _dt.fromisoformat(str(s_val).split("T")[0]).date()
+                if hasattr(t_val, 'date'):
+                    t_val = t_val.date()
+                elif isinstance(t_val, str):
+                    t_val = _dt.fromisoformat(str(t_val).split("T")[0]).date()
+                return s_val != t_val
+            except Exception:
+                pass  # fall through to string comparison
+
+        # Numeric with precision/tolerance
+        if precision is not None or tolerance != 0.0:
+            try:
+                s_dec = Decimal(str(s_val).strip().replace(",", ""))
+                t_dec = Decimal(str(t_val).strip().replace(",", ""))
+                if precision is not None:
+                    factor = Decimal(10) ** -int(precision)
+                    s_dec  = s_dec.quantize(factor, rounding=ROUND_HALF_UP)
+                    t_dec  = t_dec.quantize(factor, rounding=ROUND_HALF_UP)
+                diff = abs(s_dec - t_dec)
+                return diff > Decimal(str(tolerance))
+            except Exception:
+                pass  # fall through to string comparison
+
+        # Case-insensitive string comparison
+        if not case_sens:
+            return str(s_val).strip().upper() != str(t_val).strip().upper()
+
+        # Default exact match
+        return str(s_val).strip() != str(t_val).strip()
+
+    # Apply row-level comparison — returns boolean Series
+    return pd.Series(
+        [_compare_single(s, t) for s, t in zip(s_series, t_series)],
+        index=s_series.index
+    )
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# Summary of all four changes
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# Change 1: JoinFields="ALL" expansion at start of compare_data()
+#           — 6 lines added before result_forward call
+#
+# Change 2: CaseSensitive join key normalisation in run_comparison()
+#           — 6 lines added after normalize_join_key_types() call
+#
+# Change 3: Per-field options routing in mismatch detection loop
+#           — adds has_options check and _apply_field_options_mask branch
+#           — existing vectorized path completely unchanged for standard fields
+#
+# Change 4: New _apply_field_options_mask() helper function
+#           — add near top of file before compare_data_in_process
+#
+# Performance impact:
+#   — Fields without per-field options: ZERO impact (existing path unchanged)
+#   — Fields with per-field options: row-level Python loop (necessary for
+#     decimal arithmetic) but only on matched rows in "both" merge result
+#
+# Existing test cases: completely unaffected
+#   — JoinFields still list of dicts → Change 1 skipped
+#   — No CaseSensitive in existing join fields → Change 2 skipped
+#   — No Precision/Tolerance/DateOnly in existing compare fields → existing
+#     vectorized path runs as before
+
+
+
+============================================================================
+
+Data_Validation.py
+
+
+
+
+=======================================================================
+
+# ═════════════════════════════════════════════════════════════════════════════
+# FILE: Script/Data_Validation.py
+# Exact surgical changes to add file type support.
+# Apply each FIND/REPLACE exactly as shown.
+# All existing keywords unchanged — file support auto-routes via source_def.
+# ═════════════════════════════════════════════════════════════════════════════
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 1 — Add FILE_TYPES constant and import
+# Location: top of file, after existing Library imports
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# FIND:
+#     from Libraries.data_fetcher import get_next_sequence_id, get_data, get_count
+#
+# REPLACE WITH:
+#     from Libraries.data_fetcher import get_next_sequence_id, get_data, get_count
+#
+#     FILE_TYPES = {
+#         "CSV", "PIPE", "TSV", "FIXED_WIDTH", "EXCEL",
+#         "JSON", "XML", "HL7", "NCPDP_D0", "NCPDP_SCRIPT",
+#         "LOCAL_PATH", "UNC_PATH", "SFTP", "FTP",
+#         "S3", "AZURE_BLOB", "ORACLE_CLOB", "MONGODB_GRIDFS",
+#         "AUTO"
+#     }
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 2a — _prepare_rules(): add _is_pipeline alias
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# FIND:
+#             rule["_is_edi835"] = is_edi835
+#
+# REPLACE WITH:
+#             rule["_is_edi835"]  = is_edi835   # keep for backward compat
+#             rule["_is_pipeline"] = is_edi835   # new canonical name
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 2b — _run_single(): rename is_edi835 → is_pipeline, add source_def/target_def
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# FIND:
+#         source          = rule.get("Source", {})
+#         is_edi835 = isinstance(source, list)
+#
+#         if is_edi835:
+#             sourceType        = "EDI835"
+#             sourceEnvironment = None
+#             sourceDB          = None
+#             sourceQuery       = None
+#             sourceQueryType   = None
+#             source_steps      = source   # list of step dicts
+#         else:
+#             sourceType        = source.get("Type")        if source else None
+#             sourceEnvironment = source.get("Environment") if source else None
+#             sourceDB          = source.get("DB")          if source else None
+#             sourceQuery       = source.get("Query")       if source else None
+#             sourceQueryType   = source.get("QueryType")   if source else None
+#             source_steps      = None
+#
+# REPLACE WITH:
+#         source      = rule.get("Source", {})
+#         is_pipeline = isinstance(source, list)
+#         is_edi835   = is_pipeline   # backward compat alias
+#
+#         if is_pipeline:
+#             sourceType        = "PIPELINE"
+#             sourceEnvironment = None
+#             sourceDB          = None
+#             sourceQuery       = None
+#             sourceQueryType   = None
+#             source_steps      = source
+#             source_def        = None   # pipeline manages its own fetching
+#         else:
+#             sourceType        = source.get("Type")        if source else None
+#             sourceEnvironment = source.get("Environment") if source else None
+#             sourceDB          = source.get("DB")          if source else None
+#             sourceQuery       = source.get("Query")       if source else None
+#             sourceQueryType   = source.get("QueryType")   if source else None
+#             source_steps      = None
+#             # Pass full source dict when source is a file type
+#             source_def = (
+#                 source
+#                 if source and (sourceType or "").upper() in FILE_TYPES
+#                 else None
+#             )
+#
+#         # Target — always a dict, may be file type
+#         target_def = (
+#             target
+#             if target and (targetType or "").upper() in FILE_TYPES
+#             else None
+#         )
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 3 — SRC_TGT branch: add source_def/target_def to get_data()
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# FIND (inside SRC_TGT branch only):
+#             source_data, target_data = get_data(
+#                 sourceType, sourceDB, src_q, sourceEnvKey,
+#                 targetType, targetDB, tgt_q, targetEnvKey,
+#                 sourceQueryType, targetQueryType,
+#                 source_mongo_filter,
+#                 target_mongo_filter
+#             )
+#
+# REPLACE WITH:
+#             source_data, target_data = get_data(
+#                 sourceType, sourceDB, src_q, sourceEnvKey,
+#                 targetType, targetDB, tgt_q, targetEnvKey,
+#                 sourceQueryType, targetQueryType,
+#                 source_mongo_filter,
+#                 target_mongo_filter,
+#                 source_def = source_def,
+#                 target_def = target_def
+#             )
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 4 — Record_Count branch: add source_def/target_def to get_data()
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# FIND (inside Record_Count branch only):
+#             source_data, target_data = get_data(
+#                 sourceType, sourceDB, src_q, sourceEnvKey,
+#                 targetType, targetDB, tgt_q, targetEnvKey,
+#                 sourceQueryType, targetQueryType,
+#                 source_mongo_filter,
+#                 target_mongo_filter
+#             )
+#
+# REPLACE WITH:
+#             source_data, target_data = get_data(
+#                 sourceType, sourceDB, src_q, sourceEnvKey,
+#                 targetType, targetDB, tgt_q, targetEnvKey,
+#                 sourceQueryType, targetQueryType,
+#                 source_mongo_filter,
+#                 target_mongo_filter,
+#                 source_def = source_def,
+#                 target_def = target_def
+#             )
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 5 — InApprovedValue branch: add source_def to get_data()
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# FIND:
+#             source_data, _ = get_data(
+#                 sourceType, sourceDB, src_q, sourceEnvKey,
+#                 targetType, targetDB, targetQuery, targetEnvKey,
+#                 sourceQueryType, targetQueryType,
+#                 source_mongo_filter,
+#                 {}
+#             )
+#
+# REPLACE WITH:
+#             source_data, _ = get_data(
+#                 sourceType, sourceDB, src_q, sourceEnvKey,
+#                 targetType, targetDB, targetQuery, targetEnvKey,
+#                 sourceQueryType, targetQueryType,
+#                 source_mongo_filter,
+#                 {},
+#                 source_def = source_def
+#             )
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 6 — Route file sources in Null_Check, Duplicate_Check, Format_Check
+# ═════════════════════════════════════════════════════════════════════════════
+
+# ── Null_Check ────────────────────────────────────────────────────────────────
+#
+# FIND:
+#         elif validationType == "Null_Check":
+#             check_fields     = rule.get("CheckFields", [])
+#             test_case_status = run_null_check(
+#                 sourceType, sourceDB, sourceQuery,
+#                 sourceEnvKey, sourceQueryType,
+#                 check_fields, testCaseNumber, testDescription,
+#                 log_doc, source_mongo_filter
+#             )
+#
+# REPLACE WITH:
+#         elif validationType == "Null_Check":
+#             check_fields = rule.get("CheckFields", [])
+#             if source_def:
+#                 test_case_status = _run_null_check_on_file(
+#                     source_def, check_fields,
+#                     testCaseNumber, testDescription, log_doc
+#                 )
+#             else:
+#                 test_case_status = run_null_check(
+#                     sourceType, sourceDB, sourceQuery,
+#                     sourceEnvKey, sourceQueryType,
+#                     check_fields, testCaseNumber, testDescription,
+#                     log_doc, source_mongo_filter
+#                 )
+
+# ── Duplicate_Check ───────────────────────────────────────────────────────────
+#
+# FIND:
+#         elif validationType == "Duplicate_Check":
+#             check_fields     = rule.get("CheckFields", [])
+#             test_case_status = run_duplicate_check(
+#                 sourceType, sourceDB, sourceQuery,
+#                 sourceEnvKey, sourceQueryType,
+#                 check_fields, testCaseNumber, testDescription,
+#                 log_doc, source_mongo_filter
+#             )
+#
+# REPLACE WITH:
+#         elif validationType == "Duplicate_Check":
+#             check_fields = rule.get("CheckFields", [])
+#             if source_def:
+#                 test_case_status = _run_duplicate_check_on_file(
+#                     source_def, check_fields,
+#                     testCaseNumber, testDescription, log_doc
+#                 )
+#             else:
+#                 test_case_status = run_duplicate_check(
+#                     sourceType, sourceDB, sourceQuery,
+#                     sourceEnvKey, sourceQueryType,
+#                     check_fields, testCaseNumber, testDescription,
+#                     log_doc, source_mongo_filter
+#                 )
+
+# ── Format_Check ──────────────────────────────────────────────────────────────
+#
+# FIND:
+#         elif validationType == "Format_Check":
+#             check_fields     = rule.get("CheckFields", [])
+#             test_case_status = run_format_check(
+#                 sourceType, sourceDB, sourceQuery,
+#                 sourceEnvKey, sourceQueryType,
+#                 check_fields, testCaseNumber, testDescription,
+#                 log_doc, source_mongo_filter
+#             )
+#
+# REPLACE WITH:
+#         elif validationType == "Format_Check":
+#             check_fields = rule.get("CheckFields", [])
+#             if source_def:
+#                 test_case_status = _run_format_check_on_file(
+#                     source_def, check_fields,
+#                     testCaseNumber, testDescription, log_doc
+#                 )
+#             else:
+#                 test_case_status = run_format_check(
+#                     sourceType, sourceDB, sourceQuery,
+#                     sourceEnvKey, sourceQueryType,
+#                     check_fields, testCaseNumber, testDescription,
+#                     log_doc, source_mongo_filter
+#                 )
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CHANGE 7 — Add three file helper functions at bottom of file
+# Location: after the existing parse_multi_value() function at bottom
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# APPEND to end of file:
+
+def _run_format_check_on_file(source_def, check_fields,
+                               test_case_number, test_description, log_doc):
+    import re as _re
+    from Libraries.File_parser import fetch_and_parse
+    from Libraries.Regression_Log_Helper import append_log_entry
+    try:
+        result = fetch_and_parse(source_def)
+        df     = result["dataframe"]
+        status = False
+        if result["schema_errors"]:
+            for err in result["schema_errors"]:
+                logger.issue(f"TestCase {test_case_number}: Format_Check schema error — {err}")
+                append_log_entry(log_doc, "Error", "Format_Check", f"Schema error: {err}")
+            status = True
+        if result["parse_errors"]:
+            status = True
+        if df.empty:
+            logger.issue(f"TestCase {test_case_number}: Format_Check — file empty or parse failed.")
+            log_doc["Result"] = "Fail"
+            return True
+        for field_def in (check_fields or []):
+            field   = field_def.get("Field", "") or field_def.get("SourceField", "")
+            pattern = field_def.get("Regex", "") or field_def.get("Pattern", "")
+            if not field or not pattern:
+                continue
+            if field not in df.columns:
+                logger.issue(f"TestCase {test_case_number}: Format_Check — field '{field}' not found.")
+                append_log_entry(log_doc, "Error", "Format_Check", f"Field '{field}' not found in file.")
+                status = True
+                continue
+            failing = df[field].dropna()
+            failing = failing[~failing.astype(str).str.match(pattern, na=False)]
+            if not failing.empty:
+                logger.issue(f"TestCase {test_case_number}: Format_Check — field '{field}': {len(failing)} value(s) fail pattern '{pattern}'. Sample: {failing.head(5).tolist()}")
+                append_log_entry(log_doc, "Error", "Format_Check", f"Field '{field}': {len(failing)} fail '{pattern}'. Sample: {failing.head(5).tolist()}")
+                log_doc.setdefault("MismatchFields", []).append(field)
+                status = True
+            else:
+                logger.info(f"TestCase {test_case_number}: Format_Check — field '{field}': all match '{pattern}' ✓")
+                append_log_entry(log_doc, "Info", "Format_Check", f"Field '{field}': all match '{pattern}'")
+        log_doc["Result"] = "Fail" if status else "Pass"
+        return status
+    except Exception as e:
+        logger.exception(f"TestCase {test_case_number}: _run_format_check_on_file: {e}")
+        append_log_entry(log_doc, "Error", "Format_Check", f"Exception: {e}")
+        log_doc["Result"] = "Fail"
+        return True
+
+
+def _run_null_check_on_file(source_def, check_fields,
+                             test_case_number, test_description, log_doc):
+    from Libraries.File_parser import fetch_and_parse
+    from Libraries.Regression_Log_Helper import append_log_entry
+    try:
+        result     = fetch_and_parse(source_def)
+        df         = result["dataframe"]
+        status     = False
+        total_rows = len(df)
+        if df.empty:
+            logger.issue(f"TestCase {test_case_number}: Null_Check — file empty or parse failed.")
+            log_doc["Result"] = "Fail"
+            return True
+        for field_def in (check_fields or []):
+            field    = field_def.get("Field", "") or field_def.get("SourceField", "")
+            required = field_def.get("Required", False)
+            if not field:
+                continue
+            if field not in df.columns:
+                if required:
+                    logger.issue(f"TestCase {test_case_number}: Null_Check — required field '{field}' not found.")
+                    append_log_entry(log_doc, "Error", "Null_Check", f"Required field '{field}' not found.")
+                    status = True
+                continue
+            null_count = int(
+                df[field].isna().sum() +
+                (df[field].astype(str).str.strip().str.lower().isin(
+                    ["", "null", "none", "na", "n/a", "nan"]
+                )).sum()
+            )
+            if null_count > 0 and required:
+                logger.issue(f"TestCase {test_case_number}: Null_Check — field '{field}': {null_count}/{total_rows} null(s) — FAIL")
+                append_log_entry(log_doc, "Error", "Null_Check", f"Field '{field}': {null_count}/{total_rows} nulls found.")
+                log_doc.setdefault("MismatchFields", []).append(field)
+                status = True
+            elif null_count > 0:
+                logger.warning(f"TestCase {test_case_number}: Null_Check — field '{field}': {null_count}/{total_rows} null(s) — WARNING (not required)")
+                append_log_entry(log_doc, "Warning", "Null_Check", f"Field '{field}': {null_count}/{total_rows} nulls — not required.")
+            else:
+                logger.info(f"TestCase {test_case_number}: Null_Check — field '{field}': 0 null(s) ✓")
+                append_log_entry(log_doc, "Info", "Null_Check", f"Field '{field}': No nulls found.")
+        log_doc["Result"] = "Fail" if status else "Pass"
+        return status
+    except Exception as e:
+        logger.exception(f"TestCase {test_case_number}: _run_null_check_on_file: {e}")
+        append_log_entry(log_doc, "Error", "Null_Check", f"Exception: {e}")
+        log_doc["Result"] = "Fail"
+        return True
+
+
+def _run_duplicate_check_on_file(source_def, check_fields,
+                                  test_case_number, test_description, log_doc):
+    from Libraries.File_parser import fetch_and_parse
+    from Libraries.Regression_Log_Helper import append_log_entry
+    try:
+        result = fetch_and_parse(source_def)
+        df     = result["dataframe"]
+        status = False
+        if df.empty:
+            logger.issue(f"TestCase {test_case_number}: Duplicate_Check — file empty or parse failed.")
+            log_doc["Result"] = "Fail"
+            return True
+        key_fields = [
+            f.get("Field", "") or f.get("SourceField", "")
+            for f in (check_fields or [])
+            if f.get("Field", "") or f.get("SourceField", "")
+        ]
+        if not key_fields:
+            logger.warning(f"TestCase {test_case_number}: Duplicate_Check — no CheckFields specified.")
+            log_doc["Result"] = "Pass"
+            return False
+        missing_fields = [f for f in key_fields if f not in df.columns]
+        if missing_fields:
+            logger.issue(f"TestCase {test_case_number}: Duplicate_Check — fields not found: {missing_fields}")
+            append_log_entry(log_doc, "Error", "Duplicate_Check", f"Fields not found: {missing_fields}")
+            log_doc["Result"] = "Fail"
+            return True
+        duplicates = df[df.duplicated(subset=key_fields, keep=False)]
+        if not duplicates.empty:
+            dup_count = len(duplicates)
+            logger.issue(f"TestCase {test_case_number}: Duplicate_Check — {dup_count} duplicate row(s) on {key_fields}.")
+            append_log_entry(log_doc, "Error", "Duplicate_Check", f"{dup_count} duplicate row(s) on {key_fields}.")
+            for _, row in duplicates.head(int(missing)).iterrows():
+                key_vals = {f: row.get(f) for f in key_fields}
+                logger.issue(f"TestCase {test_case_number}: Duplicate — {key_vals}")
+            log_doc.setdefault("MismatchFields", []).extend(key_fields)
+            status = True
+        else:
+            logger.info(f"TestCase {test_case_number}: Duplicate_Check — no duplicates on {key_fields} ✓")
+            append_log_entry(log_doc, "Info", "Duplicate_Check", f"No duplicates on {key_fields}.")
+        log_doc["Result"] = "Fail" if status else "Pass"
+        return status
+    except Exception as e:
+        logger.exception(f"TestCase {test_case_number}: _run_duplicate_check_on_file: {e}")
+        append_log_entry(log_doc, "Error", "Duplicate_Check", f"Exception: {e}")
+        log_doc["Result"] = "Fail"
+        return True

@@ -1,0 +1,56 @@
+2026-10-23 16:53:38,533 | INFO | ========== Starting Validation ==========
+2026-10-23 16:53:38,534 | INFO | Module         : eh RollOver 2027
+2026-10-23 16:53:38,535 | INFO | Stage          : None
+2026-10-23 16:53:38,535 | INFO | Cycle          : None
+2026-10-23 16:53:38,536 | INFO | Environment    : MONGODB_EHQA
+2026-10-23 16:53:38,536 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-23 16:55:19,044 | ISSUE | Database Connection is not established
+Reason: 10.85.2.239:27017: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond (configured timeouts: socketTimeoutMS: 100000.0ms, connectTimeoutMS: 100000.0ms), Timeout: 100.0s, Topology Description: <TopologyDescription id: 6adbc952b177e5478fe95f6b, topology_type: Unknown, servers: [<ServerDescription ('10.85.2.239', 27017) server_type: Unknown, rtt: None, error=NetworkTimeout('10.85.2.239:27017: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond (configured timeouts: socketTimeoutMS: 100000.0ms, connectTimeoutMS: 100000.0ms)')>]>
+2026-10-23 16:55:19,047 | ERROR | Unexpected exception in __main__: Database Connection is not established
+Traceback (most recent call last):
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\MongoDB.py", line 65, in _get_client
+    client.admin.command("ping")
+  File "C:\ProgramData\anaconda3\Lib\site-packages\pymongo\_csot.py", line 107, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\site-packages\pymongo\database.py", line 890, in command
+    with self.__client._conn_for_reads(read_preference, session) as (
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\site-packages\pymongo\mongo_client.py", line 1346, in _conn_for_reads
+    server = self._select_server(read_preference, session)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\site-packages\pymongo\mongo_client.py", line 1303, in _select_server
+    server = topology.select_server(server_selector)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\site-packages\pymongo\topology.py", line 302, in select_server
+    server = self._select_server(selector, server_selection_timeout, address)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\site-packages\pymongo\topology.py", line 286, in _select_server
+    servers = self.select_servers(selector, server_selection_timeout, address)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\site-packages\pymongo\topology.py", line 237, in select_servers
+    server_descriptions = self._select_servers_loop(selector, server_timeout, address)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\site-packages\pymongo\topology.py", line 259, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: 10.85.2.239:27017: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond (configured timeouts: socketTimeoutMS: 100000.0ms, connectTimeoutMS: 100000.0ms), Timeout: 100.0s, Topology Description: <TopologyDescription id: 6adbc952b177e5478fe95f6b, topology_type: Unknown, servers: [<ServerDescription ('10.85.2.239', 27017) server_type: Unknown, rtt: None, error=NetworkTimeout('10.85.2.239:27017: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond (configured timeouts: socketTimeoutMS: 100000.0ms, connectTimeoutMS: 100000.0ms)')>]>
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Script\Data_Validation.py", line 1799, in <module>
+    run_validation(
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Script\Data_Validation.py", line 1786, in run_validation
+    Regression_inputs(
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Script\Data_Validation.py", line 69, in __init__
+    self.ValidationList = Collection(db_name, rg_collection_data, environment)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\MongoDB.py", line 100, in __init__
+    self.Client = self.connect_mongo(Environment)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\MongoDB.py", line 94, in connect_mongo
+    return _get_client(Environment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\MongoDB.py", line 73, in _get_client
+    raise ConnectionError(message) from e
+ConnectionError: Database Connection is not established

@@ -1,0 +1,140 @@
+2026-11-05 18:17:08,679 | INFO | ========== Starting Validation ==========
+2026-11-05 18:17:08,679 | INFO | Module         : EH_Chronic
+2026-11-05 18:17:08,679 | INFO | Stage          : None
+2026-11-05 18:17:08,679 | INFO | Cycle          : None
+2026-11-05 18:17:08,679 | INFO | Environment    : MCPQA1
+2026-11-05 18:17:08,679 | INFO | Runtime Filters: None — using DefaultValues
+2026-11-05 18:17:08,825 | INFO | Parallel execution started — 5 active thread(s) (requested: 5, test cases: 6).
+2026-11-05 18:18:03,336 | INFO | ========== [ Running TestCase 1: Compare source and target for chronic condition codes ] ==========
+2026-11-05 18:18:03,336 | INFO | TestCase 1: Target [ORACLE]:SELECT CODE
+  ,SHORT_DESCRIPTION
+  ,CONDITION_CATEGORY
+  ,LONG_DESCRIPTION
+  ,YEAR 
+  FROM DW.CHRONIC_CONDITION_CODES 
+  where year =2027
+2026-11-05 18:18:03,336 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 18:18:03,336 | INFO | File_fetcher: Reading local file — \\rxadvance.com\qa-team\QA Documentation\QA DB Repository\EH_Chronic\eH_Chronic_Condition_Codes updated_2027.xlsx
+2026-11-05 18:18:03,337 | INFO | File_fetcher: 'eH_Chronic_Condition_Codes updated_2027.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-11-05 18:18:03,337 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — Excel parsed 73427 row(s), 0 parse error(s).
+2026-11-05 18:18:03,337 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — parse complete, 73427 row(s), no errors.
+2026-11-05 18:18:03,337 | INFO | File_parser: Combined 1 file(s) — 73427 total rows, 0 total error(s).
+2026-11-05 18:18:03,337 | INFO | [TC 1] Source data sample (5 of 73427 records):
+2026-11-05 18:18:03,337 | INFO |   1: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': 'I2510', 'SHORT_DESCRIPTION': 'Athscl heart disease of native coronary artery w/o ang pctrs', 'LONG_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery without angina pectoris                                                                                                                                                                                 ', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:18:03,337 | INFO |   2: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': 'I25110', 'SHORT_DESCRIPTION': 'Athscl heart disease of native cor art w unstable ang pctrs', 'LONG_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery with unstable angina pectoris                                                                                                                                                                           ', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:18:03,338 | INFO |   3: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': '12511', 'SHORT_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery with angina pectoris', 'LONG_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery with angina pectoris', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:18:03,338 | INFO |   4: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': 'I25111', 'SHORT_DESCRIPTION': 'Athscl heart disease of native cor art w ang pctrs w spasm', 'LONG_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm                                                                                                                                                              ', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:18:03,338 | INFO |   5: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': 'I25112', 'SHORT_DESCRIPTION': 'Athscl heart dis of native cor art with refract ang pctrs', 'LONG_DESCRIPTION': 'Atherosclerosic heart disease of native coronary artery with refractory angina pectoris', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:18:03,338 | INFO | [TC 1] Target data sample (5 of 73427 records):
+2026-11-05 18:18:03,338 | INFO |   1: {'CODE': 'I70418', 'SHORT_DESCRIPTION': 'Athscl autol vein bypass of extrm w intrmt claud, oth extrm', 'CONDITION_CATEGORY': 'Cardiovascular Disease', 'LONG_DESCRIPTION': 'Atherosclerosis of autologous vein bypass graft(s) of the extremities with intermittent claudication, other extremity', 'YEAR': 2027}
+2026-11-05 18:18:03,338 | INFO |   2: {'CODE': 'I70419', 'SHORT_DESCRIPTION': 'Athscl autol vein bypass of extrm w intrmt claud, unsp extrm', 'CONDITION_CATEGORY': 'Cardiovascular Disease', 'LONG_DESCRIPTION': 'Atherosclerosis of autologous vein bypass graft(s) of the extremities with intermittent claudication, unspecified extremity', 'YEAR': 2027}
+2026-11-05 18:18:03,338 | INFO |   3: {'CODE': 'I70421', 'SHORT_DESCRIPTION': 'Athscl autol vein bypass of the extrm w rest pain, right leg', 'CONDITION_CATEGORY': 'Cardiovascular Disease', 'LONG_DESCRIPTION': 'Atherosclerosis of autologous vein bypass graft(s) of the extremities with rest pain, right leg', 'YEAR': 2027}
+2026-11-05 18:18:03,338 | INFO |   4: {'CODE': 'I70422', 'SHORT_DESCRIPTION': 'Athscl autol vein bypass of the extrm w rest pain, left leg', 'CONDITION_CATEGORY': 'Cardiovascular Disease', 'LONG_DESCRIPTION': 'Atherosclerosis of autologous vein bypass graft(s) of the extremities with rest pain, left leg', 'YEAR': 2027}
+2026-11-05 18:18:03,339 | INFO |   5: {'CODE': 'I70423', 'SHORT_DESCRIPTION': 'Athscl autol vein bypass of the extrm w rest pain, bi legs', 'CONDITION_CATEGORY': 'Cardiovascular Disease', 'LONG_DESCRIPTION': 'Atherosclerosis of autologous vein bypass graft(s) of the extremities with rest pain, bilateral legs', 'YEAR': 2027}
+2026-11-05 18:18:03,339 | INFO | [SRC->TGT]  - Total source Local_PATH records: 73427
+2026-11-05 18:18:03,339 | INFO | [SRC->TGT]  - Total target ORACLE records: 73427
+2026-11-05 18:18:03,339 | ISSUE | [SRC->TGT] Field SHORT_DESCRIPTION vs SHORT_DESCRIPTION: 2 mismatch(es)
+2026-11-05 18:18:03,339 | ISSUE | [SRC->TGT] Mismatch at {'CODE': 'I12'}: SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease != SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease: 
+2026-11-05 18:18:03,339 | ISSUE | [SRC->TGT] Mismatch at {'CODE': 'I12'}: SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease:  != SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease
+2026-11-05 18:18:03,339 | ISSUE | [SRC->TGT] Field LONG_DESCRIPTION vs LONG_DESCRIPTION: 3 mismatch(es)
+2026-11-05 18:18:03,339 | ISSUE | [SRC->TGT] Mismatch at {'CODE': 'I12'}: LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease != LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease: 
+2026-11-05 18:18:03,340 | ISSUE | [SRC->TGT] Mismatch at {'CODE': 'I12'}: LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease:  != LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease
+2026-11-05 18:18:03,340 | ISSUE | [SRC->TGT] Mismatch at {'CODE': 'I251'}: LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non‑billable parent code) != LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non-billable parent code)
+2026-11-05 18:18:03,340 | ISSUE | Total Mismatches: 5
+2026-11-05 18:18:03,340 | INFO | Vice-versa comparison TGT->SRC Started
+2026-11-05 18:18:03,340 | INFO | [TGT->SRC]  - Total source ORACLE records: 73427
+2026-11-05 18:18:03,340 | INFO | [TGT->SRC]  - Total target Local_PATH records: 73427
+2026-11-05 18:18:03,340 | ISSUE | [TGT->SRC] Field SHORT_DESCRIPTION vs SHORT_DESCRIPTION: 2 mismatch(es)
+2026-11-05 18:18:03,340 | ISSUE | [TGT->SRC] Mismatch at {'CODE': 'I12'}: SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease:  != SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease
+2026-11-05 18:18:03,341 | ISSUE | [TGT->SRC] Mismatch at {'CODE': 'I12'}: SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease != SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease: 
+2026-11-05 18:18:03,341 | ISSUE | [TGT->SRC] Field LONG_DESCRIPTION vs LONG_DESCRIPTION: 3 mismatch(es)
+2026-11-05 18:18:03,341 | ISSUE | [TGT->SRC] Mismatch at {'CODE': 'I12'}: LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease:  != LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease
+2026-11-05 18:18:03,341 | ISSUE | [TGT->SRC] Mismatch at {'CODE': 'I12'}: LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease != LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease: 
+2026-11-05 18:18:03,341 | ISSUE | [TGT->SRC] Mismatch at {'CODE': 'I251'}: LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non-billable parent code) != LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non‑billable parent code)
+2026-11-05 18:18:03,341 | ISSUE | Total Mismatches: 5
+2026-11-05 18:18:03,341 | INFO | Data comparison process completed.
+2026-11-05 18:18:03,341 | ISSUE | [TestCase 1] Test Result: FAIL
+2026-11-05 18:18:03,342 | INFO | Execution time for TestCase 1: 54.49 seconds
+2026-11-05 18:17:53,584 | INFO | ========== [ Running TestCase 2: Check for duplicate records on key fields ] ==========
+2026-11-05 18:17:53,600 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 18:17:53,616 | INFO | File_fetcher: Reading local file — \\rxadvance.com\qa-team\QA Documentation\QA DB Repository\EH_Chronic\eH_Chronic_Condition_Codes updated_2027.xlsx
+2026-11-05 18:17:53,673 | INFO | File_fetcher: 'eH_Chronic_Condition_Codes updated_2027.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-11-05 18:17:53,782 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — Excel parsed 73427 row(s), 0 parse error(s).
+2026-11-05 18:17:53,836 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — parse complete, 73427 row(s), no errors.
+2026-11-05 18:17:53,892 | INFO | File_parser: Combined 1 file(s) — 73427 total rows, 0 total error(s).
+2026-11-05 18:17:53,922 | ISSUE | TestCase 2: Duplicate_Check — 2 duplicate row(s) on ['CODE'].
+2026-11-05 18:17:53,923 | ISSUE | TestCase 2: Duplicate — {'CODE': 'I12'}
+2026-11-05 18:17:53,968 | ISSUE | TestCase 2: Duplicate — {'CODE': 'I12'}
+2026-11-05 18:17:54,003 | INFO | Execution time for TestCase 2: 44.71 seconds
+2026-11-05 18:17:54,238 | INFO | ========== [ Running TestCase 3: Validate format of 'CODE' column ] ==========
+2026-11-05 18:17:54,269 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 18:17:54,285 | INFO | File_fetcher: Reading local file — \\rxadvance.com\qa-team\QA Documentation\QA DB Repository\EH_Chronic\eH_Chronic_Condition_Codes updated_2027.xlsx
+2026-11-05 18:17:54,315 | INFO | File_fetcher: 'eH_Chronic_Condition_Codes updated_2027.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-11-05 18:17:54,331 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — Excel parsed 73427 row(s), 0 parse error(s).
+2026-11-05 18:17:54,349 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — parse complete, 73427 row(s), no errors.
+2026-11-05 18:17:54,380 | INFO | File_parser: Combined 1 file(s) — 73427 total rows, 0 total error(s).
+2026-11-05 18:17:54,396 | INFO | TestCase 3: Format_Check — field '2027_CHRONIC_DISEASE_CODE': all match '[YN]' ✓
+2026-11-05 18:17:54,396 | INFO | Execution time for TestCase 3: 45.37 seconds
+2026-11-05 18:17:56,010 | INFO | ========== [ Running TestCase 4: 2027_CHRONIC_DISEASE_CODE has only approved values ] ==========
+2026-11-05 18:17:56,010 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 18:17:56,010 | INFO | File_fetcher: Reading local file — \\rxadvance.com\qa-team\QA Documentation\QA DB Repository\EH_Chronic\eH_Chronic_Condition_Codes updated_2027.xlsx
+2026-11-05 18:17:56,010 | INFO | File_fetcher: 'eH_Chronic_Condition_Codes updated_2027.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-11-05 18:17:56,010 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — Excel parsed 73427 row(s), 0 parse error(s).
+2026-11-05 18:17:56,010 | INFO | File_parser: 'eH_Chronic_Condition_Codes updated_2027.xlsx' — parse complete, 73427 row(s), no errors.
+2026-11-05 18:17:56,010 | INFO | File_parser: Combined 1 file(s) — 73427 total rows, 0 total error(s).
+2026-11-05 18:17:56,010 | INFO | [TC 4] Source data sample (5 of 73427 records):
+2026-11-05 18:17:56,010 | INFO |   1: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': 'I2510', 'SHORT_DESCRIPTION': 'Athscl heart disease of native coronary artery w/o ang pctrs', 'LONG_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery without angina pectoris                                                                                                                                                                                 ', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:17:56,010 | INFO |   2: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': 'I25110', 'SHORT_DESCRIPTION': 'Athscl heart disease of native cor art w unstable ang pctrs', 'LONG_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery with unstable angina pectoris                                                                                                                                                                           ', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:17:56,010 | INFO |   3: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': '12511', 'SHORT_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery with angina pectoris', 'LONG_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery with angina pectoris', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:17:56,010 | INFO |   4: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': 'I25111', 'SHORT_DESCRIPTION': 'Athscl heart disease of native cor art w ang pctrs w spasm', 'LONG_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm                                                                                                                                                              ', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:17:56,010 | INFO |   5: {'CONDITION_CATEGORY': 'Cardiovascular Disease', 'CODE': 'I25112', 'SHORT_DESCRIPTION': 'Athscl heart dis of native cor art with refract ang pctrs', 'LONG_DESCRIPTION': 'Atherosclerosic heart disease of native coronary artery with refractory angina pectoris', '2027_CHRONIC_DISEASE_CODE': 'Y'}
+2026-11-05 18:17:56,010 | INFO | [TC 4] 2027_CHRONIC_DISEASE_CODE has only approved values
+2026-11-05 18:17:56,010 | INFO | [TC 4] PASS: All values are within approved list.
+2026-11-05 18:17:56,010 | INFO | Execution time for TestCase 4: 47.19 seconds
+2026-11-05 18:17:09,122 | INFO | ========== [ Running TestCase 5: Target DW.CHRONIC_CONDITION_CODES: no duplicate CODE, SHORT_DESCRIPTION ] ==========
+2026-11-05 18:17:09,122 | INFO | TestCase 5: Source [ORACLE]:SELECT CODE
+  ,SHORT_DESCRIPTION 
+  FROM DW.CHRONIC_CONDITION_CODES 
+  where year =2027
+2026-11-05 18:17:09,124 | INFO | TestCase 5: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-11-05 18:17:09,124 | INFO | Source [ORACLE] Duplicate_Check sample for 'CODE, SHORT_DESCRIPTION':
+SELECT CODE, SHORT_DESCRIPTION
+                    FROM (SELECT CODE, SHORT_DESCRIPTION FROM DW.CHRONIC_CONDITION_CODES where year =2027)
+                    WHERE CODE IS NOT NULL AND SHORT_DESCRIPTION IS NOT NULL
+                    AND (CODE, SHORT_DESCRIPTION) IN (
+                        
+                    SELECT CODE, SHORT_DESCRIPTION
+                    FROM (SELECT CODE, SHORT_DESCRIPTION FROM DW.CHRONIC_CONDITION_CODES where year =2027)
+                    WHERE CODE IS NOT NULL AND SHORT_DESCRIPTION IS NOT NULL
+                    GROUP BY CODE, SHORT_DESCRIPTION
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-11-05 18:17:09,124 | INFO | TestCase 5: Field 'CODE, SHORT_DESCRIPTION': No duplicates found.
+2026-11-05 18:17:09,124 | INFO | Execution time for TestCase 5: 0.30 seconds
+2026-11-05 18:17:09,141 | INFO | ========== [ Running TestCase 6: Target DW.CHRONIC_CONDITION_CODES: keys and load columns are populated ] ==========
+2026-11-05 18:17:09,142 | INFO | TestCase 6: Source [ORACLE]:SELECT CODE
+  ,SHORT_DESCRIPTION
+  ,CHRONIC_CONDITION_CODES_ID
+  ,DW_FILE_DETAIL_ID
+  ,BUSINESS_ID
+  ,DW_CREATED_DATE
+  ,DW_MODIFIED_DATE 
+  FROM DW.CHRONIC_CONDITION_CODES 
+  where year =2027
+2026-11-05 18:17:09,142 | INFO | TestCase 6: Null_Check started — pushing null filter to ORACLE per field
+2026-11-05 18:17:09,142 | INFO | Oracle Null_Check query: SELECT * FROM (SELECT CODE, SHORT_DESCRIPTION, CHRONIC_CONDITION_CODES_ID, DW_FILE_DETAIL_ID, BUSINESS_ID, DW_CREATED_DATE, DW_MODIFIED_DATE FROM DW.CHRONIC_CONDITION_CODES where year =2027) WHERE (CODE IS NULL OR TRIM(TO_CHAR(CODE)) = '') OR (SHORT_DESCRIPTION IS NULL OR TRIM(TO_CHAR(SHORT_DESCRIPTION)) = '') OR (CHRONIC_CONDITION_CODES_ID IS NULL OR TRIM(TO_CHAR(CHRONIC_CONDITION_CODES_ID)) = '') OR (DW_FILE_DETAIL_ID IS NULL OR TRIM(TO_CHAR(DW_FILE_DETAIL_ID)) = '') OR (BUSINESS_ID IS NULL OR TRIM(TO_CHAR(BUSINESS_ID)) = '') OR (DW_CREATED_DATE IS NULL OR TRIM(TO_CHAR(DW_CREATED_DATE)) = '') OR (DW_MODIFIED_DATE IS NULL OR TRIM(TO_CHAR(DW_MODIFIED_DATE)) = '')
+2026-11-05 18:17:09,142 | INFO | TestCase 6: Field 'CODE': No nulls found.
+2026-11-05 18:17:09,142 | INFO | TestCase 6: Field 'SHORT_DESCRIPTION': No nulls found.
+2026-11-05 18:17:09,142 | INFO | TestCase 6: Field 'CHRONIC_CONDITION_CODES_ID': No nulls found.
+2026-11-05 18:17:09,143 | INFO | TestCase 6: Field 'DW_FILE_DETAIL_ID': No nulls found.
+2026-11-05 18:17:09,143 | INFO | TestCase 6: Field 'BUSINESS_ID': No nulls found.
+2026-11-05 18:17:09,143 | INFO | TestCase 6: Field 'DW_CREATED_DATE': No nulls found.
+2026-11-05 18:17:09,145 | INFO | TestCase 6: Field 'DW_MODIFIED_DATE': No nulls found.
+2026-11-05 18:17:09,145 | INFO | Execution time for TestCase 6: 0.02 seconds
+2026-11-05 18:18:03,420 | INFO | Total Number of Testcases Executed : 6,Pass : 4, Fail : 2, Skippped : 0
+2026-11-05 18:18:03,421 | INFO | Total execution time: 54.60 seconds (0.9 minutes)
+2026-11-05 18:18:03,450 | INFO | Master combined log written to: MCPQA1_EH_Chronic_Log_20261105_231803.json
+2026-11-05 18:18:03,458 | INFO | Result.InsertData : 6aed0eab503594704064fc17
+2026-11-05 18:18:04,115 | INFO | ========== Completed Validation ==========

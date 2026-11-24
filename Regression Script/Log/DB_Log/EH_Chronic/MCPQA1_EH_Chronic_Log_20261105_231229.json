@@ -1,0 +1,197 @@
+[
+    {
+        "DataValidationLog_ID": 128,
+        "Module": "EH_Chronic",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for chronic condition codes",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 23:12:26.407458",
+                "EndTime": "2026-11-05 23:12:29.688142",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:12:26",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT CODE\n  ,SHORT_DESCRIPTION\n  ,CONDITION_CATEGORY\n  ,LONG_DESCRIPTION\n  ,YEAR \n  FROM DW.CHRONIC_CONDITION_CODES \n  where year =2027"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 23:12:29",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source data empty and Target having data. Please check SRC."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Check for duplicate records on key fields",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 23:12:26.409460",
+                "EndTime": "2026-11-05 23:12:27.440217",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:12:27",
+                        "Type": "ERROR",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Exception: Path not found: P:\\ARKIT\\To be used to work\\Auto-Trigger letters\\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Validate format of 'CODE' column",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 23:12:26.409460",
+                "EndTime": "2026-11-05 23:12:27.440217",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:12:27",
+                        "Type": "ERROR",
+                        "RunType": "Format_Check",
+                        "Detail": "Exception: Path not found: P:\\ARKIT\\To be used to work\\Auto-Trigger letters\\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "2027_CHRONIC_DISEASE_CODE has only approved values",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 23:12:26.410474",
+                "EndTime": "2026-11-05 23:12:27.456232",
+                "Log": [],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Target DW.CHRONIC_CONDITION_CODES: no duplicate CODE, SHORT_DESCRIPTION",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 23:12:26.410474",
+                "EndTime": "2026-11-05 23:12:28.608394",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:12:26",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT CODE\n  ,SHORT_DESCRIPTION \n  FROM DW.CHRONIC_CONDITION_CODES \n  where year =2027"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 23:12:26",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['CODE', 'SHORT_DESCRIPTION']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 23:12:28",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'CODE, SHORT_DESCRIPTION': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "Target DW.CHRONIC_CONDITION_CODES: keys and load columns are populated",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 23:12:27.440217",
+                "EndTime": "2026-11-05 23:12:28.606394",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:12:27",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT CODE\n  ,SHORT_DESCRIPTION\n  ,CHRONIC_CONDITION_CODES_ID\n  ,DW_FILE_DETAIL_ID\n  ,BUSINESS_ID\n  ,DW_CREATED_DATE\n  ,DW_MODIFIED_DATE \n  FROM DW.CHRONIC_CONDITION_CODES \n  where year =2027"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 23:12:27",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Checking fields: ['CODE', 'SHORT_DESCRIPTION', 'CHRONIC_CONDITION_CODES_ID', 'DW_FILE_DETAIL_ID', 'BUSINESS_ID', 'DW_CREATED_DATE', 'DW_MODIFIED_DATE']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 23:12:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'CODE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-05 23:12:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'SHORT_DESCRIPTION': No nulls found."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-05 23:12:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'CHRONIC_CONDITION_CODES_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-05 23:12:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_FILE_DETAIL_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-05 23:12:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'BUSINESS_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-05 23:12:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_CREATED_DATE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-05 23:12:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_MODIFIED_DATE': No nulls found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "mahesh.thirmandas",
+            "InsertedDate": "2026-11-05 23:12:29.747960"
+        }
+    }
+]

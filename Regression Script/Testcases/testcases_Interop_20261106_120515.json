@@ -1,0 +1,188 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for PractitionerRole",
+    "Module": "Interop",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Test_InterOp_PractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "Target": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "InterOp",
+      "Collection": "Test_PractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 1}}]"
+    },
+    "JoinFields": [],
+    "CompareFields": [],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INCOMPLETE",
+      "Detail": "not loaded",
+      "Errors": [
+        "missing JoinFields"
+      ],
+      "LoadedOn": "2026-11-06 12:05:15"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Null check on PractitionerRole",
+    "Module": "Interop",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Test_InterOp_PractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"LocationProvider_ID\": {\"$ifNull\": [\"$LocationProvider_ID\", null]}, \"McpProviderId\": {\"$ifNull\": [\"$McpProviderId\", null]}, \"LocationId\": {\"$ifNull\": [\"$LocationId\", null]}, \"Max_ModifiedDate\": {\"$ifNull\": [\"$Max_ModifiedDate\", null]}, \"SourceIdentity.LocationProvider_ID\": {\"$ifNull\": [\"$SourceIdentity.LocationProvider_ID\", null]}}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "LocationProvider_ID",
+        "ResultFields": [
+          "LocationProvider_ID"
+        ]
+      },
+      {
+        "SourceField": "McpProviderId",
+        "ResultFields": [
+          "McpProviderId"
+        ]
+      },
+      {
+        "SourceField": "LocationId",
+        "ResultFields": [
+          "LocationId"
+        ]
+      },
+      {
+        "SourceField": "Max_ModifiedDate",
+        "ResultFields": [
+          "Max_ModifiedDate"
+        ]
+      },
+      {
+        "SourceField": "SourceIdentity.LocationProvider_ID",
+        "ResultFields": [
+          "SourceIdentity.LocationProvider_ID"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "LocationProvider_ID, McpProviderId, LocationId, Max_ModifiedDate, SourceIdentity.LocationProvider_ID should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 420,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-06 12:05:15"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Duplicate check on PractitionerRole",
+    "Module": "Interop",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Test_InterOp_PractitionerRole",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"McpProviderId\": 1, \"LocationId\": 1, \"Max_ModifiedDate\": 1, \"SourceIdentity.LocationProvider_ID\": 1, \"Business.Business_ID\": 1, \"Practitioner._idOfPractitioner\": 1, \"Practitioner.McpProviderId\": 1, \"Organization._idOfOrg\": 1, \"Organization.McpProviderId\": 1, \"Span.StartDate\": 1}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "LocationProvider_ID",
+        "ResultFields": [
+          "LocationProvider_ID"
+        ]
+      },
+      {
+        "SourceField": "McpProviderId",
+        "ResultFields": [
+          "McpProviderId"
+        ]
+      },
+      {
+        "SourceField": "LocationId",
+        "ResultFields": [
+          "LocationId"
+        ]
+      },
+      {
+        "SourceField": "Max_ModifiedDate",
+        "ResultFields": [
+          "Max_ModifiedDate"
+        ]
+      },
+      {
+        "SourceField": "SourceIdentity.LocationProvider_ID",
+        "ResultFields": [
+          "SourceIdentity.LocationProvider_ID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Practitioner._idOfPractitioner",
+        "ResultFields": [
+          "Practitioner._idOfPractitioner"
+        ]
+      },
+      {
+        "SourceField": "Practitioner.McpProviderId",
+        "ResultFields": [
+          "Practitioner.McpProviderId"
+        ]
+      },
+      {
+        "SourceField": "Organization._idOfOrg",
+        "ResultFields": [
+          "Organization._idOfOrg"
+        ]
+      },
+      {
+        "SourceField": "Organization.McpProviderId",
+        "ResultFields": [
+          "Organization.McpProviderId"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same LocationProvider_ID, McpProviderId, LocationId, Max_ModifiedDate, SourceIdentity.LocationProvider_ID, Business.Business_ID, Practitioner._idOfPractitioner, Practitioner.McpProviderId, Organization._idOfOrg, Organization.McpProviderId, Span.StartDate",
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 421,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-06 12:05:15"
+    }
+  }
+]

@@ -1,0 +1,47 @@
+[
+    {
+        "DataValidationLog_ID": 87,
+        "Module": "MCPDW",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Compare row counts",
+                "Result": "Fail",
+                "StartTime": "2026-10-08 13:53:53.337565",
+                "EndTime": "2026-10-08 13:53:53.619756",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-08 13:53:53",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.Contract.aggregate:\n[\n  {\"$project\": {\"_id\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-08 13:53:53",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT * \n  FROM DW.CONTRACT"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-08 13:53:53",
+                        "Type": "ERROR",
+                        "RunType": "RowCount",
+                        "Detail": "Source Count: 2404,  Approved Count: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-08 13:53:53.643015"
+        }
+    }
+]

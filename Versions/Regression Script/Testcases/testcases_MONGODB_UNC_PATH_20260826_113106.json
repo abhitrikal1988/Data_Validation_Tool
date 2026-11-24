@@ -1,0 +1,115 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare all core fields between source and target systems.",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": "Cardholder_ID"
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": "ElectionStartDate"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "ElectionEndDate",
+        "TargetField": "ElectionEndDate"
+      }
+    ],
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Record_Count",
+    "TestDescription": "Verify row count mismatch between source (61) and target (1).",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "ApprovedValues": [
+      "0"
+    ],
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Format_Check",
+    "TestDescription": "Validate Cardholder ID format using regex pattern.",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "CheckFields": [],
+    "ExpectedResult": 0,
+    "DataFilters": []
+  }
+]

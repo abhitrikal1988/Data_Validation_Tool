@@ -1,0 +1,33 @@
+[
+    {
+        "DataValidationLog_ID": 137,
+        "Module": "FCL",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Compare source and target on SUBSCRIBER_IND, BENEFIT_STATUS_CODE, MEDICARE_PLAN_CODE and 21 more",
+                "Result": "Pass",
+                "StartTime": "2026-11-10 21:23:21.931796",
+                "EndTime": "2026-11-10 21:23:22.232442",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-10 21:23:22",
+                        "Type": "INFO",
+                        "RunType": "DataView",
+                        "Detail": "Displayed 1 of 1 row(s) from LOCAL_PATH."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "mahesh.thirmandas",
+            "InsertedDate": "2026-11-10 21:23:22.256450"
+        }
+    }
+]

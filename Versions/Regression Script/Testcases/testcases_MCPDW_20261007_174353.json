@@ -1,0 +1,287 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare Contract_ID, Name, and Description",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Query": "Contract",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "Query": "DW.CONTRACT",
+      "QueryType": "QUERY"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "TargetField": "STATUS_ID"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "TargetField": "START_DATE"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Name",
+        "TargetField": "CONTRACT_NAME"
+      },
+      {
+        "SourceField": "Description",
+        "TargetField": "CONTRACT_DESCRIPTION"
+      },
+      {
+        "SourceField": "Span.EndDate",
+        "TargetField": "END_DATE"
+      }
+    ],
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-07 17:43:53"
+    }
+  },
+  {
+    "ValidationType": "Record_Count",
+    "TestDescription": "Compare row counts",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Query": "Contract",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "Query": "DW.CONTRACT",
+      "QueryType": "QUERY"
+    },
+    "ApprovedValues": [
+      "0"
+    ],
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-07 17:43:53"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for nulls in Name",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Query": "Contract",
+      "QueryType": "COLLECTION"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Name",
+        "ResultFields": [
+          "Name"
+        ]
+      },
+      {
+        "SourceField": "DefaultPay",
+        "ResultFields": [
+          "DefaultPay"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.ListCapitation",
+        "ResultFields": [
+          "ContractConfigX.ListCapitation"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.ListEOC",
+        "ResultFields": [
+          "ContractConfigX.ListEOC"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.ListBonus",
+        "ResultFields": [
+          "ContractConfigX.ListBonus"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.PricingSources",
+        "ResultFields": [
+          "ContractConfigX.PricingSources"
+        ]
+      },
+      {
+        "SourceField": "ContractConfigX.EOCs",
+        "ResultFields": [
+          "ContractConfigX.EOCs"
+        ]
+      },
+      {
+        "SourceField": "Notes",
+        "ResultFields": [
+          "Notes"
+        ]
+      },
+      {
+        "SourceField": "AdditionalAttribute",
+        "ResultFields": [
+          "AdditionalAttribute"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-07 17:43:53"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicates in Contract_ID",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 4,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Query": "Contract",
+      "QueryType": "COLLECTION"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Contract_ID",
+        "ResultFields": [
+          "Contract_ID"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      }
+    ],
+    "ExpectedResult": 0,
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-07 17:43:53"
+    }
+  },
+  {
+    "ValidationType": "Format_Check",
+    "TestDescription": "Check for date format in Span.StartDate",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 5,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Query": "Contract",
+      "QueryType": "COLLECTION"
+    },
+    "CheckFields": [],
+    "ExpectedResult": 0,
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INCOMPLETE",
+      "Detail": "not loaded",
+      "Errors": [
+        "missing CheckFields"
+      ],
+      "LoadedOn": "2026-10-07 17:43:53"
+    }
+  },
+  {
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Check for approved values in DefaultPay",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 6,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Query": "Contract",
+      "QueryType": "COLLECTION"
+    },
+    "CompareFields": [
+      {
+        "SourceField": "Name",
+        "TargetField": "CONTRACT_NAME"
+      },
+      {
+        "SourceField": "Description",
+        "TargetField": "CONTRACT_DESCRIPTION"
+      },
+      {
+        "SourceField": "Span.EndDate",
+        "TargetField": "END_DATE"
+      }
+    ],
+    "ApprovedValues": [],
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "NOT LOADED - INCOMPLETE",
+      "Detail": "not loaded",
+      "Errors": [
+        "missing ApprovedValues"
+      ],
+      "LoadedOn": "2026-10-07 17:43:53"
+    }
+  }
+]

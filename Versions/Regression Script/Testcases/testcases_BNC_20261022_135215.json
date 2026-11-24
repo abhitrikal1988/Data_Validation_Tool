@@ -1,0 +1,282 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "BNC",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "BNC_CONTRACT matches BNC_NEW.Contract.Details[]",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "BNC_NEW",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$Contract.Details\"}, {\"$project\": {\"_id\": 0, \"BNC_ID\": 1, \"Contract.Details.BNCContractDetails_ID\": 1, \"BenefitPlan_ID\": 1, \"Network_ID\": 1, \"BillingProvider_ID\": 1, \"Contract.Details.Contract_ID\": 1, \"Contract.Details.PCPType\": 1, \"Contract.Details.Span.StartDate\": 1, \"Contract.Details.Span.EndDate\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID, BENEFIT_PLAN_ID, NETWORK_ID, BILLING_PROVIDER_ID, CONTRACT_ID, PCP_TYPE, START_DATE, END_DATE, BUSINESS_ID FROM DW.BNC_CONTRACT"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "BNC_ID",
+        "TargetField": "BNC_ID"
+      },
+      {
+        "SourceField": "Contract.Details.BNCContractDetails_ID",
+        "TargetField": "BNC_CONTRACT_DETAILS_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "BenefitPlan_ID",
+        "TargetField": "BENEFIT_PLAN_ID"
+      },
+      {
+        "SourceField": "Network_ID",
+        "TargetField": "NETWORK_ID"
+      },
+      {
+        "SourceField": "BillingProvider_ID",
+        "TargetField": "BILLING_PROVIDER_ID"
+      },
+      {
+        "SourceField": "Contract.Details.Contract_ID",
+        "TargetField": "CONTRACT_ID"
+      },
+      {
+        "SourceField": "Contract.Details.PCPType",
+        "TargetField": "PCP_TYPE"
+      },
+      {
+        "SourceField": "Contract.Details.Span.StartDate",
+        "TargetField": "START_DATE"
+      },
+      {
+        "SourceField": "Contract.Details.Span.EndDate",
+        "TargetField": "END_DATE"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 360,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-22 13:52:15"
+    }
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "BNC",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "BNC_CONTRACT_LOC matches BNC_NEW.Contract.Details.Locations[]",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "BNC_NEW",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$Contract.Details\"}, {\"$unwind\": \"$Contract.Details.Locations\"}, {\"$project\": {\"_id\": 0, \"BNC_ID\": 1, \"Contract.Details.BNCContractDetails_ID\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID, BUSINESS_ID FROM DW.BNC_CONTRACT_LOC"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "BNC_ID",
+        "TargetField": "BNC_ID"
+      },
+      {
+        "SourceField": "Contract.Details.BNCContractDetails_ID",
+        "TargetField": "BNC_CONTRACT_DETAILS_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 361,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-22 13:52:15"
+    }
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "BNC",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "BNC_CONTRACT_REND_PROV matches BNC_NEW.Contract.Details.RenderingProviders[]",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "BNC_NEW",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$Contract.Details\"}, {\"$unwind\": \"$Contract.Details.RenderingProviders\"}, {\"$project\": {\"_id\": 0, \"BNC_ID\": 1, \"Contract.Details.BNCContractDetails_ID\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID, BUSINESS_ID FROM DW.BNC_CONTRACT_REND_PROV"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "BNC_ID",
+        "TargetField": "BNC_ID"
+      },
+      {
+        "SourceField": "Contract.Details.BNCContractDetails_ID",
+        "TargetField": "BNC_CONTRACT_DETAILS_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 362,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-22 13:52:15"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "BNC",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.BNC_CONTRACT: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "BNC_ID",
+          "BNC_CONTRACT_DETAILS_ID"
+        ],
+        "ResultFields": [
+          "BNC_ID",
+          "BNC_CONTRACT_DETAILS_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same BNC_ID, BNC_CONTRACT_DETAILS_ID",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 363,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-22 13:52:15"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "BNC",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.BNC_CONTRACT_LOC: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT_LOC"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "BNC_ID",
+          "BNC_CONTRACT_DETAILS_ID"
+        ],
+        "ResultFields": [
+          "BNC_ID",
+          "BNC_CONTRACT_DETAILS_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same BNC_ID, BNC_CONTRACT_DETAILS_ID",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 364,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-22 13:52:15"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "BNC",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.BNC_CONTRACT_REND_PROV: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BNC_ID, BNC_CONTRACT_DETAILS_ID FROM DW.BNC_CONTRACT_REND_PROV"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "BNC_ID",
+          "BNC_CONTRACT_DETAILS_ID"
+        ],
+        "ResultFields": [
+          "BNC_ID",
+          "BNC_CONTRACT_DETAILS_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same BNC_ID, BNC_CONTRACT_DETAILS_ID",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 365,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-22 13:52:15"
+    }
+  }
+]

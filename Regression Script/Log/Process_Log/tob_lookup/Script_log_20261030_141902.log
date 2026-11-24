@@ -1,0 +1,122 @@
+2026-10-30 14:19:02,100 | INFO | ========== Starting Validation ==========
+2026-10-30 14:19:02,101 | INFO | Module         : tob_lookup
+2026-10-30 14:19:02,102 | INFO | Stage          : None
+2026-10-30 14:19:02,103 | INFO | Cycle          : None
+2026-10-30 14:19:02,104 | INFO | Environment    : MCPQA1
+2026-10-30 14:19:02,106 | INFO | Runtime Filters: {'dw_file_detail_id': '2066'}
+2026-10-30 14:19:02,165 | INFO | Parallel execution started — 5 active thread(s) (requested: 5, test cases: 6).
+2026-10-30 14:19:07,635 | INFO | ========== [ Running TestCase 1: Compare source and target for TOB_LOOKUP_ID, BUSINESS_ID, TYPE_OF_BILL_CODE, DESCRIPTION, DW_CREATED_DT, DW_MODIFIED_DT ] ==========
+2026-10-30 14:19:07,635 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-10-30 14:19:07,635 | INFO | TestCase 1: Target [ORACLE]:SELECT BUSINESS_ID
+  ,TYPE_OF_BILL_CODE
+  ,DESCRIPTION 
+  FROM DW.tob_lookup 
+  WHERE dw_file_detail_id >= 2066
+2026-10-30 14:19:07,635 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 14:19:07,635 | INFO | File_fetcher: Reading local file — P:\Maheswar\TOB Lookup.xlsx
+2026-10-30 14:19:07,635 | INFO | File_fetcher: 'TOB Lookup.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 14:19:07,637 | INFO | File_parser: 'TOB Lookup.xlsx' — Excel parsed 2768 row(s), 0 parse error(s).
+2026-10-30 14:19:07,637 | INFO | File_parser: 'TOB Lookup.xlsx' — parse complete, 2768 row(s), no errors.
+2026-10-30 14:19:07,637 | INFO | File_parser: Combined 1 file(s) — 2768 total rows, 0 total error(s).
+2026-10-30 14:19:07,637 | INFO | [TC 1] Source data sample (5 of 2768 records):
+2026-10-30 14:19:07,637 | INFO |   1: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0110', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,637 | INFO |   2: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0111', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,637 | INFO |   3: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0112', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,637 | INFO |   4: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0113', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,638 | INFO |   5: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0114', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,638 | INFO | [TC 1] Target data sample (5 of 2768 records):
+2026-10-30 14:19:07,638 | INFO |   1: {'BUSINESS_ID': 109, 'TYPE_OF_BILL_CODE': '0110', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,638 | INFO |   2: {'BUSINESS_ID': 109, 'TYPE_OF_BILL_CODE': '0111', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,638 | INFO |   3: {'BUSINESS_ID': 109, 'TYPE_OF_BILL_CODE': '0112', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,638 | INFO |   4: {'BUSINESS_ID': 109, 'TYPE_OF_BILL_CODE': '0113', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,639 | INFO |   5: {'BUSINESS_ID': 109, 'TYPE_OF_BILL_CODE': '0114', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:07,639 | INFO | [SRC->TGT]  - Total source LOCAL_PATH records: 2768
+2026-10-30 14:19:07,639 | INFO | [SRC->TGT]  - Total target ORACLE records: 2768
+2026-10-30 14:19:07,639 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-30 14:19:07,639 | INFO | [TGT->SRC]  - Total source ORACLE records: 2768
+2026-10-30 14:19:07,639 | INFO | [TGT->SRC]  - Total target LOCAL_PATH records: 2768
+2026-10-30 14:19:07,639 | INFO | Data comparison process completed.
+2026-10-30 14:19:07,640 | INFO | [TestCase 1] Test Result: PASS
+2026-10-30 14:19:07,640 | INFO | Execution time for TestCase 1: 5.47 seconds
+2026-10-30 14:19:03,963 | INFO | ========== [ Running TestCase 2: Check for null values in BUSINESS_ID, TYPE_OF_BILL_CODE, DESCRIPTION ] ==========
+2026-10-30 14:19:03,965 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 14:19:03,965 | INFO | File_fetcher: Reading local file — P:\Maheswar\TOB Lookup.xlsx
+2026-10-30 14:19:03,965 | INFO | File_fetcher: 'TOB Lookup.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 14:19:03,966 | INFO | File_parser: 'TOB Lookup.xlsx' — Excel parsed 2768 row(s), 0 parse error(s).
+2026-10-30 14:19:03,966 | INFO | File_parser: 'TOB Lookup.xlsx' — parse complete, 2768 row(s), no errors.
+2026-10-30 14:19:03,966 | INFO | File_parser: Combined 1 file(s) — 2768 total rows, 0 total error(s).
+2026-10-30 14:19:03,966 | INFO | TestCase 2: Null_Check — field 'BUSINESS_ID': 0 null(s) ✓
+2026-10-30 14:19:03,966 | INFO | TestCase 2: Null_Check — field 'TYPE_OF_BILL_CODE': 0 null(s) ✓
+2026-10-30 14:19:03,966 | INFO | Execution time for TestCase 2: 1.78 seconds
+2026-10-30 14:19:03,817 | INFO | ========== [ Running TestCase 3: Check for duplicate records on BUSINESS_ID and TYPE_OF_BILL_CODE ] ==========
+2026-10-30 14:19:03,851 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 14:19:03,867 | INFO | File_fetcher: Reading local file — P:\Maheswar\TOB Lookup.xlsx
+2026-10-30 14:19:03,883 | INFO | File_fetcher: 'TOB Lookup.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 14:19:03,939 | INFO | File_parser: 'TOB Lookup.xlsx' — Excel parsed 2768 row(s), 0 parse error(s).
+2026-10-30 14:19:03,940 | INFO | File_parser: 'TOB Lookup.xlsx' — parse complete, 2768 row(s), no errors.
+2026-10-30 14:19:03,941 | INFO | File_parser: Combined 1 file(s) — 2768 total rows, 0 total error(s).
+2026-10-30 14:19:03,950 | INFO | TestCase 3: Duplicate_Check — no duplicates on ['BUSINESS_ID', 'TYPE_OF_BILL_CODE'] ✓
+2026-10-30 14:19:03,961 | INFO | Execution time for TestCase 3: 1.55 seconds
+2026-10-30 14:19:02,380 | INFO | ========== [ Running TestCase 4: Target DW.tob_lookup: no duplicate BUSINESS_ID, TYPE_OF_BILL_CODE ] ==========
+2026-10-30 14:19:02,380 | INFO | TestCase 4: Source [ORACLE]:SELECT BUSINESS_ID
+  ,TYPE_OF_BILL_CODE 
+  FROM DW.tob_lookup 
+  WHERE dw_file_detail_id >= :dw_file_detail_id
+2026-10-30 14:19:02,381 | INFO | TestCase 4: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-10-30 14:19:02,383 | INFO | Source [ORACLE] Duplicate_Check sample for 'BUSINESS_ID, TYPE_OF_BILL_CODE':
+SELECT BUSINESS_ID, TYPE_OF_BILL_CODE
+                    FROM (SELECT BUSINESS_ID, TYPE_OF_BILL_CODE FROM DW.tob_lookup WHERE dw_file_detail_id >= :dw_file_detail_id )
+                    WHERE BUSINESS_ID IS NOT NULL AND TYPE_OF_BILL_CODE IS NOT NULL
+                    AND (BUSINESS_ID, TYPE_OF_BILL_CODE) IN (
+                        
+                    SELECT BUSINESS_ID, TYPE_OF_BILL_CODE
+                    FROM (SELECT BUSINESS_ID, TYPE_OF_BILL_CODE FROM DW.tob_lookup WHERE dw_file_detail_id >= :dw_file_detail_id )
+                    WHERE BUSINESS_ID IS NOT NULL AND TYPE_OF_BILL_CODE IS NOT NULL
+                    GROUP BY BUSINESS_ID, TYPE_OF_BILL_CODE
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-30 14:19:02,383 | ISSUE | Error fetching duplicate data for 'BUSINESS_ID, TYPE_OF_BILL_CODE' (ORACLE): ORA-01008: not all variables bound
+2026-10-30 14:19:02,383 | WARNING | TestCase 4: Field 'BUSINESS_ID, TYPE_OF_BILL_CODE': Failed to fetch duplicate data — skipping.
+2026-10-30 14:19:02,384 | INFO | Execution time for TestCase 4: 0.22 seconds
+2026-10-30 14:19:02,384 | INFO | ========== [ Running TestCase 5: Target DW.tob_lookup: keys and load columns are populated ] ==========
+2026-10-30 14:19:02,384 | INFO | TestCase 5: Source [ORACLE]:SELECT BUSINESS_ID
+  ,TYPE_OF_BILL_CODE
+  ,TOB_LOOKUP_ID
+  ,DW_FILE_DETAIL_ID
+  ,DW_CREATED_DT
+  ,DW_MODIFIED_DT 
+  FROM DW.tob_lookup 
+  WHERE dw_file_detail_id >= :dw_file_detail_id
+2026-10-30 14:19:02,384 | INFO | TestCase 5: Null_Check started — pushing null filter to ORACLE per field
+2026-10-30 14:19:02,384 | INFO | Oracle Null_Check query: SELECT * FROM (SELECT BUSINESS_ID, TYPE_OF_BILL_CODE, TOB_LOOKUP_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT FROM DW.tob_lookup WHERE dw_file_detail_id >= :dw_file_detail_id) WHERE (BUSINESS_ID IS NULL OR TRIM(TO_CHAR(BUSINESS_ID)) = '') OR (TYPE_OF_BILL_CODE IS NULL OR TRIM(TO_CHAR(TYPE_OF_BILL_CODE)) = '') OR (TOB_LOOKUP_ID IS NULL OR TRIM(TO_CHAR(TOB_LOOKUP_ID)) = '') OR (DW_FILE_DETAIL_ID IS NULL OR TRIM(TO_CHAR(DW_FILE_DETAIL_ID)) = '') OR (DW_CREATED_DT IS NULL OR TRIM(TO_CHAR(DW_CREATED_DT)) = '') OR (DW_MODIFIED_DT IS NULL OR TRIM(TO_CHAR(DW_MODIFIED_DT)) = '')
+2026-10-30 14:19:02,385 | ISSUE | Error fetching null check data (ORACLE): ORA-01008: not all variables bound
+2026-10-30 14:19:02,385 | WARNING | TestCase 5: Field 'BUSINESS_ID': Failed to fetch data — skipping.
+2026-10-30 14:19:02,385 | WARNING | TestCase 5: Field 'TYPE_OF_BILL_CODE': Failed to fetch data — skipping.
+2026-10-30 14:19:02,385 | WARNING | TestCase 5: Field 'TOB_LOOKUP_ID': Failed to fetch data — skipping.
+2026-10-30 14:19:02,385 | WARNING | TestCase 5: Field 'DW_FILE_DETAIL_ID': Failed to fetch data — skipping.
+2026-10-30 14:19:02,387 | WARNING | TestCase 5: Field 'DW_CREATED_DT': Failed to fetch data — skipping.
+2026-10-30 14:19:02,387 | WARNING | TestCase 5: Field 'DW_MODIFIED_DT': Failed to fetch data — skipping.
+2026-10-30 14:19:02,387 | INFO | Execution time for TestCase 5: 0.22 seconds
+2026-10-30 14:19:03,967 | INFO | ========== [ Running TestCase 6: BUSINESS_ID has only approved values ] ==========
+2026-10-30 14:19:03,967 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 14:19:03,967 | INFO | File_fetcher: Reading local file — P:\Maheswar\TOB Lookup.xlsx
+2026-10-30 14:19:03,967 | INFO | File_fetcher: 'TOB Lookup.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 14:19:03,968 | INFO | File_parser: 'TOB Lookup.xlsx' — Excel parsed 2768 row(s), 0 parse error(s).
+2026-10-30 14:19:03,968 | INFO | File_parser: 'TOB Lookup.xlsx' — parse complete, 2768 row(s), no errors.
+2026-10-30 14:19:03,968 | INFO | File_parser: Combined 1 file(s) — 2768 total rows, 0 total error(s).
+2026-10-30 14:19:03,968 | INFO | [TC 6] Source data sample (5 of 2768 records):
+2026-10-30 14:19:03,968 | INFO |   1: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0110', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:03,969 | INFO |   2: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0111', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:03,969 | INFO |   3: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0112', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:03,969 | INFO |   4: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0113', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:03,969 | INFO |   5: {'BUSINESS_ID': '109', 'TYPE_OF_BILL_CODE': '0114', 'DESCRIPTION': 'Hospital Inpatient'}
+2026-10-30 14:19:03,970 | INFO | [TC 6] BUSINESS_ID has only approved values
+2026-10-30 14:19:03,970 | INFO | [TC 6] PASS: All values are within approved list.
+2026-10-30 14:19:03,970 | INFO | Execution time for TestCase 6: 1.58 seconds
+2026-10-30 14:19:07,689 | INFO | Total Number of Testcases Executed : 6,Pass : 6, Fail : 0, Skippped : 0
+2026-10-30 14:19:07,690 | INFO | Total execution time: 5.53 seconds (0.1 minutes)
+2026-10-30 14:19:07,709 | INFO | Master combined log written to: MCPQA1_tob_lookup_Log_20261030_181907.json
+2026-10-30 14:19:07,715 | INFO | Result.InsertData : 6ae4df9bd3bc2ffcbf45e26e
+2026-10-30 14:19:08,151 | INFO | ========== Completed Validation ==========

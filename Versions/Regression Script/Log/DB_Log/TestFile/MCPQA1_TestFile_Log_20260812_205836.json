@@ -1,0 +1,40 @@
+[
+    {
+        "DataValidationLog_ID": 78,
+        "Module": "TestFile",
+        "Stage": "TestPDF",
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Validate Test PDF against Oracle",
+                "Result": "Skip",
+                "StartTime": "2026-08-12 20:53:40.666857",
+                "EndTime": "2026-08-12 20:58:36.545812",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-08-12 20:53:40",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:select * \n  from spai.test_file_data"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-08-12 20:58:36",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source and Target data both are empty. Skipping."
+                    }
+                ],
+                "Stage": "TestPDF",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Sairaj.Pai",
+            "InsertedDate": "2026-08-12 20:58:36.563810"
+        }
+    }
+]

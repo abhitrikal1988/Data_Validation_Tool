@@ -1,0 +1,449 @@
+2026-10-23 17:49:34,656 | INFO | ========== Starting Validation ==========
+2026-10-23 17:49:34,657 | INFO | Module         : eH RollOver 2027
+2026-10-23 17:49:34,658 | INFO | Stage          : None
+2026-10-23 17:49:34,659 | INFO | Cycle          : None
+2026-10-23 17:49:34,660 | INFO | Environment    : MCPQA
+2026-10-23 17:49:34,662 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-23 17:49:34,827 | INFO | Parallel execution started — 2 active thread(s) (requested: 5, test cases: 2).
+2026-10-23 17:49:40,437 | INFO | ========== [ Running TestCase 1: eH RollOver Enroll.Member Count validation ] ==========
+2026-10-23 17:49:40,437 | INFO | TestCase 1: Source [ORACLE]:WITH rollover_excluded_mbrs AS (
+
+  SELECT 
+  DISTINCT mp.mbi,
+  mp.member_profile_id_nh,
+  mp.business_id_nh 
+  FROM mbrprofile.health_coverage hc 
+
+  INNER JOIN mbrprofile.member_profile mp 
+  ON hc.member_profile_id_nh=mp.member_profile_id_nh 
+
+  WHERE hc.benefit_begin_dt BETWEEN TO_DATE('01012027', 'MMDDYYYY') 
+  AND TO_DATE('12312027', 'MMDDYYYY') 
+
+  AND hc.benefit_end_dt BETWEEN TO_DATE('01012027', 'MMDDYYYY') 
+  AND TO_DATE('12312027', 'MMDDYYYY')
+
+  AND hc.enrollment_status_id IN (200004,
+  200005) 
+
+  AND sep_reason<>'SEP_ROL' 
+
+  UNION ALL 
+
+  SELECT 
+  DISTINCT mbi,
+  mbr.member_profile_id_nh,
+  mbr.business_id_nh 
+  FROM mbrexcep.member mbr
+
+  INNER JOIN mbrexcep.member_error mbr_er 
+  ON mbr.member_id_nh=mbr_er.member_id_nh 
+  AND mbr_er.error_status_id=170105 
+
+  INNER JOIN mbrexcep.health_coverage hc 
+  ON mbr.member_id_nh=hc.member_id_nh 
+
+  WHERE mbr.maintenance_type_code='021' 
+
+  AND TO_DATE(hc.benefit_begin_dt DEFAULT NULL 
+  ON CONVERSION ERROR, 'YYYYMMDD')BETWEEN TO_DATE('01012027', 'MMDDYYYY')
+  AND TO_DATE('12312027', 'MMDDYYYY')
+
+  AND TO_DATE(hc.benefit_end_dt DEFAULT NULL 
+  ON CONVERSION ERROR, 'YYYYMMDD') BETWEEN TO_DATE('01012027', 'MMDDYYYY') 
+  AND TO_DATE('12312027', 'MMDDYYYY')
+
+  UNION ALL 
+
+  SELECT 
+  DISTINCT mp.mbi,
+  mp.member_profile_id_nh,
+  mp.business_id_nh 
+  FROM mbrprofile.member_profile mp
+
+  INNER JOIN mbrprofile.health_coverage hc 
+  ON mp.member_profile_id_nh=hc.member_profile_id_nh
+
+  WHERE hc.enrollment_status_id=200004 
+
+  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY') 
+  AND TO_DATE('12312026', 'MMDDYYYY')
+
+  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY') 
+
+  AND hc.term_rsn_code IS NULL 
+
+  AND hc.plan_id='H3551002000'
+
+  UNION ALL
+
+  SELECT 
+  DISTINCT mp.mbi,
+  mp.member_profile_id_nh,
+  mp.business_id_nh 
+  FROM mbrprofile.member_profile mp 
+
+  INNER JOIN mbrprofile.health_coverage hc 
+  ON mp.member_profile_id_nh=hc.member_profile_id_nh 
+
+  INNER JOIN mbrprofile.mbr_address ma 
+  ON mp.member_profile_id_nh=ma.member_profile_id_nh 
+
+  AND upper(ma.address_type)='RESIDENTIAL'
+
+  AND upper(ma.county)='PIMA' 
+
+  WHERE hc.enrollment_status_id=200004 
+
+  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY')
+  AND TO_DATE('12312026', 'MMDDYYYY') 
+
+  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY')
+
+  AND hc.term_rsn_code IS NULL
+
+  AND hc.plan_id LIKE'H3551004%')
+
+ 
+  SELECT 'ENROLL.MEMBER' AS tbl
+  ,COUNT(*) AS RECORD_COUNT
+ 
+  FROM (
+  SELECT mp.subscriber_ind,
+  '18'AS individual_rel_code,
+  '021'AS maintenance_type_code,
+  hc.maintenance_rsn_code,
+  mp.benefit_status_code,
+  mp.medicare_plan_code,
+  mp.eligibility_rsn_code,
+  mp.cobra_qual_event_code,
+  
+CAST(NULL AS VARCHAR2(10)) AS employment_status_code,
+  mp.student_status_code,
+  mp.handicap_ind,
+  CAST(NULL AS VARCHAR2(10)) AS date_time_format_qual,
+  mp.date_of_death,
+  mp.confident_code,
+  mp.birth_seq_number,
+  
+CAST(NULL AS VARCHAR2(10)) AS enrollment_status,
+  mp.member_code,
+  0 AS file_detail_id_nh,
+  mp.hix_subscriber_id,
+  mp.hix_member_id,
+  mp.hp_subscriber_id,
+  mp.hp_member_id,
+  hc.plan_id,
+  
+TO_DATE('01012027', 'MMDDYYYY')AS elg_begin_dt,
+  TO_DATE('12312027', 'MMDDYYYY')AS elg_end_dt,
+  mp.maint_effective_dt,
+  mp.member_profile_id_nh,
+  CAST(NULL AS VARCHAR2(100)) AS prem_withhold_source,
+  
+CAST(NULL AS VARCHAR2(100)) AS prem_direct_pay,
+  mp.mbi,
+  CAST(NULL AS VARCHAR2(100)) AS esrd,
+  mp.medicaid,
+  CAST(NULL AS VARCHAR2(100))AS part_d_sub_ind,
+  CAST(NULL AS VARCHAR2(100)) AS deemedind,
+  
+CAST(NULL AS VARCHAR2(100)) AS subsidypercentage,
+  CAST(NULL AS VARCHAR2(100)) AS deducted_flg,
+  CAST(NULL AS VARCHAR2(100)) AS deemed_reason_code,
+  CAST(NULL AS VARCHAR2(100)) AS lis_copay_lvl_id,
+  
+CAST(NULL AS VARCHAR2(100))AS deemed_copay_lvl_id,
+  CAST(NULL AS VARCHAR2(100))AS partd_opt_flg,
+  CAST(NULL AS VARCHAR2(100)) AS spouse_employment_status,
+  CAST(NULL AS VARCHAR2(100))AS emailoptin,
+  
+mp.business_id_nh,
+  CAST(NULL AS VARCHAR2(100))AS email_optin_materials,
+  CAST(NULL AS VARCHAR2(100)) AS phoneoptin,
+  'N' AS generate_tc_flg,
+  
+CAST(NULL AS VARCHAR2(100)) AS original_prem_direct_pay,
+  CAST(NULL AS NUMBER) AS org_id_nh,
+  CAST(NULL AS VARCHAR2(100)) AS employee_id,
+  MP.broker_id_card_access,
+  
+CAST(NULL AS VARCHAR2(100)) AS textoptin 
+
+  FROM mbrprofile.member_profile mp
+
+  INNER JOIN mbrprofile.health_coverage hc 
+  ON mp.member_profile_id_nh=hc.member_profile_id_nh
+
+  WHERE hc.enrollment_status_id=200004 
+
+  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY')
+  AND TO_DATE('12312026', 'MMDDYYYY')
+
+  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY')
+  AND
+hc.term_rsn_code IS NULL
+
+  AND(mp.member_profile_id_nh NOT IN( 
+  SELECT member_profile_id_nh 
+  FROM rollover_excluded_mbrs)
+
+  OR mp.mbi NOT IN( 
+  SELECT nvl(mbi, '~') AS mbi 
+  FROM rollover_excluded_mbrs))
+
+  AND mp.business_id_nh='110' )
+2026-10-23 17:49:40,437 | INFO | TestCase 1: Target [ORACLE]:SELECT 'ENROLL.MEMBER' AS tbl
+  ,COUNT(*) AS RECORD_COUNT 
+  FROM enroll.member a
+
+  INNER JOIN enroll.trans_set_header b 
+  ON a.trans_set_header_id_nh = b.trans_set_header_id_nh
+
+  WHERE a.elg_begin_dt = '20270101'
+
+  AND a.elg_end_dt = '20271231'
+
+  AND a.business_id_nh = '110'
+
+  AND b.file_detail_id_nh = 0
+
+  AND b.trans_set_date = '20261023'
+2026-10-23 17:49:40,438 | INFO | [TC 1] Source data sample (1 of 1 records):
+2026-10-23 17:49:40,438 | INFO |   1: {'TBL': 'ENROLL.MEMBER', 'RECORD_COUNT': 21}
+2026-10-23 17:49:40,438 | INFO | [TC 1] Target data sample (1 of 1 records):
+2026-10-23 17:49:40,438 | INFO |   1: {'TBL': 'ENROLL.MEMBER', 'RECORD_COUNT': 21}
+2026-10-23 17:49:40,438 | INFO | [SRC->TGT]  - Total source ORACLE records: 1
+2026-10-23 17:49:40,439 | INFO | [SRC->TGT]  - Total target ORACLE records: 1
+2026-10-23 17:49:40,439 | INFO | Data comparison process completed.
+2026-10-23 17:49:40,439 | INFO | [TestCase 1] Test Result: PASS
+2026-10-23 17:49:40,439 | INFO | Execution time for TestCase 1: 5.65 seconds
+2026-10-23 17:49:40,783 | INFO | ========== [ Running TestCase 2: eH RollOver Enroll.Member Data validation ] ==========
+2026-10-23 17:49:40,783 | INFO | TestCase 2: Source [ORACLE]:WITH rollover_excluded_mbrs AS (
+
+  SELECT 
+  DISTINCT mp.mbi,
+  mp.member_profile_id_nh,
+  mp.business_id_nh 
+  FROM mbrprofile.health_coverage hc 
+
+  INNER JOIN mbrprofile.member_profile mp 
+  ON hc.member_profile_id_nh=mp.member_profile_id_nh 
+
+  WHERE hc.benefit_begin_dt BETWEEN TO_DATE('01012027', 'MMDDYYYY') 
+  AND TO_DATE('12312027', 'MMDDYYYY') 
+
+  AND hc.benefit_end_dt BETWEEN TO_DATE('01012027', 'MMDDYYYY') 
+  AND TO_DATE('12312027', 'MMDDYYYY')
+
+  AND hc.enrollment_status_id IN (200004,
+  200005) 
+
+  AND sep_reason<>'SEP_ROL' 
+
+  UNION ALL 
+
+  SELECT 
+  DISTINCT mbi,
+  mbr.member_profile_id_nh,
+  mbr.business_id_nh 
+  FROM mbrexcep.member mbr
+
+  INNER JOIN mbrexcep.member_error mbr_er 
+  ON mbr.member_id_nh=mbr_er.member_id_nh 
+  AND mbr_er.error_status_id=170105 
+
+  INNER JOIN mbrexcep.health_coverage hc 
+  ON mbr.member_id_nh=hc.member_id_nh 
+
+  WHERE mbr.maintenance_type_code='021' 
+
+  AND TO_DATE(hc.benefit_begin_dt DEFAULT NULL 
+  ON CONVERSION ERROR, 'YYYYMMDD')BETWEEN TO_DATE('01012027', 'MMDDYYYY')
+  AND TO_DATE('12312027', 'MMDDYYYY')
+
+  AND TO_DATE(hc.benefit_end_dt DEFAULT NULL 
+  ON CONVERSION ERROR, 'YYYYMMDD') BETWEEN TO_DATE('01012027', 'MMDDYYYY') 
+  AND TO_DATE('12312027', 'MMDDYYYY')
+
+  UNION ALL 
+
+  SELECT 
+  DISTINCT mp.mbi,
+  mp.member_profile_id_nh,
+  mp.business_id_nh 
+  FROM mbrprofile.member_profile mp
+
+  INNER JOIN mbrprofile.health_coverage hc 
+  ON mp.member_profile_id_nh=hc.member_profile_id_nh
+
+  WHERE hc.enrollment_status_id=200004 
+
+  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY') 
+  AND TO_DATE('12312026', 'MMDDYYYY')
+
+  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY') 
+
+  AND hc.term_rsn_code IS NULL 
+
+  AND hc.plan_id='H3551002000'
+
+  UNION ALL
+
+  SELECT 
+  DISTINCT mp.mbi,
+  mp.member_profile_id_nh,
+  mp.business_id_nh 
+  FROM mbrprofile.member_profile mp 
+
+  INNER JOIN mbrprofile.health_coverage hc 
+  ON mp.member_profile_id_nh=hc.member_profile_id_nh 
+
+  INNER JOIN mbrprofile.mbr_address ma 
+  ON mp.member_profile_id_nh=ma.member_profile_id_nh 
+
+  AND upper(ma.address_type)='RESIDENTIAL'
+
+  AND upper(ma.county)='PIMA' 
+
+  WHERE hc.enrollment_status_id=200004 
+
+  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY')
+  AND TO_DATE('12312026', 'MMDDYYYY') 
+
+  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY')
+
+  AND hc.term_rsn_code IS NULL
+
+  AND hc.plan_id LIKE'H3551004%')
+
+
+  SELECT mp.subscriber_ind
+  ,'18'AS individual_rel_code
+  ,'021'AS maintenance_type_code
+  ,hc.maintenance_rsn_code
+  ,mp.benefit_status_code
+  ,mp.medicare_plan_code
+  ,mp.eligibility_rsn_code
+  ,mp.cobra_qual_event_code
+  ,
+CAST(NULL AS VARCHAR2(10)) AS employment_status_code
+  ,mp.student_status_code
+  ,mp.handicap_ind
+  ,CAST(NULL AS VARCHAR2(10)) AS date_time_format_qual
+  ,mp.date_of_death
+  ,mp.confident_code
+  ,mp.birth_seq_number
+  ,
+CAST(NULL AS VARCHAR2(10)) AS enrollment_status
+  ,mp.member_code
+  ,0 AS file_detail_id_nh
+  ,mp.hix_subscriber_id
+  ,mp.hix_member_id
+  ,mp.hp_subscriber_id
+  ,mp.hp_member_id
+  ,hc.plan_id
+  ,
+TO_DATE('01012027', 'MMDDYYYY')AS elg_begin_dt
+  ,TO_DATE('12312027', 'MMDDYYYY')AS elg_end_dt
+  ,mp.maint_effective_dt
+  ,mp.member_profile_id_nh
+  ,CAST(NULL AS VARCHAR2(100)) AS prem_withhold_source
+  ,
+CAST(NULL AS VARCHAR2(100)) AS prem_direct_pay
+  ,mp.mbi
+  ,CAST(NULL AS VARCHAR2(100)) AS esrd
+  ,mp.medicaid
+  ,CAST(NULL AS VARCHAR2(100))AS part_d_sub_ind
+  ,CAST(NULL AS VARCHAR2(100)) AS deemedind
+  ,
+CAST(NULL AS VARCHAR2(100)) AS subsidypercentage
+  ,CAST(NULL AS VARCHAR2(100)) AS deducted_flg
+  ,CAST(NULL AS VARCHAR2(100)) AS deemed_reason_code
+  ,CAST(NULL AS VARCHAR2(100)) AS lis_copay_lvl_id
+  ,
+CAST(NULL AS VARCHAR2(100))AS deemed_copay_lvl_id
+  ,CAST(NULL AS VARCHAR2(100))AS partd_opt_flg
+  ,CAST(NULL AS VARCHAR2(100)) AS spouse_employment_status
+  ,CAST(NULL AS VARCHAR2(100))AS emailoptin
+  ,
+mp.business_id_nh
+  ,CAST(NULL AS VARCHAR2(100))AS email_optin_materials
+  ,CAST(NULL AS VARCHAR2(100)) AS phoneoptin
+  ,'N' AS generate_tc_flg
+  ,
+CAST(NULL AS VARCHAR2(100)) AS original_prem_direct_pay
+  ,CAST(NULL AS NUMBER) AS org_id_nh
+  ,CAST(NULL AS VARCHAR2(100)) AS employee_id
+  ,MP.broker_id_card_access
+  ,
+CAST(NULL AS VARCHAR2(100)) AS textoptin 
+
+  FROM mbrprofile.member_profile mp
+
+  INNER JOIN mbrprofile.health_coverage hc 
+  ON mp.member_profile_id_nh=hc.member_profile_id_nh
+
+  WHERE hc.enrollment_status_id=200004 
+
+  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY')
+  AND TO_DATE('12312026', 'MMDDYYYY')
+
+  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY')
+  AND
+hc.term_rsn_code IS NULL
+
+  AND(mp.member_profile_id_nh NOT IN( 
+  SELECT member_profile_id_nh 
+  FROM rollover_excluded_mbrs)
+
+  OR mp.mbi NOT IN( 
+  SELECT nvl(mbi, '~') AS mbi 
+  FROM rollover_excluded_mbrs))
+
+  AND mp.business_id_nh='110'
+2026-10-23 17:49:40,784 | INFO | TestCase 2: Target [ORACLE]:SELECT * 
+  FROM enroll.member a
+
+  INNER JOIN enroll.trans_set_header b 
+  ON a.trans_set_header_id_nh = b.trans_set_header_id_nh
+
+  WHERE a.elg_begin_dt = '20270101'
+
+  AND a.elg_end_dt = '20271231'
+
+  AND a.business_id_nh = '110'
+
+  AND b.file_detail_id_nh = 0
+
+  AND b.trans_set_date = '20261023'
+2026-10-23 17:49:40,784 | INFO | [TC 2] Source data sample (5 of 21 records):
+2026-10-23 17:49:40,784 | INFO |   1: {'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042264301', 'HP_MEMBER_ID': 'EH042264301', 'PLAN_ID': 'H2694002000', 'ELG_BEGIN_DT': datetime.datetime(2027, 1, 1, 0, 0), 'ELG_END_DT': datetime.datetime(2027, 12, 31, 0, 0), 'MAINT_EFFECTIVE_DT': None, 'MEMBER_PROFILE_ID_NH': 1563499, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'MBI': '4HP2RE4WE21', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None}
+2026-10-23 17:49:40,784 | INFO |   2: {'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': 'C', 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042296001', 'HP_MEMBER_ID': 'EH042296001', 'PLAN_ID': 'H2694002000', 'ELG_BEGIN_DT': datetime.datetime(2027, 1, 1, 0, 0), 'ELG_END_DT': datetime.datetime(2027, 12, 31, 0, 0), 'MAINT_EFFECTIVE_DT': None, 'MEMBER_PROFILE_ID_NH': 1570496, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'MBI': '3KW7TE1WN48', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None}
+2026-10-23 17:49:40,785 | INFO |   3: {'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042314201', 'HP_MEMBER_ID': 'EH042314201', 'PLAN_ID': 'H2694001000', 'ELG_BEGIN_DT': datetime.datetime(2027, 1, 1, 0, 0), 'ELG_END_DT': datetime.datetime(2027, 12, 31, 0, 0), 'MAINT_EFFECTIVE_DT': None, 'MEMBER_PROFILE_ID_NH': 1573496, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'MBI': '2YQ5TE1HH71', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None}
+2026-10-23 17:49:40,785 | INFO |   4: {'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042302101', 'HP_MEMBER_ID': 'EH042302101', 'PLAN_ID': 'H2694002000', 'ELG_BEGIN_DT': datetime.datetime(2027, 1, 1, 0, 0), 'ELG_END_DT': datetime.datetime(2027, 12, 31, 0, 0), 'MAINT_EFFECTIVE_DT': None, 'MEMBER_PROFILE_ID_NH': 1570998, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'MBI': '1MM3TE0MJ70', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None}
+2026-10-23 17:49:40,785 | INFO |   5: {'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042286001', 'HP_MEMBER_ID': 'EH042286001', 'PLAN_ID': 'H2694002000', 'ELG_BEGIN_DT': datetime.datetime(2027, 1, 1, 0, 0), 'ELG_END_DT': datetime.datetime(2027, 12, 31, 0, 0), 'MAINT_EFFECTIVE_DT': None, 'MEMBER_PROFILE_ID_NH': 1568996, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'MBI': '3HP2PA4KX01', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None}
+2026-10-23 17:49:40,785 | INFO | [TC 2] Target data sample (5 of 21 records):
+2026-10-23 17:49:40,785 | INFO |   1: {'MEMBER_ID_NH': 11808440, 'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'CREATED_BY': 0, 'MODIFIED_BY': 0, 'CREATED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MODIFIED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042504501', 'HP_MEMBER_ID': 'EH042504501', 'POLICY_NUMBER': 'H3551004000', 'ELG_BEGIN_DT': '20270101', 'ELG_END_DT': '20271231', 'MAINT_EFFECTIVE_DT': None, 'TRANS_SET_HEADER_ID_NH': 7405380, 'MEMBER_PROFILE_ID_NH': 1585197, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'OEC_DETAIL_ID_NH': None, 'MBI': '1HH4TE1AH42', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None, 'TRANS_SET_CTL_NUM': None, 'TRANS_STATUS': None, 'TRANS_SET_PURPOSE_CODE': None, 'REF_IDENTIFICATION_1': None, 'TRANS_SET_DATE': '20261023', 'TRANS_SET_TIME': '16:02:34', 'TRANS_SET_TIME_CODE': None, 'REF_IDENTIFICATION_2': None, 'TRANS_SET_ACTION_CODE': None, 'MASTER_POLICY_NUMBER': None, 'PAYER_NAME': None, 'PAYER_ID_CODE_QUALF': None, 'PAYER_ID_CODE': None, 'SPONSOR_NAME': None, 'SPONSOR_ID_CODE_QUALF': None, 'SPONSOR_ID_CODE': None, 'GROUP_CONTROL_NUMBER': None, 'FUNC_GROUP_HEADER_ID_NH': None, 'DEPENDENT_COUNT': None, 'EMPLOYEE_COUNT': None, 'TOTAL_COUNT': None, 'TOTAL_COUNT_RECEIVED': None, 'BROKER_NAME': None, 'BROKER_CODE_QUALF': None, 'BROKER_ID': None, 'BROKER_ACCOUNT_NUM': None, 'TPA_NAME': None, 'TPA_CODE_QUALF': None, 'TPA_ID': None, 'TPA_ACCOUNT_NUM': None, 'RECORD_SOURCE': 3517010, 'PROCESS_STATUS': 'READY', 'BROKER_AGENCY': None, 'RESOLVED_DT': None, 'PROCESS_STATUS_ID': 20902, 'QHP_ID': None, 'COPY_TRANS_SET_HEADER_SET_ID': None, 'ENROLLMENT_SOURCE_ID_NH': 7030, 'MARKET_PLACE': None, 'LOB': '1452', 'BEQ_RESPONSE_ID_NH': None, 'TRR_TRANSACTION_REPLY_CODE_LIST': None, 'TRR_TRANSACTION_CODE': None, 'TRR_PLAN_TRANSACTION_ID': None}
+2026-10-23 17:49:40,785 | INFO |   2: {'MEMBER_ID_NH': 11808441, 'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'CREATED_BY': 0, 'MODIFIED_BY': 0, 'CREATED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MODIFIED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042489901', 'HP_MEMBER_ID': 'EH042489901', 'POLICY_NUMBER': 'H2694001000', 'ELG_BEGIN_DT': '20270101', 'ELG_END_DT': '20271231', 'MAINT_EFFECTIVE_DT': None, 'TRANS_SET_HEADER_ID_NH': 7405381, 'MEMBER_PROFILE_ID_NH': 1584196, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'OEC_DETAIL_ID_NH': None, 'MBI': '6MN1AC6RU01', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None, 'TRANS_SET_CTL_NUM': None, 'TRANS_STATUS': None, 'TRANS_SET_PURPOSE_CODE': None, 'REF_IDENTIFICATION_1': None, 'TRANS_SET_DATE': '20261023', 'TRANS_SET_TIME': '16:02:34', 'TRANS_SET_TIME_CODE': None, 'REF_IDENTIFICATION_2': None, 'TRANS_SET_ACTION_CODE': None, 'MASTER_POLICY_NUMBER': None, 'PAYER_NAME': None, 'PAYER_ID_CODE_QUALF': None, 'PAYER_ID_CODE': None, 'SPONSOR_NAME': None, 'SPONSOR_ID_CODE_QUALF': None, 'SPONSOR_ID_CODE': None, 'GROUP_CONTROL_NUMBER': None, 'FUNC_GROUP_HEADER_ID_NH': None, 'DEPENDENT_COUNT': None, 'EMPLOYEE_COUNT': None, 'TOTAL_COUNT': None, 'TOTAL_COUNT_RECEIVED': None, 'BROKER_NAME': None, 'BROKER_CODE_QUALF': None, 'BROKER_ID': None, 'BROKER_ACCOUNT_NUM': None, 'TPA_NAME': None, 'TPA_CODE_QUALF': None, 'TPA_ID': None, 'TPA_ACCOUNT_NUM': None, 'RECORD_SOURCE': 3517010, 'PROCESS_STATUS': 'READY', 'BROKER_AGENCY': None, 'RESOLVED_DT': None, 'PROCESS_STATUS_ID': 20902, 'QHP_ID': None, 'COPY_TRANS_SET_HEADER_SET_ID': None, 'ENROLLMENT_SOURCE_ID_NH': 7030, 'MARKET_PLACE': None, 'LOB': '1452', 'BEQ_RESPONSE_ID_NH': None, 'TRR_TRANSACTION_REPLY_CODE_LIST': None, 'TRR_TRANSACTION_CODE': None, 'TRR_PLAN_TRANSACTION_ID': None}
+2026-10-23 17:49:40,786 | INFO |   3: {'MEMBER_ID_NH': 11808442, 'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'CREATED_BY': 0, 'MODIFIED_BY': 0, 'CREATED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MODIFIED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042503601', 'HP_MEMBER_ID': 'EH042503601', 'POLICY_NUMBER': 'H3551001000', 'ELG_BEGIN_DT': '20270101', 'ELG_END_DT': '20271231', 'MAINT_EFFECTIVE_DT': None, 'TRANS_SET_HEADER_ID_NH': 7405382, 'MEMBER_PROFILE_ID_NH': 1584709, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'OEC_DETAIL_ID_NH': None, 'MBI': '6WC0TE7HC20', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None, 'TRANS_SET_CTL_NUM': None, 'TRANS_STATUS': None, 'TRANS_SET_PURPOSE_CODE': None, 'REF_IDENTIFICATION_1': None, 'TRANS_SET_DATE': '20261023', 'TRANS_SET_TIME': '16:02:34', 'TRANS_SET_TIME_CODE': None, 'REF_IDENTIFICATION_2': None, 'TRANS_SET_ACTION_CODE': None, 'MASTER_POLICY_NUMBER': None, 'PAYER_NAME': None, 'PAYER_ID_CODE_QUALF': None, 'PAYER_ID_CODE': None, 'SPONSOR_NAME': None, 'SPONSOR_ID_CODE_QUALF': None, 'SPONSOR_ID_CODE': None, 'GROUP_CONTROL_NUMBER': None, 'FUNC_GROUP_HEADER_ID_NH': None, 'DEPENDENT_COUNT': None, 'EMPLOYEE_COUNT': None, 'TOTAL_COUNT': None, 'TOTAL_COUNT_RECEIVED': None, 'BROKER_NAME': None, 'BROKER_CODE_QUALF': None, 'BROKER_ID': None, 'BROKER_ACCOUNT_NUM': None, 'TPA_NAME': None, 'TPA_CODE_QUALF': None, 'TPA_ID': None, 'TPA_ACCOUNT_NUM': None, 'RECORD_SOURCE': 3517010, 'PROCESS_STATUS': 'READY', 'BROKER_AGENCY': None, 'RESOLVED_DT': None, 'PROCESS_STATUS_ID': 20902, 'QHP_ID': None, 'COPY_TRANS_SET_HEADER_SET_ID': None, 'ENROLLMENT_SOURCE_ID_NH': 7030, 'MARKET_PLACE': None, 'LOB': '1452', 'BEQ_RESPONSE_ID_NH': None, 'TRR_TRANSACTION_REPLY_CODE_LIST': None, 'TRR_TRANSACTION_CODE': None, 'TRR_PLAN_TRANSACTION_ID': None}
+2026-10-23 17:49:40,786 | INFO |   4: {'MEMBER_ID_NH': 11808443, 'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'CREATED_BY': 0, 'MODIFIED_BY': 0, 'CREATED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MODIFIED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042477901', 'HP_MEMBER_ID': 'EH042477901', 'POLICY_NUMBER': 'H3551003000', 'ELG_BEGIN_DT': '20270101', 'ELG_END_DT': '20271231', 'MAINT_EFFECTIVE_DT': None, 'TRANS_SET_HEADER_ID_NH': 7405383, 'MEMBER_PROFILE_ID_NH': 1583191, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'OEC_DETAIL_ID_NH': None, 'MBI': '6K09TE8ER40', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None, 'TRANS_SET_CTL_NUM': None, 'TRANS_STATUS': None, 'TRANS_SET_PURPOSE_CODE': None, 'REF_IDENTIFICATION_1': None, 'TRANS_SET_DATE': '20261023', 'TRANS_SET_TIME': '16:02:34', 'TRANS_SET_TIME_CODE': None, 'REF_IDENTIFICATION_2': None, 'TRANS_SET_ACTION_CODE': None, 'MASTER_POLICY_NUMBER': None, 'PAYER_NAME': None, 'PAYER_ID_CODE_QUALF': None, 'PAYER_ID_CODE': None, 'SPONSOR_NAME': None, 'SPONSOR_ID_CODE_QUALF': None, 'SPONSOR_ID_CODE': None, 'GROUP_CONTROL_NUMBER': None, 'FUNC_GROUP_HEADER_ID_NH': None, 'DEPENDENT_COUNT': None, 'EMPLOYEE_COUNT': None, 'TOTAL_COUNT': None, 'TOTAL_COUNT_RECEIVED': None, 'BROKER_NAME': None, 'BROKER_CODE_QUALF': None, 'BROKER_ID': None, 'BROKER_ACCOUNT_NUM': None, 'TPA_NAME': None, 'TPA_CODE_QUALF': None, 'TPA_ID': None, 'TPA_ACCOUNT_NUM': None, 'RECORD_SOURCE': 3517010, 'PROCESS_STATUS': 'READY', 'BROKER_AGENCY': None, 'RESOLVED_DT': None, 'PROCESS_STATUS_ID': 20902, 'QHP_ID': None, 'COPY_TRANS_SET_HEADER_SET_ID': None, 'ENROLLMENT_SOURCE_ID_NH': 7030, 'MARKET_PLACE': None, 'LOB': '1452', 'BEQ_RESPONSE_ID_NH': None, 'TRR_TRANSACTION_REPLY_CODE_LIST': None, 'TRR_TRANSACTION_CODE': None, 'TRR_PLAN_TRANSACTION_ID': None}
+2026-10-23 17:49:40,786 | INFO |   5: {'MEMBER_ID_NH': 11808444, 'SUBSCRIBER_IND': 'Y', 'INDIVIDUAL_REL_CODE': '18', 'MAINTENANCE_TYPE_CODE': '021', 'MAINTENANCE_RSN_CODE': '28', 'BENEFIT_STATUS_CODE': None, 'MEDICARE_PLAN_CODE': None, 'ELIGIBILITY_RSN_CODE': None, 'COBRA_QUAL_EVENT_CODE': None, 'EMPLOYMENT_STATUS_CODE': None, 'STUDENT_STATUS_CODE': None, 'HANDICAP_IND': None, 'DATE_TIME_FORMAT_QUAL': None, 'DATE_OF_DEATH': None, 'CONFIDENT_CODE': None, 'BIRTH_SEQ_NUMBER': None, 'ENROLLMENT_STATUS': None, 'CREATED_BY': 0, 'MODIFIED_BY': 0, 'CREATED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MODIFIED_DT': datetime.datetime(2026, 10, 23, 16, 2, 34), 'MEMBER_CODE': None, 'FILE_DETAIL_ID_NH': 0, 'HIX_SUBSCRIBER_ID': None, 'HIX_MEMBER_ID': None, 'HP_SUBSCRIBER_ID': 'EH042292101', 'HP_MEMBER_ID': 'EH042292101', 'POLICY_NUMBER': 'H2694001000', 'ELG_BEGIN_DT': '20270101', 'ELG_END_DT': '20271231', 'MAINT_EFFECTIVE_DT': None, 'TRANS_SET_HEADER_ID_NH': 7405384, 'MEMBER_PROFILE_ID_NH': 1569997, 'PREM_WITHHOLD_SOURCE': None, 'PREM_DIRECT_PAY': None, 'OEC_DETAIL_ID_NH': None, 'MBI': '4GN5TE5DA90', 'ESRD': None, 'MEDICAID': None, 'PART_D_SUB_IND': None, 'DEEMEDIND': None, 'SUBSIDYPERCENTAGE': None, 'DEDUCTED_FLG': None, 'DEEMED_REASON_CODE': None, 'LIS_COPAY_LVL_ID': None, 'DEEMED_COPAY_LVL_ID': None, 'PARTD_OPT_FLG': None, 'SPOUSE_EMPLOYMENT_STATUS': None, 'EMAILOPTIN': None, 'BUSINESS_ID_NH': 110, 'EMAIL_OPTIN_MATERIALS': None, 'PHONEOPTIN': None, 'GENERATE_TC_FLG': 'N', 'ORIGINAL_PREM_DIRECT_PAY': None, 'ORG_ID_NH': None, 'EMPLOYEE_ID': None, 'BROKER_ID_CARD_ACCESS': 'Y', 'TEXTOPTIN': None, 'TRANS_SET_CTL_NUM': None, 'TRANS_STATUS': None, 'TRANS_SET_PURPOSE_CODE': None, 'REF_IDENTIFICATION_1': None, 'TRANS_SET_DATE': '20261023', 'TRANS_SET_TIME': '16:02:34', 'TRANS_SET_TIME_CODE': None, 'REF_IDENTIFICATION_2': None, 'TRANS_SET_ACTION_CODE': None, 'MASTER_POLICY_NUMBER': None, 'PAYER_NAME': None, 'PAYER_ID_CODE_QUALF': None, 'PAYER_ID_CODE': None, 'SPONSOR_NAME': None, 'SPONSOR_ID_CODE_QUALF': None, 'SPONSOR_ID_CODE': None, 'GROUP_CONTROL_NUMBER': None, 'FUNC_GROUP_HEADER_ID_NH': None, 'DEPENDENT_COUNT': None, 'EMPLOYEE_COUNT': None, 'TOTAL_COUNT': None, 'TOTAL_COUNT_RECEIVED': None, 'BROKER_NAME': None, 'BROKER_CODE_QUALF': None, 'BROKER_ID': None, 'BROKER_ACCOUNT_NUM': None, 'TPA_NAME': None, 'TPA_CODE_QUALF': None, 'TPA_ID': None, 'TPA_ACCOUNT_NUM': None, 'RECORD_SOURCE': 3517010, 'PROCESS_STATUS': 'READY', 'BROKER_AGENCY': None, 'RESOLVED_DT': None, 'PROCESS_STATUS_ID': 20902, 'QHP_ID': None, 'COPY_TRANS_SET_HEADER_SET_ID': None, 'ENROLLMENT_SOURCE_ID_NH': 7030, 'MARKET_PLACE': None, 'LOB': '1452', 'BEQ_RESPONSE_ID_NH': None, 'TRR_TRANSACTION_REPLY_CODE_LIST': None, 'TRR_TRANSACTION_CODE': None, 'TRR_PLAN_TRANSACTION_ID': None}
+2026-10-23 17:49:40,786 | INFO | [SRC->TGT]  - Total source ORACLE records: 21
+2026-10-23 17:49:40,786 | INFO | [SRC->TGT]  - Total target ORACLE records: 21
+2026-10-23 17:49:40,787 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-23 17:49:40,787 | INFO | [TGT->SRC]  - Total source ORACLE records: 21
+2026-10-23 17:49:40,787 | INFO | [TGT->SRC]  - Total target ORACLE records: 21
+2026-10-23 17:49:40,787 | ISSUE | [TGT->SRC] Missing in Source: {'MEMBER_PROFILE_ID_NH': 1572500}
+2026-10-23 17:49:40,787 | ISSUE | [TGT->SRC] Missing in Source: {'MEMBER_PROFILE_ID_NH': 1581505}
+2026-10-23 17:49:40,787 | ISSUE | [TGT->SRC] Missing in Source: {'MEMBER_PROFILE_ID_NH': 1585197}
+2026-10-23 17:49:40,787 | ISSUE | [TGT->SRC] Missing in Source: {'MEMBER_PROFILE_ID_NH': 1586692}
+2026-10-23 17:49:40,788 | ISSUE | Total Missing Records: 4
+2026-10-23 17:49:40,788 | INFO | Data comparison process completed.
+2026-10-23 17:49:40,788 | ISSUE | [TestCase 2] Test Result: FAIL
+2026-10-23 17:49:40,788 | INFO | Execution time for TestCase 2: 5.98 seconds
+2026-10-23 17:49:40,818 | INFO | Total Number of Testcases Executed : 2,Pass : 1, Fail : 1, Skippped : 0
+2026-10-23 17:49:40,819 | INFO | Total execution time: 6.03 seconds (0.1 minutes)
+2026-10-23 17:49:40,856 | INFO | Master combined log written to: MCPQA_eH RollOver 2027_Log_20261023_214940.json
+2026-10-23 17:49:40,862 | INFO | Result.InsertData : 6adbd674c65bee8b470405aa
+2026-10-23 17:49:41,406 | INFO | ========== Completed Validation ==========

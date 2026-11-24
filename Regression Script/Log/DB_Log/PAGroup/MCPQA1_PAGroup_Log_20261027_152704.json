@@ -1,0 +1,309 @@
+[
+    {
+        "DataValidationLog_ID": 100,
+        "Module": "PAGroup",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare MONGODB and ORACLE PAGroup",
+                "Result": "Pass",
+                "StartTime": "2026-10-27 15:26:59.294102",
+                "EndTime": "2026-10-27 15:27:03.764121",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-27 15:26:59",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.PAGroup.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"PAGroup_ID\": 1, \"Business.Business_ID\": 1, \"Status.StatusID\": 1, \"Name\": 1, \"Description\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-27 15:26:59",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT PA_GROUP_ID\n  ,BUSINESS_ID\n  ,STATUS_ID\n  ,PA_GROUP_NAME\n  ,DESCRIPTION \n  FROM DW.PA_GROUP"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-27 15:26:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 76, Total target ORACLE records: 76"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-27 15:27:03",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-27 15:27:03",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-27 15:27:03",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-27 15:27:03",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "PA_GROUP_DOMAINS matches PAGroup.Domains[]",
+                "Result": "Fail",
+                "StartTime": "2026-10-27 15:26:59.294102",
+                "EndTime": "2026-10-27 15:27:04.548439",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-27 15:26:59",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.PAGroup.aggregate:\n[\n  {\"$unwind\": \"$Domains\"},\n  {\"$project\": {\"_id\": 0, \"PAGroup_ID\": 1, \"Domains.ServiceDomain_ID\": 1, \"Domains.ServiceDomain\": 1, \"Domains.ExpressionGroupNum\": 1, \"Domains.AppliesToFormType\": 1, \"Business.Business_ID\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-27 15:26:59",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT PA_GROUP_ID\n  ,SERVICE_DOMAIN_ID\n  ,SERVICE_DOMAIN\n  ,EXPR_GROUP_NUM\n  ,APPLIES_TO_FORM_TYPE\n  ,BUSINESS_ID \n  FROM DW.PA_GROUP_DOMAINS"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-27 15:26:59",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 190, Total target ORACLE records: 24526"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Domains.ExpressionGroupNum vs EXPR_GROUP_NUM: 79314 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=2"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=2"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=2"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=3"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 41, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.ExpressionGroupNum=1 != EXPR_GROUP_NUM=4"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Domains.AppliesToFormType vs APPLIES_TO_FORM_TYPE: 200 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=BOTH != APPLIES_TO_FORM_TYPE=UB04"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=BOTH != APPLIES_TO_FORM_TYPE=UB04"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=BOTH != APPLIES_TO_FORM_TYPE=UB04"
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=UB04 != APPLIES_TO_FORM_TYPE=BOTH"
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'PAGroup_ID': 3645, 'Domains.ServiceDomain_ID': 1000000.0}: Domains.AppliesToFormType=UB04 != APPLIES_TO_FORM_TYPE=BOTH"
+                    },
+                    {
+                        "Log_ID": 13,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 79514"
+                    },
+                    {
+                        "Log_ID": 14,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 15,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field EXPR_GROUP_NUM vs Domains.ExpressionGroupNum: 79314 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 16,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=2"
+                    },
+                    {
+                        "Log_ID": 17,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=3"
+                    },
+                    {
+                        "Log_ID": 18,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=4"
+                    },
+                    {
+                        "Log_ID": 19,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=5"
+                    },
+                    {
+                        "Log_ID": 20,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 41, 'SERVICE_DOMAIN_ID': 1000000}: EXPR_GROUP_NUM=1 != Domains.ExpressionGroupNum=6"
+                    },
+                    {
+                        "Log_ID": 21,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field APPLIES_TO_FORM_TYPE vs Domains.AppliesToFormType: 200 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 22,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04"
+                    },
+                    {
+                        "Log_ID": 23,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04"
+                    },
+                    {
+                        "Log_ID": 24,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04"
+                    },
+                    {
+                        "Log_ID": 25,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04"
+                    },
+                    {
+                        "Log_ID": 26,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'PA_GROUP_ID': 3645, 'SERVICE_DOMAIN_ID': 1000000}: APPLIES_TO_FORM_TYPE=BOTH != Domains.AppliesToFormType=UB04"
+                    },
+                    {
+                        "Log_ID": 27,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 79514"
+                    },
+                    {
+                        "Log_ID": 28,
+                        "LogTime": "2026-10-27 15:27:04",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [
+                    "Domains.ExpressionGroupNum",
+                    "Domains.AppliesToFormType",
+                    "EXPR_GROUP_NUM",
+                    "APPLIES_TO_FORM_TYPE"
+                ],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-27 15:27:04.630143"
+        }
+    }
+]

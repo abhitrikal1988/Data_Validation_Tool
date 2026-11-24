@@ -1,0 +1,281 @@
+{
+  "_about": [
+    "How a 271 file (EDI271_Parser tables) is loaded into the RECON.EDI_271_* tables.",
+    "Used by Test_Case_Generator.py --map-file. Each RECON table names its parent (the",
+    "FK column and the parent table); the generator joins every table up to",
+    "EDI_271_TRANSET_HEADER to get the transaction control number, and numbers the rows",
+    "under each parent in ID order (EB_SEQ, ENTITY_SEQ, OCC), which is the order they",
+    "were read from the file. 'tests' lists the comparisons made for the table:",
+    "  file_table  271 table (EDI271_Parser) compared with this table",
+    "  key         271 columns that identify a row (JoinFields)",
+    "  columns     [RECON column, 271 column] pairs that are compared",
+    "  expressions [alias, SQL on alias t, 271 column] for derived values",
+    "  per         contact columns stored as qualifier/number pairs (PER03-PER08)",
+    "  occ         OCC = ROW_NUMBER under the parent, PARTITION BY these RECON columns",
+    "  constants   fixed values on the RECON side, e.g. OCC 1 (one PER per row)",
+    "  where       extra condition on the RECON table (alias t)",
+    "  source_filters  DataFilters on the file side",
+    "  viceversa   false = only checks that every file row is in the table",
+    "Tables without a parent ('parent': null) cannot be tied to a file or a",
+    "transaction, so their rows are only checked for presence (see 'note')."
+  ],
+  "root": "RECON.EDI_271_TRANSET_HEADER",
+  "file_filter_column": "FILE_DETAIL_ID_NH",
+  "tables": {
+    "RECON.EDI_271_TRANSET_HEADER": {
+      "id": "EDI_271_TRANSET_HEADER_ID_NH",
+      "parent": null,
+      "carries": {"TRANSACTION_CONTROL_NUMBER": "TRANS_SET_CTL_NUM"},
+      "tests": [
+        {"file_table": "TRANSACTION", "key": ["TRANSACTION_CONTROL_NUMBER"],
+         "columns": [["SUBMITTER_TRAN_ID", "REFERENCE_ID"],
+                     ["SUBMITTER_DATE", "TRANSACTION_DATE"],
+                     ["SUBMITTER_TIME", "TRANSACTION_TIME"]]}
+      ]
+    },
+    "RECON.EDI_271_INFO_SOURCE": {
+      "id": "EDI_271_INFO_SOURCE_ID_NH",
+      "parent": {"table": "RECON.EDI_271_TRANSET_HEADER", "fk": "EDI_271_TRANSET_HEADER_ID_NH"},
+      "tests": [
+        {"file_table": "PAYER", "key": ["TRANSACTION_CONTROL_NUMBER"],
+         "columns": [["HL04_CHILD_CODE", "PAYER_HL_CHILD_CODE"],
+                     ["ENTITY_CODE", "PAYER_ENTITY_CODE"], ["ENTITY_TYPE", "PAYER_ENTITY_TYPE"],
+                     ["LAST_NAME", "PAYER_LAST_NAME"], ["FIRST_NAME", "PAYER_FIRST_NAME"],
+                     ["MIDDLE_NAME", "PAYER_MIDDLE_NAME"], ["ID_QUAL", "PAYER_ID_QUALIFIER"],
+                     ["ID_CODE", "PAYER_ID"]]},
+        {"file_table": "PAYER_CONTACT", "key": ["TRANSACTION_CONTROL_NUMBER", "OCC"],
+         "constants": {"OCC": 1},
+         "where": "t.CONTACT_FUNCT_CODE IS NOT NULL OR t.COMM_NUMBER_1 IS NOT NULL",
+         "columns": [["CONTACT_FUNCT_CODE", "CONTACT_FUNCTION"], ["CONTACT_NAME", "CONTACT_NAME"]],
+         "per": [["COMM_NUMBER_QUALF_1", "COMM_NUMBER_1"], ["COMM_NUMBER_QUALF_2", "COMM_NUMBER_2"],
+                 ["COMM_NUMBER_QUALF_3", "COMM_NUMBER_3"]],
+         "note": "One PER per information source fits in this table; a second PER would show as missing in target."}
+      ]
+    },
+    "RECON.EDI_271_INFO_RECEIVER": {
+      "id": "EDI_271_INFO_RECEIVER_ID_NH",
+      "parent": {"table": "RECON.EDI_271_INFO_SOURCE", "fk": "EDI_271_INFO_SOURCE_ID_NH"},
+      "tests": [
+        {"file_table": "PROVIDER", "key": ["TRANSACTION_CONTROL_NUMBER"],
+         "columns": [["HL04_CHILD_CODE", "PROVIDER_HL_CHILD_CODE"],
+                     ["ENTITY_CODE", "PROVIDER_ENTITY_CODE"], ["ENTITY_TYPE", "PROVIDER_ENTITY_TYPE"],
+                     ["LAST_NAME", "PROVIDER_LAST_NAME"], ["FIRST_NAME", "PROVIDER_FIRST_NAME"],
+                     ["MIDDLE_NAME", "PROVIDER_MIDDLE_NAME"], ["ID_QUAL", "PROVIDER_ID_QUALIFIER"],
+                     ["ID_CODE", "PROVIDER_ID"],
+                     ["ADDRESS1", "PROVIDER_ADDRESS_LINE1"], ["ADDRESS2", "PROVIDER_ADDRESS_LINE2"],
+                     ["CITY", "PROVIDER_CITY"], ["STATE_CODE", "PROVIDER_STATE"], ["ZIP", "PROVIDER_ZIP"],
+                     ["PROVIDER_CODE", "PROVIDER_ROLE"], ["PROVIDER_REF_ID", "PROVIDER_TAXONOMY_CODE"]]}
+      ]
+    },
+    "RECON.EDI_271_SUBSCRIBER": {
+      "id": "EDI_271_SUBSCRIBER_ID_NH",
+      "parent": {"table": "RECON.EDI_271_INFO_RECEIVER", "fk": "EDI_271_INFO_RECEIVER_ID_NH"},
+      "tests": [
+        {"file_table": "MEMBER", "key": ["TRANSACTION_CONTROL_NUMBER"],
+         "source_filters": [{"SourceField": "MEMBER_LEVEL", "DefaultValue": "SUBSCRIBER", "OperatorType": "="}],
+         "columns": [["HIERARCHI_ID", "SUBSCRIBER_HL"], ["HIERARCHI_PARENT_ID", "PROVIDER_HL"],
+                     ["HL04_CHILD_CODE", "MEMBER_HL_CHILD_CODE"]],
+         "expressions": [["MEMBER_LEVEL_FROM_HL03",
+                          "CASE t.HIERARCHI_PARENT_LEVEL_CODE WHEN '22' THEN 'SUBSCRIBER' WHEN '23' THEN 'DEPENDENT' ELSE t.HIERARCHI_PARENT_LEVEL_CODE END",
+                          "MEMBER_LEVEL"]],
+         "note": "HIERARCHI_PARENT_LEVEL_CODE is read as HL03 (22 = subscriber)."}
+      ]
+    },
+    "RECON.EDI_271_SUBSCRIBER_TRN": {
+      "id": "EDI_271_SUBSCRIBER_TRN_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER", "fk": "EDI_271_SUBSCRIBER_ID_NH"},
+      "tests": [
+        {"file_table": "MEMBER_TRACE", "key": ["TRANSACTION_CONTROL_NUMBER", "TRACE_TYPE", "OCC"],
+         "occ": ["TRACE_TYPE_CODE"],
+         "columns": [["TRACE_TYPE_CODE", "TRACE_TYPE"], ["TRACE_NUMBER", "TRACE_NUMBER"],
+                     ["TRACE_ENTITY_ID", "TRACE_ORIGINATOR_ID"], ["TRACE_REFID", "TRACE_ORIGINATOR_SUPP_ID"]]}
+      ]
+    },
+    "RECON.EDI_271_SUBSCRIBER_NAME": {
+      "id": "EDI_271_SUBSCRIBER_NAME_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER", "fk": "EDI_271_SUBSCRIBER_ID_NH"},
+      "tests": [
+        {"file_table": "MEMBER", "key": ["TRANSACTION_CONTROL_NUMBER"],
+         "source_filters": [{"SourceField": "MEMBER_LEVEL", "DefaultValue": "SUBSCRIBER", "OperatorType": "="}],
+         "columns": [["SUBSC_ENTITY_CODE", "MEMBER_ENTITY_CODE"], ["SUBSC_ENTITY_TYPE", "MEMBER_ENTITY_TYPE"],
+                     ["SUBSC_LAST_NAME", "MEMBER_LAST_NAME"], ["SUBSC_FIRST_NAME", "MEMBER_FIRST_NAME"],
+                     ["SUBSC_MIDDLE_NAME", "MEMBER_MIDDLE_NAME"], ["SUBSC_ID_QUAL", "MEMBER_ID_QUALIFIER"],
+                     ["SUBSC_ID_CODE", "MEMBER_ID"],
+                     ["SUBSC_ADDRESS1", "MEMBER_ADDRESS_LINE1"], ["SUBSC_ADDRESS2", "MEMBER_ADDRESS_LINE2"],
+                     ["SUBSC_CITY", "MEMBER_CITY"], ["SUBSC_STATE", "MEMBER_STATE"], ["SUBSC_ZIP", "MEMBER_ZIP"],
+                     ["INS01_RESPONSE_CODE", "INS_RESPONSE"], ["INS02_RELATIONSHIP_CODE", "RELATIONSHIP"],
+                     ["INS03_MAITENANCE_CODE", "MAINTENANCE_TYPE"], ["INS04_MAITENANCE_REASON_CODE", "MAINTENANCE_REASON"],
+                     ["INS17_NUMBER", "BIRTH_SEQUENCE"],
+                     ["HI01_DIAG_CODE", "DIAGNOSIS_CODE_1"], ["HI02_DIAG_CODE", "DIAGNOSIS_CODE_2"],
+                     ["HI03_DIAG_CODE", "DIAGNOSIS_CODE_3"], ["HI04_DIAG_CODE", "DIAGNOSIS_CODE_4"],
+                     ["HI05_DIAG_CODE", "DIAGNOSIS_CODE_5"], ["HI06_DIAG_CODE", "DIAGNOSIS_CODE_6"],
+                     ["DMG01_QUAL", "DOB_FORMAT"], ["DMG02_DT_TIME", "DATE_OF_BIRTH"], ["DMG03_GENDER", "GENDER"],
+                     ["PRV01_PROVIDER_CODE", "MEMBER_PROVIDER_ROLE"], ["PRV03_REF_ID", "MEMBER_TAXONOMY_CODE"],
+                     ["MPI01_INFO_STATUS_CODE", "MILITARY_INFO_STATUS"], ["MPI02_EMP_STATUS_CODE", "EMPLOYMENT_STATUS"],
+                     ["MPI03_GOVT_AFF_CODE", "GOVT_AFFILIATION"], ["MPI04_DESC", "MILITARY_DESC"],
+                     ["MPI05_MILITARY_SERVICE_RANK", "MILITARY_RANK"], ["MPI06_DT_QUAL", "SERVICE_DATE_FORMAT"],
+                     ["MPI07_START_DT", "SERVICE_START"], ["MPI07_END_DT", "SERVICE_END"]],
+         "note": "HIxx_DIAG_CODE is compared with the code part of HI0x (after the ':')."}
+      ]
+    },
+    "RECON.EDI_271_SUBSCRIBER_DTP": {
+      "id": "EDI_271_SUBSCRIBER_DTP_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_NAME", "fk": "EDI_271_SUBSCRIBER_NAME_ID_NH"},
+      "tests": [
+        {"file_table": "MEMBER_DATE", "key": ["TRANSACTION_CONTROL_NUMBER", "DATE_QUALIFIER", "OCC"],
+         "occ": ["DTP01_QUAL"],
+         "columns": [["DTP01_QUAL", "DATE_QUALIFIER"], ["DTP02_DT_FORMAT_QUAL", "DATE_FORMAT"],
+                     ["START_DT", "START_DATE"], ["END_DT", "END_DATE"]]}
+      ]
+    },
+    "RECON.EDI_271_SUBSCRIBER_EB": {
+      "id": "EDI_271_SUBSCRIBER_EB_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_NAME", "fk": "EDI_271_SUBSCRIBER_NAME_ID_NH"},
+      "sequence": "EB_SEQ",
+      "tests": [
+        {"file_table": "BENEFIT", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ"],
+         "columns": [["EB01_INFO_CODE", "BENEFIT_INFO_CODE"], ["EB02_COVERAGE_CODE", "COVERAGE_LEVEL"],
+                     ["EB04_INSURANCE_TYPE_CODE", "INSURANCE_TYPE"], ["EB05_PLAN_COV_DESC", "PLAN_DESCRIPTION"],
+                     ["EB06_TIME_PERIOD_QUAL", "TIME_PERIOD"], ["EB07_MONETARY_AMOUNT", "BENEFIT_AMOUNT"],
+                     ["EB08_PERCNT_DEC", "BENEFIT_PERCENT"], ["EB09_QUANTITY_QUAL", "QUANTITY_QUALIFIER"],
+                     ["EB10_QUANTITY", "QUANTITY"], ["EB11_RESP_CODE", "AUTH_REQUIRED"],
+                     ["EB12_RESP_CODE", "IN_PLAN_NETWORK"],
+                     ["EB13_ID_QUAL", "PROCEDURE_QUALIFIER"], ["EB13_PROCEDURE_CODE", "PROCEDURE_CODE"],
+                     ["EB13_MOD1", "MODIFIER_1"], ["EB13_MOD2", "MODIFIER_2"], ["EB13_MOD3", "MODIFIER_3"],
+                     ["EB13_MOD4", "MODIFIER_4"], ["EB13_DESC", "PROCEDURE_DESC"],
+                     ["EB14_DIAGCODE_POINTER1", "DIAG_POINTER_1"], ["EB14_DIAGCODE_POINTER2", "DIAG_POINTER_2"],
+                     ["EB14_DIAGCODE_POINTER3", "DIAG_POINTER_3"], ["EB14_DIAGCODE_POINTER4", "DIAG_POINTER_4"]]}
+      ]
+    },
+    "RECON.EDI_271_SERVICETYPE_CODE_EB": {
+      "id": "EDI_271_SERVICETYPE_CODE_EB_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_EB", "fk": "EDI_271_SUBSCRIBER_EB_ID_NH"},
+      "tests": [
+        {"file_table": "BENEFIT_SERVICE_TYPE", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ", "SERVICE_TYPE_CODE", "OCC"],
+         "occ": ["EB03_SERVICE_TYPE_CODE"],
+         "columns": [["EB03_SERVICE_TYPE_CODE", "SERVICE_TYPE_CODE"]]}
+      ]
+    },
+    "RECON.EDI_271_HEALTH_SERVICE_DELV_EB": {
+      "id": "EDI_271_HEALTH_SERVICE_DELV_EB_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_EB", "fk": "EDI_271_SUBSCRIBER_EB_ID_NH"},
+      "tests": [
+        {"file_table": "BENEFIT_DELIVERY", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ", "OCC"],
+         "occ": [],
+         "columns": [["QUAN_QUAL", "QUANTITY_QUALIFIER"], ["QUANTITY", "QUANTITY"], ["UNITS_CODE", "UNIT"],
+                     ["SELECT_MODULES", "SAMPLE_MODULUS"], ["PERIOD_QUALF", "PERIOD_QUALIFIER"],
+                     ["NUM_OF_PERIODS", "PERIOD_COUNT"], ["DELIVERY_FREQ_CODE", "FREQUENCY"],
+                     ["DELIVERY_TIME_CODE", "PATTERN_TIME"]]}
+      ]
+    },
+    "RECON.EDI_271_DTP_EB": {
+      "id": "EDI_271_DTP_EB_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_EB", "fk": "EDI_271_SUBSCRIBER_EB_ID_NH"},
+      "tests": [
+        {"file_table": "BENEFIT_DATE", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ", "DATE_QUALIFIER", "OCC"],
+         "occ": ["DTP01_QUAL"],
+         "columns": [["DTP01_QUAL", "DATE_QUALIFIER"], ["DTP02_DT_FORMAT_QUAL", "DATE_FORMAT"],
+                     ["START_DT", "START_DATE"], ["END_DT", "END_DATE"]]}
+      ]
+    },
+    "RECON.EDI_271_AAA_EB": {
+      "id": "EDI_271_AAA_EB_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_EB", "fk": "EDI_271_SUBSCRIBER_EB_ID_NH"},
+      "tests": [
+        {"file_table": "BENEFIT_VALIDATION", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ", "OCC"],
+         "occ": [],
+         "columns": [["AAA01_RESP_CODE", "VALID_REQUEST"], ["AAA03_REJECT_CODE", "REJECT_REASON"],
+                     ["AAA04_ACTION_CODE", "FOLLOW_UP_ACTION"]]}
+      ]
+    },
+    "RECON.EDI_271_MSG_EB": {
+      "id": "EDI_271_MSG_EB_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_EB", "fk": "EDI_271_SUBSCRIBER_EB_ID_NH"},
+      "tests": [
+        {"file_table": "BENEFIT_MESSAGE", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ", "MESSAGE_TEXT", "OCC"],
+         "occ": ["MSG01"],
+         "columns": [["MSG01", "MESSAGE_TEXT"]]}
+      ]
+    },
+    "RECON.EDI_271_III_EB": {
+      "id": "EDI_271_III_EB_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_EB", "fk": "EDI_271_SUBSCRIBER_EB_ID_NH"},
+      "tests": [
+        {"file_table": "BENEFIT_INDUSTRY_CODE", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ", "OCC"],
+         "occ": [],
+         "columns": [["QUALF_CODE", "CODE_LIST_QUALIFIER"], ["INDUSTRY_CODE", "INDUSTRY_CODE"],
+                     ["MSG", "FREE_TEXT"]]}
+      ]
+    },
+    "RECON.EDI_271_SUBSCRIBER_EB_ENTITY": {
+      "id": "EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH",
+      "parent": {"table": "RECON.EDI_271_SUBSCRIBER_EB", "fk": "EDI_271_SUBSCRIBER_EB_ID_NH"},
+      "sequence": "ENTITY_SEQ",
+      "tests": [
+        {"file_table": "BENEFIT_ENTITY", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ", "ENTITY_SEQ"],
+         "columns": [["SUBSC_EB_ENTITY_CODE", "ENTITY_CODE"], ["SUBSC_EB_ENTITY_TYPE", "ENTITY_TYPE"],
+                     ["SUBSC_EB_ENTITY_LAST_NAME", "ENTITY_LAST_NAME"], ["SUBSC_EB_ENTITY_FIRST_NAME", "ENTITY_FIRST_NAME"],
+                     ["SUBSC_EB_ENTITY_MIDDLE_NAME", "ENTITY_MIDDLE_NAME"], ["SUBSC_EB_ENTITY_ID_QUALF", "ENTITY_ID_QUALIFIER"],
+                     ["SUBSC_EB_ENTITY_ID_CODE", "ENTITY_ID"],
+                     ["SUBSC_EB_ENTITY_ADDRESS1", "ENTITY_ADDRESS_LINE1"], ["SUBSC_EB_ENTITY_ADDRESS2", "ENTITY_ADDRESS_LINE2"],
+                     ["SUBSC_EB_ENTITY_CITY", "ENTITY_CITY"], ["SUBSC_EB_ENTITY_STATE", "ENTITY_STATE"],
+                     ["SUBSC_EB_ENTITY_ZIP", "ENTITY_ZIP"],
+                     ["SUBSC_EB_ENTITY_PROVIDER_CODE", "ENTITY_PROVIDER_ROLE"],
+                     ["SUBSC_EB_ENTITY_REF_ID", "ENTITY_TAXONOMY_CODE"]]},
+        {"file_table": "BENEFIT_ENTITY_CONTACT", "key": ["TRANSACTION_CONTROL_NUMBER", "EB_SEQ", "ENTITY_SEQ", "OCC"],
+         "constants": {"OCC": 1},
+         "where": "t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE IS NOT NULL OR t.SUBSC_EB_ENTITY_COMM_NUMBER_1 IS NOT NULL",
+         "columns": [["SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE", "CONTACT_FUNCTION"],
+                     ["SUBSC_EB_ENTITY_CONTACT_NAME", "CONTACT_NAME"]],
+         "per": [["SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1", "SUBSC_EB_ENTITY_COMM_NUMBER_1"],
+                 ["SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2", "SUBSC_EB_ENTITY_COMM_NUMBER_2"],
+                 ["SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3", "SUBSC_EB_ENTITY_COMM_NUMBER_3"]],
+         "note": "One PER per entity fits in this table; an entity with a second PER shows it as missing in target."}
+      ]
+    },
+    "RECON.EDI_271_AAA": {
+      "id": "EDI_271_AAA_ID_NH",
+      "parent": null,
+      "tests": [
+        {"file_table": "PAYER_VALIDATION", "key": ["VALID_REQUEST", "REJECT_REASON", "FOLLOW_UP_ACTION"],
+         "where": "t.LOOP_QUAL LIKE '%A'", "viceversa": false,
+         "columns": [["AAA01_RESP_CODE", "VALID_REQUEST"], ["AAA03_REJECT_CODE", "REJECT_REASON"],
+                     ["AAA04_ACTION_CODE", "FOLLOW_UP_ACTION"]]},
+        {"file_table": "PROVIDER_VALIDATION", "key": ["VALID_REQUEST", "REJECT_REASON", "FOLLOW_UP_ACTION"],
+         "where": "t.LOOP_QUAL LIKE '%B'", "viceversa": false,
+         "columns": [["AAA01_RESP_CODE", "VALID_REQUEST"], ["AAA03_REJECT_CODE", "REJECT_REASON"],
+                     ["AAA04_ACTION_CODE", "FOLLOW_UP_ACTION"]]},
+        {"file_table": "MEMBER_VALIDATION", "key": ["VALID_REQUEST", "REJECT_REASON", "FOLLOW_UP_ACTION"],
+         "where": "t.LOOP_QUAL LIKE '%C'", "viceversa": false,
+         "columns": [["AAA01_RESP_CODE", "VALID_REQUEST"], ["AAA03_REJECT_CODE", "REJECT_REASON"],
+                     ["AAA04_ACTION_CODE", "FOLLOW_UP_ACTION"]]}
+      ],
+      "note": "No link to the transaction or the file: only checks that each AAA code combination of the file exists in the table."
+    },
+    "RECON.EDI_271_ADDTNL_INFO": {
+      "id": "EDI_271_ADDTNL_INFO_ID_NH",
+      "parent": null,
+      "tests": [
+        {"file_table": "PROVIDER_REF", "key": ["REF_QUALIFIER", "REF_ID"],
+         "where": "t.LOOP_QUAL LIKE '%B'", "viceversa": false,
+         "columns": [["REF01_ID_QUAL", "REF_QUALIFIER"], ["REF02_REF_ID", "REF_ID"], ["REF03_DESC", "REF_DESC"]]},
+        {"file_table": "MEMBER_REF", "key": ["REF_QUALIFIER", "REF_ID"],
+         "where": "t.LOOP_QUAL LIKE '%C' AND t.REF01_ID_QUAL <> 'SY'", "viceversa": false,
+         "source_filters": [{"SourceField": "REF_QUALIFIER", "DefaultValue": "SY", "OperatorType": "!="}],
+         "columns": [["REF01_ID_QUAL", "REF_QUALIFIER"], ["REF02_REF_ID", "REF_ID"], ["REF03_DESC", "REF_DESC"]],
+         "note": "SSN references (REF*SY) are left out so they never appear in a log."}
+      ],
+      "note": "No link to the transaction or the file: only checks that each REF of the file exists in the table."
+    },
+    "RECON.EDI_271_ADDTNL_INFO_EB": {
+      "id": "EDI_271_ADDTNL_INFO_EB_ID_NH",
+      "parent": null,
+      "tests": [
+        {"file_table": "BENEFIT_REF", "key": ["REF_QUALIFIER", "REF_ID"],
+         "viceversa": false,
+         "columns": [["REF01_ID_QUAL", "REF_QUALIFIER"], ["REF02_REF_ID", "REF_ID"], ["REF03_DESC", "REF_DESC"]]}
+      ],
+      "note": "No link to the benefit (EB) or the file: only checks that each REF of the file exists in the table."
+    }
+  }
+}

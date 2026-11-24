@@ -1,0 +1,448 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target on CLAIM_TYPE, BILLING_PROVIDER_ID, SUBSCRIBER_HL and 21 more",
+    "Viceversa": true,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "\\\\rxadvance.com\\qa-team\\QA Documentation\\QA Automation\\Data_Validation\\Claims\\837_Test_Files",
+      "FileName": "01_837P_HappyPath_MultiLine_INN.txt",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI837",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "CLAIM"
+      }
+    },
+    "Target": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimCore",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Adjustment.ParentClaimID\": 1, \"ClaimType\": 1, \"EasyLookups.T837BillingProvider.T837BillingProvider_ID\": 1, \"HoldDetail.Hold\": 1, \"MCPMember.Subscriber_ID\": 1, \"UB.ServicingLocation.NPI\": 1, \"Professional.PatientSignatureCode\": 1, \"UB.ReleaseOfInformationCode\": 1, \"Professional.RelatedCause.RelatedCause1\": 1, \"Professional.RelatedCause.RelatedCause2\": 1, \"Professional.RelatedCause.RelatedCause3\": 1, \"Professional.SpecialProgramIndicator\": 1, \"UB.DelayReasonCode\": 1, \"UB.InstitutionalClaimCode.AdmissionTypeCode\": 1, \"UB.InstitutionalClaimCode.AdmissionSourceCode\": 1, \"UB.InstitutionalClaimCode.PatientStatusCode\": 1, \"Professional.ContractInformation.ContractTypeCode\": 1, \"Professional.ContractInformation.ContractAmount\": 1, \"Professional.ContractInformation.ContractPCT\": 1, \"Professional.ContractInformation.ContractCode\": 1, \"Professional.ClaimRepricingDetails.PricingMethodolgy\": 1, \"UB.ClaimRepricingDetails.ApprovedDRGCode\": 1, \"UB.AdmissionDate\": 1, \"Professional.PatietPaidAmount\": 1}}]"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "CLAIM_ID",
+        "TargetField": "Adjustment.ParentClaimID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "CLAIM_TYPE",
+        "TargetField": "ClaimType"
+      },
+      {
+        "SourceField": "BILLING_PROVIDER_ID",
+        "TargetField": "EasyLookups.T837BillingProvider.T837BillingProvider_ID"
+      },
+      {
+        "SourceField": "SUBSCRIBER_HL",
+        "TargetField": "HoldDetail.Hold"
+      },
+      {
+        "SourceField": "SUBSCRIBER_ID",
+        "TargetField": "MCPMember.Subscriber_ID"
+      },
+      {
+        "SourceField": "PAYER_ID",
+        "TargetField": "UB.ServicingLocation.NPI"
+      },
+      {
+        "SourceField": "PROVIDER_SIGNATURE",
+        "TargetField": "Professional.PatientSignatureCode"
+      },
+      {
+        "SourceField": "RELEASE_OF_INFORMATION",
+        "TargetField": "UB.ReleaseOfInformationCode"
+      },
+      {
+        "SourceField": "RELATED_CAUSE_1",
+        "TargetField": "Professional.RelatedCause.RelatedCause1"
+      },
+      {
+        "SourceField": "RELATED_CAUSE_2",
+        "TargetField": "Professional.RelatedCause.RelatedCause2"
+      },
+      {
+        "SourceField": "RELATED_CAUSE_3",
+        "TargetField": "Professional.RelatedCause.RelatedCause3"
+      },
+      {
+        "SourceField": "SPECIAL_PROGRAM",
+        "TargetField": "Professional.SpecialProgramIndicator"
+      },
+      {
+        "SourceField": "DELAY_REASON",
+        "TargetField": "UB.DelayReasonCode"
+      },
+      {
+        "SourceField": "ADMISSION_TYPE",
+        "TargetField": "UB.InstitutionalClaimCode.AdmissionTypeCode"
+      },
+      {
+        "SourceField": "ADMISSION_SOURCE",
+        "TargetField": "UB.InstitutionalClaimCode.AdmissionSourceCode"
+      },
+      {
+        "SourceField": "PATIENT_STATUS",
+        "TargetField": "UB.InstitutionalClaimCode.PatientStatusCode"
+      },
+      {
+        "SourceField": "CONTRACT_TYPE",
+        "TargetField": "Professional.ContractInformation.ContractTypeCode"
+      },
+      {
+        "SourceField": "CONTRACT_AMOUNT",
+        "TargetField": "Professional.ContractInformation.ContractAmount"
+      },
+      {
+        "SourceField": "CONTRACT_PERCENT",
+        "TargetField": "Professional.ContractInformation.ContractPCT"
+      },
+      {
+        "SourceField": "CONTRACT_CODE",
+        "TargetField": "Professional.ContractInformation.ContractCode"
+      },
+      {
+        "SourceField": "REPRICING_METHOD",
+        "TargetField": "Professional.ClaimRepricingDetails.PricingMethodolgy"
+      },
+      {
+        "SourceField": "DRG_CODE",
+        "TargetField": "UB.ClaimRepricingDetails.ApprovedDRGCode"
+      },
+      {
+        "SourceField": "ADMISSION_DATE",
+        "TargetField": "UB.AdmissionDate"
+      },
+      {
+        "SourceField": "PATIENT_AMOUNT_PAID",
+        "TargetField": "Professional.PatietPaidAmount"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 433,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 13:21:04"
+    }
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target ClaimCore: no duplicate Adjustment.ParentClaimID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimCore",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Adjustment.ParentClaimID\": 1}}]"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "Adjustment.ParentClaimID",
+        "ResultFields": [
+          "Adjustment.ParentClaimID"
+        ]
+      }
+    ],
+    "ExpectedResult": "Adjustment.ParentClaimID should not have duplicate values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 434,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 13:21:04"
+    }
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target ClaimCore: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimCore",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"ClaimCore_ID\": {\"$ifNull\": [\"$ClaimCore_ID\", null]}, \"T837Patient_ID\": {\"$ifNull\": [\"$T837Patient_ID\", null]}, \"SubmittedDate\": {\"$ifNull\": [\"$SubmittedDate\", null]}, \"Business.Business_ID\": {\"$ifNull\": [\"$Business.Business_ID\", null]}, \"ClaimStage.Code\": {\"$ifNull\": [\"$ClaimStage.Code\", null]}, \"EasyLookups.T837Patient.T837Patient_ID\": {\"$ifNull\": [\"$EasyLookups.T837Patient.T837Patient_ID\", null]}, \"EasyLookups.T837Subsrciber.T837Subsrciber_ID\": {\"$ifNull\": [\"$EasyLookups.T837Subsrciber.T837Subsrciber_ID\", null]}, \"EasyLookups.T837BillingProvider.T837BillingProvider_ID\": {\"$ifNull\": [\"$EasyLookups.T837BillingProvider.T837BillingProvider_ID\", null]}, \"ClaimSource\": {\"$ifNull\": [\"$ClaimSource\", null]}, \"MHP\": {\"$ifNull\": [\"$MHP\", null]}}}]"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "ClaimCore_ID",
+        "ResultFields": [
+          "ClaimCore_ID"
+        ]
+      },
+      {
+        "SourceField": "T837Patient_ID",
+        "ResultFields": [
+          "T837Patient_ID"
+        ]
+      },
+      {
+        "SourceField": "SubmittedDate",
+        "ResultFields": [
+          "SubmittedDate"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "ClaimStage.Code",
+        "ResultFields": [
+          "ClaimStage.Code"
+        ]
+      },
+      {
+        "SourceField": "EasyLookups.T837Patient.T837Patient_ID",
+        "ResultFields": [
+          "EasyLookups.T837Patient.T837Patient_ID"
+        ]
+      },
+      {
+        "SourceField": "EasyLookups.T837Subsrciber.T837Subsrciber_ID",
+        "ResultFields": [
+          "EasyLookups.T837Subsrciber.T837Subsrciber_ID"
+        ]
+      },
+      {
+        "SourceField": "EasyLookups.T837BillingProvider.T837BillingProvider_ID",
+        "ResultFields": [
+          "EasyLookups.T837BillingProvider.T837BillingProvider_ID"
+        ]
+      },
+      {
+        "SourceField": "ClaimSource",
+        "ResultFields": [
+          "ClaimSource"
+        ]
+      },
+      {
+        "SourceField": "MHP",
+        "ResultFields": [
+          "MHP"
+        ]
+      }
+    ],
+    "ExpectedResult": "ClaimCore_ID, T837Patient_ID, SubmittedDate, Business.Business_ID, ClaimStage.Code, EasyLookups.T837Patient.T837Patient_ID, EasyLookups.T837Subsrciber.T837Subsrciber_ID, EasyLookups.T837BillingProvider.T837BillingProvider_ID, ClaimSource, MHP should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 435,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 13:21:04"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Target ClaimCore: MCPMember.Gender has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimCore",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"MCPMember.Gender\": 1}}]"
+    },
+    "DataFilters": [],
+    "CompareFields": [
+      {
+        "SourceField": "MCPMember.Gender"
+      }
+    ],
+    "ApprovedValues": [
+      "F",
+      "M",
+      "U"
+    ],
+    "ExpectedResult": "MCPMember.Gender values other than approved ['F', 'M', 'U'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 436,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 13:21:04"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Target ClaimCore: PaymentDetails.Refund has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimCore",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"PaymentDetails.Refund\": 1}}]"
+    },
+    "DataFilters": [],
+    "CompareFields": [
+      {
+        "SourceField": "PaymentDetails.Refund"
+      }
+    ],
+    "ApprovedValues": [
+      "'all'"
+    ],
+    "ExpectedResult": "PaymentDetails.Refund values other than approved [''all''] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 437,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 13:21:04"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Target ClaimCore: Professional.BenefitsAssignemntCertInd has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimCore",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Professional.BenefitsAssignemntCertInd\": 1}}]"
+    },
+    "DataFilters": [],
+    "CompareFields": [
+      {
+        "SourceField": "Professional.BenefitsAssignemntCertInd"
+      }
+    ],
+    "ApprovedValues": [
+      "N",
+      "W",
+      "Y"
+    ],
+    "ExpectedResult": "Professional.BenefitsAssignemntCertInd values other than approved ['N', 'W', 'Y'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 438,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 13:21:04"
+    }
+  },
+  {
+    "TestCaseNumber": 7,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Target ClaimCore: Professional.ClaimNote.Description has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimCore",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Professional.ClaimNote.Description\": 1}}]"
+    },
+    "DataFilters": [],
+    "CompareFields": [
+      {
+        "SourceField": "Professional.ClaimNote.Description"
+      }
+    ],
+    "ApprovedValues": [
+      "'all'"
+    ],
+    "ExpectedResult": "Professional.ClaimNote.Description values other than approved [''all''] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 439,
+      "DataRegressionSetTestCaseNumber": 7,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 13:21:04"
+    }
+  },
+  {
+    "TestCaseNumber": 8,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "File 01_837P_HappyPath_MultiLine_INN.txt (837 CLAIM): no row repeated in every field",
+    "Viceversa": false,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "\\\\rxadvance.com\\qa-team\\QA Documentation\\QA Automation\\Data_Validation\\Claims\\837_Test_Files",
+      "FileName": "01_837P_HappyPath_MultiLine_INN.txt",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI837",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "CLAIM"
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "ALL",
+        "ResultFields": [
+          "ALL"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "No two rows of the file should be identical in every field",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 440,
+      "DataRegressionSetTestCaseNumber": 8,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 13:21:04"
+    }
+  }
+]

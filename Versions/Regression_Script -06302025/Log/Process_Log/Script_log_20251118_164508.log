@@ -1,0 +1,17 @@
+2025-11-18 16:45:09,185 | INFO | ========== Starting Validation ==========
+2025-11-18 16:45:09,205 | INFO | Module :  Test 
+2025-11-18 16:45:09,227 | INFO | Stage :  None 
+2025-11-18 16:45:09,247 | INFO | Cycle :  None
+2025-11-18 16:45:09,268 | INFO | Environment  : MONGODB_MCPQA1
+2025-11-18 16:45:49,631 | INFO | ========== [ Running TestCase 11: Data Comparison between SRC and TGT ] ==========
+2025-11-18 16:48:49,093 | ERROR | Error connecting to Oracle DB: ORA-12154: TNS:could not resolve the connect identifier specified
+2025-11-18 16:59:30,948 | ERROR | Error fetching source data (ORACLE): 
+2025-11-18 17:00:08,936 | ERROR | Error connecting to Oracle DB: ORA-12154: TNS:could not resolve the connect identifier specified
+2025-11-18 17:00:08,961 | ERROR | Error fetching target data (ORACLE): ORA-12154: TNS:could not resolve the connect identifier specified
+2025-11-18 17:00:08,982 | WARNING | Unknown data type for 'source_data': <class 'NoneType'>. Assuming not empty.
+2025-11-18 17:00:09,011 | WARNING | Unknown data type for 'target_data': <class 'NoneType'>. Assuming not empty.
+2025-11-18 17:00:09,035 | INFO |  Execution time for TestCase 11: 855.09 seconds
+2025-11-18 17:00:09,055 | INFO |  Total Number of Testcases Executed:1,Pass :1, Fail : 0
+2025-11-18 17:00:09,641 | INFO | Master combined log written to: MONGODB_MCPQA1_Test_Log_20251118_220009.json
+2025-11-18 17:00:09,689 | INFO | Result.InsertData : 691cec69380a2972f4753225
+2025-11-18 17:00:15,390 | INFO | ========== Completed Validation ==========

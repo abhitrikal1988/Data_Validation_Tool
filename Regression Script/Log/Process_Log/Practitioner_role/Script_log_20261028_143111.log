@@ -1,0 +1,11 @@
+2026-10-28 14:31:11,745 | INFO | ========== Starting Validation ==========
+2026-10-28 14:31:11,747 | INFO | Module         : Practitioner_role
+2026-10-28 14:31:11,747 | INFO | Stage          : None
+2026-10-28 14:31:11,749 | INFO | Cycle          : None
+2026-10-28 14:31:11,749 | INFO | Environment    : MCPQA
+2026-10-28 14:31:11,751 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-28 14:31:12,070 | WARNING | No validation rules returned from MongoDB with the given filter. Skipping execution.
+2026-10-28 14:31:12,082 | INFO | Total Number of Testcases Executed : 0,Pass : 0, Fail : 0, Skippped : 0
+2026-10-28 14:31:12,084 | INFO | Total execution time: 0.00 seconds (0.0 minutes)
+2026-10-28 14:31:12,099 | INFO | Master combined log written to: MCPQA_Practitioner_role_Log_20261028_183112.json
+2026-10-28 14:31:12,162 | INFO | ========== Completed Validation ==========

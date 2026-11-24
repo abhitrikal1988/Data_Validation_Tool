@@ -1,0 +1,129 @@
+2026-01-28 13:56:22,298 | INFO | ========== Starting Validation ==========
+2026-01-28 13:56:22,321 | INFO | Module :  M3P 
+2026-01-28 13:56:22,341 | INFO | Stage :  None 
+2026-01-28 13:56:22,360 | INFO | Cycle :  None
+2026-01-28 13:56:22,379 | INFO | Environment  : MONGODB_MCPQA1
+2026-01-28 13:56:23,148 | INFO | ========== [ Running TestCase 2: Checking MemberReceipt Data Validation after CapRx load ] ==========
+2026-01-28 13:56:43,523 | ERROR | [TC 2] Exception: 'NoneType' object has no attribute 'upper'
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 203, in _execute_single_testcase
+    source_data, target_data = self._fetch_source_target_parallel(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 147, in _fetch_source_target_parallel
+    return f_src.result(), f_tgt.result()
+           ^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 125, in _fetch_with_cache
+    data, _ = get_data(
+              ^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Libraries\data_fetcher.py", line 29, in get_data
+    targetEnvKey = targetEnvKey.upper()
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'upper'
+2026-01-28 13:56:59,526 | ERROR | Exception occurred during regression validation run: 
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 203, in _execute_single_testcase
+    source_data, target_data = self._fetch_source_target_parallel(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 147, in _fetch_source_target_parallel
+    return f_src.result(), f_tgt.result()
+           ^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 125, in _fetch_with_cache
+    data, _ = get_data(
+              ^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Libraries\data_fetcher.py", line 29, in get_data
+    targetEnvKey = targetEnvKey.upper()
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'upper'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 293, in run
+    result = future.result()
+             ^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 264, in _execute_single_testcase
+    append_log_entry(log_doc, "Error", "Execution", str(e))
+    ^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit
+2026-01-28 13:56:59,661 | ERROR | Unexpected exception in __main__: 
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 203, in _execute_single_testcase
+    source_data, target_data = self._fetch_source_target_parallel(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 147, in _fetch_source_target_parallel
+    return f_src.result(), f_tgt.result()
+           ^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 125, in _fetch_with_cache
+    data, _ = get_data(
+              ^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Libraries\data_fetcher.py", line 29, in get_data
+    targetEnvKey = targetEnvKey.upper()
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'upper'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 370, in <module>
+    run_validation(args.module, args.stage, args.cycle, args.testcasenumber, args.environment)
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 362, in run_validation
+    Regression_inputs(module, stage, cycle, testcase_num, environment).run()
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 293, in run
+    result = future.result()
+             ^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\ProgramData\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 264, in _execute_single_testcase
+    append_log_entry(log_doc, "Error", "Execution", str(e))
+    ^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit

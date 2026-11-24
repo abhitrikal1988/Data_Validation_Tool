@@ -1,0 +1,39 @@
+2026-11-05 18:15:40,131 | INFO | ========== Starting Validation ==========
+2026-11-05 18:15:40,131 | INFO | Module         : EH_Chronic
+2026-11-05 18:15:40,131 | INFO | Stage          : None
+2026-11-05 18:15:40,131 | INFO | Cycle          : None
+2026-11-05 18:15:40,131 | INFO | Environment    : MCPQA1
+2026-11-05 18:15:40,131 | INFO | Runtime Filters: None — using DefaultValues
+2026-11-05 18:15:40,274 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-11-05 18:15:40,295 | INFO | ========== [ Running TestCase 3: Validate format of 'CODE' column ] ==========
+2026-11-05 18:15:40,295 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 18:15:40,295 | ISSUE | File_fetcher: Permanent error — Path not found: P:\ARKIT\To be used to work\Auto-Trigger letters\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW
+2026-11-05 18:15:40,295 | ERROR | TestCase 3: _run_format_check_on_file: Path not found: P:\ARKIT\To be used to work\Auto-Trigger letters\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW
+Traceback (most recent call last):
+  File "\\rxadvance.com\qa-team\QA Documentation\QA Automation\Data_Validation\Regression Script\Script\Data_Validation.py", line 1536, in _run_format_check_on_file
+    result = _rows_or_file(source_def, rows)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\rxadvance.com\qa-team\QA Documentation\QA Automation\Data_Validation\Regression Script\Script\Data_Validation.py", line 1527, in _rows_or_file
+    return fetch_and_parse(source_def)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\rxadvance.com\qa-team\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\File_parser.py", line 1550, in fetch_and_parse
+    raw_files = fetch_file(
+                ^^^^^^^^^^^
+  File "\\rxadvance.com\qa-team\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\File_fetcher.py", line 1265, in fetch_file
+    raw_files = _with_retry(
+                ^^^^^^^^^^^^
+  File "\\rxadvance.com\qa-team\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\File_fetcher.py", line 431, in _with_retry
+    return func()
+           ^^^^^^
+  File "\\rxadvance.com\qa-team\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\File_fetcher.py", line 1263, in _fetch
+    return fetcher(source)
+           ^^^^^^^^^^^^^^^
+  File "\\rxadvance.com\qa-team\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\File_fetcher.py", line 590, in _fetch_local
+    raise FileNotFoundError(f"Path not found: {path}")
+FileNotFoundError: Path not found: P:\ARKIT\To be used to work\Auto-Trigger letters\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW
+2026-11-05 18:15:40,361 | INFO | Execution time for TestCase 3: 0.02 seconds
+2026-11-05 18:15:40,368 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 1, Skippped : 0
+2026-11-05 18:15:40,369 | INFO | Total execution time: 0.09 seconds (0.0 minutes)
+2026-11-05 18:15:40,397 | INFO | Master combined log written to: MCPQA1_EH_Chronic_Log_20261105_231540.json
+2026-11-05 18:15:40,402 | INFO | Result.InsertData : 6aed0e1cf235f22e8f24679c
+2026-11-05 18:15:40,852 | INFO | ========== Completed Validation ==========

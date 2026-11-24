@@ -1,0 +1,162 @@
+2026-11-05 14:40:53,199 | INFO | ========== Starting Validation ==========
+2026-11-05 14:40:53,199 | INFO | Module         : recon_file
+2026-11-05 14:40:53,199 | INFO | Stage          : None
+2026-11-05 14:40:53,208 | INFO | Cycle          : None
+2026-11-05 14:40:53,208 | INFO | Environment    : MCPQA1
+2026-11-05 14:40:53,208 | INFO | Runtime Filters: {'dw_file_detail_id': '2156'}
+2026-11-05 14:40:53,279 | INFO | Parallel execution started — 4 active thread(s) (requested: 5, test cases: 4).
+2026-11-05 14:40:55,159 | INFO | ========== [ Running TestCase 1: Compare source and target on cFileKey, cOriginalFileName, cDocId and 58 more ] ==========
+2026-11-05 14:40:55,159 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-11-05 14:40:55,159 | INFO | TestCase 1: Target [ORACLE]:SELECT C_JOB_NUMBER
+  ,C_CLAIM_NUMBERS
+  ,C_FILE_KEY
+  ,C_ORIGINAL_FILE_NAME
+  ,C_DOC_ID
+  ,C_GH_1
+  ,C_GH_2
+  ,C_GH_3
+  ,C_GH_4
+  ,C_GH_5
+  ,C_GH_6
+  ,C_GH_7
+  ,C_GH_8
+  ,C_GH_9
+  ,C_GH_10
+  ,C_ENROLLEE_ID
+  ,C_MASTER_C_NAME
+  ,C_ENROLLEE_NAME
+  ,C_PROVIDER_TAX_ID
+  ,C_DOCUMENT_TYPE
+  ,C_DOCUMENT_TYPE_DESCRIPTION
+  ,C_DOCUMENT_EXTENSIONS
+  ,C_BATCH_NUMBER
+  ,I_ENVELOPE_NUMBER
+  ,C_DELIVERY_TYPE
+  ,Y_SHIPPING_AMOUNT
+  ,C_TRACKING_NUMBER
+  ,I_PAGE_QUANTITY
+  ,C_STATUS
+  ,T_FILE_RECEIPT_DATE
+  ,T_RELEASED_DATE
+  ,T_SHIP_DATE
+  ,C_USERNAME
+  ,T_DATE_TIME
+  ,C_PAPER_STOCK_DESC
+  ,C_PURGE_REASON
+  ,C_PURGE_REASON_DESC
+  ,C_RECIPIENT_TYPE
+  ,C_CLAIM_TYPE
+  ,C_CHECK_NUMBER
+  ,Y_CHECK_AMOUNT
+  ,C_PAYEE_NAME
+  ,C_PULL_CODE
+  ,SPOILED_TOUCH_AND_TOSS
+  ,REISSUED_TOUCH_AND_TOSS
+  ,C_REPORTING_ROLLUP_VALUE_1
+  ,C_REPORTING_ROLLUP_VALUE_2
+  ,C_REPORTING_ROLLUP_VALUE_3
+  ,C_REPORTING_ROLLUP_VALUE_4
+  ,C_REPORTING_ROLLUP_VALUE_5
+  ,C_REPORTING_ROLLUP_VALUE_6
+  ,C_REPORTING_ROLLUP_VALUE_7
+  ,C_REPORTING_ROLLUP_VALUE_8
+  ,C_REPORTING_ROLLUP_VALUE_9
+  ,C_REPORTING_ROLLUP_VALUE_10
+  ,C_DOCUMENT_INDEX_1
+  ,C_DOCUMENT_INDEX_2
+  ,C_DOCUMENT_INDEX_3
+  ,C_DOCUMENT_INDEX_4
+  ,DOCUMENT_WORKFLOW_ID
+  ,DOCUMENT_STATE_ID 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id = 2156
+2026-11-05 14:40:55,159 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 14:40:55,159 | ISSUE | File_fetcher: Permanent error — Path not found: \Rxadvance\qa-team\QA Documentation\Amit
+2026-11-05 14:40:55,159 | ISSUE | Error fetching source data (LOCAL_PATH): Path not found: \Rxadvance\qa-team\QA Documentation\Amit
+2026-11-05 14:40:55,159 | INFO | [TC 1] Target data sample (5 of 5000 records):
+2026-11-05 14:40:55,159 | INFO |   1: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010600016625', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000077', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'T9808018398', 'C_MASTER_C_NAME': 'DERMATOLOGY SPECIALISTS PA', 'C_ENROLLEE_NAME': 'DANIEL ABSHER', 'C_PROVIDER_TAX_ID': '562002643', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '45', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512062', 'I_PAGE_QUANTITY': '4', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300077', 'Y_CHECK_AMOUNT': '404.61', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'DERMATOLOGY SPECIALISTS PA', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '78', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:40:55,159 | INFO |   2: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010400013235', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000062', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'T9808042937', 'C_MASTER_C_NAME': 'MY LE', 'C_ENROLLEE_NAME': 'HRUH NIE', 'C_PROVIDER_TAX_ID': '463911388', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '46', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512063', 'I_PAGE_QUANTITY': '3', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300062', 'Y_CHECK_AMOUNT': '86.52', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'MY LE', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '63', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:40:55,159 | INFO |   3: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010700016787', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000099', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'T9808035591', 'C_MASTER_C_NAME': 'UNIVERSAL HEALTH CARE / BLUMENTHAL, INC', 'C_ENROLLEE_NAME': 'DONALD ANGEL', 'C_PROVIDER_TAX_ID': '200335842', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '47', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512064', 'I_PAGE_QUANTITY': '4', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300099', 'Y_CHECK_AMOUNT': '1323', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'UNIVERSAL HEALTH CARE / BLUMENTHAL, INC', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '100', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:40:55,159 | INFO |   4: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010700016788', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000099', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'T9808035591', 'C_MASTER_C_NAME': 'UNIVERSAL HEALTH CARE / BLUMENTHAL, INC', 'C_ENROLLEE_NAME': 'DONALD ANGEL', 'C_PROVIDER_TAX_ID': '200335842', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '47', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512064', 'I_PAGE_QUANTITY': '4', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300099', 'Y_CHECK_AMOUNT': '1323', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'UNIVERSAL HEALTH CARE / BLUMENTHAL, INC', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '100', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:40:55,159 | INFO |   5: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300013078', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000042', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'C9808044270', 'C_MASTER_C_NAME': 'EYE CONSULTANTS OF GREENSBORO,  PA', 'C_ENROLLEE_NAME': 'LEONARD SMITH', 'C_PROVIDER_TAX_ID': '562151889', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '48', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512065', 'I_PAGE_QUANTITY': '3', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300042', 'Y_CHECK_AMOUNT': '120.04', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'EYE CONSULTANTS OF GREENSBORO,  PA', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '43', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:40:55,159 | ISSUE | Source data empty and Target having data. Please check SRC.
+2026-11-05 14:40:55,159 | INFO | Execution time for TestCase 1: 1.86 seconds
+2026-11-05 14:40:55,286 | INFO | ========== [ Running TestCase 2: Target DW.zelis_recon: no duplicate C_JOB_NUMBER, C_CLAIM_NUMBERS ] ==========
+2026-11-05 14:40:55,286 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-11-05 14:40:55,286 | INFO | TestCase 2: Source [ORACLE]:SELECT C_JOB_NUMBER
+  ,C_CLAIM_NUMBERS 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id = 2156
+2026-11-05 14:40:55,286 | INFO | TestCase 2: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-11-05 14:40:55,302 | INFO | Source [ORACLE] Duplicate_Check sample for 'C_JOB_NUMBER, C_CLAIM_NUMBERS':
+SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    FROM (SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS FROM DW.zelis_recon WHERE dw_file_detail_id = 2156)
+                    WHERE C_JOB_NUMBER IS NOT NULL AND C_CLAIM_NUMBERS IS NOT NULL
+                    AND (C_JOB_NUMBER, C_CLAIM_NUMBERS) IN (
+                        
+                    SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    FROM (SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS FROM DW.zelis_recon WHERE dw_file_detail_id = 2156)
+                    WHERE C_JOB_NUMBER IS NOT NULL AND C_CLAIM_NUMBERS IS NOT NULL
+                    GROUP BY C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-11-05 14:40:55,302 | INFO | TestCase 2: Field 'C_JOB_NUMBER, C_CLAIM_NUMBERS': No duplicates found.
+2026-11-05 14:40:55,302 | INFO | Execution time for TestCase 2: 2.01 seconds
+2026-11-05 14:40:54,639 | INFO | ========== [ Running TestCase 3: Target DW.zelis_recon: keys and load columns are populated ] ==========
+2026-11-05 14:40:54,639 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Source [ORACLE]:SELECT C_CLAIM_NUMBERS
+  ,ZELIS_RECON_ID
+  ,C_FILE_KEY
+  ,C_DOC_ID
+  ,I_ENVELOPE_NUMBER
+  ,T_FILE_RECEIPT_DATE
+  ,C_CHECK_NUMBER
+  ,DOCUMENT_STATE_ID
+  ,DW_FILE_DETAIL_ID
+  ,DW_CREATED_DT 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id = 2156
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Null_Check started — pushing null filter to ORACLE per field
+2026-11-05 14:40:54,639 | INFO | Oracle Null_Check query: SELECT * FROM (SELECT C_CLAIM_NUMBERS, ZELIS_RECON_ID, C_FILE_KEY, C_DOC_ID, I_ENVELOPE_NUMBER, T_FILE_RECEIPT_DATE, C_CHECK_NUMBER, DOCUMENT_STATE_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT FROM DW.zelis_recon WHERE dw_file_detail_id = 2156) WHERE (C_CLAIM_NUMBERS IS NULL OR TRIM(TO_CHAR(C_CLAIM_NUMBERS)) = '') OR (ZELIS_RECON_ID IS NULL OR TRIM(TO_CHAR(ZELIS_RECON_ID)) = '') OR (C_FILE_KEY IS NULL OR TRIM(TO_CHAR(C_FILE_KEY)) = '') OR (C_DOC_ID IS NULL OR TRIM(TO_CHAR(C_DOC_ID)) = '') OR (I_ENVELOPE_NUMBER IS NULL OR TRIM(TO_CHAR(I_ENVELOPE_NUMBER)) = '') OR (T_FILE_RECEIPT_DATE IS NULL OR TRIM(TO_CHAR(T_FILE_RECEIPT_DATE)) = '') OR (C_CHECK_NUMBER IS NULL OR TRIM(TO_CHAR(C_CHECK_NUMBER)) = '') OR (DOCUMENT_STATE_ID IS NULL OR TRIM(TO_CHAR(DOCUMENT_STATE_ID)) = '') OR (DW_FILE_DETAIL_ID IS NULL OR TRIM(TO_CHAR(DW_FILE_DETAIL_ID)) = '') OR (DW_CREATED_DT IS NULL OR TRIM(TO_CHAR(DW_CREATED_DT)) = '')
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'C_CLAIM_NUMBERS': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'ZELIS_RECON_ID': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'C_FILE_KEY': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'C_DOC_ID': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'I_ENVELOPE_NUMBER': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'T_FILE_RECEIPT_DATE': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'C_CHECK_NUMBER': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'DOCUMENT_STATE_ID': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'DW_FILE_DETAIL_ID': No nulls found.
+2026-11-05 14:40:54,639 | INFO | TestCase 3: Field 'DW_CREATED_DT': No nulls found.
+2026-11-05 14:40:54,639 | INFO | Execution time for TestCase 3: 1.36 seconds
+2026-11-05 14:40:53,326 | INFO | ========== [ Running TestCase 4: File Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv: no row repeated in every field ] ==========
+2026-11-05 14:40:53,327 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 14:40:53,327 | ISSUE | File_fetcher: Permanent error — Path not found: \Rxadvance\qa-team\QA Documentation\Amit
+2026-11-05 14:40:53,328 | ERROR | TestCase 4: _run_duplicate_check_on_file: Path not found: \Rxadvance\qa-team\QA Documentation\Amit
+Traceback (most recent call last):
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Script\Data_Validation.py", line 1942, in _run_duplicate_check_on_file
+    result = fetch_and_parse(source_def, add_source_file_column=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_parser.py", line 1550, in fetch_and_parse
+    raw_files = fetch_file(
+                ^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_fetcher.py", line 1265, in fetch_file
+    raw_files = _with_retry(
+                ^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_fetcher.py", line 431, in _with_retry
+    return func()
+           ^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_fetcher.py", line 1263, in _fetch
+    return fetcher(source)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_fetcher.py", line 590, in _fetch_local
+    raise FileNotFoundError(f"Path not found: {path}")
+FileNotFoundError: Path not found: \Rxadvance\qa-team\QA Documentation\Amit
+2026-11-05 14:40:53,333 | INFO | Execution time for TestCase 4: 0.05 seconds
+2026-11-05 14:40:55,340 | INFO | Total Number of Testcases Executed : 4,Pass : 2, Fail : 2, Skippped : 0
+2026-11-05 14:40:55,346 | INFO | Total execution time: 2.06 seconds (0.0 minutes)
+2026-11-05 14:40:55,365 | INFO | Master combined log written to: MCPQA1_recon_file_Log_20261105_194055.json
+2026-11-05 14:40:55,365 | INFO | Result.InsertData : 6aecdbc7b36f3fe62ba85fc9
+2026-11-05 14:40:55,966 | INFO | ========== Completed Validation ==========

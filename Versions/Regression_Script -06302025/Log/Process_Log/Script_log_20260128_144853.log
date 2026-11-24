@@ -1,0 +1,12 @@
+2026-01-28 14:48:53,619 | INFO | ========== Starting Validation ==========
+2026-01-28 14:48:53,638 | INFO | Module :  M3P 
+2026-01-28 14:48:53,657 | INFO | Stage :  None 
+2026-01-28 14:48:53,677 | INFO | Cycle :  None
+2026-01-28 14:48:53,696 | INFO | Environment  : MONGODB_MCPQA1
+2026-01-28 14:48:54,470 | INFO | ========== [ Running TestCase 2: Checking MemberReceipt Data Validation after CapRx load ] ==========
+2026-01-28 14:48:55,105 | INFO | MongoDB cursor 'source_data' is empty.
+2026-01-28 14:48:55,125 | INFO | Execution time for TestCase 2: 0.63s
+2026-01-28 14:48:55,144 | INFO | Total Number of Testcases Executed:1, Pass:0, Fail:1
+2026-01-28 14:48:55,613 | INFO | Master combined log written to: MONGODB_MCPQA1_M3P_Log_20260128_194855.json
+2026-01-28 14:48:55,653 | INFO | Result.InsertData : 697a682799487004605cea48
+2026-01-28 14:48:57,798 | INFO | ========== Completed Validation ==========

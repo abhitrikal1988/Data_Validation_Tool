@@ -1,0 +1,25 @@
+2026-01-28 15:04:45,007 | INFO | ========== Starting Validation ==========
+2026-01-28 15:04:45,026 | INFO | Module :  Test 
+2026-01-28 15:04:45,046 | INFO | Stage :  None 
+2026-01-28 15:04:45,065 | INFO | Cycle :  None
+2026-01-28 15:04:45,084 | INFO | Environment  : MONGODB_MCPQA1
+2026-01-28 15:04:45,833 | INFO | ========== [ Running TestCase 11: Data Comparison between SRC and TGT ] ==========
+2026-01-28 15:05:00,408 | INFO | Source data is NOT empty.
+2026-01-28 15:05:07,353 | INFO | Target data is NOT empty.
+2026-01-28 15:06:20,357 | ERROR | [TC 11] Exception: 
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 226, in _execute_single_testcase
+    log_doc, "Info", "SRC->TGT",
+    ^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit
+2026-01-28 15:06:20,420 | INFO | Execution time for TestCase 11: 94.57s
+2026-01-28 15:06:20,452 | INFO | Total Number of Testcases Executed:1, Pass:0, Fail:1
+2026-01-28 15:06:21,029 | INFO | Master combined log written to: MONGODB_MCPQA1_Test_Log_20260128_200620.json
+2026-01-28 15:06:21,070 | INFO | Result.InsertData : 697a6c3d56915d2fc475ff04
+2026-01-28 15:06:23,048 | INFO | ========== Completed Validation ==========

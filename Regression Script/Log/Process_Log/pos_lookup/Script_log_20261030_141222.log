@@ -1,0 +1,122 @@
+2026-10-30 14:12:22,347 | INFO | ========== Starting Validation ==========
+2026-10-30 14:12:22,348 | INFO | Module         : pos_lookup
+2026-10-30 14:12:22,349 | INFO | Stage          : None
+2026-10-30 14:12:22,349 | INFO | Cycle          : None
+2026-10-30 14:12:22,350 | INFO | Environment    : MCPQA1
+2026-10-30 14:12:22,351 | INFO | Runtime Filters: {'dw_file_detail_id': '2066'}
+2026-10-30 14:12:22,435 | INFO | Parallel execution started — 5 active thread(s) (requested: 5, test cases: 6).
+2026-10-30 14:12:26,719 | INFO | ========== [ Running TestCase 1: Compare source and target for POS Lookup ] ==========
+2026-10-30 14:12:26,720 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-10-30 14:12:26,720 | INFO | TestCase 1: Target [ORACLE]:SELECT PLACE_OF_SERVICE_CODE
+  ,BUSINESS_ID
+  ,PLACE_OF_SERVICE_NAME 
+  FROM DW.pos_lookup 
+  WHERE dw_file_detail_id >= 2066
+2026-10-30 14:12:26,720 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 14:12:26,720 | INFO | File_fetcher: Reading local file — P:\Maheswar\POS Lookup.xlsx
+2026-10-30 14:12:26,720 | INFO | File_fetcher: 'POS Lookup.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 14:12:26,721 | INFO | File_parser: 'POS Lookup.xlsx' — Excel parsed 104 row(s), 0 parse error(s).
+2026-10-30 14:12:26,721 | INFO | File_parser: 'POS Lookup.xlsx' — parse complete, 104 row(s), no errors.
+2026-10-30 14:12:26,721 | INFO | File_parser: Combined 1 file(s) — 104 total rows, 0 total error(s).
+2026-10-30 14:12:26,721 | INFO | [TC 1] Source data sample (5 of 104 records):
+2026-10-30 14:12:26,721 | INFO |   1: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '1', 'PLACE_OF_SERVICE_NAME': 'Pharmacy **'}
+2026-10-30 14:12:26,721 | INFO |   2: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '2', 'PLACE_OF_SERVICE_NAME': 'Telehealth Provided Other than in Patient’s Home'}
+2026-10-30 14:12:26,722 | INFO |   3: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '3', 'PLACE_OF_SERVICE_NAME': 'School'}
+2026-10-30 14:12:26,722 | INFO |   4: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '4', 'PLACE_OF_SERVICE_NAME': 'Homeless Shelter'}
+2026-10-30 14:12:26,722 | INFO |   5: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '5', 'PLACE_OF_SERVICE_NAME': 'Indian Health Service Free standing Facility'}
+2026-10-30 14:12:26,722 | INFO | [TC 1] Target data sample (5 of 104 records):
+2026-10-30 14:12:26,722 | INFO |   1: {'PLACE_OF_SERVICE_CODE': '1', 'BUSINESS_ID': 109, 'PLACE_OF_SERVICE_NAME': 'Pharmacy **'}
+2026-10-30 14:12:26,722 | INFO |   2: {'PLACE_OF_SERVICE_CODE': '2', 'BUSINESS_ID': 109, 'PLACE_OF_SERVICE_NAME': 'Telehealth Provided Other than in Patient’s Home'}
+2026-10-30 14:12:26,723 | INFO |   3: {'PLACE_OF_SERVICE_CODE': '3', 'BUSINESS_ID': 109, 'PLACE_OF_SERVICE_NAME': 'School'}
+2026-10-30 14:12:26,723 | INFO |   4: {'PLACE_OF_SERVICE_CODE': '4', 'BUSINESS_ID': 109, 'PLACE_OF_SERVICE_NAME': 'Homeless Shelter'}
+2026-10-30 14:12:26,723 | INFO |   5: {'PLACE_OF_SERVICE_CODE': '5', 'BUSINESS_ID': 109, 'PLACE_OF_SERVICE_NAME': 'Indian Health Service Free standing Facility'}
+2026-10-30 14:12:26,723 | INFO | [SRC->TGT]  - Total source LOCAL_PATH records: 104
+2026-10-30 14:12:26,723 | INFO | [SRC->TGT]  - Total target ORACLE records: 104
+2026-10-30 14:12:26,723 | INFO | Vice-versa comparison TGT->SRC Started
+2026-10-30 14:12:26,723 | INFO | [TGT->SRC]  - Total source ORACLE records: 104
+2026-10-30 14:12:26,724 | INFO | [TGT->SRC]  - Total target LOCAL_PATH records: 104
+2026-10-30 14:12:26,724 | INFO | Data comparison process completed.
+2026-10-30 14:12:26,724 | INFO | [TestCase 1] Test Result: PASS
+2026-10-30 14:12:26,724 | INFO | Execution time for TestCase 1: 4.29 seconds
+2026-10-30 14:12:23,047 | INFO | ========== [ Running TestCase 2: Check for null values in BUSINESS_ID ] ==========
+2026-10-30 14:12:23,047 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 14:12:23,047 | INFO | File_fetcher: Reading local file — P:\Maheswar\POS Lookup.xlsx
+2026-10-30 14:12:23,047 | INFO | File_fetcher: 'POS Lookup.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 14:12:23,047 | INFO | File_parser: 'POS Lookup.xlsx' — Excel parsed 104 row(s), 0 parse error(s).
+2026-10-30 14:12:23,047 | INFO | File_parser: 'POS Lookup.xlsx' — parse complete, 104 row(s), no errors.
+2026-10-30 14:12:23,047 | INFO | File_parser: Combined 1 file(s) — 104 total rows, 0 total error(s).
+2026-10-30 14:12:23,048 | INFO | TestCase 2: Null_Check — field 'PLACE_OF_SERVICE_CODE': 0 null(s) ✓
+2026-10-30 14:12:23,048 | INFO | TestCase 2: Null_Check — field 'BUSINESS_ID': 0 null(s) ✓
+2026-10-30 14:12:23,048 | INFO | Execution time for TestCase 2: 0.61 seconds
+2026-10-30 14:12:22,963 | INFO | ========== [ Running TestCase 3: Check for duplicate records on BUSINESS_ID and PLACE_OF_SERVICE_CODE ] ==========
+2026-10-30 14:12:23,009 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 14:12:23,013 | INFO | File_fetcher: Reading local file — P:\Maheswar\POS Lookup.xlsx
+2026-10-30 14:12:23,022 | INFO | File_fetcher: 'POS Lookup.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 14:12:23,042 | INFO | File_parser: 'POS Lookup.xlsx' — Excel parsed 104 row(s), 0 parse error(s).
+2026-10-30 14:12:23,043 | INFO | File_parser: 'POS Lookup.xlsx' — parse complete, 104 row(s), no errors.
+2026-10-30 14:12:23,046 | INFO | File_parser: Combined 1 file(s) — 104 total rows, 0 total error(s).
+2026-10-30 14:12:23,046 | INFO | TestCase 3: Duplicate_Check — no duplicates on ['PLACE_OF_SERVICE_CODE', 'BUSINESS_ID'] ✓
+2026-10-30 14:12:23,046 | INFO | Execution time for TestCase 3: 0.53 seconds
+2026-10-30 14:12:22,662 | INFO | ========== [ Running TestCase 4: Target DW.pos_lookup: no duplicate PLACE_OF_SERVICE_CODE, BUSINESS_ID ] ==========
+2026-10-30 14:12:22,662 | INFO | TestCase 4: Source [ORACLE]:SELECT PLACE_OF_SERVICE_CODE
+  ,BUSINESS_ID 
+  FROM DW.pos_lookup 
+  WHERE dw_file_detail_id >= :dw_file_detail_id
+2026-10-30 14:12:22,663 | INFO | TestCase 4: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-10-30 14:12:22,664 | INFO | Source [ORACLE] Duplicate_Check sample for 'PLACE_OF_SERVICE_CODE, BUSINESS_ID':
+SELECT PLACE_OF_SERVICE_CODE, BUSINESS_ID
+                    FROM (SELECT PLACE_OF_SERVICE_CODE, BUSINESS_ID FROM DW.pos_lookup WHERE dw_file_detail_id >= :dw_file_detail_id)
+                    WHERE PLACE_OF_SERVICE_CODE IS NOT NULL AND BUSINESS_ID IS NOT NULL
+                    AND (PLACE_OF_SERVICE_CODE, BUSINESS_ID) IN (
+                        
+                    SELECT PLACE_OF_SERVICE_CODE, BUSINESS_ID
+                    FROM (SELECT PLACE_OF_SERVICE_CODE, BUSINESS_ID FROM DW.pos_lookup WHERE dw_file_detail_id >= :dw_file_detail_id)
+                    WHERE PLACE_OF_SERVICE_CODE IS NOT NULL AND BUSINESS_ID IS NOT NULL
+                    GROUP BY PLACE_OF_SERVICE_CODE, BUSINESS_ID
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-30 14:12:22,664 | ISSUE | Error fetching duplicate data for 'PLACE_OF_SERVICE_CODE, BUSINESS_ID' (ORACLE): ORA-01008: not all variables bound
+2026-10-30 14:12:22,665 | WARNING | TestCase 4: Field 'PLACE_OF_SERVICE_CODE, BUSINESS_ID': Failed to fetch duplicate data — skipping.
+2026-10-30 14:12:22,665 | INFO | Execution time for TestCase 4: 0.23 seconds
+2026-10-30 14:12:22,666 | INFO | ========== [ Running TestCase 5: Target DW.pos_lookup: keys and load columns are populated ] ==========
+2026-10-30 14:12:22,666 | INFO | TestCase 5: Source [ORACLE]:SELECT BUSINESS_ID
+  ,PLACE_OF_SERVICE_CODE
+  ,POS_LOOKUP_ID
+  ,DW_FILE_DETAIL_ID
+  ,DW_CREATED_DT
+  ,DW_MODIFIED_DT 
+  FROM DW.pos_lookup 
+  WHERE dw_file_detail_id >= :dw_file_detail_id
+2026-10-30 14:12:22,666 | INFO | TestCase 5: Null_Check started — pushing null filter to ORACLE per field
+2026-10-30 14:12:22,666 | INFO | Oracle Null_Check query: SELECT * FROM (SELECT BUSINESS_ID, PLACE_OF_SERVICE_CODE, POS_LOOKUP_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT FROM DW.pos_lookup WHERE dw_file_detail_id >= :dw_file_detail_id) WHERE (BUSINESS_ID IS NULL OR TRIM(TO_CHAR(BUSINESS_ID)) = '') OR (PLACE_OF_SERVICE_CODE IS NULL OR TRIM(TO_CHAR(PLACE_OF_SERVICE_CODE)) = '') OR (POS_LOOKUP_ID IS NULL OR TRIM(TO_CHAR(POS_LOOKUP_ID)) = '') OR (DW_FILE_DETAIL_ID IS NULL OR TRIM(TO_CHAR(DW_FILE_DETAIL_ID)) = '') OR (DW_CREATED_DT IS NULL OR TRIM(TO_CHAR(DW_CREATED_DT)) = '') OR (DW_MODIFIED_DT IS NULL OR TRIM(TO_CHAR(DW_MODIFIED_DT)) = '')
+2026-10-30 14:12:22,666 | ISSUE | Error fetching null check data (ORACLE): ORA-01008: not all variables bound
+2026-10-30 14:12:22,667 | WARNING | TestCase 5: Field 'BUSINESS_ID': Failed to fetch data — skipping.
+2026-10-30 14:12:22,667 | WARNING | TestCase 5: Field 'PLACE_OF_SERVICE_CODE': Failed to fetch data — skipping.
+2026-10-30 14:12:22,667 | WARNING | TestCase 5: Field 'POS_LOOKUP_ID': Failed to fetch data — skipping.
+2026-10-30 14:12:22,668 | WARNING | TestCase 5: Field 'DW_FILE_DETAIL_ID': Failed to fetch data — skipping.
+2026-10-30 14:12:22,668 | WARNING | TestCase 5: Field 'DW_CREATED_DT': Failed to fetch data — skipping.
+2026-10-30 14:12:22,668 | WARNING | TestCase 5: Field 'DW_MODIFIED_DT': Failed to fetch data — skipping.
+2026-10-30 14:12:22,668 | INFO | Execution time for TestCase 5: 0.23 seconds
+2026-10-30 14:12:23,048 | INFO | ========== [ Running TestCase 6: BUSINESS_ID has only approved values ] ==========
+2026-10-30 14:12:23,048 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 14:12:23,048 | INFO | File_fetcher: Reading local file — P:\Maheswar\POS Lookup.xlsx
+2026-10-30 14:12:23,048 | INFO | File_fetcher: 'POS Lookup.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 14:12:23,049 | INFO | File_parser: 'POS Lookup.xlsx' — Excel parsed 104 row(s), 0 parse error(s).
+2026-10-30 14:12:23,049 | INFO | File_parser: 'POS Lookup.xlsx' — parse complete, 104 row(s), no errors.
+2026-10-30 14:12:23,049 | INFO | File_parser: Combined 1 file(s) — 104 total rows, 0 total error(s).
+2026-10-30 14:12:23,049 | INFO | [TC 6] Source data sample (5 of 104 records):
+2026-10-30 14:12:23,049 | INFO |   1: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '1', 'PLACE_OF_SERVICE_NAME': 'Pharmacy **'}
+2026-10-30 14:12:23,049 | INFO |   2: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '2', 'PLACE_OF_SERVICE_NAME': 'Telehealth Provided Other than in Patient’s Home'}
+2026-10-30 14:12:23,049 | INFO |   3: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '3', 'PLACE_OF_SERVICE_NAME': 'School'}
+2026-10-30 14:12:23,049 | INFO |   4: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '4', 'PLACE_OF_SERVICE_NAME': 'Homeless Shelter'}
+2026-10-30 14:12:23,050 | INFO |   5: {'BUSINESS_ID': '109', 'PLACE_OF_SERVICE_CODE': '5', 'PLACE_OF_SERVICE_NAME': 'Indian Health Service Free standing Facility'}
+2026-10-30 14:12:23,050 | INFO | [TC 6] BUSINESS_ID has only approved values
+2026-10-30 14:12:23,050 | INFO | [TC 6] PASS: All values are within approved list.
+2026-10-30 14:12:23,050 | INFO | Execution time for TestCase 6: 0.38 seconds
+2026-10-30 14:12:26,771 | INFO | Total Number of Testcases Executed : 6,Pass : 6, Fail : 0, Skippped : 0
+2026-10-30 14:12:26,772 | INFO | Total execution time: 4.34 seconds (0.1 minutes)
+2026-10-30 14:12:26,790 | INFO | Master combined log written to: MCPQA1_pos_lookup_Log_20261030_181226.json
+2026-10-30 14:12:26,796 | INFO | Result.InsertData : 6ae4de0a2ed6bfad1cc3ba3b
+2026-10-30 14:12:27,201 | INFO | ========== Completed Validation ==========

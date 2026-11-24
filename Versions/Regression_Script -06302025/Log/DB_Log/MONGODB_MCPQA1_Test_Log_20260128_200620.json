@@ -1,0 +1,37 @@
+[
+    {
+        "DataValidationLog_ID": 60,
+        "Module": "Test",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 11,
+                "TestCaseName": "Data Comparison between SRC and TGT",
+                "Result": "Fail",
+                "StartTime": "2026-01-28 20:04:45.852369",
+                "EndTime": "2026-01-28 20:06:20.452267",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-01-28 20:05:57",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source empty=False, Target empty=False"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-01-28 20:06:20",
+                        "Type": "ERROR",
+                        "RunType": "Execution",
+                        "Detail": ""
+                    }
+                ]
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-01-28 20:06:20.701336"
+        }
+    }
+]

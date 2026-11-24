@@ -1,0 +1,463 @@
+[
+    {
+        "DataValidationLog_ID": 140,
+        "Module": "BNC",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "BNC_CONTRACT matches BNC_NEW.Contract.Details[]",
+                "Result": "Fail",
+                "StartTime": "2026-11-12 21:55:55.604048",
+                "EndTime": "2026-11-12 21:57:07.055402",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.BNC_NEW.aggregate:\n[\n  {\"$unwind\": \"$Contract.Details\"},\n  {\"$project\": {\"_id\": 0, \"BNC_ID\": 1, \"Contract.Details.BNCContractDetails_ID\": 1, \"BenefitPlan_ID\": 1, \"Network_ID\": 1, \"BillingProvider_ID\": 1, \"Contract.Details.Contract_ID\": 1, \"Contract.Details.PCPType\": 1, \"Contract.Details.Span.StartDate\": 1, \"Contract.Details.Span.EndDate\": 1, \"Business.Business_ID\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT BNC_ID\n  ,BNC_CONTRACT_DETAILS_ID\n  ,BENEFIT_PLAN_ID\n  ,NETWORK_ID\n  ,BILLING_PROVIDER_ID\n  ,CONTRACT_ID\n  ,PCP_TYPE\n  ,START_DATE\n  ,END_DATE\n  ,BUSINESS_ID \n  FROM DW.BNC_CONTRACT"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:56:42",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 402138, Total target ORACLE records: 402699"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:56:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 493897, 'Contract.Details.BNCContractDetails_ID': 1035043}"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:56:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 493898, 'Contract.Details.BNCContractDetails_ID': 1035044}"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:56:59",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 493899, 'Contract.Details.BNCContractDetails_ID': 1035046}"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-12 21:57:00",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Contract.Details.Span.EndDate vs END_DATE: 1 mismatch(es)"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-12 21:57:00",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'BNC_ID': 493876, 'Contract.Details.BNCContractDetails_ID': 1035019}: Contract.Details.Span.EndDate=2025-12-31 00:00:00 != END_DATE=2099-12-31 00:00:00"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-12 21:57:00",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 1"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-12 21:57:00",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 3"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-12 21:57:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'BNC_ID': 62936, 'BNC_CONTRACT_DETAILS_ID': 0}"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-12 21:57:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'BNC_ID': 63876, 'BNC_CONTRACT_DETAILS_ID': 0}"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-11-12 21:57:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'BNC_ID': 70169, 'BNC_CONTRACT_DETAILS_ID': 0}"
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2026-11-12 21:57:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'BNC_ID': 72826, 'BNC_CONTRACT_DETAILS_ID': 0}"
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2026-11-12 21:57:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'BNC_ID': 72851, 'BNC_CONTRACT_DETAILS_ID': 0}"
+                    },
+                    {
+                        "Log_ID": 13,
+                        "LogTime": "2026-11-12 21:57:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field END_DATE vs Contract.Details.Span.EndDate: 1 mismatch(es)"
+                    },
+                    {
+                        "Log_ID": 14,
+                        "LogTime": "2026-11-12 21:57:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'BNC_ID': 493876, 'BNC_CONTRACT_DETAILS_ID': 1035019}: END_DATE=2099-12-31 00:00:00 != Contract.Details.Span.EndDate=2025-12-31 00:00:00"
+                    },
+                    {
+                        "Log_ID": 15,
+                        "LogTime": "2026-11-12 21:57:07",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 1"
+                    },
+                    {
+                        "Log_ID": 16,
+                        "LogTime": "2026-11-12 21:57:07",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 564"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [
+                    "Contract.Details.Span.EndDate",
+                    "END_DATE"
+                ],
+                "MissingFields": [
+                    "BNC_ID",
+                    "Contract.Details.BNCContractDetails_ID",
+                    "BNC_CONTRACT_DETAILS_ID"
+                ]
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "BNC_CONTRACT_LOC matches BNC_NEW.Contract.Details.Locations[]",
+                "Result": "Fail",
+                "StartTime": "2026-11-12 21:55:55.606044",
+                "EndTime": "2026-11-12 21:56:34.274859",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.BNC_NEW.aggregate:\n[\n  {\"$unwind\": \"$Contract.Details\"},\n  {\"$unwind\": \"$Contract.Details.Locations\"},\n  {\"$project\": {\"_id\": 0, \"BNC_ID\": 1, \"Contract.Details.BNCContractDetails_ID\": 1, \"Business.Business_ID\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT BNC_ID\n  ,BNC_CONTRACT_DETAILS_ID\n  ,BUSINESS_ID \n  FROM DW.BNC_CONTRACT_LOC"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:56:22",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 402138, Total target ORACLE records: 5"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62023, 'Contract.Details.BNCContractDetails_ID': 293592}"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62024, 'Contract.Details.BNCContractDetails_ID': 300898}"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62025, 'Contract.Details.BNCContractDetails_ID': 290612}"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62026, 'Contract.Details.BNCContractDetails_ID': 304928}"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62027, 'Contract.Details.BNCContractDetails_ID': 39502}"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 402133"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-12 21:56:33",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-12 21:56:33",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MissingFields": [
+                    "BNC_ID",
+                    "Contract.Details.BNCContractDetails_ID"
+                ],
+                "MismatchFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "BNC_CONTRACT_REND_PROV matches BNC_NEW.Contract.Details.RenderingProviders[]",
+                "Result": "Fail",
+                "StartTime": "2026-11-12 21:55:55.607044",
+                "EndTime": "2026-11-12 21:56:33.761158",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.BNC_NEW.aggregate:\n[\n  {\"$unwind\": \"$Contract.Details\"},\n  {\"$unwind\": \"$Contract.Details.RenderingProviders\"},\n  {\"$project\": {\"_id\": 0, \"BNC_ID\": 1, \"Contract.Details.BNCContractDetails_ID\": 1, \"Business.Business_ID\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT BNC_ID\n  ,BNC_CONTRACT_DETAILS_ID\n  ,BUSINESS_ID \n  FROM DW.BNC_CONTRACT_REND_PROV"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:56:22",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 402190, Total target ORACLE records: 18"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62023, 'Contract.Details.BNCContractDetails_ID': 293592}"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62024, 'Contract.Details.BNCContractDetails_ID': 300898}"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62025, 'Contract.Details.BNCContractDetails_ID': 290612}"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62026, 'Contract.Details.BNCContractDetails_ID': 304928}"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'BNC_ID': 62027, 'Contract.Details.BNCContractDetails_ID': 39502}"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-12 21:56:29",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 402119"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-12 21:56:33",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-12 21:56:33",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MissingFields": [
+                    "BNC_ID",
+                    "Contract.Details.BNCContractDetails_ID"
+                ],
+                "MismatchFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "Target DW.BNC_CONTRACT: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID",
+                "Result": "Pass",
+                "StartTime": "2026-11-12 21:55:55.608043",
+                "EndTime": "2026-11-12 21:55:56.664063",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT BNC_ID\n  ,BNC_CONTRACT_DETAILS_ID \n  FROM DW.BNC_CONTRACT"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['BNC_ID', 'BNC_CONTRACT_DETAILS_ID']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:55:56",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'BNC_ID, BNC_CONTRACT_DETAILS_ID': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Target DW.BNC_CONTRACT_LOC: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID",
+                "Result": "Pass",
+                "StartTime": "2026-11-12 21:55:55.609045",
+                "EndTime": "2026-11-12 21:55:56.181589",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT BNC_ID\n  ,BNC_CONTRACT_DETAILS_ID \n  FROM DW.BNC_CONTRACT_LOC"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:55:55",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['BNC_ID', 'BNC_CONTRACT_DETAILS_ID']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:55:56",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'BNC_ID, BNC_CONTRACT_DETAILS_ID': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "Target DW.BNC_CONTRACT_REND_PROV: no duplicate BNC_ID, BNC_CONTRACT_DETAILS_ID",
+                "Result": "Pass",
+                "StartTime": "2026-11-12 21:55:56.181589",
+                "EndTime": "2026-11-12 21:55:56.212589",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-12 21:55:56",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT BNC_ID\n  ,BNC_CONTRACT_DETAILS_ID \n  FROM DW.BNC_CONTRACT_REND_PROV"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-12 21:55:56",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['BNC_ID', 'BNC_CONTRACT_DETAILS_ID']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-12 21:55:56",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'BNC_ID, BNC_CONTRACT_DETAILS_ID': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-11-12 21:57:07.980195"
+        }
+    }
+]

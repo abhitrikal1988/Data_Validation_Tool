@@ -1,0 +1,905 @@
+[
+    {
+        "DataValidationLog_ID": 120,
+        "Module": "recon_file",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target on cFileKey, cOriginalFileName, cDocId and 58 more",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 19:01:55.730165",
+                "EndTime": "2026-11-05 19:02:07.221540",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:01:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT C_JOB_NUMBER\n  ,C_CLAIM_NUMBERS\n  ,C_FILE_KEY\n  ,C_ORIGINAL_FILE_NAME\n  ,C_DOC_ID\n  ,C_GH_1\n  ,C_GH_2\n  ,C_GH_3\n  ,C_GH_4\n  ,C_GH_5\n  ,C_GH_6\n  ,C_GH_7\n  ,C_GH_8\n  ,C_GH_9\n  ,C_GH_10\n  ,C_ENROLLEE_ID\n  ,C_MASTER_C_NAME\n  ,C_ENROLLEE_NAME\n  ,C_PROVIDER_TAX_ID\n  ,C_DOCUMENT_TYPE\n  ,C_DOCUMENT_TYPE_DESCRIPTION\n  ,C_DOCUMENT_EXTENSIONS\n  ,C_BATCH_NUMBER\n  ,I_ENVELOPE_NUMBER\n  ,C_DELIVERY_TYPE\n  ,Y_SHIPPING_AMOUNT\n  ,C_TRACKING_NUMBER\n  ,I_PAGE_QUANTITY\n  ,C_STATUS\n  ,T_FILE_RECEIPT_DATE\n  ,T_RELEASED_DATE\n  ,T_SHIP_DATE\n  ,C_USERNAME\n  ,T_DATE_TIME\n  ,C_PAPER_STOCK_DESC\n  ,C_PURGE_REASON\n  ,C_PURGE_REASON_DESC\n  ,C_RECIPIENT_TYPE\n  ,C_CLAIM_TYPE\n  ,C_CHECK_NUMBER\n  ,Y_CHECK_AMOUNT\n  ,C_PAYEE_NAME\n  ,C_PULL_CODE\n  ,SPOILED_TOUCH_AND_TOSS\n  ,REISSUED_TOUCH_AND_TOSS\n  ,C_REPORTING_ROLLUP_VALUE_1\n  ,C_REPORTING_ROLLUP_VALUE_2\n  ,C_REPORTING_ROLLUP_VALUE_3\n  ,C_REPORTING_ROLLUP_VALUE_4\n  ,C_REPORTING_ROLLUP_VALUE_5\n  ,C_REPORTING_ROLLUP_VALUE_6\n  ,C_REPORTING_ROLLUP_VALUE_7\n  ,C_REPORTING_ROLLUP_VALUE_8\n  ,C_REPORTING_ROLLUP_VALUE_9\n  ,C_REPORTING_ROLLUP_VALUE_10\n  ,C_DOCUMENT_INDEX_1\n  ,C_DOCUMENT_INDEX_2\n  ,C_DOCUMENT_INDEX_3\n  ,C_DOCUMENT_INDEX_4\n  ,DOCUMENT_WORKFLOW_ID\n  ,DOCUMENT_STATE_ID \n  FROM DW.zelis_recon \n  WHERE dw_file_detail_id = 2156"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 19:01:58",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source LOCAL_PATH records: 5000, Total target ORACLE records: 5000"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field cPayeeName vs C_PAYEE_NAME: 4729 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cPayeeName=CAROLINAS MEDICAL CENTER != C_PAYEE_NAME=<NA>"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cPayeeName=BENCHMARK PHYSICAL THERAPY OF NC LLC != C_PAYEE_NAME=<NA>"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cPayeeName=BENCHMARK PHYSICAL THERAPY OF NC LLC != C_PAYEE_NAME=<NA>"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012085'}: cPayeeName=NOVANT HEALTH MEDICAL PARK HOSPITAL != C_PAYEE_NAME=<NA>"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012091'}: cPayeeName=UNC ROCKINGHAM HEALTH CARE != C_PAYEE_NAME=<NA>"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field cPullCode vs C_PULL_CODE: 4730 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cPullCode=<NA> != C_PULL_CODE=CAROLINAS MEDICAL CENTER"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cPullCode=<NA> != C_PULL_CODE=BENCHMARK PHYSICAL THERAPY OF NC LLC"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cPullCode=<NA> != C_PULL_CODE=BENCHMARK PHYSICAL THERAPY OF NC LLC"
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012085'}: cPullCode=<NA> != C_PULL_CODE=NOVANT HEALTH MEDICAL PARK HOSPITAL"
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012091'}: cPullCode=<NA> != C_PULL_CODE=UNC ROCKINGHAM HEALTH CARE"
+                    },
+                    {
+                        "Log_ID": 13,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field SpoiledTouchAndToss vs SPOILED_TOUCH_AND_TOSS: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 14,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>"
+                    },
+                    {
+                        "Log_ID": 15,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>"
+                    },
+                    {
+                        "Log_ID": 16,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>"
+                    },
+                    {
+                        "Log_ID": 17,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>"
+                    },
+                    {
+                        "Log_ID": 18,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>"
+                    },
+                    {
+                        "Log_ID": 19,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field cReportingRollupValue1 vs C_REPORTING_ROLLUP_VALUE_1: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 20,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No"
+                    },
+                    {
+                        "Log_ID": 21,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No"
+                    },
+                    {
+                        "Log_ID": 22,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No"
+                    },
+                    {
+                        "Log_ID": 23,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No"
+                    },
+                    {
+                        "Log_ID": 24,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No"
+                    },
+                    {
+                        "Log_ID": 25,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field cDocumentIndex1 vs C_DOCUMENT_INDEX_1: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 26,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: cDocumentIndex1=132 != C_DOCUMENT_INDEX_1=nan"
+                    },
+                    {
+                        "Log_ID": 27,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: cDocumentIndex1=110 != C_DOCUMENT_INDEX_1=nan"
+                    },
+                    {
+                        "Log_ID": 28,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cDocumentIndex1=35 != C_DOCUMENT_INDEX_1=nan"
+                    },
+                    {
+                        "Log_ID": 29,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cDocumentIndex1=90 != C_DOCUMENT_INDEX_1=nan"
+                    },
+                    {
+                        "Log_ID": 30,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cDocumentIndex1=90 != C_DOCUMENT_INDEX_1=nan"
+                    },
+                    {
+                        "Log_ID": 31,
+                        "LogTime": "2026-11-05 19:02:04",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field cDocumentIndex2 vs C_DOCUMENT_INDEX_2: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 32,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=132"
+                    },
+                    {
+                        "Log_ID": 33,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=110"
+                    },
+                    {
+                        "Log_ID": 34,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=35"
+                    },
+                    {
+                        "Log_ID": 35,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=90"
+                    },
+                    {
+                        "Log_ID": 36,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=90"
+                    },
+                    {
+                        "Log_ID": 37,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Document WorkflowID vs DOCUMENT_WORKFLOW_ID: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 38,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan"
+                    },
+                    {
+                        "Log_ID": 39,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan"
+                    },
+                    {
+                        "Log_ID": 40,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan"
+                    },
+                    {
+                        "Log_ID": 41,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan"
+                    },
+                    {
+                        "Log_ID": 42,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan"
+                    },
+                    {
+                        "Log_ID": 43,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field Document StateID vs DOCUMENT_STATE_ID: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 44,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: Document StateID=10 != DOCUMENT_STATE_ID=0"
+                    },
+                    {
+                        "Log_ID": 45,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: Document StateID=10 != DOCUMENT_STATE_ID=0"
+                    },
+                    {
+                        "Log_ID": 46,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: Document StateID=10 != DOCUMENT_STATE_ID=0"
+                    },
+                    {
+                        "Log_ID": 47,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: Document StateID=10 != DOCUMENT_STATE_ID=0"
+                    },
+                    {
+                        "Log_ID": 48,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: Document StateID=10 != DOCUMENT_STATE_ID=0"
+                    },
+                    {
+                        "Log_ID": 49,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 39459"
+                    },
+                    {
+                        "Log_ID": 50,
+                        "LogTime": "2026-11-05 19:02:05",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 51,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field C_PAYEE_NAME vs cPayeeName: 4729 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 52,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_PAYEE_NAME=<NA> != cPayeeName=CAROLINAS MEDICAL CENTER"
+                    },
+                    {
+                        "Log_ID": 53,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_PAYEE_NAME=<NA> != cPayeeName=BENCHMARK PHYSICAL THERAPY OF NC LLC"
+                    },
+                    {
+                        "Log_ID": 54,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_PAYEE_NAME=<NA> != cPayeeName=BENCHMARK PHYSICAL THERAPY OF NC LLC"
+                    },
+                    {
+                        "Log_ID": 55,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012085'}: C_PAYEE_NAME=<NA> != cPayeeName=NOVANT HEALTH MEDICAL PARK HOSPITAL"
+                    },
+                    {
+                        "Log_ID": 56,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012091'}: C_PAYEE_NAME=<NA> != cPayeeName=UNC ROCKINGHAM HEALTH CARE"
+                    },
+                    {
+                        "Log_ID": 57,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field C_PULL_CODE vs cPullCode: 4730 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 58,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_PULL_CODE=CAROLINAS MEDICAL CENTER != cPullCode=<NA>"
+                    },
+                    {
+                        "Log_ID": 59,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_PULL_CODE=BENCHMARK PHYSICAL THERAPY OF NC LLC != cPullCode=<NA>"
+                    },
+                    {
+                        "Log_ID": 60,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_PULL_CODE=BENCHMARK PHYSICAL THERAPY OF NC LLC != cPullCode=<NA>"
+                    },
+                    {
+                        "Log_ID": 61,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012085'}: C_PULL_CODE=NOVANT HEALTH MEDICAL PARK HOSPITAL != cPullCode=<NA>"
+                    },
+                    {
+                        "Log_ID": 62,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012091'}: C_PULL_CODE=UNC ROCKINGHAM HEALTH CARE != cPullCode=<NA>"
+                    },
+                    {
+                        "Log_ID": 63,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field SPOILED_TOUCH_AND_TOSS vs SpoiledTouchAndToss: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 64,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No"
+                    },
+                    {
+                        "Log_ID": 65,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No"
+                    },
+                    {
+                        "Log_ID": 66,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No"
+                    },
+                    {
+                        "Log_ID": 67,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No"
+                    },
+                    {
+                        "Log_ID": 68,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No"
+                    },
+                    {
+                        "Log_ID": 69,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field C_REPORTING_ROLLUP_VALUE_1 vs cReportingRollupValue1: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 70,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>"
+                    },
+                    {
+                        "Log_ID": 71,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>"
+                    },
+                    {
+                        "Log_ID": 72,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>"
+                    },
+                    {
+                        "Log_ID": 73,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>"
+                    },
+                    {
+                        "Log_ID": 74,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>"
+                    },
+                    {
+                        "Log_ID": 75,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field C_DOCUMENT_INDEX_1 vs cDocumentIndex1: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 76,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=132"
+                    },
+                    {
+                        "Log_ID": 77,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=110"
+                    },
+                    {
+                        "Log_ID": 78,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=35"
+                    },
+                    {
+                        "Log_ID": 79,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=90"
+                    },
+                    {
+                        "Log_ID": 80,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=90"
+                    },
+                    {
+                        "Log_ID": 81,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field C_DOCUMENT_INDEX_2 vs cDocumentIndex2: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 82,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: C_DOCUMENT_INDEX_2=132 != cDocumentIndex2=nan"
+                    },
+                    {
+                        "Log_ID": 83,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: C_DOCUMENT_INDEX_2=110 != cDocumentIndex2=nan"
+                    },
+                    {
+                        "Log_ID": 84,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_DOCUMENT_INDEX_2=35 != cDocumentIndex2=nan"
+                    },
+                    {
+                        "Log_ID": 85,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_DOCUMENT_INDEX_2=90 != cDocumentIndex2=nan"
+                    },
+                    {
+                        "Log_ID": 86,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_DOCUMENT_INDEX_2=90 != cDocumentIndex2=nan"
+                    },
+                    {
+                        "Log_ID": 87,
+                        "LogTime": "2026-11-05 19:02:06",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field DOCUMENT_WORKFLOW_ID vs Document WorkflowID: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 88,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0"
+                    },
+                    {
+                        "Log_ID": 89,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0"
+                    },
+                    {
+                        "Log_ID": 90,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0"
+                    },
+                    {
+                        "Log_ID": 91,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0"
+                    },
+                    {
+                        "Log_ID": 92,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0"
+                    },
+                    {
+                        "Log_ID": 93,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field DOCUMENT_STATE_ID vs Document StateID: 5000 mismatch(es), showing first 5"
+                    },
+                    {
+                        "Log_ID": 94,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: DOCUMENT_STATE_ID=0 != Document StateID=10"
+                    },
+                    {
+                        "Log_ID": 95,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: DOCUMENT_STATE_ID=0 != Document StateID=10"
+                    },
+                    {
+                        "Log_ID": 96,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: DOCUMENT_STATE_ID=0 != Document StateID=10"
+                    },
+                    {
+                        "Log_ID": 97,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: DOCUMENT_STATE_ID=0 != Document StateID=10"
+                    },
+                    {
+                        "Log_ID": 98,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: DOCUMENT_STATE_ID=0 != Document StateID=10"
+                    },
+                    {
+                        "Log_ID": 99,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 39459"
+                    },
+                    {
+                        "Log_ID": 100,
+                        "LogTime": "2026-11-05 19:02:07",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [
+                    "cPayeeName",
+                    "cPullCode",
+                    "SpoiledTouchAndToss",
+                    "cReportingRollupValue1",
+                    "cDocumentIndex1",
+                    "cDocumentIndex2",
+                    "Document WorkflowID",
+                    "Document StateID",
+                    "C_PAYEE_NAME",
+                    "C_PULL_CODE",
+                    "SPOILED_TOUCH_AND_TOSS",
+                    "C_REPORTING_ROLLUP_VALUE_1",
+                    "C_DOCUMENT_INDEX_1",
+                    "C_DOCUMENT_INDEX_2",
+                    "DOCUMENT_WORKFLOW_ID",
+                    "DOCUMENT_STATE_ID"
+                ],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Target DW.zelis_recon: no duplicate C_JOB_NUMBER, C_CLAIM_NUMBERS",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 19:01:55.740799",
+                "EndTime": "2026-11-05 19:01:57.772679",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:01:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT C_JOB_NUMBER\n  ,C_CLAIM_NUMBERS \n  FROM DW.zelis_recon \n  WHERE dw_file_detail_id = 2156"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 19:01:55",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['C_JOB_NUMBER', 'C_CLAIM_NUMBERS']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'C_JOB_NUMBER, C_CLAIM_NUMBERS': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Target DW.zelis_recon: keys and load columns are populated",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 19:01:55.740799",
+                "EndTime": "2026-11-05 19:01:57.187732",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:01:55",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT C_CLAIM_NUMBERS\n  ,ZELIS_RECON_ID\n  ,C_FILE_KEY\n  ,C_DOC_ID\n  ,I_ENVELOPE_NUMBER\n  ,T_FILE_RECEIPT_DATE\n  ,C_CHECK_NUMBER\n  ,DOCUMENT_STATE_ID\n  ,DW_FILE_DETAIL_ID\n  ,DW_CREATED_DT \n  FROM DW.zelis_recon \n  WHERE dw_file_detail_id = 2156"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 19:01:55",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Checking fields: ['C_CLAIM_NUMBERS', 'ZELIS_RECON_ID', 'C_FILE_KEY', 'C_DOC_ID', 'I_ENVELOPE_NUMBER', 'T_FILE_RECEIPT_DATE', 'C_CHECK_NUMBER', 'DOCUMENT_STATE_ID', 'DW_FILE_DETAIL_ID', 'DW_CREATED_DT']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'C_CLAIM_NUMBERS': No nulls found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'ZELIS_RECON_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'C_FILE_KEY': No nulls found."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'C_DOC_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'I_ENVELOPE_NUMBER': No nulls found."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'T_FILE_RECEIPT_DATE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'C_CHECK_NUMBER': No nulls found."
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DOCUMENT_STATE_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_FILE_DETAIL_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2026-11-05 19:01:57",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_CREATED_DT': No nulls found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "File Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv: no row repeated in every field",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 19:01:55.740799",
+                "EndTime": "2026-11-05 19:01:55.803842",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 19:01:55",
+                        "Type": "ERROR",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Exception: Path not found: C:\\Users\\Amit.Rawat\\Documents"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-11-05 19:02:07.362235"
+        }
+    }
+]

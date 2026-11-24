@@ -1,0 +1,391 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for PAGroup_ID, Name, Description, Business_ID, Status_ID, Status_Name, Start_DT, End_DT",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "PAGroup",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"PAGroup_ID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Status.StatusID\": 1, \"Name\": 1, \"Description\": 1, \"Span.EndDate\": 1, \"Status.Name\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT PA_GROUP_ID, BUSINESS_ID, START_DT, STATUS_ID, PA_GROUP_NAME, DESCRIPTION, END_DT, STATUS_NAME FROM DW.PA_GROUP"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "PAGroup_ID",
+        "TargetField": "PA_GROUP_ID"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "TargetField": "START_DT"
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "TargetField": "STATUS_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Name",
+        "TargetField": "PA_GROUP_NAME"
+      },
+      {
+        "SourceField": "Description",
+        "TargetField": "DESCRIPTION"
+      },
+      {
+        "SourceField": "Span.EndDate",
+        "TargetField": "END_DT"
+      },
+      {
+        "SourceField": "Status.Name",
+        "TargetField": "STATUS_NAME"
+      }
+    ],
+    "DataFilters": [],
+    "Module": "PAGroup",
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "UPDATED",
+      "RegressionSet_ID": 366,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "changed: CompareFields, JoinFields, Source, Target",
+      "LoadedOn": "2026-11-06 11:46:50"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in PAGroup_ID, Name, Description, Business_ID, Status_ID, Status_Name, Start_DT, End_DT",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "PAGroup",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"PAGroup_ID\": {\"$ifNull\": [\"$PAGroup_ID\", null]}, \"Business.Business_ID\": {\"$ifNull\": [\"$Business.Business_ID\", null]}, \"Span.StartDate\": {\"$ifNull\": [\"$Span.StartDate\", null]}, \"Status.StatusID\": {\"$ifNull\": [\"$Status.StatusID\", null]}}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "PAGroup_ID",
+        "ResultFields": [
+          "PAGroup_ID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "Module": "PAGroup",
+    "ExpectedResult": "PAGroup_ID, Business.Business_ID, Span.StartDate, Status.StatusID should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "UPDATED",
+      "RegressionSet_ID": 367,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "changed: CheckFields, ExpectedResult, Source",
+      "LoadedOn": "2026-11-06 11:46:50"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on PAGroup_ID, Name, Description, Business_ID, Status_ID, Status_Name, Start_DT, End_DT",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "PAGroup",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"PAGroup_ID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Status.StatusID\": 1}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "PAGroup_ID",
+        "ResultFields": [
+          "PAGroup_ID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same PAGroup_ID, Business.Business_ID, Span.StartDate, Status.StatusID",
+    "DataFilters": [],
+    "Module": "PAGroup",
+    "_LoadStatus": {
+      "Status": "UPDATED",
+      "RegressionSet_ID": 368,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "changed: CheckFields, ExpectedResult, Source",
+      "LoadedOn": "2026-11-06 11:46:50"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "PAGroup",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.PA_GROUP: no duplicate PA_GROUP_ID, BUSINESS_ID, START_DT, STATUS_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT PA_GROUP_ID, BUSINESS_ID, START_DT, STATUS_ID FROM DW.PA_GROUP"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "PA_GROUP_ID",
+          "BUSINESS_ID",
+          "START_DT",
+          "STATUS_ID"
+        ],
+        "ResultFields": [
+          "PA_GROUP_ID",
+          "BUSINESS_ID",
+          "START_DT",
+          "STATUS_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same PA_GROUP_ID, BUSINESS_ID, START_DT, STATUS_ID",
+    "_LoadStatus": {
+      "Status": "UPDATED",
+      "RegressionSet_ID": 369,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "changed: CheckFields, ExpectedResult, Source",
+      "LoadedOn": "2026-11-06 11:46:50"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "PAGroup",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target DW.PA_GROUP: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT PA_GROUP_ID, START_DT, STATUS_ID, BUSINESS_ID, CREATED_DT, DW_CREATED_DT, DW_MODIFIED_DT FROM DW.PA_GROUP"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "PA_GROUP_ID",
+        "ResultFields": [
+          "PA_GROUP_ID"
+        ]
+      },
+      {
+        "SourceField": "START_DT",
+        "ResultFields": [
+          "START_DT"
+        ]
+      },
+      {
+        "SourceField": "STATUS_ID",
+        "ResultFields": [
+          "STATUS_ID"
+        ]
+      },
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "CREATED_DT",
+        "ResultFields": [
+          "CREATED_DT"
+        ]
+      },
+      {
+        "SourceField": "DW_CREATED_DT",
+        "ResultFields": [
+          "DW_CREATED_DT"
+        ]
+      },
+      {
+        "SourceField": "DW_MODIFIED_DT",
+        "ResultFields": [
+          "DW_MODIFIED_DT"
+        ]
+      }
+    ],
+    "ExpectedResult": "PA_GROUP_ID, START_DT, STATUS_ID, BUSINESS_ID, CREATED_DT, DW_CREATED_DT, DW_MODIFIED_DT should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "UPDATED",
+      "RegressionSet_ID": 370,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "changed: CheckFields, ExpectedResult, Source",
+      "LoadedOn": "2026-11-06 11:46:50"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "PAGroup",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "PA_GROUP_DOMAINS matches PAGroup.Domains[] with Domains.ValueRange[] flattened",
+    "Viceversa": true,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "PAGroup",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$unwind\": \"$Domains\"}, {\"$unwind\": {\"path\": \"$Domains.ValueRange\", \"preserveNullAndEmptyArrays\": true}}, {\"$project\": {\"_id\": 0, \"PAGroup_ID\": 1, \"Domains.ServiceDomain_ID\": 1, \"Domains.ValueRange.FromVal\": 1, \"Domains.ValueRange.ToVal\": 1, \"Domains.ValueRange.IncludeExclude\": 1, \"Domains.ServiceDomain\": 1, \"Domains.ExpressionGroupNum\": 1, \"Domains.AppliesToFormType\": 1, \"Business.Business_ID\": 1}}]"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT PA_GROUP_ID, SERVICE_DOMAIN_ID, FROM_VAL, TO_VAL, INCLUDE_EXCLUDE, SERVICE_DOMAIN, EXPR_GROUP_NUM, APPLIES_TO_FORM_TYPE, BUSINESS_ID FROM DW.PA_GROUP_DOMAINS"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "PAGroup_ID",
+        "TargetField": "PA_GROUP_ID"
+      },
+      {
+        "SourceField": "Domains.ServiceDomain_ID",
+        "TargetField": "SERVICE_DOMAIN_ID"
+      },
+      {
+        "SourceField": "Domains.ValueRange.FromVal",
+        "TargetField": "FROM_VAL"
+      },
+      {
+        "SourceField": "Domains.ValueRange.ToVal",
+        "TargetField": "TO_VAL"
+      },
+      {
+        "SourceField": "Domains.ValueRange.IncludeExclude",
+        "TargetField": "INCLUDE_EXCLUDE"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "Domains.ServiceDomain",
+        "TargetField": "SERVICE_DOMAIN"
+      },
+      {
+        "SourceField": "Domains.ExpressionGroupNum",
+        "TargetField": "EXPR_GROUP_NUM"
+      },
+      {
+        "SourceField": "Domains.AppliesToFormType",
+        "TargetField": "APPLIES_TO_FORM_TYPE"
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 371,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-11-06 11:46:50"
+    }
+  },
+  {
+    "TestCaseNumber": 7,
+    "Module": "PAGroup",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.PA_GROUP_DOMAINS: no duplicate PA_GROUP_ID, SERVICE_DOMAIN_ID, FROM_VAL, TO_VAL, INCLUDE_EXCLUDE",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT PA_GROUP_ID, SERVICE_DOMAIN_ID, FROM_VAL, TO_VAL, INCLUDE_EXCLUDE FROM DW.PA_GROUP_DOMAINS"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "PA_GROUP_ID",
+          "SERVICE_DOMAIN_ID",
+          "FROM_VAL",
+          "TO_VAL",
+          "INCLUDE_EXCLUDE"
+        ],
+        "ResultFields": [
+          "PA_GROUP_ID",
+          "SERVICE_DOMAIN_ID",
+          "FROM_VAL",
+          "TO_VAL",
+          "INCLUDE_EXCLUDE"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same PA_GROUP_ID, SERVICE_DOMAIN_ID, FROM_VAL, TO_VAL, INCLUDE_EXCLUDE",
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 372,
+      "DataRegressionSetTestCaseNumber": 7,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-11-06 11:46:50"
+    }
+  }
+]

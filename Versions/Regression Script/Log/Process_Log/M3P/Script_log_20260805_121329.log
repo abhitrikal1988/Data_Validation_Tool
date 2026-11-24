@@ -1,0 +1,150 @@
+2026-08-05 12:13:29,725 | INFO | ========== Starting Validation ==========
+2026-08-05 12:13:29,726 | INFO | Module         : M3P
+2026-08-05 12:13:29,727 | INFO | Stage          : None
+2026-08-05 12:13:29,728 | INFO | Cycle          : None
+2026-08-05 12:13:29,729 | INFO | Environment    : MCPQA1
+2026-08-05 12:13:29,729 | INFO | Runtime Filters: None — using DefaultValues
+2026-08-05 12:13:29,926 | INFO | Parallel execution started — 5 active thread(s) (requested: 5, test cases: 9).
+2026-08-05 12:16:50,654 | INFO | ========== [ Running TestCase 1: Enrollment Data comparison between M3P and PBM ] ==========
+2026-08-05 12:16:50,654 | INFO | TestCase 1: Source: db.Test_M3PMemberReceipt_PBM.find({})
+2026-08-05 12:16:50,654 | INFO | TestCase 1: Target [ORACLE]:select m.card_id
+  ,me.start_dt
+  ,me.end_dt 
+  from claim.mbr_enroll_other me
+  ,claim.member m 
+  where me.member_id_rx = m.member_id_rx 
+  and me.enroll_type = 12531 
+  and nvl(me.delete_flg, 'N') = 'N'
+2026-08-05 12:16:50,654 | ISSUE | Failed to create Oracle SessionPool for 'PBMQA3': ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:16:50,655 | ISSUE | Error acquiring Oracle connection: ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:16:50,655 | ISSUE | Error fetching target data (ORACLE): ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:16:50,655 | WARNING | Unknown data type for 'target_data': <class 'NoneType'>. Assuming not empty.
+2026-08-05 12:16:50,655 | INFO | [TC 1] Source data sample (5 of 61 records):
+2026-08-05 12:16:50,655 | INFO |   1: {'Cardholder_ID': 'EH013557701', 'ElectionStartDate': '10/25/2024', 'ElectionEndDate': '12/31/2024'}
+2026-08-05 12:16:50,656 | INFO |   2: {'Cardholder_ID': 'T9808000657', 'ElectionStartDate': '05/01/2025', 'ElectionEndDate': '12/31/2025'}
+2026-08-05 12:16:50,656 | INFO |   3: {'Cardholder_ID': 'T9808000661', 'ElectionStartDate': '01/01/2025', 'ElectionEndDate': '12/31/2025'}
+2026-08-05 12:16:50,656 | INFO |   4: {'Cardholder_ID': 'T9808000661', 'ElectionStartDate': '03/01/2025', 'ElectionEndDate': '03/31/2025'}
+2026-08-05 12:16:50,656 | INFO |   5: {'Cardholder_ID': 'T9808000661', 'ElectionStartDate': '01/01/2025', 'ElectionEndDate': '06/30/2025'}
+2026-08-05 12:16:50,656 | INFO | Execution time for TestCase 1: 200.73 seconds
+2026-08-05 12:13:31,067 | INFO | ========== [ Running TestCase 2: Checking MemberReceipt Data Validation after CapRx load ] ==========
+2026-08-05 12:13:31,068 | INFO | TestCase 2: Source: db.Test_M3P_Stg_Data_CAPRX.find({})
+2026-08-05 12:13:31,068 | INFO | TestCase 2: Target: db.Test_M3PMemberReceipt_CAPRX.find({})
+2026-08-05 12:13:31,068 | ISSUE | Error fetching source data (MONGODB): 'MONGODB_MCPQA1'
+2026-08-05 12:13:31,068 | ISSUE | Error fetching target data (MONGODB): 'MONGODB_MCPQA1'
+2026-08-05 12:13:31,070 | WARNING | Unknown data type for 'source_data': <class 'NoneType'>. Assuming not empty.
+2026-08-05 12:13:31,070 | WARNING | Unknown data type for 'source_data': <class 'NoneType'>. Assuming not empty.
+2026-08-05 12:13:31,071 | WARNING | Unknown data type for 'target_data': <class 'NoneType'>. Assuming not empty.
+2026-08-05 12:13:31,071 | INFO | Execution time for TestCase 2: 1.14 seconds
+2026-08-05 12:13:35,887 | INFO | ========== [ Running TestCase 3: Checking CapRX Data Validation into STG collection ] ==========
+2026-08-05 12:13:35,888 | INFO | TestCase 3: Source: db.Test_M3P_Cap_Data.find({})
+2026-08-05 12:13:35,888 | INFO | TestCase 3: Target: db.Test_M3P_Stg_Data.find({})
+2026-08-05 12:13:35,888 | INFO | [TC 3] Source data sample (5 of 426 records):
+2026-08-05 12:13:35,888 | INFO |   1: {'Cardholder_ID': 'T9808017057', 'Effective_Begin': None, 'Effective_End': None, 'Plan_ID': 'H9808004', 'Relationship_Code': '1', 'Eligibility_ID': '7D93HU2AX16', 'CMS_Contract_ID': 'H9808', 'Benefit': '004', 'M3P_Election_Status': None, 'M3P_Request_Date': None, 'Signature_Date': None, 'M3P_Program_Year': None, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '8727381'}
+2026-08-05 12:13:35,888 | INFO |   2: {'Cardholder_ID': 'T9808017858', 'Effective_Begin': datetime.datetime(2025, 2, 19, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Effective_End': datetime.datetime(2025, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Plan_ID': 'H9808004', 'Relationship_Code': '1', 'Eligibility_ID': '3AM8WW2XR31', 'CMS_Contract_ID': 'H9808', 'Benefit': '004', 'M3P_Election_Status': 'Y', 'M3P_Request_Date': datetime.datetime(2025, 2, 19, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Signature_Date': datetime.datetime(2025, 2, 19, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'M3P_Program_Year': None, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '4926959'}
+2026-08-05 12:13:35,888 | INFO |   3: {'Cardholder_ID': 'T9808017966', 'Effective_Begin': datetime.datetime(2025, 1, 27, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Effective_End': datetime.datetime(2025, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Plan_ID': 'H2624004', 'Relationship_Code': '1', 'Eligibility_ID': '9ND4HP4DN71', 'CMS_Contract_ID': 'H2624', 'Benefit': '004', 'M3P_Election_Status': 'Y', 'M3P_Request_Date': datetime.datetime(2025, 1, 27, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Signature_Date': datetime.datetime(2025, 1, 27, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'M3P_Program_Year': None, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '4670931'}
+2026-08-05 12:13:35,888 | INFO |   4: {'Cardholder_ID': 'T9808017997', 'Effective_Begin': None, 'Effective_End': None, 'Plan_ID': 'H9808004', 'Relationship_Code': '1', 'Eligibility_ID': '2M38M15CH28', 'CMS_Contract_ID': 'H9808', 'Benefit': '004', 'M3P_Election_Status': None, 'M3P_Request_Date': None, 'Signature_Date': None, 'M3P_Program_Year': 2025.0, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '10206841'}
+2026-08-05 12:13:35,889 | INFO |   5: {'Cardholder_ID': 'T9808018396', 'Effective_Begin': datetime.datetime(2024, 12, 31, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Effective_End': datetime.datetime(2025, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Plan_ID': 'H9808004', 'Relationship_Code': '1', 'Eligibility_ID': '6XY5W51HY67', 'CMS_Contract_ID': 'H9808', 'Benefit': '004', 'M3P_Election_Status': 'Y', 'M3P_Request_Date': datetime.datetime(2024, 12, 8, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Signature_Date': datetime.datetime(2024, 12, 8, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'M3P_Program_Year': None, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '10052204'}
+2026-08-05 12:13:35,889 | INFO | [TC 3] Target data sample (5 of 426 records):
+2026-08-05 12:13:35,889 | INFO |   1: {'Cardholder_ID': 'T9808017057', 'Effective_Begin': None, 'Effective_End': datetime.datetime(2025, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Plan_ID': 'H9808004', 'Relationship_Code': '1', 'Eligibility_ID': '7D93HU2AX16', 'CMS_Contract_ID': 'H9808', 'Benefit': '004', 'M3P_Election_Status': None, 'M3P_Request_Date': None, 'Signature_Date': None, 'M3P_Program_Year': None, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '8727381'}
+2026-08-05 12:13:35,889 | INFO |   2: {'Cardholder_ID': 'T9808017858', 'Effective_Begin': datetime.datetime(2025, 2, 19, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Effective_End': datetime.datetime(2025, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Plan_ID': 'H9808004', 'Relationship_Code': '1', 'Eligibility_ID': '3AM8WW2XR31', 'CMS_Contract_ID': 'H9808', 'Benefit': '004', 'M3P_Election_Status': 'Y', 'M3P_Request_Date': datetime.datetime(2025, 2, 19, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Signature_Date': datetime.datetime(2025, 2, 19, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'M3P_Program_Year': None, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '4926959'}
+2026-08-05 12:13:35,889 | INFO |   3: {'Cardholder_ID': 'T9808017966', 'Effective_Begin': datetime.datetime(2025, 1, 27, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Effective_End': None, 'Plan_ID': 'H2624004', 'Relationship_Code': '1', 'Eligibility_ID': '9ND4HP4DN71', 'CMS_Contract_ID': 'H2624', 'Benefit': '004', 'M3P_Election_Status': 'Y', 'M3P_Request_Date': datetime.datetime(2025, 1, 27, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Signature_Date': datetime.datetime(2025, 1, 27, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'M3P_Program_Year': None, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '4670931'}
+2026-08-05 12:13:35,889 | INFO |   4: {'Cardholder_ID': 'T9808017997', 'Effective_Begin': None, 'Effective_End': None, 'Plan_ID': 'H9808004', 'Relationship_Code': '1', 'Eligibility_ID': '2M38M15CH28', 'CMS_Contract_ID': 'H9808', 'Benefit': '004', 'M3P_Election_Status': None, 'M3P_Request_Date': None, 'Signature_Date': None, 'M3P_Program_Year': 2025, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '10206841'}
+2026-08-05 12:13:35,889 | INFO |   5: {'Cardholder_ID': 'T9808018396', 'Effective_Begin': datetime.datetime(2024, 12, 31, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Effective_End': None, 'Plan_ID': 'H9808004', 'Relationship_Code': '1', 'Eligibility_ID': '6XY5W51HY67', 'CMS_Contract_ID': 'H9808', 'Benefit': '004', 'M3P_Election_Status': 'Y', 'M3P_Request_Date': datetime.datetime(2024, 12, 8, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'Signature_Date': datetime.datetime(2024, 12, 8, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'M3P_Program_Year': None, 'Discontinuation_Reason': None, 'Reinstatement_Reason': None, 'Record_ID': '10052204'}
+2026-08-05 12:13:35,890 | INFO | [SRC->TGT]  - Total source MONGODB records: 426
+2026-08-05 12:13:35,890 | INFO | [SRC->TGT]  - Total target MONGODB records: 426
+2026-08-05 12:13:35,890 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808017057', 'Effective_Begin': NaT}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00-05:00
+2026-08-05 12:13:35,890 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808017858', 'Effective_Begin': Timestamp('2025-02-19 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=2025-12-30 19:00:00-05:00
+2026-08-05 12:13:35,890 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808017966', 'Effective_Begin': Timestamp('2025-01-27 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,890 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,890 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,890 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,890 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=2025-04-30 20:00:00-04:00
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=2025-04-30 20:00:00-04:00
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,891 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,892 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,892 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,892 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=2025-04-30 20:00:00-04:00
+2026-08-05 12:13:35,892 | ISSUE | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=2025-12-30 19:00:00 != Effective_End=NaT
+2026-08-05 12:13:35,892 | INFO | Vice-versa comparison TGT->SRC Started
+2026-08-05 12:13:35,892 | INFO | [TGT->SRC]  - Total source MONGODB records: 426
+2026-08-05 12:13:35,892 | INFO | [TGT->SRC]  - Total target MONGODB records: 426
+2026-08-05 12:13:35,892 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808017057', 'Effective_Begin': NaT}: Effective_End=2025-12-30 19:00:00-05:00 != Effective_End=NaT
+2026-08-05 12:13:35,893 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808017858', 'Effective_Begin': Timestamp('2025-02-19 19:00:00')}: Effective_End=2025-12-30 19:00:00-05:00 != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,893 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808017966', 'Effective_Begin': Timestamp('2025-01-27 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,893 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,893 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,893 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,893 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-04-30 20:00:00
+2026-08-05 12:13:35,893 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,894 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,894 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,894 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,894 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,894 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-04-30 20:00:00
+2026-08-05 12:13:35,894 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,894 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,895 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,895 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,895 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,895 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-04-30 20:00:00
+2026-08-05 12:13:35,895 | ISSUE | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808018396', 'Effective_Begin': Timestamp('2024-12-31 19:00:00')}: Effective_End=NaT != Effective_End=2025-12-30 19:00:00
+2026-08-05 12:13:35,895 | INFO | Data comparison process completed.
+2026-08-05 12:13:35,895 | ISSUE | [TestCase 3] Test Result: FAIL
+2026-08-05 12:13:35,895 | INFO | Execution time for TestCase 3: 5.96 seconds
+2026-08-05 12:13:31,253 | INFO | ========== [ Running TestCase 4: Checking TBD Records in MemberReceipt Collection ] ==========
+2026-08-05 12:13:31,254 | INFO | TestCase 4: Source: db.Test_TBD_M3PMemberReceipt.find({})
+2026-08-05 12:13:31,254 | INFO | [TC 4] Source data sample (5 of 100 records):
+2026-08-05 12:13:31,254 | INFO |   1: {'_id': ObjectId('6711789b11f6c17a10de030e'), 'M3PMemberReceipt_ID': 9867327, 'M3PMember_ID': 4299, 'ElectionStatus': {'ElectionRequestDate': None, 'ElectionStartDate': datetime.datetime(2024, 7, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'ElectionEndDate': datetime.datetime(2024, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'ElectionYear': '2024', 'Elected': 'Y', 'Family': False, 'AppReceivedDate': datetime.datetime(2024, 7, 4, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Signature': True, 'SignatureDate': datetime.datetime(2023, 12, 31, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>)}, 'ElectionStartDate': datetime.datetime(2024, 7, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Cardholder_ID': 'T9808050554', 'CapRX': []}
+2026-08-05 12:13:31,254 | INFO |   2: {'_id': ObjectId('6711789b11f6c17a10de0311'), 'M3PMemberReceipt_ID': 9867328, 'M3PMember_ID': 4301, 'ElectionStatus': {'ElectionRequestDate': None, 'ElectionStartDate': datetime.datetime(2024, 7, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'ElectionEndDate': datetime.datetime(2024, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'ElectionYear': '2024', 'Elected': 'Y', 'Family': False, 'AppReceivedDate': datetime.datetime(2024, 7, 7, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Signature': True, 'SignatureDate': datetime.datetime(2023, 12, 31, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>)}, 'ElectionStartDate': datetime.datetime(2024, 7, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Cardholder_ID': 'T9808050571', 'CapRX': []}
+2026-08-05 12:13:31,255 | INFO |   3: {'_id': ObjectId('6711789b11f6c17a10de0318'), 'M3PMemberReceipt_ID': 9867329, 'M3PMember_ID': 4307, 'ElectionStatus': {'ElectionRequestDate': datetime.datetime(2024, 7, 1, 0, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'ElectionStartDate': datetime.datetime(2024, 6, 30, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'ElectionEndDate': datetime.datetime(2024, 7, 15, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'AppReceivedDate': datetime.datetime(2024, 7, 10, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'SignatureDate': datetime.datetime(2024, 7, 10, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Signature': True, 'ElectionYear': 2024, 'Elected': 'Y', 'Family': False}, 'ElectionStartDate': datetime.datetime(2024, 6, 30, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Cardholder_ID': 'T9808050610', 'CapRX': []}
+2026-08-05 12:13:31,255 | INFO |   4: {'_id': ObjectId('6711789c11f6c17a10de031b'), 'M3PMemberReceipt_ID': 10002864, 'M3PMember_ID': 4309, 'ElectionStatus': {'ElectionRequestDate': datetime.datetime(2024, 8, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'ElectionStartDate': datetime.datetime(2024, 8, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'ElectionEndDate': datetime.datetime(2024, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'ElectionYear': '2024', 'Elected': 'Y', 'Family': False, 'AppReceivedDate': datetime.datetime(2024, 7, 14, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Signature': True, 'SignatureDate': datetime.datetime(2024, 7, 14, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>)}, 'ElectionStartDate': datetime.datetime(2024, 8, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Cardholder_ID': 'T9808050650', 'CapRX': []}
+2026-08-05 12:13:31,255 | INFO |   5: {'_id': ObjectId('6711789d11f6c17a10de032a'), 'M3PMemberReceipt_ID': 10002865, 'M3PMember_ID': 4323, 'ElectionStatus': {'ElectionRequestDate': datetime.datetime(2024, 7, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'ElectionStartDate': datetime.datetime(2024, 7, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'ElectionEndDate': datetime.datetime(2024, 12, 30, 19, 0, tzinfo=<DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>), 'ElectionYear': '2024', 'Elected': 'Y', 'Family': False, 'AppReceivedDate': datetime.datetime(2024, 7, 17, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Signature': True, 'SignatureDate': datetime.datetime(2024, 7, 17, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>)}, 'ElectionStartDate': datetime.datetime(2024, 7, 31, 20, 0, tzinfo=<DstTzInfo 'America/New_York' EDT-1 day, 20:00:00 DST>), 'Cardholder_ID': 'T9808050690', 'CapRX': []}
+2026-08-05 12:13:31,255 | INFO | [TC 4] Checking TBD Records in MemberReceipt Collection
+2026-08-05 12:13:31,255 | INFO | Source Count: 100| Approved Count: 0
+2026-08-05 12:13:31,256 | INFO | Records Count Validation is completed.
+2026-08-05 12:13:31,256 | ISSUE | [TC 4] Fail: Row count Not matched.
+2026-08-05 12:13:31,256 | INFO | Execution time for TestCase 4: 1.33 seconds
+2026-08-05 12:13:31,081 | INFO | ========== [ Running TestCase 5: Checking duplicate records of phone sequence ] ==========
+2026-08-05 12:13:31,082 | INFO | TestCase 5: Source: db.Test_Duplicate_Phone_Sequence_M3PMember.find({})
+2026-08-05 12:13:31,082 | INFO | [TC 5] Checking duplicate records of phone sequence
+2026-08-05 12:13:31,082 | INFO | Source Count: 0| Approved Count: 0
+2026-08-05 12:13:31,083 | INFO | Records Count Validation is completed.
+2026-08-05 12:13:31,083 | INFO | [TC 5] PASS: Row counts match.
+2026-08-05 12:13:31,083 | INFO | Execution time for TestCase 5: 1.15 seconds
+2026-08-05 12:13:31,074 | INFO | ========== [ Running TestCase 6: Checking missing phone sequence ] ==========
+2026-08-05 12:13:31,074 | INFO | TestCase 6: Source: db.Test_Phone_Sequence_M3PMember.find({})
+2026-08-05 12:13:31,075 | INFO | [TC 6] Checking missing phone sequence
+2026-08-05 12:13:31,075 | INFO | Source Count: 0| Approved Count: 0
+2026-08-05 12:13:31,075 | INFO | Records Count Validation is completed.
+2026-08-05 12:13:31,076 | INFO | [TC 6] PASS: Row counts match.
+2026-08-05 12:13:31,077 | INFO | Execution time for TestCase 6: 0.01 seconds
+2026-08-05 12:13:31,083 | INFO | ========== [ Running TestCase 7: Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap ] ==========
+2026-08-05 12:13:31,083 | INFO | TestCase 7: Source: db.Test_M3P_MemberReceipt_EnrollmentStatus.find({})
+2026-08-05 12:13:31,083 | ISSUE | Error fetching source data (MONGODB): 'MONGODB_MCPQA1'
+2026-08-05 12:13:31,084 | INFO | [TC 7] Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap
+2026-08-05 12:13:31,084 | WARNING | [TC 7] Unknown data type: <class 'NoneType'>. Marking as FAIL.
+2026-08-05 12:13:31,084 | INFO | Execution time for TestCase 7: 0.01 seconds
+2026-08-05 12:19:39,713 | INFO | ========== [ Running TestCase 8: PBM View for Testing ] ==========
+2026-08-05 12:19:39,713 | INFO | TestCase 8: Source [ORACLE]:SELECT * FROM Claim.vw_claim
+2026-08-05 12:19:39,714 | ISSUE | Failed to create Oracle SessionPool for 'PBMQA3': ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:19:39,714 | ISSUE | Error acquiring Oracle connection: ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:19:39,714 | ISSUE | Error fetching source data (Oracle): ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:19:39,714 | INFO | Execution time for TestCase 8: 368.64 seconds
+2026-08-05 12:22:28,735 | INFO | ========== [ Running TestCase 9: PBM Table for Testing ] ==========
+2026-08-05 12:22:28,736 | INFO | TestCase 9: Source [ORACLE]:SELECT * FROM Claim.claim_pharmacy
+2026-08-05 12:22:28,736 | ISSUE | Failed to create Oracle SessionPool for 'PBMQA3': ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:22:28,736 | ISSUE | Error acquiring Oracle connection: ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:22:28,736 | ISSUE | Error fetching source data (Oracle): ORA-12154: TNS:could not resolve the connect identifier specified
+2026-08-05 12:22:28,736 | INFO | Execution time for TestCase 9: 537.65 seconds
+2026-08-05 12:22:28,791 | INFO | Total Number of Testcases Executed : 9,Pass : 4, Fail : 5, Skippped : 0
+2026-08-05 12:22:28,793 | INFO | Total execution time: 538.87 seconds (9.0 minutes)
+2026-08-05 12:22:28,847 | INFO | Master combined log written to: MCPQA1_M3P_Log_20260805_162228.json
+2026-08-05 12:22:28,854 | INFO | Result.InsertData : 6a7363449adb2e08b2590eb6
+2026-08-05 12:22:30,280 | INFO | ========== Completed Validation ==========

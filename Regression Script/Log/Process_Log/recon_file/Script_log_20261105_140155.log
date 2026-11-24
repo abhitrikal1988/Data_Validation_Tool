@@ -1,0 +1,278 @@
+2026-11-05 14:01:55,630 | INFO | ========== Starting Validation ==========
+2026-11-05 14:01:55,630 | INFO | Module         : recon_file
+2026-11-05 14:01:55,630 | INFO | Stage          : None
+2026-11-05 14:01:55,630 | INFO | Cycle          : None
+2026-11-05 14:01:55,630 | INFO | Environment    : MCPQA1
+2026-11-05 14:01:55,630 | INFO | Runtime Filters: {'dw_file_detail_id': '2156'}
+2026-11-05 14:01:55,740 | INFO | Parallel execution started — 4 active thread(s) (requested: 5, test cases: 4).
+2026-11-05 14:02:07,221 | INFO | ========== [ Running TestCase 1: Compare source and target on cFileKey, cOriginalFileName, cDocId and 58 more ] ==========
+2026-11-05 14:02:07,221 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-11-05 14:02:07,221 | INFO | TestCase 1: Target [ORACLE]:SELECT C_JOB_NUMBER
+  ,C_CLAIM_NUMBERS
+  ,C_FILE_KEY
+  ,C_ORIGINAL_FILE_NAME
+  ,C_DOC_ID
+  ,C_GH_1
+  ,C_GH_2
+  ,C_GH_3
+  ,C_GH_4
+  ,C_GH_5
+  ,C_GH_6
+  ,C_GH_7
+  ,C_GH_8
+  ,C_GH_9
+  ,C_GH_10
+  ,C_ENROLLEE_ID
+  ,C_MASTER_C_NAME
+  ,C_ENROLLEE_NAME
+  ,C_PROVIDER_TAX_ID
+  ,C_DOCUMENT_TYPE
+  ,C_DOCUMENT_TYPE_DESCRIPTION
+  ,C_DOCUMENT_EXTENSIONS
+  ,C_BATCH_NUMBER
+  ,I_ENVELOPE_NUMBER
+  ,C_DELIVERY_TYPE
+  ,Y_SHIPPING_AMOUNT
+  ,C_TRACKING_NUMBER
+  ,I_PAGE_QUANTITY
+  ,C_STATUS
+  ,T_FILE_RECEIPT_DATE
+  ,T_RELEASED_DATE
+  ,T_SHIP_DATE
+  ,C_USERNAME
+  ,T_DATE_TIME
+  ,C_PAPER_STOCK_DESC
+  ,C_PURGE_REASON
+  ,C_PURGE_REASON_DESC
+  ,C_RECIPIENT_TYPE
+  ,C_CLAIM_TYPE
+  ,C_CHECK_NUMBER
+  ,Y_CHECK_AMOUNT
+  ,C_PAYEE_NAME
+  ,C_PULL_CODE
+  ,SPOILED_TOUCH_AND_TOSS
+  ,REISSUED_TOUCH_AND_TOSS
+  ,C_REPORTING_ROLLUP_VALUE_1
+  ,C_REPORTING_ROLLUP_VALUE_2
+  ,C_REPORTING_ROLLUP_VALUE_3
+  ,C_REPORTING_ROLLUP_VALUE_4
+  ,C_REPORTING_ROLLUP_VALUE_5
+  ,C_REPORTING_ROLLUP_VALUE_6
+  ,C_REPORTING_ROLLUP_VALUE_7
+  ,C_REPORTING_ROLLUP_VALUE_8
+  ,C_REPORTING_ROLLUP_VALUE_9
+  ,C_REPORTING_ROLLUP_VALUE_10
+  ,C_DOCUMENT_INDEX_1
+  ,C_DOCUMENT_INDEX_2
+  ,C_DOCUMENT_INDEX_3
+  ,C_DOCUMENT_INDEX_4
+  ,DOCUMENT_WORKFLOW_ID
+  ,DOCUMENT_STATE_ID 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id = 2156
+2026-11-05 14:02:07,235 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 14:02:07,235 | INFO | File_fetcher: Reading local file — C:\Users\Maheswar.Basireddy\Documents\Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv
+2026-11-05 14:02:07,235 | INFO | File_parser: Encoding detected — 'UTF-8-SIG' (confidence 100%)
+2026-11-05 14:02:07,235 | INFO | File_parser: Encoding detected — 'UTF-8-SIG' (confidence 100%)
+2026-11-05 14:02:07,235 | INFO | File_parser: Pre-processing — skipped 0 empty, 0 comment rows. Data rows: 5000
+2026-11-05 14:02:07,235 | INFO | File_parser: 'Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv' — parsed 5000 row(s), 0 parse error(s).
+2026-11-05 14:02:07,235 | INFO | File_parser: 'Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv' — parse complete, 5000 row(s), no errors.
+2026-11-05 14:02:07,235 | INFO | File_parser: Combined 1 file(s) — 5000 total rows, 0 total error(s).
+2026-11-05 14:02:07,235 | DEBUG | File DataFilter 'DW_FILE_DETAIL_ID' not found in DataFrame columns (['cFileKey', 'cOriginalFileName', 'cDocId', 'cGh1', 'cGh2', 'cGh3', 'cGh4', 'cGh5', 'cGh6', 'cGh7', 'cGh8', 'cGh9', 'cGh10', 'cClaimNumbers', 'cEnrolleeId', 'Master.cName', 'cEnrolleeName', 'cProviderTaxId', 'cDocumentType', 'cDocumentTypeDescription', 'cDocumentExtensions', 'cBatchNumber', 'cJobNumber', 'iEnvelopeNumber', 'cDeliveryType', 'yShippingAmount', 'cTrackingNumber', 'iPageQuantity', 'cStatus', 'tFileReceiptDate', 'tReleasedDate', 'tShipDate', 'cUsername', 'tDateTime', 'cPaperStockDesc', 'cPurgeReason', 'cPurgeReasonDesc', 'cRecipientType', 'cClaimType', 'cCheckNumber', 'yCheckAmount', 'cZPassPaymentIds', 'cPayeeName', 'cPullCode', 'SpoiledTouchAndToss', 'ReissuedTouchAndToss', 'cReportingRollupValue1', 'cReportingRollupValue2', 'cReportingRollupValue3', 'cReportingRollupValue4', 'cReportingRollupValue5', 'cReportingRollupValue6', 'cReportingRollupValue7', 'cReportingRollupValue8', 'cReportingRollupValue9', 'cReportingRollupValue10', 'cDocumentIndex1', 'cDocumentIndex2', 'cDocumentIndex3', 'cDocumentIndex4', 'Document WorkflowID', 'Document StateID']) — skipping row filter.
+2026-11-05 14:02:07,235 | INFO | [TC 1] Source data sample (5 of 5000 records):
+2026-11-05 14:02:07,235 | INFO |   1: {'cFileKey': '3670001NH2023012214', 'cOriginalFileName': '3670NH20230122R14E64AD12.HTA.zip', 'cDocId': '3670001NH2023012214000131', 'cGh1': 'HTA', 'cGh2': None, 'cGh3': None, 'cGh4': None, 'cGh5': None, 'cGh6': None, 'cGh7': None, 'cGh8': None, 'cGh9': None, 'cGh10': None, 'cClaimNumbers': '2023010400013259', 'cEnrolleeId': 'T9808042337', 'Master.cName': 'JILLIAN IRIS OKEEFE OD PA', 'cEnrolleeName': 'ANITA BENKOVIC', 'cProviderTaxId': '833537192', 'cDocumentType': '010', 'cDocumentTypeDescription': 'Remit', 'cDocumentExtensions': '30', 'cBatchNumber': '20230124B06', 'cJobNumber': 'J6F3', 'iEnvelopeNumber': '2', 'cDeliveryType': 'USPS First Class 6x9', 'yShippingAmount': '0.6', 'cTrackingNumber': '00140205562730545483', 'iPageQuantity': '2', 'cStatus': 'Released', 'tFileReceiptDate': '1/24/2023 7:45', 'tReleasedDate': '1/24/2023 0:00', 'tShipDate': '1/25/2023 17:12', 'cUsername': 'ioannis.aronis', 'tDateTime': '1/24/2023 9:49', 'cPaperStockDesc': '24 lb. White Dynamic Perf + Pantograph', 'cPurgeReason': None, 'cPurgeReasonDesc': None, 'cRecipientType': 'P', 'cClaimType': 'MED', 'cCheckNumber': '0', 'yCheckAmount': '0', 'cZPassPaymentIds': None, 'cPayeeName': None, 'cPullCode': None, 'SpoiledTouchAndToss': 'No', 'ReissuedTouchAndToss': 'No', 'cReportingRollupValue1': None, 'cReportingRollupValue2': None, 'cReportingRollupValue3': None, 'cReportingRollupValue4': None, 'cReportingRollupValue5': None, 'cReportingRollupValue6': None, 'cReportingRollupValue7': None, 'cReportingRollupValue8': None, 'cReportingRollupValue9': None, 'cReportingRollupValue10': None, 'cDocumentIndex1': '132', 'cDocumentIndex2': None, 'cDocumentIndex3': None, 'cDocumentIndex4': None, 'Document WorkflowID': '00', 'Document StateID': '10'}
+2026-11-05 14:02:07,235 | INFO |   2: {'cFileKey': '3670001NH2023012214', 'cOriginalFileName': '3670NH20230122R14E64AD12.HTA.zip', 'cDocId': '3670001NH2023012214000109', 'cGh1': 'HTA', 'cGh2': None, 'cGh3': None, 'cGh4': None, 'cGh5': None, 'cGh6': None, 'cGh7': None, 'cGh8': None, 'cGh9': None, 'cGh10': None, 'cClaimNumbers': '2023010600015501', 'cEnrolleeId': 'T9808027553', 'Master.cName': 'FIRSTHEALTH OF THE CAROLINAS INC', 'cEnrolleeName': 'JANET KEARNS', 'cProviderTaxId': '561936354', 'cDocumentType': '010', 'cDocumentTypeDescription': 'Remit', 'cDocumentExtensions': '30', 'cBatchNumber': '20230124B06', 'cJobNumber': 'J6F3', 'iEnvelopeNumber': '3', 'cDeliveryType': 'USPS First Class 6x9', 'yShippingAmount': '0.6', 'cTrackingNumber': '00140205562730545484', 'iPageQuantity': '2', 'cStatus': 'Released', 'tFileReceiptDate': '1/24/2023 7:45', 'tReleasedDate': '1/24/2023 0:00', 'tShipDate': '1/25/2023 17:12', 'cUsername': 'ioannis.aronis', 'tDateTime': '1/24/2023 9:49', 'cPaperStockDesc': '24 lb. White Dynamic Perf + Pantograph', 'cPurgeReason': None, 'cPurgeReasonDesc': None, 'cRecipientType': 'P', 'cClaimType': 'MED', 'cCheckNumber': '0', 'yCheckAmount': '0', 'cZPassPaymentIds': None, 'cPayeeName': None, 'cPullCode': None, 'SpoiledTouchAndToss': 'No', 'ReissuedTouchAndToss': 'No', 'cReportingRollupValue1': None, 'cReportingRollupValue2': None, 'cReportingRollupValue3': None, 'cReportingRollupValue4': None, 'cReportingRollupValue5': None, 'cReportingRollupValue6': None, 'cReportingRollupValue7': None, 'cReportingRollupValue8': None, 'cReportingRollupValue9': None, 'cReportingRollupValue10': None, 'cDocumentIndex1': '110', 'cDocumentIndex2': None, 'cDocumentIndex3': None, 'cDocumentIndex4': None, 'Document WorkflowID': '00', 'Document StateID': '10'}
+2026-11-05 14:02:07,235 | INFO |   3: {'cFileKey': '3670001NH2023012214', 'cOriginalFileName': '3670NH20230122R14E64AD12.HTA.zip', 'cDocId': '3670001NH2023012214000001', 'cGh1': 'HTA', 'cGh2': None, 'cGh3': None, 'cGh4': None, 'cGh5': None, 'cGh6': None, 'cGh7': None, 'cGh8': None, 'cGh9': None, 'cGh10': None, 'cClaimNumbers': '2023010500014209', 'cEnrolleeId': 'T9808031118', 'Master.cName': 'UWH OF NORTH CAROLINALLP', 'cEnrolleeName': 'LINDA LEWIS', 'cProviderTaxId': '320418835', 'cDocumentType': '011', 'cDocumentTypeDescription': 'Remit/Check', 'cDocumentExtensions': '31; PP', 'cBatchNumber': '20230124B06', 'cJobNumber': 'J6F6', 'iEnvelopeNumber': '2', 'cDeliveryType': 'USPS First Class #10', 'yShippingAmount': '0.6', 'cTrackingNumber': '00140205562730512019', 'iPageQuantity': '4', 'cStatus': 'Released', 'tFileReceiptDate': '1/24/2023 7:45', 'tReleasedDate': '1/24/2023 0:00', 'tShipDate': '1/25/2023 8:11', 'cUsername': 'ioannis.aronis', 'tDateTime': '1/24/2023 9:49', 'cPaperStockDesc': '24 lb. White Dynamic Perf + Pantograph', 'cPurgeReason': None, 'cPurgeReasonDesc': None, 'cRecipientType': 'P', 'cClaimType': 'MED', 'cCheckNumber': '300001', 'yCheckAmount': '320.99', 'cZPassPaymentIds': None, 'cPayeeName': 'UWH OF NORTH CAROLINALLP', 'cPullCode': None, 'SpoiledTouchAndToss': 'No', 'ReissuedTouchAndToss': 'No', 'cReportingRollupValue1': None, 'cReportingRollupValue2': None, 'cReportingRollupValue3': None, 'cReportingRollupValue4': None, 'cReportingRollupValue5': None, 'cReportingRollupValue6': None, 'cReportingRollupValue7': None, 'cReportingRollupValue8': None, 'cReportingRollupValue9': None, 'cReportingRollupValue10': None, 'cDocumentIndex1': '2', 'cDocumentIndex2': None, 'cDocumentIndex3': None, 'cDocumentIndex4': None, 'Document WorkflowID': '00', 'Document StateID': '10'}
+2026-11-05 14:02:07,235 | INFO |   4: {'cFileKey': '3670001NH2023012214', 'cOriginalFileName': '3670NH20230122R14E64AD12.HTA.zip', 'cDocId': '3670001NH2023012214000001', 'cGh1': 'HTA', 'cGh2': None, 'cGh3': None, 'cGh4': None, 'cGh5': None, 'cGh6': None, 'cGh7': None, 'cGh8': None, 'cGh9': None, 'cGh10': None, 'cClaimNumbers': '2023010400013308', 'cEnrolleeId': 'T9808031118', 'Master.cName': 'UWH OF NORTH CAROLINALLP', 'cEnrolleeName': 'LINDA LEWIS', 'cProviderTaxId': '320418835', 'cDocumentType': '011', 'cDocumentTypeDescription': 'Remit/Check', 'cDocumentExtensions': '31; PP', 'cBatchNumber': '20230124B06', 'cJobNumber': 'J6F6', 'iEnvelopeNumber': '2', 'cDeliveryType': 'USPS First Class #10', 'yShippingAmount': '0.6', 'cTrackingNumber': '00140205562730512019', 'iPageQuantity': '4', 'cStatus': 'Released', 'tFileReceiptDate': '1/24/2023 7:45', 'tReleasedDate': '1/24/2023 0:00', 'tShipDate': '1/25/2023 8:11', 'cUsername': 'ioannis.aronis', 'tDateTime': '1/24/2023 9:49', 'cPaperStockDesc': '24 lb. White Dynamic Perf + Pantograph', 'cPurgeReason': None, 'cPurgeReasonDesc': None, 'cRecipientType': 'P', 'cClaimType': 'MED', 'cCheckNumber': '300001', 'yCheckAmount': '320.99', 'cZPassPaymentIds': None, 'cPayeeName': 'UWH OF NORTH CAROLINALLP', 'cPullCode': None, 'SpoiledTouchAndToss': 'No', 'ReissuedTouchAndToss': 'No', 'cReportingRollupValue1': None, 'cReportingRollupValue2': None, 'cReportingRollupValue3': None, 'cReportingRollupValue4': None, 'cReportingRollupValue5': None, 'cReportingRollupValue6': None, 'cReportingRollupValue7': None, 'cReportingRollupValue8': None, 'cReportingRollupValue9': None, 'cReportingRollupValue10': None, 'cDocumentIndex1': '2', 'cDocumentIndex2': None, 'cDocumentIndex3': None, 'cDocumentIndex4': None, 'Document WorkflowID': '00', 'Document StateID': '10'}
+2026-11-05 14:02:07,235 | INFO |   5: {'cFileKey': '3670001NH2023012214', 'cOriginalFileName': '3670NH20230122R14E64AD12.HTA.zip', 'cDocId': '3670001NH2023012214000001', 'cGh1': 'HTA', 'cGh2': None, 'cGh3': None, 'cGh4': None, 'cGh5': None, 'cGh6': None, 'cGh7': None, 'cGh8': None, 'cGh9': None, 'cGh10': None, 'cClaimNumbers': '2023010500014210', 'cEnrolleeId': 'T9808031118', 'Master.cName': 'UWH OF NORTH CAROLINALLP', 'cEnrolleeName': 'LINDA LEWIS', 'cProviderTaxId': '320418835', 'cDocumentType': '011', 'cDocumentTypeDescription': 'Remit/Check', 'cDocumentExtensions': '31; PP', 'cBatchNumber': '20230124B06', 'cJobNumber': 'J6F6', 'iEnvelopeNumber': '2', 'cDeliveryType': 'USPS First Class #10', 'yShippingAmount': '0.6', 'cTrackingNumber': '00140205562730512019', 'iPageQuantity': '4', 'cStatus': 'Released', 'tFileReceiptDate': '1/24/2023 7:45', 'tReleasedDate': '1/24/2023 0:00', 'tShipDate': '1/25/2023 8:11', 'cUsername': 'ioannis.aronis', 'tDateTime': '1/24/2023 9:49', 'cPaperStockDesc': '24 lb. White Dynamic Perf + Pantograph', 'cPurgeReason': None, 'cPurgeReasonDesc': None, 'cRecipientType': 'P', 'cClaimType': 'MED', 'cCheckNumber': '300001', 'yCheckAmount': '320.99', 'cZPassPaymentIds': None, 'cPayeeName': 'UWH OF NORTH CAROLINALLP', 'cPullCode': None, 'SpoiledTouchAndToss': 'No', 'ReissuedTouchAndToss': 'No', 'cReportingRollupValue1': None, 'cReportingRollupValue2': None, 'cReportingRollupValue3': None, 'cReportingRollupValue4': None, 'cReportingRollupValue5': None, 'cReportingRollupValue6': None, 'cReportingRollupValue7': None, 'cReportingRollupValue8': None, 'cReportingRollupValue9': None, 'cReportingRollupValue10': None, 'cDocumentIndex1': '2', 'cDocumentIndex2': None, 'cDocumentIndex3': None, 'cDocumentIndex4': None, 'Document WorkflowID': '00', 'Document StateID': '10'}
+2026-11-05 14:02:07,235 | INFO | [TC 1] Target data sample (5 of 5000 records):
+2026-11-05 14:02:07,235 | INFO |   1: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010600016625', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000077', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'T9808018398', 'C_MASTER_C_NAME': 'DERMATOLOGY SPECIALISTS PA', 'C_ENROLLEE_NAME': 'DANIEL ABSHER', 'C_PROVIDER_TAX_ID': '562002643', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '45', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512062', 'I_PAGE_QUANTITY': '4', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300077', 'Y_CHECK_AMOUNT': '404.61', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'DERMATOLOGY SPECIALISTS PA', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '78', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:02:07,235 | INFO |   2: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010400013235', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000062', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'T9808042937', 'C_MASTER_C_NAME': 'MY LE', 'C_ENROLLEE_NAME': 'HRUH NIE', 'C_PROVIDER_TAX_ID': '463911388', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '46', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512063', 'I_PAGE_QUANTITY': '3', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300062', 'Y_CHECK_AMOUNT': '86.52', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'MY LE', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '63', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:02:07,235 | INFO |   3: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010700016787', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000099', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'T9808035591', 'C_MASTER_C_NAME': 'UNIVERSAL HEALTH CARE / BLUMENTHAL, INC', 'C_ENROLLEE_NAME': 'DONALD ANGEL', 'C_PROVIDER_TAX_ID': '200335842', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '47', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512064', 'I_PAGE_QUANTITY': '4', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300099', 'Y_CHECK_AMOUNT': '1323', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'UNIVERSAL HEALTH CARE / BLUMENTHAL, INC', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '100', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:02:07,235 | INFO |   4: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010700016788', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000099', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'T9808035591', 'C_MASTER_C_NAME': 'UNIVERSAL HEALTH CARE / BLUMENTHAL, INC', 'C_ENROLLEE_NAME': 'DONALD ANGEL', 'C_PROVIDER_TAX_ID': '200335842', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '47', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512064', 'I_PAGE_QUANTITY': '4', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300099', 'Y_CHECK_AMOUNT': '1323', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'UNIVERSAL HEALTH CARE / BLUMENTHAL, INC', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '100', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:02:07,235 | INFO |   5: {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300013078', 'C_FILE_KEY': '3670001NH2023012214', 'C_ORIGINAL_FILE_NAME': '3670NH20230122R14E64AD12.HTA.zip', 'C_DOC_ID': '3670001NH2023012214000042', 'C_GH_1': 'HTA', 'C_GH_2': None, 'C_GH_3': None, 'C_GH_4': None, 'C_GH_5': None, 'C_GH_6': None, 'C_GH_7': None, 'C_GH_8': None, 'C_GH_9': None, 'C_GH_10': None, 'C_ENROLLEE_ID': 'C9808044270', 'C_MASTER_C_NAME': 'EYE CONSULTANTS OF GREENSBORO,  PA', 'C_ENROLLEE_NAME': 'LEONARD SMITH', 'C_PROVIDER_TAX_ID': '562151889', 'C_DOCUMENT_TYPE': '011', 'C_DOCUMENT_TYPE_DESCRIPTION': 'Remit/Check', 'C_DOCUMENT_EXTENSIONS': '31; PP', 'C_BATCH_NUMBER': '20230124B06', 'I_ENVELOPE_NUMBER': '48', 'C_DELIVERY_TYPE': 'USPS First Class #10', 'Y_SHIPPING_AMOUNT': '0.6', 'C_TRACKING_NUMBER': '00140205562730512065', 'I_PAGE_QUANTITY': '3', 'C_STATUS': 'Released', 'T_FILE_RECEIPT_DATE': '1/24/2023 7:45', 'T_RELEASED_DATE': '1/24/2023 0:00', 'T_SHIP_DATE': datetime.datetime(2023, 1, 25, 8, 11), 'C_USERNAME': 'ioannis.aronis', 'T_DATE_TIME': '1/24/2023 9:49', 'C_PAPER_STOCK_DESC': '24 lb. White Dynamic Perf + Pantograph', 'C_PURGE_REASON': None, 'C_PURGE_REASON_DESC': None, 'C_RECIPIENT_TYPE': 'P', 'C_CLAIM_TYPE': 'MED', 'C_CHECK_NUMBER': '300042', 'Y_CHECK_AMOUNT': '120.04', 'C_PAYEE_NAME': None, 'C_PULL_CODE': 'EYE CONSULTANTS OF GREENSBORO,  PA', 'SPOILED_TOUCH_AND_TOSS': None, 'REISSUED_TOUCH_AND_TOSS': 'No', 'C_REPORTING_ROLLUP_VALUE_1': 'No', 'C_REPORTING_ROLLUP_VALUE_2': None, 'C_REPORTING_ROLLUP_VALUE_3': None, 'C_REPORTING_ROLLUP_VALUE_4': None, 'C_REPORTING_ROLLUP_VALUE_5': None, 'C_REPORTING_ROLLUP_VALUE_6': None, 'C_REPORTING_ROLLUP_VALUE_7': None, 'C_REPORTING_ROLLUP_VALUE_8': None, 'C_REPORTING_ROLLUP_VALUE_9': None, 'C_REPORTING_ROLLUP_VALUE_10': None, 'C_DOCUMENT_INDEX_1': None, 'C_DOCUMENT_INDEX_2': '43', 'C_DOCUMENT_INDEX_3': None, 'C_DOCUMENT_INDEX_4': None, 'DOCUMENT_WORKFLOW_ID': None, 'DOCUMENT_STATE_ID': '00'}
+2026-11-05 14:02:07,235 | INFO | [SRC->TGT]  - Total source LOCAL_PATH records: 5000
+2026-11-05 14:02:07,235 | INFO | [SRC->TGT]  - Total target ORACLE records: 5000
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Field cPayeeName vs C_PAYEE_NAME: 4729 mismatch(es), showing first 5
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cPayeeName=CAROLINAS MEDICAL CENTER != C_PAYEE_NAME=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cPayeeName=BENCHMARK PHYSICAL THERAPY OF NC LLC != C_PAYEE_NAME=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cPayeeName=BENCHMARK PHYSICAL THERAPY OF NC LLC != C_PAYEE_NAME=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012085'}: cPayeeName=NOVANT HEALTH MEDICAL PARK HOSPITAL != C_PAYEE_NAME=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012091'}: cPayeeName=UNC ROCKINGHAM HEALTH CARE != C_PAYEE_NAME=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Field cPullCode vs C_PULL_CODE: 4730 mismatch(es), showing first 5
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cPullCode=<NA> != C_PULL_CODE=CAROLINAS MEDICAL CENTER
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cPullCode=<NA> != C_PULL_CODE=BENCHMARK PHYSICAL THERAPY OF NC LLC
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cPullCode=<NA> != C_PULL_CODE=BENCHMARK PHYSICAL THERAPY OF NC LLC
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012085'}: cPullCode=<NA> != C_PULL_CODE=NOVANT HEALTH MEDICAL PARK HOSPITAL
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012091'}: cPullCode=<NA> != C_PULL_CODE=UNC ROCKINGHAM HEALTH CARE
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Field SpoiledTouchAndToss vs SPOILED_TOUCH_AND_TOSS: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: SpoiledTouchAndToss=No != SPOILED_TOUCH_AND_TOSS=<NA>
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Field cReportingRollupValue1 vs C_REPORTING_ROLLUP_VALUE_1: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cReportingRollupValue1=<NA> != C_REPORTING_ROLLUP_VALUE_1=No
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Field cDocumentIndex1 vs C_DOCUMENT_INDEX_1: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: cDocumentIndex1=132 != C_DOCUMENT_INDEX_1=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: cDocumentIndex1=110 != C_DOCUMENT_INDEX_1=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cDocumentIndex1=35 != C_DOCUMENT_INDEX_1=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cDocumentIndex1=90 != C_DOCUMENT_INDEX_1=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cDocumentIndex1=90 != C_DOCUMENT_INDEX_1=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Field cDocumentIndex2 vs C_DOCUMENT_INDEX_2: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=132
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=110
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=35
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=90
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: cDocumentIndex2=nan != C_DOCUMENT_INDEX_2=90
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Field Document WorkflowID vs DOCUMENT_WORKFLOW_ID: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: Document WorkflowID=0 != DOCUMENT_WORKFLOW_ID=nan
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Field Document StateID vs DOCUMENT_STATE_ID: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010400013259'}: Document StateID=10 != DOCUMENT_STATE_ID=0
+2026-11-05 14:02:07,235 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F3', 'cClaimNumbers': '2023010600015501'}: Document StateID=10 != DOCUMENT_STATE_ID=0
+2026-11-05 14:02:07,250 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010200012005'}: Document StateID=10 != DOCUMENT_STATE_ID=0
+2026-11-05 14:02:07,250 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012082'}: Document StateID=10 != DOCUMENT_STATE_ID=0
+2026-11-05 14:02:07,250 | ISSUE | [SRC->TGT] Mismatch at {'cJobNumber': 'J6F6', 'cClaimNumbers': '2023010300012083'}: Document StateID=10 != DOCUMENT_STATE_ID=0
+2026-11-05 14:02:07,250 | ISSUE | Total Mismatches: 39459
+2026-11-05 14:02:07,250 | INFO | Vice-versa comparison TGT->SRC Started
+2026-11-05 14:02:07,250 | INFO | [TGT->SRC]  - Total source ORACLE records: 5000
+2026-11-05 14:02:07,250 | INFO | [TGT->SRC]  - Total target LOCAL_PATH records: 5000
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Field C_PAYEE_NAME vs cPayeeName: 4729 mismatch(es), showing first 5
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_PAYEE_NAME=<NA> != cPayeeName=CAROLINAS MEDICAL CENTER
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_PAYEE_NAME=<NA> != cPayeeName=BENCHMARK PHYSICAL THERAPY OF NC LLC
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_PAYEE_NAME=<NA> != cPayeeName=BENCHMARK PHYSICAL THERAPY OF NC LLC
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012085'}: C_PAYEE_NAME=<NA> != cPayeeName=NOVANT HEALTH MEDICAL PARK HOSPITAL
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012091'}: C_PAYEE_NAME=<NA> != cPayeeName=UNC ROCKINGHAM HEALTH CARE
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Field C_PULL_CODE vs cPullCode: 4730 mismatch(es), showing first 5
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_PULL_CODE=CAROLINAS MEDICAL CENTER != cPullCode=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_PULL_CODE=BENCHMARK PHYSICAL THERAPY OF NC LLC != cPullCode=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_PULL_CODE=BENCHMARK PHYSICAL THERAPY OF NC LLC != cPullCode=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012085'}: C_PULL_CODE=NOVANT HEALTH MEDICAL PARK HOSPITAL != cPullCode=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012091'}: C_PULL_CODE=UNC ROCKINGHAM HEALTH CARE != cPullCode=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Field SPOILED_TOUCH_AND_TOSS vs SpoiledTouchAndToss: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: SPOILED_TOUCH_AND_TOSS=<NA> != SpoiledTouchAndToss=No
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Field C_REPORTING_ROLLUP_VALUE_1 vs cReportingRollupValue1: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_REPORTING_ROLLUP_VALUE_1=No != cReportingRollupValue1=<NA>
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Field C_DOCUMENT_INDEX_1 vs cDocumentIndex1: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=132
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=110
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=35
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=90
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_DOCUMENT_INDEX_1=nan != cDocumentIndex1=90
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Field C_DOCUMENT_INDEX_2 vs cDocumentIndex2: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: C_DOCUMENT_INDEX_2=132 != cDocumentIndex2=nan
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: C_DOCUMENT_INDEX_2=110 != cDocumentIndex2=nan
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: C_DOCUMENT_INDEX_2=35 != cDocumentIndex2=nan
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: C_DOCUMENT_INDEX_2=90 != cDocumentIndex2=nan
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: C_DOCUMENT_INDEX_2=90 != cDocumentIndex2=nan
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Field DOCUMENT_WORKFLOW_ID vs Document WorkflowID: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: DOCUMENT_WORKFLOW_ID=nan != Document WorkflowID=0
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Field DOCUMENT_STATE_ID vs Document StateID: 5000 mismatch(es), showing first 5
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010400013259'}: DOCUMENT_STATE_ID=0 != Document StateID=10
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F3', 'C_CLAIM_NUMBERS': '2023010600015501'}: DOCUMENT_STATE_ID=0 != Document StateID=10
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010200012005'}: DOCUMENT_STATE_ID=0 != Document StateID=10
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012082'}: DOCUMENT_STATE_ID=0 != Document StateID=10
+2026-11-05 14:02:07,250 | ISSUE | [TGT->SRC] Mismatch at {'C_JOB_NUMBER': 'J6F6', 'C_CLAIM_NUMBERS': '2023010300012083'}: DOCUMENT_STATE_ID=0 != Document StateID=10
+2026-11-05 14:02:07,250 | ISSUE | Total Mismatches: 39459
+2026-11-05 14:02:07,250 | INFO | Data comparison process completed.
+2026-11-05 14:02:07,250 | ISSUE | [TestCase 1] Test Result: FAIL
+2026-11-05 14:02:07,250 | INFO | Execution time for TestCase 1: 11.49 seconds
+2026-11-05 14:01:57,772 | INFO | ========== [ Running TestCase 2: Target DW.zelis_recon: no duplicate C_JOB_NUMBER, C_CLAIM_NUMBERS ] ==========
+2026-11-05 14:01:57,772 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-11-05 14:01:57,772 | INFO | TestCase 2: Source [ORACLE]:SELECT C_JOB_NUMBER
+  ,C_CLAIM_NUMBERS 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id = 2156
+2026-11-05 14:01:57,772 | INFO | TestCase 2: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-11-05 14:01:57,788 | INFO | Source [ORACLE] Duplicate_Check sample for 'C_JOB_NUMBER, C_CLAIM_NUMBERS':
+SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    FROM (SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS FROM DW.zelis_recon WHERE dw_file_detail_id = 2156)
+                    WHERE C_JOB_NUMBER IS NOT NULL AND C_CLAIM_NUMBERS IS NOT NULL
+                    AND (C_JOB_NUMBER, C_CLAIM_NUMBERS) IN (
+                        
+                    SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    FROM (SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS FROM DW.zelis_recon WHERE dw_file_detail_id = 2156)
+                    WHERE C_JOB_NUMBER IS NOT NULL AND C_CLAIM_NUMBERS IS NOT NULL
+                    GROUP BY C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-11-05 14:01:57,788 | INFO | TestCase 2: Field 'C_JOB_NUMBER, C_CLAIM_NUMBERS': No duplicates found.
+2026-11-05 14:01:57,788 | INFO | Execution time for TestCase 2: 2.03 seconds
+2026-11-05 14:01:57,187 | INFO | ========== [ Running TestCase 3: Target DW.zelis_recon: keys and load columns are populated ] ==========
+2026-11-05 14:01:57,187 | INFO | Oracle DataFilter — placeholder substitution applied.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Source [ORACLE]:SELECT C_CLAIM_NUMBERS
+  ,ZELIS_RECON_ID
+  ,C_FILE_KEY
+  ,C_DOC_ID
+  ,I_ENVELOPE_NUMBER
+  ,T_FILE_RECEIPT_DATE
+  ,C_CHECK_NUMBER
+  ,DOCUMENT_STATE_ID
+  ,DW_FILE_DETAIL_ID
+  ,DW_CREATED_DT 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id = 2156
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Null_Check started — pushing null filter to ORACLE per field
+2026-11-05 14:01:57,187 | INFO | Oracle Null_Check query: SELECT * FROM (SELECT C_CLAIM_NUMBERS, ZELIS_RECON_ID, C_FILE_KEY, C_DOC_ID, I_ENVELOPE_NUMBER, T_FILE_RECEIPT_DATE, C_CHECK_NUMBER, DOCUMENT_STATE_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT FROM DW.zelis_recon WHERE dw_file_detail_id = 2156) WHERE (C_CLAIM_NUMBERS IS NULL OR TRIM(TO_CHAR(C_CLAIM_NUMBERS)) = '') OR (ZELIS_RECON_ID IS NULL OR TRIM(TO_CHAR(ZELIS_RECON_ID)) = '') OR (C_FILE_KEY IS NULL OR TRIM(TO_CHAR(C_FILE_KEY)) = '') OR (C_DOC_ID IS NULL OR TRIM(TO_CHAR(C_DOC_ID)) = '') OR (I_ENVELOPE_NUMBER IS NULL OR TRIM(TO_CHAR(I_ENVELOPE_NUMBER)) = '') OR (T_FILE_RECEIPT_DATE IS NULL OR TRIM(TO_CHAR(T_FILE_RECEIPT_DATE)) = '') OR (C_CHECK_NUMBER IS NULL OR TRIM(TO_CHAR(C_CHECK_NUMBER)) = '') OR (DOCUMENT_STATE_ID IS NULL OR TRIM(TO_CHAR(DOCUMENT_STATE_ID)) = '') OR (DW_FILE_DETAIL_ID IS NULL OR TRIM(TO_CHAR(DW_FILE_DETAIL_ID)) = '') OR (DW_CREATED_DT IS NULL OR TRIM(TO_CHAR(DW_CREATED_DT)) = '')
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'C_CLAIM_NUMBERS': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'ZELIS_RECON_ID': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'C_FILE_KEY': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'C_DOC_ID': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'I_ENVELOPE_NUMBER': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'T_FILE_RECEIPT_DATE': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'C_CHECK_NUMBER': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'DOCUMENT_STATE_ID': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'DW_FILE_DETAIL_ID': No nulls found.
+2026-11-05 14:01:57,187 | INFO | TestCase 3: Field 'DW_CREATED_DT': No nulls found.
+2026-11-05 14:01:57,187 | INFO | Execution time for TestCase 3: 1.45 seconds
+2026-11-05 14:01:55,803 | INFO | ========== [ Running TestCase 4: File Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv: no row repeated in every field ] ==========
+2026-11-05 14:01:55,803 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 14:01:55,803 | ISSUE | File_fetcher: Permanent error — Path not found: C:\Users\Amit.Rawat\Documents
+2026-11-05 14:01:55,803 | ERROR | TestCase 4: _run_duplicate_check_on_file: Path not found: C:\Users\Amit.Rawat\Documents
+Traceback (most recent call last):
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Script\Data_Validation.py", line 1824, in _run_duplicate_check_on_file
+    result = fetch_and_parse(source_def, add_source_file_column=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_parser.py", line 1550, in fetch_and_parse
+    raw_files = fetch_file(
+                ^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_fetcher.py", line 1265, in fetch_file
+    raw_files = _with_retry(
+                ^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_fetcher.py", line 431, in _with_retry
+    return func()
+           ^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_fetcher.py", line 1263, in _fetch
+    return fetcher(source)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Maheswar.Basireddy\Documents\Regression Script\Libraries\File_fetcher.py", line 590, in _fetch_local
+    raise FileNotFoundError(f"Path not found: {path}")
+FileNotFoundError: Path not found: C:\Users\Amit.Rawat\Documents
+2026-11-05 14:01:55,872 | INFO | Execution time for TestCase 4: 0.06 seconds
+2026-11-05 14:02:07,362 | INFO | Total Number of Testcases Executed : 4,Pass : 2, Fail : 2, Skippped : 0
+2026-11-05 14:02:07,362 | INFO | Total execution time: 11.63 seconds (0.2 minutes)
+2026-11-05 14:02:07,394 | INFO | Master combined log written to: MCPQA1_recon_file_Log_20261105_190207.json
+2026-11-05 14:02:07,410 | INFO | Result.InsertData : 6aecd2af2040e690b7421896
+2026-11-05 14:02:08,137 | INFO | ========== Completed Validation ==========

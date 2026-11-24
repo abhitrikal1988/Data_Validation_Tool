@@ -1,0 +1,273 @@
+[
+    {
+        "DataValidationLog_ID": 127,
+        "Module": "EH_Chronic",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for chronic condition codes",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 21:35:28.203894",
+                "EndTime": "2026-11-05 21:36:37.153388",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT CODE\n  ,SHORT_DESCRIPTION\n  ,CONDITION_CATEGORY\n  ,LONG_DESCRIPTION\n  ,YEAR \n  FROM DW.CHRONIC_CONDITION_CODES \n  where year =2027"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 21:36:26",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source LOCAL_PATH records: 73428, Total target ORACLE records: 73427"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 21:36:34",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "[SRC->TGT] Missing in Target: {'CODE': <NA>, 'SHORT_DESCRIPTION': <NA>}"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 21:36:34",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field LONG_DESCRIPTION vs LONG_DESCRIPTION: 1 mismatch(es)"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 21:36:34",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'CODE': 'I251', 'SHORT_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery'}: LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non\u2011billable parent code) != LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non-billable parent code)"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-05 21:36:34",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 1"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-05 21:36:34",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 1"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-05 21:36:37",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field LONG_DESCRIPTION vs LONG_DESCRIPTION: 1 mismatch(es)"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-05 21:36:37",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'CODE': 'I251', 'SHORT_DESCRIPTION': 'Atherosclerotic heart disease of native coronary artery'}: LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non-billable parent code) != LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non\u2011billable parent code)"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-05 21:36:37",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 1"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-05 21:36:37",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [
+                    "LONG_DESCRIPTION"
+                ],
+                "MissingFields": [
+                    "CODE",
+                    "SHORT_DESCRIPTION"
+                ]
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Check for duplicate records on key fields",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 21:35:28.203894",
+                "EndTime": "2026-11-05 21:36:23.682323",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 21:36:23",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "No duplicates on ['CODE', 'SHORT_DESCRIPTION']."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Validate format of 'CODE' column",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 21:35:28.203894",
+                "EndTime": "2026-11-05 21:36:18.670319",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 21:36:18",
+                        "Type": "INFO",
+                        "RunType": "Format_Check",
+                        "Detail": "Field '2027_CHRONIC_DISEASE_CODE': all match '[YN]'"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "2027_CHRONIC_DISEASE_CODE has only approved values",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 21:35:28.203894",
+                "EndTime": "2026-11-05 21:36:21.049708",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 21:36:21",
+                        "Type": "INFO",
+                        "RunType": "InApprovedValue",
+                        "Detail": "Approved Values: '['Y']' \u2014 all source values are approved."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Target DW.CHRONIC_CONDITION_CODES: no duplicate CODE, SHORT_DESCRIPTION",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 21:35:28.203894",
+                "EndTime": "2026-11-05 21:35:28.713417",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT CODE\n  ,SHORT_DESCRIPTION \n  FROM DW.CHRONIC_CONDITION_CODES \n  where year =2027"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['CODE', 'SHORT_DESCRIPTION']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'CODE, SHORT_DESCRIPTION': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "Target DW.CHRONIC_CONDITION_CODES: keys and load columns are populated",
+                "Result": "Pass",
+                "StartTime": "2026-11-05 21:35:28.713417",
+                "EndTime": "2026-11-05 21:35:28.735178",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT CODE\n  ,SHORT_DESCRIPTION\n  ,CHRONIC_CONDITION_CODES_ID\n  ,DW_FILE_DETAIL_ID\n  ,BUSINESS_ID\n  ,DW_CREATED_DATE\n  ,DW_MODIFIED_DATE \n  FROM DW.CHRONIC_CONDITION_CODES \n  where year =2027"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Checking fields: ['CODE', 'SHORT_DESCRIPTION', 'CHRONIC_CONDITION_CODES_ID', 'DW_FILE_DETAIL_ID', 'BUSINESS_ID', 'DW_CREATED_DATE', 'DW_MODIFIED_DATE']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'CODE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'SHORT_DESCRIPTION': No nulls found."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'CHRONIC_CONDITION_CODES_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_FILE_DETAIL_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'BUSINESS_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_CREATED_DATE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-05 21:35:28",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_MODIFIED_DATE': No nulls found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-11-05 21:36:37.267554"
+        }
+    }
+]

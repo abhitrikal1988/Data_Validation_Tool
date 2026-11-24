@@ -1,0 +1,115 @@
+[
+  {
+    "enum": [
+      "MONGODB",
+      null
+    ],
+    "Environment": {
+      "enum": [
+        "MCPQA1"
+      ]
+    },
+    "Collection": {
+      "enum": [
+        "Test_M3PMemberReceipt_PBM"
+      ]
+    },
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "DataFilters": []
+  },
+  {
+    "Type": {
+      "enum": [
+        "UNC_PATH",
+        null
+      ]
+    },
+    "Path": {
+      "type": "string"
+    },
+    "FilePattern": {
+      "enum": [
+        "Temp.csv"
+      ]
+    },
+    "FileName": null,
+    "PickStrategy": {
+      "enum": [
+        "LATEST"
+      ]
+    },
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "DataFilters": []
+  },
+  {
+    "Type": {
+      "enum": [
+        "CSV",
+        "UNC_PATH"
+      ]
+    },
+    "Delimiter": {
+      "enum": [
+        ","
+      ],
+      "Header": {
+        "enum": [
+          "true"
+        ]
+      },
+      "SkipRows": {
+        "type": "integer"
+      },
+      "FooterRows": {
+        "type": "integer"
+      },
+      "Encoding": null,
+      "NullValues": {
+        "items": {
+          "enum": [
+            "NULL",
+            "null",
+            "N/A",
+            "na",
+            "",
+            "-",
+            "none"
+          ]
+        }
+      }
+    },
+    "JoinFields": {},
+    "CompareFields": [
+      {
+        "SourceField": null,
+        "TargetField": "DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_"
+      }
+    ],
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "DataFilters": []
+  }
+]

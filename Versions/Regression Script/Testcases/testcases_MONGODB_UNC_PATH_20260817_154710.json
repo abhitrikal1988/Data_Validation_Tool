@@ -1,0 +1,253 @@
+[
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source data against target field by field for Cardholder_ID and ElectionStartDate/EndDate fields.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Verify no NULL values for Cardholder_ID and ElectionStartDate/EndDate fields.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Type": "MONGODB",
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": [
+      {
+        "Column": "Cardholder_ID",
+        "NullCheck": true
+      },
+      {
+        "Column": "ElectionStartDate",
+        "NullCheck": true
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Identify potential duplicate records based on Cardholder_ID field.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Type": "MONGODB",
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": [
+      {
+        "Column": "Cardholder_ID",
+        "DuplicateCheck": true
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Validate ElectionStartDate and ElectionEndDate fields against regex pattern.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Type": "MONGODB",
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": [
+      {
+        "Column": "ElectionStartDate",
+        "FormatCheck": "^\\d{4}\\d{2}\\d{2}$"
+      },
+      {
+        "Column": "ElectionEndDate",
+        "FormatCheck": "^\\d{4}\\d{2}\\d{2}$"
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Record_Count",
+    "TestDescription": "Compare row counts between source and target for ElectionStartDate/EndDate fields.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Validate ElectionStartDate and EndDate fields against approved list.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Format",
+    "TestDescription": "Validate EDI format for DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Balance",
+    "TestDescription": "Validate internal amount balancing for DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Data",
+    "TestDescription": "Cross-validate DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Verify no NULL values for DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_ fields.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": [
+      {
+        "Column": "DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+        "NullCheck": true
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Format_Check",
+    "TestDescription": "Validate DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_ fields.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": [
+      {
+        "Column": "DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+        "FormatCheck": "^\\d{10}$"
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Identify potential duplicate records based on DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_ fields.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": [
+      {
+        "Column": "DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+        "DuplicateCheck": true
+      }
+    ]
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Consider DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_ fields.",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Format",
+    "TestDescription": "Validate EDI format for DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Balance",
+    "TestDescription": "Validate internal amount balancing for DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  },
+  {
+    "TestCaseNumber": null,
+    "Module": "",
+    "Stage": "",
+    "ValidationType": "EDI835_Data",
+    "TestDescription": "Cross-validate DECISION_DRUG_ID_RX||','||DECISION_ID_RX||','||RXCUI||','||MEDID||','||DELETE_FLG||','||QUANTITY||','||DAYS_SUPPLY||','||REFILL_",
+    "Vicevaeis": true,
+    "Source": {
+      "Name": null,
+      "Collection": "Test_M3PMemberReceipt_PBM"
+    },
+    "DataFilters": []
+  }
+]

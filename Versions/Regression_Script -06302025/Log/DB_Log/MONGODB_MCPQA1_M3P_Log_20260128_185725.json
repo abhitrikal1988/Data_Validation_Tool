@@ -1,0 +1,30 @@
+[
+    {
+        "DataValidationLog_ID": 54,
+        "Module": "M3P",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Checking MemberReceipt Data Validation after CapRx load",
+                "Result": "Fail",
+                "StartTime": "2026-01-28 18:57:24.664494",
+                "EndTime": "2026-01-28 18:57:24.906871",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-01-28 18:57:24",
+                        "Type": "ERROR",
+                        "RunType": "Execution",
+                        "Detail": "'NoneType' object has no attribute 'upper'"
+                    }
+                ]
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-01-28 18:57:25.070273"
+        }
+    }
+]

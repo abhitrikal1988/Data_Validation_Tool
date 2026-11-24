@@ -1,0 +1,219 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for HC_RIDER_ID, RIDER_NAME, START_DT, END_DT, RIDER_AMOUNT, PLAN_RIDER_TYPE, CREATED_DT, MODIFIED_DT, CANCELED_FLG",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "MBRPROFILE",
+      "QueryType": "QUERY",
+      "Query": "SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT, PLAN_RIDER_NAME, RIDER_END_DT, PLAN_RIDER_AMOUNT, PLAN_RIDER_TYPE, MODIFIED_DT, CANCELED_FLG FROM MBRPROFILE.HC_RIDER"
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT HC_RIDER_ID, HEALTH_COVERAGE_ID_NH, START_DT, CREATED_DT, RIDER_NAME, END_DT, RIDER_AMOUNT, PLAN_RIDER_TYPE, MODIFIED_DT, CANCELED_FLG FROM DW.HC_RIDER"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "HC_RIDER_ID_NH",
+        "TargetField": "HC_RIDER_ID"
+      },
+      {
+        "SourceField": "HEALTH_COVERAGE_ID_NH",
+        "TargetField": "HEALTH_COVERAGE_ID_NH"
+      },
+      {
+        "SourceField": "RIDER_START_DT",
+        "TargetField": "START_DT"
+      },
+      {
+        "SourceField": "CREATED_DT",
+        "TargetField": "CREATED_DT"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "PLAN_RIDER_NAME",
+        "TargetField": "RIDER_NAME"
+      },
+      {
+        "SourceField": "RIDER_END_DT",
+        "TargetField": "END_DT"
+      },
+      {
+        "SourceField": "PLAN_RIDER_AMOUNT",
+        "TargetField": "RIDER_AMOUNT"
+      },
+      {
+        "SourceField": "PLAN_RIDER_TYPE",
+        "TargetField": "PLAN_RIDER_TYPE"
+      },
+      {
+        "SourceField": "MODIFIED_DT",
+        "TargetField": "MODIFIED_DT"
+      },
+      {
+        "SourceField": "CANCELED_FLG",
+        "TargetField": "CANCELED_FLG"
+      }
+    ],
+    "DataFilters": [],
+    "Module": "HCRIDER",
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 314,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-13 10:35:49"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, PLAN_RIDER_ID_NH, RIDER_START_DT, RIDER_END_DT, PLAN_RIDER_AMOUNT, PLAN_RIDER_TYPE, CREATED_DT, MODIFIED_DT, CANCELED_FLG",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "MBRPROFILE",
+      "QueryType": "QUERY",
+      "Query": "SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT, PLAN_RIDER_ID_NH FROM MBRPROFILE.HC_RIDER"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "HC_RIDER_ID_NH",
+        "ResultFields": [
+          "HC_RIDER_ID_NH"
+        ]
+      },
+      {
+        "SourceField": "HEALTH_COVERAGE_ID_NH",
+        "ResultFields": [
+          "HEALTH_COVERAGE_ID_NH"
+        ]
+      },
+      {
+        "SourceField": "RIDER_START_DT",
+        "ResultFields": [
+          "RIDER_START_DT"
+        ]
+      },
+      {
+        "SourceField": "CREATED_DT",
+        "ResultFields": [
+          "CREATED_DT"
+        ]
+      },
+      {
+        "SourceField": "PLAN_RIDER_ID_NH",
+        "ResultFields": [
+          "PLAN_RIDER_ID_NH"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "Module": "HCRIDER",
+    "ExpectedResult": "HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT, PLAN_RIDER_ID_NH should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 315,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-13 10:35:49"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, PLAN_RIDER_ID_NH",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "MBRPROFILE",
+      "QueryType": "QUERY",
+      "Query": "SELECT HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT FROM MBRPROFILE.HC_RIDER"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "HC_RIDER_ID_NH",
+        "ResultFields": [
+          "HC_RIDER_ID_NH"
+        ]
+      },
+      {
+        "SourceField": "HEALTH_COVERAGE_ID_NH",
+        "ResultFields": [
+          "HEALTH_COVERAGE_ID_NH"
+        ]
+      },
+      {
+        "SourceField": "RIDER_START_DT",
+        "ResultFields": [
+          "RIDER_START_DT"
+        ]
+      },
+      {
+        "SourceField": "CREATED_DT",
+        "ResultFields": [
+          "CREATED_DT"
+        ]
+      }
+    ],
+    "ExpectedResult": "HC_RIDER_ID_NH, HEALTH_COVERAGE_ID_NH, RIDER_START_DT, CREATED_DT should not have duplicate values",
+    "DataFilters": [],
+    "Module": "HCRIDER",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 316,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-13 10:35:49"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "HCRIDER",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "CREATED_BY has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "MBRPROFILE",
+      "QueryType": "QUERY",
+      "Query": "SELECT CREATED_BY FROM MBRPROFILE.HC_RIDER"
+    },
+    "CompareFields": [
+      {
+        "SourceField": "CREATED_BY"
+      }
+    ],
+    "ApprovedValues": [
+      "0",
+      "509",
+      "569",
+      "1273",
+      "1459",
+      "1913",
+      "2493",
+      "2673"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "CREATED_BY values other than approved ['0', '509', '569', '1273', '1459', '1913', '2493', '2673'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 317,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-13 10:35:49"
+    }
+  }
+]

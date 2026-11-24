@@ -1,0 +1,33 @@
+[
+    {
+        "DataValidationLog_ID": 135,
+        "Module": "ClaimAdjudication",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 9,
+                "TestCaseName": "Compare source and target on CLAIM_TYPE, BILLING_PROVIDER_ID, SUBSCRIBER_HL and 21 more",
+                "Result": "Pass",
+                "StartTime": "2026-11-10 18:28:48.623544",
+                "EndTime": "2026-11-10 18:28:48.981787",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-10 18:28:48",
+                        "Type": "INFO",
+                        "RunType": "DataView",
+                        "Detail": "Displayed 2 of 2 row(s) from LOCAL_PATH."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "mahesh.thirmandas",
+            "InsertedDate": "2026-11-10 18:28:49.016215"
+        }
+    }
+]

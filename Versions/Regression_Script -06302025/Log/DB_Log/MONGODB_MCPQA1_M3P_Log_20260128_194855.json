@@ -1,0 +1,30 @@
+[
+    {
+        "DataValidationLog_ID": 57,
+        "Module": "M3P",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Checking MemberReceipt Data Validation after CapRx load",
+                "Result": "Pass",
+                "StartTime": "2026-01-28 19:48:54.490773",
+                "EndTime": "2026-01-28 19:48:55.144471",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-01-28 19:48:55",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source or Target data empty"
+                    }
+                ]
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-01-28 19:48:55.302378"
+        }
+    }
+]

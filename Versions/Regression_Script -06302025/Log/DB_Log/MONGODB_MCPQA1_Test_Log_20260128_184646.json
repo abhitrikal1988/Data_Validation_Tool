@@ -1,0 +1,30 @@
+[
+    {
+        "DataValidationLog_ID": 51,
+        "Module": "Test",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 11,
+                "TestCaseName": "Data Comparison between SRC and TGT",
+                "Result": "Fail",
+                "StartTime": "2026-01-28 18:46:45.652247",
+                "EndTime": "2026-01-28 18:46:45.992534",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-01-28 18:46:45",
+                        "Type": "ERROR",
+                        "RunType": "Execution",
+                        "Detail": "'NoneType' object has no attribute 'upper'"
+                    }
+                ]
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-01-28 18:46:46.148133"
+        }
+    }
+]

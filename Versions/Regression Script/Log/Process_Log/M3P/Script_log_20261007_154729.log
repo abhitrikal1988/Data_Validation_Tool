@@ -1,0 +1,19 @@
+2026-10-07 15:47:29,321 | INFO | ========== Starting Validation ==========
+2026-10-07 15:47:29,322 | INFO | Module         : M3P
+2026-10-07 15:47:29,334 | INFO | Stage          : None
+2026-10-07 15:47:29,335 | INFO | Cycle          : None
+2026-10-07 15:47:29,336 | INFO | Environment    : MCPQA1
+2026-10-07 15:47:29,337 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-07 15:47:29,424 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-10-07 15:47:29,431 | INFO | ========== [ Running TestCase 2: Checking MemberReceipt Data Validation after CapRx load ] ==========
+2026-10-07 15:47:29,433 | INFO | TestCase 2: Source: db.Test_M3P_Stg_Data_CAPRX.find({})
+2026-10-07 15:47:29,433 | INFO | TestCase 2: Target: db.Test_M3PMemberReceipt_CAPRX.find({})
+2026-10-07 15:47:29,433 | ISSUE | Error fetching source data (MONGODB): 'MONGODB_MCPQA1'
+2026-10-07 15:47:29,433 | ISSUE | Error fetching target data (MONGODB): 'MONGODB_MCPQA1'
+2026-10-07 15:47:29,433 | WARNING | Source and Target data both are empty. Skipping comparison.
+2026-10-07 15:47:29,433 | INFO | Execution time for TestCase 2: 0.01 seconds
+2026-10-07 15:47:29,441 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 0, Skippped : 1
+2026-10-07 15:47:29,442 | INFO | Total execution time: 0.02 seconds (0.0 minutes)
+2026-10-07 15:47:29,492 | INFO | Master combined log written to: MCPQA1_M3P_Log_20261007_194729.json
+2026-10-07 15:47:29,498 | INFO | Result.InsertData : 6ac6a1d199df9ddda4382670
+2026-10-07 15:47:30,014 | INFO | ========== Completed Validation ==========

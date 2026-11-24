@@ -1,0 +1,33 @@
+[
+    {
+        "DataValidationLog_ID": 130,
+        "Module": "EH_Chronic",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Validate format of 'CODE' column",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 23:15:40.274817",
+                "EndTime": "2026-11-05 23:15:40.295530",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:15:40",
+                        "Type": "ERROR",
+                        "RunType": "Format_Check",
+                        "Detail": "Exception: Path not found: P:\\ARKIT\\To be used to work\\Auto-Trigger letters\\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "mahesh.thirmandas",
+            "InsertedDate": "2026-11-05 23:15:40.378330"
+        }
+    }
+]

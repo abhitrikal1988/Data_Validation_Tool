@@ -1,0 +1,40 @@
+[
+    {
+        "DataValidationLog_ID": 133,
+        "Module": "InterOp",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Duplicate check on LocationProvider_ID",
+                "Result": "Pass",
+                "StartTime": "2026-11-06 16:42:16.885618",
+                "EndTime": "2026-11-06 16:42:16.934620",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-06 16:42:16",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.Test_InterOp_PractitionerRole.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"McpProviderId\": 1, \"LocationId\": 1, \"Max_ModifiedDate\": 1, \"SourceIdentity.LocationProvider_ID\": 1, \"Business.Business_ID\": 1, \"Practitioner._idOfPractitioner\": 1, \"Practitioner.McpProviderId\": 1, \"Organization._idOfOrg\": 1, \"Organization.McpProviderId\": 1, \"Span.StartDate\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-06 16:42:16",
+                        "Type": "INFO",
+                        "RunType": "DataView",
+                        "Detail": "Displayed 1 of 1 row(s) from MONGODB."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "mahesh.thirmandas",
+            "InsertedDate": "2026-11-06 16:42:16.959227"
+        }
+    }
+]

@@ -1,0 +1,23 @@
+2026-01-28 13:49:56,361 | INFO | ========== Starting Validation ==========
+2026-01-28 13:49:56,381 | INFO | Module :  Test 
+2026-01-28 13:49:56,400 | INFO | Stage :  None 
+2026-01-28 13:49:56,419 | INFO | Cycle :  None
+2026-01-28 13:49:56,477 | INFO | Environment  : MONGODB_MCPQA1
+2026-01-28 13:49:57,285 | INFO | ========== [ Running TestCase 11: Data Comparison between SRC and TGT ] ==========
+2026-01-28 13:55:36,609 | ERROR | [TC 11] Exception: 
+Traceback (most recent call last):
+  File "P:\Maheswar\Automation\Regression_Script\Script\Data_Validation.py", line 203, in _execute_single_testcase
+    source_data, target_data = self._fetch_source_target_parallel(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 96, in trace_dispatch
+    return self.dispatch_exception(frame, arg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\bdb.py", line 176, in dispatch_exception
+    if self.quitting: raise BdbQuit
+                      ^^^^^^^^^^^^^
+bdb.BdbQuit
+2026-01-28 13:55:36,699 | INFO | Execution time for TestCase 11: 339.40s
+2026-01-28 13:55:36,719 | INFO | Total Number of Testcases Executed:1, Pass:0, Fail:1
+2026-01-28 13:55:37,337 | INFO | Master combined log written to: MONGODB_MCPQA1_Test_Log_20260128_185536.json
+2026-01-28 13:55:37,379 | INFO | Result.InsertData : 697a5ba97879ba6673018760
+2026-01-28 13:55:39,753 | INFO | ========== Completed Validation ==========

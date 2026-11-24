@@ -1,0 +1,233 @@
+[
+    {
+        "DataValidationLog_ID": 112,
+        "Module": "pos_lookup",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for POS Lookup",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:29:46.643552",
+                "EndTime": "2026-10-30 18:29:51.025770",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT PLACE_OF_SERVICE_CODE\n  ,BUSINESS_ID\n  ,PLACE_OF_SERVICE_NAME \n  FROM DW.pos_lookup \n  WHERE dw_file_detail_id >= 2066"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:29:47",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source LOCAL_PATH records: 104, Total target ORACLE records: 104"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:29:51",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:29:51",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:29:51",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-30 18:29:51",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Check for null values in BUSINESS_ID",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:29:46.645552",
+                "EndTime": "2026-10-30 18:29:47.214347",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:29:47",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'PLACE_OF_SERVICE_CODE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:29:47",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'BUSINESS_ID': No nulls found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Check for duplicate records on BUSINESS_ID and PLACE_OF_SERVICE_CODE",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:29:46.645552",
+                "EndTime": "2026-10-30 18:29:47.339436",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:29:47",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "No duplicates on ['PLACE_OF_SERVICE_CODE', 'BUSINESS_ID']."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "Target DW.pos_lookup: no duplicate PLACE_OF_SERVICE_CODE, BUSINESS_ID",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:29:46.646553",
+                "EndTime": "2026-10-30 18:29:46.865721",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT PLACE_OF_SERVICE_CODE\n  ,BUSINESS_ID \n  FROM DW.pos_lookup \n  WHERE dw_file_detail_id >= 2066"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['PLACE_OF_SERVICE_CODE', 'BUSINESS_ID']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'PLACE_OF_SERVICE_CODE, BUSINESS_ID': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Target DW.pos_lookup: keys and load columns are populated",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:29:46.647552",
+                "EndTime": "2026-10-30 18:29:46.856562",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT BUSINESS_ID\n  ,PLACE_OF_SERVICE_CODE\n  ,POS_LOOKUP_ID\n  ,DW_FILE_DETAIL_ID\n  ,DW_CREATED_DT\n  ,DW_MODIFIED_DT \n  FROM DW.pos_lookup \n  WHERE dw_file_detail_id >= 2066"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Checking fields: ['BUSINESS_ID', 'PLACE_OF_SERVICE_CODE', 'POS_LOOKUP_ID', 'DW_FILE_DETAIL_ID', 'DW_CREATED_DT', 'DW_MODIFIED_DT']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'BUSINESS_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'PLACE_OF_SERVICE_CODE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'POS_LOOKUP_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_FILE_DETAIL_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_CREATED_DT': No nulls found."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-10-30 18:29:46",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_MODIFIED_DT': No nulls found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "BUSINESS_ID has only approved values",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:29:46.856562",
+                "EndTime": "2026-10-30 18:29:47.344445",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:29:47",
+                        "Type": "INFO",
+                        "RunType": "InApprovedValue",
+                        "Detail": "Approved Values: '['109', '2066']' \u2014 all source values are approved."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-30 18:29:51.082506"
+        }
+    }
+]

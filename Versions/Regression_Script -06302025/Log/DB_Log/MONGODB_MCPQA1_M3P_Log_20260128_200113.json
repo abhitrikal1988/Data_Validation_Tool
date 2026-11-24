@@ -1,0 +1,37 @@
+[
+    {
+        "DataValidationLog_ID": 58,
+        "Module": "M3P",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Checking MemberReceipt Data Validation after CapRx load",
+                "Result": "Pass",
+                "StartTime": "2026-01-28 20:01:12.239866",
+                "EndTime": "2026-01-28 20:01:12.944016",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-01-28 20:01:12",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source empty=True, Target empty=False"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-01-28 20:01:12",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source is empty. Skipping comparison."
+                    }
+                ]
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-01-28 20:01:13.101905"
+        }
+    }
+]

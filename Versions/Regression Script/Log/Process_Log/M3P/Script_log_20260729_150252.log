@@ -1,0 +1,31 @@
+2026-07-29 15:02:52,541 | INFO | ========== Starting Validation ==========
+2026-07-29 15:02:52,542 | INFO | Module         : M3P
+2026-07-29 15:02:52,542 | INFO | Stage          : None
+2026-07-29 15:02:52,543 | INFO | Cycle          : None
+2026-07-29 15:02:52,544 | INFO | Environment    : MCPQA1
+2026-07-29 15:02:52,545 | INFO | Runtime Filters: None — using DefaultValues
+2026-07-29 15:02:52,703 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-07-29 15:02:52,719 | INFO | ========== [ Running TestCase 1: Enrollment Data comparison between M3P and PBM ] ==========
+2026-07-29 15:02:52,719 | INFO | TestCase 1: Source: db.Test_M3PMemberReceipt_PBM.find({})
+2026-07-29 15:02:52,719 | INFO | TestCase 1: Target [ORACLE]:select m.card_id
+  ,me.start_dt
+  ,me.end_dt 
+  from claim.mbr_enroll_other me
+  ,claim.member m 
+  where me.member_id_rx = m.member_id_rx 
+  and me.enroll_type = 12531 
+  and nvl(me.delete_flg, 'N') = 'N'
+2026-07-29 15:02:52,720 | ISSUE | Error fetching target data (ORACLE): 'PBMQA3'
+2026-07-29 15:02:52,720 | WARNING | Unknown data type for 'target_data': <class 'NoneType'>. Assuming not empty.
+2026-07-29 15:02:52,720 | INFO | [TC 1] Source data sample (5 of 61 records):
+2026-07-29 15:02:52,720 | INFO |   1: {'Cardholder_ID': 'EH013557701', 'ElectionStartDate': '10/25/2024', 'ElectionEndDate': '12/31/2024'}
+2026-07-29 15:02:52,720 | INFO |   2: {'Cardholder_ID': 'T9808000657', 'ElectionStartDate': '05/01/2025', 'ElectionEndDate': '12/31/2025'}
+2026-07-29 15:02:52,720 | INFO |   3: {'Cardholder_ID': 'T9808000661', 'ElectionStartDate': '01/01/2025', 'ElectionEndDate': '12/31/2025'}
+2026-07-29 15:02:52,720 | INFO |   4: {'Cardholder_ID': 'T9808000661', 'ElectionStartDate': '03/01/2025', 'ElectionEndDate': '03/31/2025'}
+2026-07-29 15:02:52,720 | INFO |   5: {'Cardholder_ID': 'T9808000661', 'ElectionStartDate': '01/01/2025', 'ElectionEndDate': '06/30/2025'}
+2026-07-29 15:02:52,720 | INFO | Execution time for TestCase 1: 0.02 seconds
+2026-07-29 15:02:52,771 | INFO | Total Number of Testcases Executed : 1,Pass : 1, Fail : 0, Skippped : 0
+2026-07-29 15:02:52,772 | INFO | Total execution time: 0.07 seconds (0.0 minutes)
+2026-07-29 15:02:52,821 | INFO | Master combined log written to: MCPQA1_M3P_Log_20260729_190252.json
+2026-07-29 15:02:52,830 | INFO | Result.InsertData : 6a6a4e5c3136d332370e26a1
+2026-07-29 15:02:53,905 | INFO | ========== Completed Validation ==========

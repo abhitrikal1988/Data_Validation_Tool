@@ -1,0 +1,247 @@
+[
+    {
+        "DataValidationLog_ID": 108,
+        "Module": "Process_Code_Lists",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for Process_Code_Lists",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:03:31.045250",
+                "EndTime": "2026-10-30 18:03:36.139505",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT BUSINESS_ID\n  ,PROCESS_CODE\n  ,PROCESS_CODE_TYPE \n  FROM DW.PROCESS_CODES_LIST \n  WHERE dw_file_detail_id >= 2066"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:03:32",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source LOCAL_PATH records: 1108, Total target ORACLE records: 1108"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:03:36",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:03:36",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:03:36",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-30 18:03:36",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Check for null values in key fields",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:03:31.048257",
+                "EndTime": "2026-10-30 18:03:32.301229",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:03:32",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'BUSINESS_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:03:32",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'PROCESSCODE': No nulls found."
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:03:32",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'TYPE': No nulls found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Check for duplicate records on key fields",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:03:31.048257",
+                "EndTime": "2026-10-30 18:03:32.303229",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:03:32",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "No duplicates on ['BUSINESS_ID', 'PROCESSCODE', 'TYPE']."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "BUSINESS_ID has only approved values",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:03:31.049258",
+                "EndTime": "2026-10-30 18:03:32.315414",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:03:32",
+                        "Type": "INFO",
+                        "RunType": "InApprovedValue",
+                        "Detail": "Approved Values: '['109', '2066']' \u2014 all source values are approved."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Target DW.PROCESS_CODES_LIST: no duplicate BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:03:31.049258",
+                "EndTime": "2026-10-30 18:03:31.447489",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT BUSINESS_ID\n  ,PROCESS_CODE\n  ,PROCESS_CODE_TYPE \n  FROM DW.PROCESS_CODES_LIST \n  WHERE dw_file_detail_id= :dw_file_detail_id"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['BUSINESS_ID', 'PROCESS_CODE', 'PROCESS_CODE_TYPE']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "WARNING",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE': Failed to fetch duplicate data \u2014 skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "Target DW.PROCESS_CODES_LIST: keys and load columns are populated",
+                "Result": "Pass",
+                "StartTime": "2026-10-30 18:03:31.447489",
+                "EndTime": "2026-10-30 18:03:31.451489",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT BUSINESS_ID\n  ,PROCESS_CODE_TYPE\n  ,PROCESS_CODE\n  ,PROCESS_CODES_LIST_ID\n  ,DW_FILE_DETAIL_ID\n  ,DW_CREATED_DT\n  ,DW_MODIFIED_DT \n  FROM DW.PROCESS_CODES_LIST \n  WHERE dw_file_detail_id= :dw_file_detail_id"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Checking fields: ['BUSINESS_ID', 'PROCESS_CODE_TYPE', 'PROCESS_CODE', 'PROCESS_CODES_LIST_ID', 'DW_FILE_DETAIL_ID', 'DW_CREATED_DT', 'DW_MODIFIED_DT']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'BUSINESS_ID': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'PROCESS_CODE_TYPE': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'PROCESS_CODE': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'PROCESS_CODES_LIST_ID': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_FILE_DETAIL_ID': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_CREATED_DT': Failed to fetch data \u2014 skipping."
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-10-30 18:03:31",
+                        "Type": "WARNING",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DW_MODIFIED_DT': Failed to fetch data \u2014 skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-30 18:03:36.187324"
+        }
+    }
+]

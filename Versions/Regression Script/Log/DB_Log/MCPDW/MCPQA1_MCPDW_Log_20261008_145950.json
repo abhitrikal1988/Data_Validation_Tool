@@ -1,0 +1,165 @@
+[
+    {
+        "DataValidationLog_ID": 88,
+        "Module": "MCPDW",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for Contract_ID, Contract_Name, Contract_Description, Status_ID, Status_Name, Business_ID, Start_Date, End_Date",
+                "Result": "Fail",
+                "StartTime": "2026-10-08 14:59:49.660195",
+                "EndTime": "2026-10-08 14:59:50.110345",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-08 14:59:49",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.Contract.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Name\": 1, \"Description\": 1, \"Span.EndDate\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-08 14:59:49",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT CONTRACT_ID\n  ,STATUS_ID\n  ,BUSINESS_ID\n  ,START_DATE\n  ,CONTRACT_NAME\n  ,CONTRACT_DESCRIPTION\n  ,END_DATE \n  FROM DW.CONTRACT"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Check for null in Name",
+                "Result": "Fail",
+                "StartTime": "2026-10-08 14:59:49.661193",
+                "EndTime": "2026-10-08 14:59:50.397097",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-08 14:59:49",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.Contract.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"Name\": {\"$ifNull\": [\"$Name\", null]}, \"DefaultPay\": {\"$ifNull\": [\"$DefaultPay\", null]}, \"ContractConfigX.ListCapitation\": {\"$ifNull\": [\"$ContractConfigX.ListCapitation\", null]}, \"ContractConfigX.ListEOC\": {\"$ifNull\": [\"$ContractConfigX.ListEOC\", null]}, \"ContractConfigX.ListBonus\": {\"$ifNull\": [\"$ContractConfigX.ListBonus\", null]}, \"ContractConfigX.PricingSources\": {\"$ifNull\": [\"$ContractConfigX.PricingSources\", null]}, \"ContractConfigX.EOCs\": {\"$ifNull\": [\"$ContractConfigX.EOCs\", null]}, \"Notes\": {\"$ifNull\": [\"$Notes\", null]}, \"AdditionalAttribute\": {\"$ifNull\": [\"$AdditionalAttribute\", null]}}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'Name': 1/2404 nulls found."
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'DefaultPay': 28/2404 nulls found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'ContractConfigX.ListCapitation': 29/2404 nulls found."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'ContractConfigX.ListEOC': 29/2404 nulls found."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'ContractConfigX.ListBonus': 29/2404 nulls found."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'ContractConfigX.PricingSources': 28/2404 nulls found."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'ContractConfigX.EOCs': 29/2404 nulls found."
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'Notes': 2388/2404 nulls found."
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'AdditionalAttribute': 2388/2404 nulls found."
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [
+                    "Name",
+                    "DefaultPay",
+                    "ContractConfigX.ListCapitation",
+                    "ContractConfigX.ListEOC",
+                    "ContractConfigX.ListBonus",
+                    "ContractConfigX.PricingSources",
+                    "ContractConfigX.EOCs",
+                    "Notes",
+                    "AdditionalAttribute"
+                ],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Check for duplicate Contract_ID",
+                "Result": "Pass",
+                "StartTime": "2026-10-08 14:59:49.662192",
+                "EndTime": "2026-10-08 14:59:50.406131",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-08 14:59:49",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.Contract.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-08 14:59:50",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "No duplicates on ['Contract_ID', 'Status.StatusID', 'Business.Business_ID', 'Span.StartDate']."
+                    }
+                ],
+                "Stage": null,
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-08 14:59:50.450127"
+        }
+    }
+]

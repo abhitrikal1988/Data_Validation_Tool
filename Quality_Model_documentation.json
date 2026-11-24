@@ -1,0 +1,859 @@
+{
+    "modelName": "New Model",
+    "collections": [
+        {
+            "collectionName": "DataRegressionSet",
+            "type": "object",
+            "properties": [
+                {
+                    "name": "RegressionSet_ID",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "numeric",
+                    "GUID": "ad4b4b95-4f86-4c93-bd31-7114512fd8ef",
+                    "code": "RegressionSet_ID",
+                    "primaryKey": true,
+                    "error": {
+                        "name": false,
+                        "code": false
+                    }
+                },
+                {
+                    "name": "Module",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "8bf9eba2-acfc-4ad6-838d-e4371d8b4bbb",
+                    "code": "Module",
+                    "comments": "- Finance\n- M3P\n- Networks",
+                    "error": {}
+                },
+                {
+                    "name": "Stage",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "02c4a968-603b-4dd3-a789-8da76152b046",
+                    "comments": "- Initial \n- Incremental\n- Before Batching\n- After Batching\n- Before EOB\n- Stage",
+                    "error": {}
+                },
+                {
+                    "name": "Cycle",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "ffa84ff9-ad41-443a-956c-8ba521c518a1",
+                    "foreignCollection": "",
+                    "foreignField": [],
+                    "comments": "- Provider\n- Member",
+                    "error": {}
+                },
+                {
+                    "name": "TestCaseNumber",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "62107e00-b3f2-4587-b4aa-8751b8d844c7",
+                    "foreignCollection": "",
+                    "foreignField": [],
+                    "error": {}
+                },
+                {
+                    "name": "TestDescription",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "404d5007-3d1f-4089-8459-7b959d103795",
+                    "foreignCollection": "",
+                    "foreignField": [],
+                    "error": {}
+                },
+                {
+                    "name": "ValidationType",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "01bb03cf-2256-4552-b6ee-88845e4d8a49",
+                    "foreignCollection": "",
+                    "foreignField": [],
+                    "comments": "- SRC_TGT => Source - Target validation\n- Record_Count => Check the record counts\n- InApprovedValue => Verify for the approved values check",
+                    "error": {}
+                },
+                {
+                    "name": "Source",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "document",
+                    "properties": [
+                        {
+                            "name": "Type",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "7c35006a-80b6-4b7e-86b4-2c75e003504c",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "error": {}
+                        },
+                        {
+                            "name": "Environment",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "0e3305ce-1aa5-4280-ba86-d68fe0367f27",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "error": {}
+                        },
+                        {
+                            "name": "DB",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "a6dd5aae-80c0-4b33-8aa8-592a5ec1e397",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "error": {}
+                        },
+                        {
+                            "name": "QueryType",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "e0ce8018-ec03-4439-8b5c-ad92083ca1b2",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "relationshipType": "Foreign Key",
+                            "parentRelationship": "7f61cf07-654a-4f0b-a71b-279e2d39d5eb",
+                            "error": {}
+                        },
+                        {
+                            "name": "Query",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "657fc9f0-d546-4c10-9e87-2eb7a00004cf",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "childRelationships": [],
+                            "error": {}
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "GUID": "d5b47a75-4dc3-4394-a398-63c60e91d119",
+                    "error": {}
+                },
+                {
+                    "name": "Target",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "document",
+                    "properties": [
+                        {
+                            "name": "Type",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "3c8c6bed-157c-4df3-b4fb-c4ebcb8d68ea",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "error": {}
+                        },
+                        {
+                            "name": "Environment",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "358f0af7-0b42-4ab4-81b2-0605d08962ee",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "error": {}
+                        },
+                        {
+                            "name": "DB",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "3d714b8c-1d2d-42d8-8053-9db3b0644837",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "error": {}
+                        },
+                        {
+                            "name": "QueryType",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "927662b1-2152-41b2-a87f-44ed9d9c6fa9",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "relationshipType": "Foreign Key",
+                            "parentRelationship": "7f61cf07-654a-4f0b-a71b-279e2d39d5eb",
+                            "error": {}
+                        },
+                        {
+                            "name": "Query",
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "string",
+                            "GUID": "8d0ac6a8-546a-44db-bd09-d59987af6eac",
+                            "foreignCollection": "",
+                            "foreignField": [],
+                            "childRelationships": [],
+                            "error": {}
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "GUID": "939f623f-4916-4f5b-a605-24a92905bd75",
+                    "foreignCollection": "",
+                    "foreignField": [],
+                    "error": {}
+                },
+                {
+                    "name": "JoinFields",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "array",
+                    "properties": [
+                        {
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "document",
+                            "properties": [
+                                {
+                                    "name": "SourceField",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "786e7636-df81-4f8c-b105-c86c42e6973e",
+                                    "error": {}
+                                },
+                                {
+                                    "name": "TargetField",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "667a3bc1-8007-46e2-b836-c826c841e193",
+                                    "foreignCollection": "",
+                                    "foreignField": [],
+                                    "error": {}
+                                }
+                            ],
+                            "additionalProperties": false,
+                            "error": {},
+                            "GUID": "c83831f7-4aeb-4f50-9681-324349fded14",
+                            "arrayItem": true
+                        }
+                    ],
+                    "additionalItems": true,
+                    "error": {},
+                    "GUID": "a805b6c8-32d5-4a0d-b666-ef2a4f5bace1"
+                },
+                {
+                    "name": "CompareFields",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "array",
+                    "properties": [
+                        {
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "document",
+                            "properties": [
+                                {
+                                    "name": "SourceField",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "80c81975-0f7a-420a-a056-d4382637a795",
+                                    "error": {}
+                                },
+                                {
+                                    "name": "TargetField",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "c3d452cc-e112-4334-bb78-1297e6a5d256",
+                                    "foreignCollection": "",
+                                    "foreignField": [],
+                                    "error": {}
+                                }
+                            ],
+                            "additionalProperties": false,
+                            "error": {},
+                            "GUID": "81b66333-be91-4bab-a9c1-81d1c71b55ab",
+                            "arrayItem": true
+                        }
+                    ],
+                    "additionalItems": true,
+                    "GUID": "98180639-75aa-4115-9749-7ba3b0d6399b",
+                    "foreignCollection": "",
+                    "foreignField": [],
+                    "error": {}
+                },
+                {
+                    "name": "ExpectedResult",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "6f6e291d-26d0-41d7-a02a-f55dea7f39f2",
+                    "foreignCollection": "",
+                    "foreignField": [],
+                    "error": {}
+                },
+                {
+                    "name": "Viceversa",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "boolean",
+                    "GUID": "da4f9c9b-5362-4dc5-bb77-de6c1cfc9242",
+                    "comments": "- True means Source - Target and Target - Source\n- False (Default) means Source - Target",
+                    "error": {}
+                },
+                {
+                    "type": "document",
+                    "primaryKey": false,
+                    "relationshipType": "",
+                    "properties": [
+                        {
+                            "type": "numeric",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "577bb9ec-fe02-415e-8e63-d98923cc5626",
+                            "name": "InsertedByID",
+                            "code": "",
+                            "hackoladeMeta": {},
+                            "error": {
+                                "name": false
+                            },
+                            "isActivated": true
+                        },
+                        {
+                            "type": "string",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "eccc09ca-8f00-41c8-92bd-778e34967021",
+                            "name": "InsertedName",
+                            "code": "InsertedName",
+                            "hackoladeMeta": {},
+                            "isActivated": true
+                        },
+                        {
+                            "type": "date",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "0a514167-8153-45f6-9b7b-74ccb18c46c1",
+                            "name": "InsertedDate",
+                            "code": "InsertedDate",
+                            "hackoladeMeta": {},
+                            "isActivated": true
+                        },
+                        {
+                            "type": "numeric",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "d21e7268-4a9e-45c1-adca-dc2c0df43fee",
+                            "name": "ModifiedByID",
+                            "code": "ModifiedByID",
+                            "hackoladeMeta": {},
+                            "isActivated": true
+                        },
+                        {
+                            "type": "string",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "9e281400-1853-4605-80bd-5c398e2bb67f",
+                            "name": "ModifiedName",
+                            "code": "ModifiedName",
+                            "hackoladeMeta": {},
+                            "error": {
+                                "name": false,
+                                "code": false
+                            },
+                            "isActivated": true
+                        },
+                        {
+                            "type": "date",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "1e8b837a-1511-4715-9228-e924b511131e",
+                            "name": "ModifiedDate",
+                            "code": "ModifiedDate",
+                            "hackoladeMeta": {},
+                            "isActivated": true
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "GUID": "19069dcb-65b6-4577-9450-9e9f3d10dd17",
+                    "name": "Audit",
+                    "code": "",
+                    "hackoladeMeta": {},
+                    "error": {
+                        "name": false,
+                        "code": false
+                    },
+                    "isActivated": true,
+                    "foreignCollection": "",
+                    "foreignField": []
+                }
+            ],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "d968dc1f-2fc9-4ed2-9d03-e80ca24f28d0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "validationLevel": "Off",
+            "validationAction": "Warn",
+            "storageEngineName": "WiredTiger",
+            "collectionUsers": [],
+            "indexes": [],
+            "collation": {},
+            "sharding": {
+                "unique": true,
+                "collation": "null"
+            },
+            "GUID": "afe117b2-1780-4f53-bcea-1f93bc66f293",
+            "bucketId": "ca6af3ea-c333-4e24-9547-84bd0b337c21",
+            "code": "DataRegressionSet"
+        },
+        {
+            "collectionName": "DataValidationLog",
+            "type": "object",
+            "properties": [
+                {
+                    "name": "DataValidationLog_ID",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "numeric",
+                    "GUID": "608acf05-d591-4f04-be69-b64b46d105f8",
+                    "primaryKey": true,
+                    "error": {}
+                },
+                {
+                    "name": "Module",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "c5c5bc74-6136-433a-a68b-fe985392814b",
+                    "error": {}
+                },
+                {
+                    "name": "Stage",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "9628d565-f84a-46d8-b125-9cc1b90ce80e",
+                    "error": {}
+                },
+                {
+                    "name": "Cycle",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "string",
+                    "GUID": "eb27cf84-ec02-4b42-9b60-12ec6a139932",
+                    "error": {}
+                },
+                {
+                    "name": "TestCases",
+                    "hackoladeMeta": {},
+                    "isActivated": true,
+                    "type": "array",
+                    "properties": [
+                        {
+                            "hackoladeMeta": {},
+                            "isActivated": true,
+                            "type": "document",
+                            "properties": [
+                                {
+                                    "name": "TestCaseID",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "numeric",
+                                    "GUID": "959635f6-2ccc-4f27-add7-97b34edda9c3",
+                                    "error": {}
+                                },
+                                {
+                                    "name": "TestCaseName",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "326ab2e1-9722-4206-b133-e76f9e751540",
+                                    "error": {}
+                                },
+                                {
+                                    "name": "Result",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "string",
+                                    "GUID": "e995d864-4d7c-4cba-9652-ae334d8a3dd1",
+                                    "foreignCollection": "",
+                                    "foreignField": [],
+                                    "comments": "- Pass\n- Fail",
+                                    "error": {}
+                                },
+                                {
+                                    "name": "StartTime",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "date",
+                                    "primaryKey": false,
+                                    "error": {},
+                                    "GUID": "d0dfa72c-4e87-42d0-a481-63af458ee011"
+                                },
+                                {
+                                    "name": "EndTime",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "date",
+                                    "primaryKey": false,
+                                    "GUID": "63fb33a2-6d7e-402d-b48a-8fe7f43f1a45",
+                                    "foreignCollection": "",
+                                    "foreignField": [],
+                                    "error": {}
+                                },
+                                {
+                                    "name": "Log",
+                                    "hackoladeMeta": {},
+                                    "isActivated": true,
+                                    "type": "array",
+                                    "properties": [
+                                        {
+                                            "hackoladeMeta": {},
+                                            "isActivated": true,
+                                            "type": "document",
+                                            "properties": [
+                                                {
+                                                    "name": "LogID",
+                                                    "hackoladeMeta": {},
+                                                    "isActivated": true,
+                                                    "type": "numeric",
+                                                    "GUID": "99fa6cd1-a52d-4299-9495-479d25adf56e",
+                                                    "error": {}
+                                                },
+                                                {
+                                                    "name": "LogTime",
+                                                    "hackoladeMeta": {},
+                                                    "isActivated": true,
+                                                    "type": "string",
+                                                    "GUID": "6330da9f-bdb4-4420-b14a-df5f9b3d5c29",
+                                                    "error": {}
+                                                },
+                                                {
+                                                    "name": "Type",
+                                                    "hackoladeMeta": {},
+                                                    "isActivated": true,
+                                                    "type": "string",
+                                                    "GUID": "ca3fa690-1226-44ed-90fe-7125429a0b43",
+                                                    "foreignCollection": "",
+                                                    "foreignField": [],
+                                                    "comments": "- INFO\n- ERROR\n- WARNING",
+                                                    "error": {}
+                                                },
+                                                {
+                                                    "name": "RunType",
+                                                    "hackoladeMeta": {},
+                                                    "isActivated": true,
+                                                    "type": "string",
+                                                    "GUID": "9f922ae2-19fe-478e-90bb-4afb8580af6c",
+                                                    "foreignCollection": "",
+                                                    "foreignField": [],
+                                                    "comments": "- SRC_TGT\n- Record_Count\n- InApprovedValue",
+                                                    "error": {}
+                                                },
+                                                {
+                                                    "name": "Detail",
+                                                    "hackoladeMeta": {},
+                                                    "isActivated": true,
+                                                    "type": "string",
+                                                    "GUID": "492bcbff-3783-4687-942d-f0e1c4bcb86c",
+                                                    "foreignCollection": "",
+                                                    "foreignField": [],
+                                                    "error": {}
+                                                }
+                                            ],
+                                            "additionalProperties": false,
+                                            "error": {},
+                                            "GUID": "cf679be8-9ff8-44f0-b999-641e6aef6ef8",
+                                            "arrayItem": true
+                                        }
+                                    ],
+                                    "additionalItems": true,
+                                    "GUID": "e9ba4146-9367-4a5e-bb1c-84ee6a2c7db2",
+                                    "error": {}
+                                }
+                            ],
+                            "additionalProperties": false,
+                            "error": {},
+                            "GUID": "2704bdae-afdf-4659-a1f2-c62d3d4fdc56",
+                            "arrayItem": true
+                        }
+                    ],
+                    "additionalItems": true,
+                    "GUID": "3961d67d-51e7-4f04-b18d-ce185bac52eb",
+                    "error": {}
+                },
+                {
+                    "type": "document",
+                    "primaryKey": false,
+                    "relationshipType": "",
+                    "properties": [
+                        {
+                            "type": "numeric",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "6b785af4-cadb-40e9-aa66-727695c67d9d",
+                            "name": "InsertedByID",
+                            "code": "",
+                            "hackoladeMeta": {},
+                            "error": {
+                                "name": false
+                            },
+                            "isActivated": true
+                        },
+                        {
+                            "type": "string",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "397a1777-c4dc-41ba-9dec-2a72e19d9a13",
+                            "name": "InsertedName",
+                            "code": "InsertedName",
+                            "hackoladeMeta": {},
+                            "isActivated": true
+                        },
+                        {
+                            "type": "date",
+                            "primaryKey": false,
+                            "relationshipType": "",
+                            "GUID": "32a9bafd-059d-42a6-bb91-47a265d2ee93",
+                            "name": "InsertedDate",
+                            "code": "InsertedDate",
+                            "hackoladeMeta": {},
+                            "isActivated": true
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "GUID": "6e294865-ac2d-42ae-a322-cd28b8177a34",
+                    "name": "Audit",
+                    "code": "",
+                    "hackoladeMeta": {},
+                    "error": {
+                        "name": false,
+                        "code": false
+                    },
+                    "isActivated": true,
+                    "foreignCollection": "",
+                    "foreignField": []
+                }
+            ],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "c3b2897f-b039-4d61-9dbe-ff661d2ab4af"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "validationLevel": "Off",
+            "validationAction": "Warn",
+            "storageEngineName": "WiredTiger",
+            "collectionUsers": [],
+            "indexes": [],
+            "collation": {},
+            "sharding": {
+                "unique": true,
+                "collation": "null"
+            },
+            "GUID": "05d14446-2537-4396-a36f-6c1452f1ed73",
+            "bucketId": "ca6af3ea-c333-4e24-9547-84bd0b337c21"
+        }
+    ],
+    "buckets": [
+        {
+            "name": "Quality",
+            "type": "bucket",
+            "collectionIds": [
+                "afe117b2-1780-4f53-bcea-1f93bc66f293",
+                "05d14446-2537-4396-a36f-6c1452f1ed73"
+            ],
+            "backgroundColor": {
+                "r": 216,
+                "g": 0,
+                "b": 115,
+                "a": 1
+            },
+            "show": true,
+            "isActivated": true,
+            "GUID": "ca6af3ea-c333-4e24-9547-84bd0b337c21"
+        }
+    ],
+    "views": [],
+    "relationships": [],
+    "users": [],
+    "diagramViews": [],
+    "idToNameHashTable": {
+        "ca6af3ea-c333-4e24-9547-84bd0b337c21": "Quality",
+        "afe117b2-1780-4f53-bcea-1f93bc66f293": "DataRegressionSet",
+        "ad4b4b95-4f86-4c93-bd31-7114512fd8ef": "RegressionSet_ID",
+        "8bf9eba2-acfc-4ad6-838d-e4371d8b4bbb": "Module",
+        "02c4a968-603b-4dd3-a789-8da76152b046": "Stage",
+        "ffa84ff9-ad41-443a-956c-8ba521c518a1": "Cycle",
+        "62107e00-b3f2-4587-b4aa-8751b8d844c7": "TestCaseNumber",
+        "404d5007-3d1f-4089-8459-7b959d103795": "TestDescription",
+        "01bb03cf-2256-4552-b6ee-88845e4d8a49": "ValidationType",
+        "a805b6c8-32d5-4a0d-b666-ef2a4f5bace1": "JoinFields",
+        "786e7636-df81-4f8c-b105-c86c42e6973e": "SourceField",
+        "667a3bc1-8007-46e2-b836-c826c841e193": "TargetField",
+        "98180639-75aa-4115-9749-7ba3b0d6399b": "CompareFields",
+        "80c81975-0f7a-420a-a056-d4382637a795": "SourceField",
+        "c3d452cc-e112-4334-bb78-1297e6a5d256": "TargetField",
+        "6f6e291d-26d0-41d7-a02a-f55dea7f39f2": "ExpectedResult",
+        "da4f9c9b-5362-4dc5-bb77-de6c1cfc9242": "Viceversa",
+        "05d14446-2537-4396-a36f-6c1452f1ed73": "DataValidationLog",
+        "608acf05-d591-4f04-be69-b64b46d105f8": "DataValidationLog_ID",
+        "c5c5bc74-6136-433a-a68b-fe985392814b": "Module",
+        "9628d565-f84a-46d8-b125-9cc1b90ce80e": "Stage",
+        "eb27cf84-ec02-4b42-9b60-12ec6a139932": "Cycle",
+        "3961d67d-51e7-4f04-b18d-ce185bac52eb": "TestCases",
+        "959635f6-2ccc-4f27-add7-97b34edda9c3": "TestCaseID",
+        "326ab2e1-9722-4206-b133-e76f9e751540": "TestCaseName",
+        "e995d864-4d7c-4cba-9652-ae334d8a3dd1": "Result",
+        "d0dfa72c-4e87-42d0-a481-63af458ee011": "StartTime",
+        "63fb33a2-6d7e-402d-b48a-8fe7f43f1a45": "EndTime",
+        "e9ba4146-9367-4a5e-bb1c-84ee6a2c7db2": "Log",
+        "99fa6cd1-a52d-4299-9495-479d25adf56e": "LogID",
+        "6330da9f-bdb4-4420-b14a-df5f9b3d5c29": "LogTime",
+        "ca3fa690-1226-44ed-90fe-7125429a0b43": "Type",
+        "9f922ae2-19fe-478e-90bb-4afb8580af6c": "RunType",
+        "492bcbff-3783-4687-942d-f0e1c4bcb86c": "Detail",
+        "d5b47a75-4dc3-4394-a398-63c60e91d119": "Source",
+        "7c35006a-80b6-4b7e-86b4-2c75e003504c": "Type",
+        "0e3305ce-1aa5-4280-ba86-d68fe0367f27": "Environment",
+        "a6dd5aae-80c0-4b33-8aa8-592a5ec1e397": "DB",
+        "657fc9f0-d546-4c10-9e87-2eb7a00004cf": "Query",
+        "e0ce8018-ec03-4439-8b5c-ad92083ca1b2": "QueryType",
+        "939f623f-4916-4f5b-a605-24a92905bd75": "Target",
+        "3c8c6bed-157c-4df3-b4fb-c4ebcb8d68ea": "Type",
+        "358f0af7-0b42-4ab4-81b2-0605d08962ee": "Environment",
+        "3d714b8c-1d2d-42d8-8053-9db3b0644837": "DB",
+        "8d0ac6a8-546a-44db-bd09-d59987af6eac": "Query",
+        "927662b1-2152-41b2-a87f-44ed9d9c6fa9": "QueryType",
+        "19069dcb-65b6-4577-9450-9e9f3d10dd17": "Audit",
+        "577bb9ec-fe02-415e-8e63-d98923cc5626": "InsertedByID",
+        "eccc09ca-8f00-41c8-92bd-778e34967021": "InsertedName",
+        "0a514167-8153-45f6-9b7b-74ccb18c46c1": "InsertedDate",
+        "d21e7268-4a9e-45c1-adca-dc2c0df43fee": "ModifiedByID",
+        "9e281400-1853-4605-80bd-5c398e2bb67f": "ModifiedName",
+        "1e8b837a-1511-4715-9228-e924b511131e": "ModifiedDate",
+        "6e294865-ac2d-42ae-a322-cd28b8177a34": "Audit",
+        "6b785af4-cadb-40e9-aa66-727695c67d9d": "InsertedByID",
+        "397a1777-c4dc-41ba-9dec-2a72e19d9a13": "InsertedName",
+        "32a9bafd-059d-42a6-bb91-47a265d2ee93": "InsertedDate"
+    },
+    "definitions": {
+        "type": "definitions",
+        "properties": [],
+        "GUID": "f0394627-05c9-4afa-87ff-ff0b7ea08b5f"
+    },
+    "polyglotDefinitions": {
+        "type": "polyglotDefinitions",
+        "properties": [],
+        "GUID": "ff62959d-93b7-4db8-b3f8-9938bfbe2266"
+    },
+    "externalDefinitions": {
+        "type": "externalDefinitions",
+        "properties": [],
+        "GUID": "9f66993f-3a5c-4caf-8a98-aa964ac84e3a"
+    },
+    "sources": [],
+    "decorativeSymbols": [],
+    "dbVersion": "v7.x",
+    "dbVendor": "MongoDB",
+    "appTarget": "MONGODB",
+    "creationTS": "2025-06-27T16:44:59.053Z",
+    "GUID": "e9e1ffc0-5f72-4386-8429-214d40594e9c",
+    "isLineageEnabled": false,
+    "lastModifTS": "2025-06-27T18:23:42.694Z",
+    "persistenceSchemaVersion": "7",
+    "isCreatedByPlugin": true,
+    "pluginInformation": {
+        "pluginEngineVersion": "1.0.0"
+    },
+    "applicationInformation": {
+        "version": "7.1.0"
+    },
+    "settings": {
+        "centralPane": {
+            "dbLevel": {
+                "erd": [
+                    {
+                        "GUID": "afe117b2-1780-4f53-bcea-1f93bc66f293",
+                        "x": 1035,
+                        "y": 476,
+                        "width": 232,
+                        "height": 681,
+                        "color": {}
+                    },
+                    {
+                        "GUID": "05d14446-2537-4396-a36f-6c1452f1ed73",
+                        "x": 1354,
+                        "y": 585,
+                        "width": 256,
+                        "height": 429,
+                        "color": {}
+                    }
+                ],
+                "erdDefinitions": {
+                    "erd": [],
+                    "rootPath": [],
+                    "entities": [],
+                    "decorativeSymbols": []
+                },
+                "buckets": [
+                    {
+                        "x": 995,
+                        "y": 436,
+                        "GUID": "ca6af3ea-c333-4e24-9547-84bd0b337c21"
+                    }
+                ],
+                "collapsedNodes": [],
+                "activeRelationship": "",
+                "activeRelationshipFields": {
+                    "childField": [],
+                    "parentField": []
+                },
+                "selectedCollections": [],
+                "displayColorPicker": false,
+                "graphView": {
+                    "erd": [],
+                    "buckets": [],
+                    "decorativeSymbols": [],
+                    "forceLayout": true,
+                    "defaultLinkLength": 300
+                },
+                "diagramViews": [],
+                "decorativeSymbols": [],
+                "nestedCollectionsLayout": "horizontal",
+                "options": [
+                    {
+                        "autoWidth": true,
+                        "autoHeight": true,
+                        "GUID": "afe117b2-1780-4f53-bcea-1f93bc66f293"
+                    },
+                    {
+                        "autoWidth": true,
+                        "autoHeight": true,
+                        "GUID": "05d14446-2537-4396-a36f-6c1452f1ed73"
+                    }
+                ],
+                "relationshipUpdateDisabled": false
+            },
+            "collectionLevel": {},
+            "changed": false
+        },
+        "dtDiagram": {
+            "collapsedNodes": [],
+            "shouldDistributeCollections": false
+        }
+    }
+}

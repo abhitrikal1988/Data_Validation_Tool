@@ -1,0 +1,289 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target on CLAIM_TYPE, BILLING_PROVIDER_ID, SUBSCRIBER_ID and 1 more",
+    "Viceversa": true,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "\\\\rxadvance.com\\qa-team\\QA Documentation\\QA Automation\\Data_Validation\\Claims\\837_Test_Files",
+      "FileName": "01_837P_HappyPath_MultiLine_INN.txt",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI837",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "CLAIM"
+      }
+    },
+    "Target": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimMap",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"MCPMember.Subscriber_ID\": 1, \"ClaimType\": 1, \"BillingProvider.NPI\": 1, \"PCP.NPI\": 1}}]"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "SUBSCRIBER_ID",
+        "TargetField": "MCPMember.Subscriber_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "CLAIM_TYPE",
+        "TargetField": "ClaimType"
+      },
+      {
+        "SourceField": "BILLING_PROVIDER_ID",
+        "TargetField": "BillingProvider.NPI"
+      },
+      {
+        "SourceField": "PAYER_ID",
+        "TargetField": "PCP.NPI"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 441,
+      "DataRegressionSetTestCaseNumber": 10,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 15:49:47"
+    }
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target ClaimMap: no duplicate MCPMember.Subscriber_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimMap",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"MCPMember.Subscriber_ID\": 1}}]"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "MCPMember.Subscriber_ID",
+        "ResultFields": [
+          "MCPMember.Subscriber_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "MCPMember.Subscriber_ID should not have duplicate values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 442,
+      "DataRegressionSetTestCaseNumber": 11,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 15:49:47"
+    }
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target ClaimMap: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimMap",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"ClaimCore_ID\": {\"$ifNull\": [\"$ClaimCore_ID\", null]}, \"ClaimMap_ID\": {\"$ifNull\": [\"$ClaimMap_ID\", null]}, \"MCPMember.MCPMember_ID\": {\"$ifNull\": [\"$MCPMember.MCPMember_ID\", null]}}}]"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "ClaimCore_ID",
+        "ResultFields": [
+          "ClaimCore_ID"
+        ]
+      },
+      {
+        "SourceField": "ClaimMap_ID",
+        "ResultFields": [
+          "ClaimMap_ID"
+        ]
+      },
+      {
+        "SourceField": "MCPMember.MCPMember_ID",
+        "ResultFields": [
+          "MCPMember.MCPMember_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "ClaimCore_ID, ClaimMap_ID, MCPMember.MCPMember_ID should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 443,
+      "DataRegressionSetTestCaseNumber": 12,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 15:49:47"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Target ClaimMap: AccumsCoPayCoInsAndCaps.CopayCoinsConfig.LookupBackPeriod_ID has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimMap",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"AccumsCoPayCoInsAndCaps.CopayCoinsConfig.LookupBackPeriod_ID\": 1}}]"
+    },
+    "DataFilters": [],
+    "CompareFields": [
+      {
+        "SourceField": "AccumsCoPayCoInsAndCaps.CopayCoinsConfig.LookupBackPeriod_ID"
+      }
+    ],
+    "ApprovedValues": [
+      "'all'"
+    ],
+    "ExpectedResult": "AccumsCoPayCoInsAndCaps.CopayCoinsConfig.LookupBackPeriod_ID values other than approved [''all''] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 444,
+      "DataRegressionSetTestCaseNumber": 13,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 15:49:47"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Target ClaimMap: BenefitDetails.ApplyPNR has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimMap",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"BenefitDetails.ApplyPNR\": 1}}]"
+    },
+    "DataFilters": [],
+    "CompareFields": [
+      {
+        "SourceField": "BenefitDetails.ApplyPNR"
+      }
+    ],
+    "ApprovedValues": [
+      "'all'"
+    ],
+    "ExpectedResult": "BenefitDetails.ApplyPNR values other than approved [''all''] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 445,
+      "DataRegressionSetTestCaseNumber": 14,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 15:49:47"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Target ClaimMap: BenefitDetails.NonParPayAsPar.ApplicableType has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "ClaimMap",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"BenefitDetails.NonParPayAsPar.ApplicableType\": 1}}]"
+    },
+    "DataFilters": [],
+    "CompareFields": [
+      {
+        "SourceField": "BenefitDetails.NonParPayAsPar.ApplicableType"
+      }
+    ],
+    "ApprovedValues": [
+      "'all'"
+    ],
+    "ExpectedResult": "BenefitDetails.NonParPayAsPar.ApplicableType values other than approved [''all''] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 446,
+      "DataRegressionSetTestCaseNumber": 15,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 15:49:47"
+    }
+  },
+  {
+    "TestCaseNumber": 7,
+    "Module": "ClaimAdjudication",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "File 01_837P_HappyPath_MultiLine_INN.txt (837 CLAIM): no row repeated in every field",
+    "Viceversa": false,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "\\\\rxadvance.com\\qa-team\\QA Documentation\\QA Automation\\Data_Validation\\Claims\\837_Test_Files",
+      "FileName": "01_837P_HappyPath_MultiLine_INN.txt",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI837",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "CLAIM"
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "ALL",
+        "ResultFields": [
+          "ALL"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "No two rows of the file should be identical in every field",
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 440,
+      "DataRegressionSetTestCaseNumber": 8,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-11-10 15:49:47"
+    }
+  }
+]

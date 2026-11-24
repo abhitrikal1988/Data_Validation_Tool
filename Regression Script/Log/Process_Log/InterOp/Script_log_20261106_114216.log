@@ -1,0 +1,22 @@
+2026-11-06 11:42:16,698 | INFO | ========== Starting Validation ==========
+2026-11-06 11:42:16,700 | INFO | Module         : InterOp
+2026-11-06 11:42:16,700 | INFO | Stage          : None
+2026-11-06 11:42:16,701 | INFO | Cycle          : None
+2026-11-06 11:42:16,702 | INFO | Environment    : MCPQA1
+2026-11-06 11:42:16,703 | INFO | Runtime Filters: None — using DefaultValues
+2026-11-06 11:42:16,885 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-11-06 11:42:16,935 | INFO | ========== [ Running TestCase 3: Duplicate check on LocationProvider_ID ] ==========
+2026-11-06 11:42:16,935 | INFO | TestCase 3: Source [MONGODB PIPELINE] db.Test_InterOp_PractitionerRole.aggregate:
+[
+  {"$project": {"_id": 0, "LocationProvider_ID": 1, "McpProviderId": 1, "LocationId": 1, "Max_ModifiedDate": 1, "SourceIdentity.LocationProvider_ID": 1, "Business.Business_ID": 1, "Practitioner._idOfPractitioner": 1, "Practitioner.McpProviderId": 1, "Organization._idOfOrg": 1, "Organization.McpProviderId": 1, "Span.StartDate": 1}}
+]
+2026-11-06 11:42:16,936 | INFO | [TC 3] DataView — showing 1 of 1 row(s) from MONGODB:
+2026-11-06 11:42:16,936 | INFO |   SourceIdentity.LocationProvider_ID  LocationProvider_ID  McpProviderId  Business.Business_ID  Practitioner._idOfPractitioner  Practitioner.McpProviderId  Organization._idOfOrg  Organization.McpProviderId        Span.StartDate       LocationId          Max_ModifiedDate
+2026-11-06 11:42:16,936 | INFO |   ----------------------------------  -------------------  -------------  --------------------  ------------------------------  --------------------------  ---------------------  --------------------------  -------------------------  ----------  --------------------------------
+2026-11-06 11:42:16,939 | INFO |                 143866                       143866            203467             109                                                     203467                                             192920            2023-01-01 05:00:00+00:00    38388     2026-07-17 18:07:59.082000+00:00
+2026-11-06 11:42:16,939 | INFO | Execution time for TestCase 3: 0.05 seconds
+2026-11-06 11:42:16,951 | INFO | Total Number of Testcases Executed : 1,Pass : 1, Fail : 0, Skippped : 0
+2026-11-06 11:42:16,952 | INFO | Total execution time: 0.07 seconds (0.0 minutes)
+2026-11-06 11:42:16,984 | INFO | Master combined log written to: MCPQA1_InterOp_Log_20261106_164216.json
+2026-11-06 11:42:17,001 | INFO | Result.InsertData : 6aee036876642d6c11297ab5
+2026-11-06 11:42:18,212 | INFO | ========== Completed Validation ==========

@@ -1,0 +1,1201 @@
+[
+    {
+        "DataValidationLog_ID": 98,
+        "Module": "EDI271_RECON",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "EDI_271_AAA matches 271 PAYER_VALIDATION (presence only)",
+                "Result": "Skip",
+                "StartTime": "2026-10-20 21:03:45.114978",
+                "EndTime": "2026-10-20 21:03:50.735489",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:45",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT AAA01_RESP_CODE\n  ,AAA03_REJECT_CODE\n  ,AAA04_ACTION_CODE \n  FROM (\n  SELECT t.AAA01_RESP_CODE AS AAA01_RESP_CODE,\n  t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE,\n  t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE,\n  CASE \n  WHEN (t.LOOP_QUAL LIKE '%A') \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_AAA t) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source and Target data both are empty. Skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "EDI_271_AAA matches 271 PROVIDER_VALIDATION (presence only)",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:45.116981",
+                "EndTime": "2026-10-20 21:03:50.789313",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:45",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT AAA01_RESP_CODE\n  ,AAA03_REJECT_CODE\n  ,AAA04_ACTION_CODE \n  FROM (\n  SELECT t.AAA01_RESP_CODE AS AAA01_RESP_CODE,\n  t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE,\n  t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE,\n  CASE \n  WHEN (t.LOOP_QUAL LIKE '%B') \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_AAA t) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source data empty and Target having data. Please check SRC."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "EDI_271_AAA matches 271 MEMBER_VALIDATION (presence only)",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:45.118979",
+                "EndTime": "2026-10-20 21:03:56.288572",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:45",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT AAA01_RESP_CODE\n  ,AAA03_REJECT_CODE\n  ,AAA04_ACTION_CODE \n  FROM (\n  SELECT t.AAA01_RESP_CODE AS AAA01_RESP_CODE,\n  t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE,\n  t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE,\n  CASE \n  WHEN (t.LOOP_QUAL LIKE '%C') \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_AAA t) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source UNC_PATH records: 22, Total target ORACLE records: 22"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:56",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:56",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 4,
+                "TestCaseName": "EDI_271_AAA_EB matches 271 BENEFIT_VALIDATION",
+                "Result": "Skip",
+                "StartTime": "2026-10-20 21:03:45.119977",
+                "EndTime": "2026-10-20 21:03:50.681481",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:45",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,OCC\n  ,AAA01_RESP_CODE\n  ,AAA03_REJECT_CODE\n  ,AAA04_ACTION_CODE \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_AAA_EB_ID_NH) AS OCC,\n  t.AAA01_RESP_CODE AS AAA01_RESP_CODE,\n  t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE,\n  t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE \n  FROM RECON.EDI_271_AAA_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source and Target data both are empty. Skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 5,
+                "TestCaseName": "Target EDI_271_AAA_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:45.121979",
+                "EndTime": "2026-10-20 21:03:46.041778",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:45",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,OCC\n  ,AAA01_RESP_CODE\n  ,AAA03_REJECT_CODE\n  ,AAA04_ACTION_CODE \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_AAA_EB_ID_NH) AS OCC,\n  t.AAA01_RESP_CODE AS AAA01_RESP_CODE,\n  t.AAA03_REJECT_CODE AS AAA03_REJECT_CODE,\n  t.AAA04_ACTION_CODE AS AAA04_ACTION_CODE \n  FROM RECON.EDI_271_AAA_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:45",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:46",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 6,
+                "TestCaseName": "EDI_271_ADDTNL_INFO matches 271 PROVIDER_REF (presence only)",
+                "Result": "Skip",
+                "StartTime": "2026-10-20 21:03:46.042779",
+                "EndTime": "2026-10-20 21:03:50.993357",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:46",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT REF01_ID_QUAL\n  ,REF02_REF_ID\n  ,REF03_DESC \n  FROM (\n  SELECT t.REF01_ID_QUAL AS REF01_ID_QUAL,\n  t.REF02_REF_ID AS REF02_REF_ID,\n  t.REF03_DESC AS REF03_DESC,\n  CASE \n  WHEN (t.LOOP_QUAL LIKE '%B') \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_ADDTNL_INFO t) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source and Target data both are empty. Skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 7,
+                "TestCaseName": "EDI_271_ADDTNL_INFO matches 271 MEMBER_REF (presence only)",
+                "Result": "Skip",
+                "StartTime": "2026-10-20 21:03:50.681481",
+                "EndTime": "2026-10-20 21:03:50.815314",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT REF01_ID_QUAL\n  ,REF02_REF_ID\n  ,REF03_DESC \n  FROM (\n  SELECT t.REF01_ID_QUAL AS REF01_ID_QUAL,\n  t.REF02_REF_ID AS REF02_REF_ID,\n  t.REF03_DESC AS REF03_DESC,\n  CASE \n  WHEN (t.LOOP_QUAL LIKE '%C' \n  AND t.REF01_ID_QUAL <> 'SY') \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_ADDTNL_INFO t) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source and Target data both are empty. Skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 8,
+                "TestCaseName": "EDI_271_ADDTNL_INFO_EB matches 271 BENEFIT_REF (presence only)",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:50.735489",
+                "EndTime": "2026-10-20 21:03:56.768199",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT REF01_ID_QUAL\n  ,REF02_REF_ID\n  ,REF03_DESC \n  FROM (\n  SELECT t.REF01_ID_QUAL AS REF01_ID_QUAL,\n  t.REF02_REF_ID AS REF02_REF_ID,\n  t.REF03_DESC AS REF03_DESC \n  FROM RECON.EDI_271_ADDTNL_INFO_EB t) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source UNC_PATH records: 1453, Total target ORACLE records: 1457"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:56",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:56",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 9,
+                "TestCaseName": "EDI_271_DTP_EB matches 271 BENEFIT_DATE",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:50.789313",
+                "EndTime": "2026-10-20 21:03:50.956833",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,DTP01_QUAL\n  ,OCC\n  ,DTP02_DT_FORMAT_QUAL\n  ,START_DT\n  ,END_DT \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.DTP01_QUAL \n  ORDER BY t.EDI_271_DTP_EB_ID_NH) AS OCC,\n  t.DTP01_QUAL AS DTP01_QUAL,\n  t.DTP02_DT_FORMAT_QUAL AS DTP02_DT_FORMAT_QUAL,\n  t.START_DT AS START_DT,\n  t.END_DT AS END_DT \n  FROM RECON.EDI_271_DTP_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 10,
+                "TestCaseName": "Target EDI_271_DTP_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, DTP01_QUAL, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:50.815314",
+                "EndTime": "2026-10-20 21:03:50.891842",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,DTP01_QUAL\n  ,OCC\n  ,DTP02_DT_FORMAT_QUAL\n  ,START_DT\n  ,END_DT \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.DTP01_QUAL \n  ORDER BY t.EDI_271_DTP_EB_ID_NH) AS OCC,\n  t.DTP01_QUAL AS DTP01_QUAL,\n  t.DTP02_DT_FORMAT_QUAL AS DTP02_DT_FORMAT_QUAL,\n  t.START_DT AS START_DT,\n  t.END_DT AS END_DT \n  FROM RECON.EDI_271_DTP_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ', 'DTP01_QUAL', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ, DTP01_QUAL, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 11,
+                "TestCaseName": "EDI_271_HEALTH_SERVICE_DELV_EB matches 271 BENEFIT_DELIVERY",
+                "Result": "Skip",
+                "StartTime": "2026-10-20 21:03:50.891842",
+                "EndTime": "2026-10-20 21:03:51.000357",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,OCC\n  ,QUAN_QUAL\n  ,QUANTITY\n  ,UNITS_CODE\n  ,SELECT_MODULES\n  ,PERIOD_QUALF\n  ,NUM_OF_PERIODS\n  ,DELIVERY_FREQ_CODE\n  ,DELIVERY_TIME_CODE \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_HEALTH_SERVICE_DELV_EB_ID_NH) AS OCC,\n  t.QUAN_QUAL AS QUAN_QUAL,\n  t.QUANTITY AS QUANTITY,\n  t.UNITS_CODE AS UNITS_CODE,\n  t.SELECT_MODULES AS SELECT_MODULES,\n  t.PERIOD_QUALF AS PERIOD_QUALF,\n  t.NUM_OF_PERIODS AS NUM_OF_PERIODS,\n  t.DELIVERY_FREQ_CODE AS DELIVERY_FREQ_CODE,\n  t.DELIVERY_TIME_CODE AS DELIVERY_TIME_CODE \n  FROM RECON.EDI_271_HEALTH_SERVICE_DELV_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source and Target data both are empty. Skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 12,
+                "TestCaseName": "Target EDI_271_HEALTH_SERVICE_DELV_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:50.957834",
+                "EndTime": "2026-10-20 21:03:51.003356",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,OCC\n  ,QUAN_QUAL\n  ,QUANTITY\n  ,UNITS_CODE\n  ,SELECT_MODULES\n  ,PERIOD_QUALF\n  ,NUM_OF_PERIODS\n  ,DELIVERY_FREQ_CODE\n  ,DELIVERY_TIME_CODE \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_HEALTH_SERVICE_DELV_EB_ID_NH) AS OCC,\n  t.QUAN_QUAL AS QUAN_QUAL,\n  t.QUANTITY AS QUANTITY,\n  t.UNITS_CODE AS UNITS_CODE,\n  t.SELECT_MODULES AS SELECT_MODULES,\n  t.PERIOD_QUALF AS PERIOD_QUALF,\n  t.NUM_OF_PERIODS AS NUM_OF_PERIODS,\n  t.DELIVERY_FREQ_CODE AS DELIVERY_FREQ_CODE,\n  t.DELIVERY_TIME_CODE AS DELIVERY_TIME_CODE \n  FROM RECON.EDI_271_HEALTH_SERVICE_DELV_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 13,
+                "TestCaseName": "EDI_271_III_EB matches 271 BENEFIT_INDUSTRY_CODE",
+                "Result": "Skip",
+                "StartTime": "2026-10-20 21:03:50.993357",
+                "EndTime": "2026-10-20 21:03:51.056889",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:50",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,OCC\n  ,QUALF_CODE\n  ,INDUSTRY_CODE\n  ,MSG \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_III_EB_ID_NH) AS OCC,\n  t.QUALF_CODE AS QUALF_CODE,\n  t.INDUSTRY_CODE AS INDUSTRY_CODE,\n  t.MSG AS MSG \n  FROM RECON.EDI_271_III_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source and Target data both are empty. Skipping."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 14,
+                "TestCaseName": "Target EDI_271_III_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.000357",
+                "EndTime": "2026-10-20 21:03:51.054888",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,OCC\n  ,QUALF_CODE\n  ,INDUSTRY_CODE\n  ,MSG \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_III_EB_ID_NH) AS OCC,\n  t.QUALF_CODE AS QUALF_CODE,\n  t.INDUSTRY_CODE AS INDUSTRY_CODE,\n  t.MSG AS MSG \n  FROM RECON.EDI_271_III_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 15,
+                "TestCaseName": "EDI_271_INFO_RECEIVER matches 271 PROVIDER",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.003356",
+                "EndTime": "2026-10-20 21:03:51.061894",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,HL04_CHILD_CODE\n  ,ENTITY_CODE\n  ,ENTITY_TYPE\n  ,LAST_NAME\n  ,FIRST_NAME\n  ,MIDDLE_NAME\n  ,ID_QUAL\n  ,ID_CODE\n  ,ADDRESS1\n  ,ADDRESS2\n  ,CITY\n  ,STATE_CODE\n  ,ZIP\n  ,PROVIDER_CODE\n  ,PROVIDER_REF_ID \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  t.HL04_CHILD_CODE AS HL04_CHILD_CODE,\n  t.ENTITY_CODE AS ENTITY_CODE,\n  t.ENTITY_TYPE AS ENTITY_TYPE,\n  t.LAST_NAME AS LAST_NAME,\n  t.FIRST_NAME AS FIRST_NAME,\n  t.MIDDLE_NAME AS MIDDLE_NAME,\n  t.ID_QUAL AS ID_QUAL,\n  t.ID_CODE AS ID_CODE,\n  t.ADDRESS1 AS ADDRESS1,\n  t.ADDRESS2 AS ADDRESS2,\n  t.CITY AS CITY,\n  t.STATE_CODE AS STATE_CODE,\n  t.ZIP AS ZIP,\n  t.PROVIDER_CODE AS PROVIDER_CODE,\n  t.PROVIDER_REF_ID AS PROVIDER_REF_ID \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 16,
+                "TestCaseName": "Target EDI_271_INFO_RECEIVER: no duplicate TRANSACTION_CONTROL_NUMBER",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.054888",
+                "EndTime": "2026-10-20 21:03:51.083416",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,HL04_CHILD_CODE\n  ,ENTITY_CODE\n  ,ENTITY_TYPE\n  ,LAST_NAME\n  ,FIRST_NAME\n  ,MIDDLE_NAME\n  ,ID_QUAL\n  ,ID_CODE\n  ,ADDRESS1\n  ,ADDRESS2\n  ,CITY\n  ,STATE_CODE\n  ,ZIP\n  ,PROVIDER_CODE\n  ,PROVIDER_REF_ID \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  t.HL04_CHILD_CODE AS HL04_CHILD_CODE,\n  t.ENTITY_CODE AS ENTITY_CODE,\n  t.ENTITY_TYPE AS ENTITY_TYPE,\n  t.LAST_NAME AS LAST_NAME,\n  t.FIRST_NAME AS FIRST_NAME,\n  t.MIDDLE_NAME AS MIDDLE_NAME,\n  t.ID_QUAL AS ID_QUAL,\n  t.ID_CODE AS ID_CODE,\n  t.ADDRESS1 AS ADDRESS1,\n  t.ADDRESS2 AS ADDRESS2,\n  t.CITY AS CITY,\n  t.STATE_CODE AS STATE_CODE,\n  t.ZIP AS ZIP,\n  t.PROVIDER_CODE AS PROVIDER_CODE,\n  t.PROVIDER_REF_ID AS PROVIDER_REF_ID \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: ['TRANSACTION_CONTROL_NUMBER']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 17,
+                "TestCaseName": "EDI_271_INFO_SOURCE matches 271 PAYER",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.056889",
+                "EndTime": "2026-10-20 21:03:51.121419",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,HL04_CHILD_CODE\n  ,ENTITY_CODE\n  ,ENTITY_TYPE\n  ,LAST_NAME\n  ,FIRST_NAME\n  ,MIDDLE_NAME\n  ,ID_QUAL\n  ,ID_CODE \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  t.HL04_CHILD_CODE AS HL04_CHILD_CODE,\n  t.ENTITY_CODE AS ENTITY_CODE,\n  t.ENTITY_TYPE AS ENTITY_TYPE,\n  t.LAST_NAME AS LAST_NAME,\n  t.FIRST_NAME AS FIRST_NAME,\n  t.MIDDLE_NAME AS MIDDLE_NAME,\n  t.ID_QUAL AS ID_QUAL,\n  t.ID_CODE AS ID_CODE \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 18,
+                "TestCaseName": "Target EDI_271_INFO_SOURCE: no duplicate TRANSACTION_CONTROL_NUMBER",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.061894",
+                "EndTime": "2026-10-20 21:03:51.080903",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,HL04_CHILD_CODE\n  ,ENTITY_CODE\n  ,ENTITY_TYPE\n  ,LAST_NAME\n  ,FIRST_NAME\n  ,MIDDLE_NAME\n  ,ID_QUAL\n  ,ID_CODE \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  t.HL04_CHILD_CODE AS HL04_CHILD_CODE,\n  t.ENTITY_CODE AS ENTITY_CODE,\n  t.ENTITY_TYPE AS ENTITY_TYPE,\n  t.LAST_NAME AS LAST_NAME,\n  t.FIRST_NAME AS FIRST_NAME,\n  t.MIDDLE_NAME AS MIDDLE_NAME,\n  t.ID_QUAL AS ID_QUAL,\n  t.ID_CODE AS ID_CODE \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: ['TRANSACTION_CONTROL_NUMBER']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 19,
+                "TestCaseName": "EDI_271_INFO_SOURCE matches 271 PAYER_CONTACT",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.080903",
+                "EndTime": "2026-10-20 21:03:51.212953",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,OCC\n  ,CONTACT_FUNCT_CODE\n  ,CONTACT_NAME\n  ,PER_PHONE\n  ,PER_PHONE_EXT\n  ,PER_FAX\n  ,PER_EMAIL\n  ,PER_URL \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  1 AS OCC,\n  t.CONTACT_FUNCT_CODE AS CONTACT_FUNCT_CODE,\n  t.CONTACT_NAME AS CONTACT_NAME,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'TE' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'TE' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'TE' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_PHONE,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'EX' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'EX' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'EX' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_PHONE_EXT,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'FX' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'FX' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'FX' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_FAX,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'EM' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'EM' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'EM' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_EMAIL,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'UR' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'UR' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'UR' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_URL,\n  CASE \n  WHEN (t.CONTACT_FUNCT_CODE IS NOT NULL \n  OR t.COMM_NUMBER_1 IS NOT NULL) \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 20,
+                "TestCaseName": "Target EDI_271_INFO_SOURCE: no duplicate TRANSACTION_CONTROL_NUMBER, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.083416",
+                "EndTime": "2026-10-20 21:03:51.105420",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,OCC\n  ,CONTACT_FUNCT_CODE\n  ,CONTACT_NAME\n  ,PER_PHONE\n  ,PER_PHONE_EXT\n  ,PER_FAX\n  ,PER_EMAIL\n  ,PER_URL \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  1 AS OCC,\n  t.CONTACT_FUNCT_CODE AS CONTACT_FUNCT_CODE,\n  t.CONTACT_NAME AS CONTACT_NAME,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'TE' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'TE' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'TE' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_PHONE,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'EX' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'EX' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'EX' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_PHONE_EXT,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'FX' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'FX' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'FX' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_FAX,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'EM' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'EM' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'EM' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_EMAIL,\n  CASE \n  WHEN t.COMM_NUMBER_QUALF_1 = 'UR' \n  THEN t.COMM_NUMBER_1 \n  WHEN t.COMM_NUMBER_QUALF_2 = 'UR' \n  THEN t.COMM_NUMBER_2 \n  WHEN t.COMM_NUMBER_QUALF_3 = 'UR' \n  THEN t.COMM_NUMBER_3 \n  END AS PER_URL,\n  CASE \n  WHEN (t.CONTACT_FUNCT_CODE IS NOT NULL \n  OR t.COMM_NUMBER_1 IS NOT NULL) \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 21,
+                "TestCaseName": "EDI_271_MSG_EB matches 271 BENEFIT_MESSAGE",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.105420",
+                "EndTime": "2026-10-20 21:03:51.253949",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,MSG01\n  ,OCC \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.MSG01 \n  ORDER BY t.EDI_271_MSG_EB_ID_NH) AS OCC,\n  t.MSG01 AS MSG01 \n  FROM RECON.EDI_271_MSG_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 22,
+                "TestCaseName": "Target EDI_271_MSG_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, MSG01, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.121419",
+                "EndTime": "2026-10-20 21:03:51.234949",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,MSG01\n  ,OCC \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.MSG01 \n  ORDER BY t.EDI_271_MSG_EB_ID_NH) AS OCC,\n  t.MSG01 AS MSG01 \n  FROM RECON.EDI_271_MSG_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ', 'MSG01', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ, MSG01, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 23,
+                "TestCaseName": "EDI_271_SERVICETYPE_CODE_EB matches 271 BENEFIT_SERVICE_TYPE",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.212953",
+                "EndTime": "2026-10-20 21:03:51.718476",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,EB03_SERVICE_TYPE_CODE\n  ,OCC \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.EB03_SERVICE_TYPE_CODE \n  ORDER BY t.EDI_271_SERVICETYPE_CODE_EB_ID_NH) AS OCC,\n  t.EB03_SERVICE_TYPE_CODE AS EB03_SERVICE_TYPE_CODE \n  FROM RECON.EDI_271_SERVICETYPE_CODE_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 24,
+                "TestCaseName": "Target EDI_271_SERVICETYPE_CODE_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, EB03_SERVICE_TYPE_CODE, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.234949",
+                "EndTime": "2026-10-20 21:03:51.371075",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,EB03_SERVICE_TYPE_CODE\n  ,OCC \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH, t.EB03_SERVICE_TYPE_CODE \n  ORDER BY t.EDI_271_SERVICETYPE_CODE_EB_ID_NH) AS OCC,\n  t.EB03_SERVICE_TYPE_CODE AS EB03_SERVICE_TYPE_CODE \n  FROM RECON.EDI_271_SERVICETYPE_CODE_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ', 'EB03_SERVICE_TYPE_CODE', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ, EB03_SERVICE_TYPE_CODE, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 25,
+                "TestCaseName": "EDI_271_SUBSCRIBER matches 271 MEMBER",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.255949",
+                "EndTime": "2026-10-20 21:03:51.746477",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,HIERARCHI_ID\n  ,HIERARCHI_PARENT_ID\n  ,HL04_CHILD_CODE\n  ,MEMBER_LEVEL_FROM_HL03 \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  t.HIERARCHI_ID AS HIERARCHI_ID,\n  t.HIERARCHI_PARENT_ID AS HIERARCHI_PARENT_ID,\n  t.HL04_CHILD_CODE AS HL04_CHILD_CODE,\n  CASE t.HIERARCHI_PARENT_LEVEL_CODE \n  WHEN '22' \n  THEN 'SUBSCRIBER' \n  WHEN '23' \n  THEN 'DEPENDENT' \n  ELSE t.HIERARCHI_PARENT_LEVEL_CODE \n  END AS MEMBER_LEVEL_FROM_HL03 \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 26,
+                "TestCaseName": "Target EDI_271_SUBSCRIBER: no duplicate TRANSACTION_CONTROL_NUMBER",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.371075",
+                "EndTime": "2026-10-20 21:03:51.479544",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,HIERARCHI_ID\n  ,HIERARCHI_PARENT_ID\n  ,HL04_CHILD_CODE\n  ,MEMBER_LEVEL_FROM_HL03 \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  t.HIERARCHI_ID AS HIERARCHI_ID,\n  t.HIERARCHI_PARENT_ID AS HIERARCHI_PARENT_ID,\n  t.HL04_CHILD_CODE AS HL04_CHILD_CODE,\n  CASE t.HIERARCHI_PARENT_LEVEL_CODE \n  WHEN '22' \n  THEN 'SUBSCRIBER' \n  WHEN '23' \n  THEN 'DEPENDENT' \n  ELSE t.HIERARCHI_PARENT_LEVEL_CODE \n  END AS MEMBER_LEVEL_FROM_HL03 \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: ['TRANSACTION_CONTROL_NUMBER']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 27,
+                "TestCaseName": "EDI_271_SUBSCRIBER_DTP matches 271 MEMBER_DATE",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.479544",
+                "EndTime": "2026-10-20 21:03:51.836515",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,DTP01_QUAL\n  ,OCC\n  ,DTP02_DT_FORMAT_QUAL\n  ,START_DT\n  ,END_DT \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH, t.DTP01_QUAL \n  ORDER BY t.EDI_271_SUBSCRIBER_DTP_ID_NH) AS OCC,\n  t.DTP01_QUAL AS DTP01_QUAL,\n  t.DTP02_DT_FORMAT_QUAL AS DTP02_DT_FORMAT_QUAL,\n  t.START_DT AS START_DT,\n  t.END_DT AS END_DT \n  FROM RECON.EDI_271_SUBSCRIBER_DTP t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 28,
+                "TestCaseName": "Target EDI_271_SUBSCRIBER_DTP: no duplicate TRANSACTION_CONTROL_NUMBER, DTP01_QUAL, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.722476",
+                "EndTime": "2026-10-20 21:03:51.852514",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,DTP01_QUAL\n  ,OCC\n  ,DTP02_DT_FORMAT_QUAL\n  ,START_DT\n  ,END_DT \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH, t.DTP01_QUAL \n  ORDER BY t.EDI_271_SUBSCRIBER_DTP_ID_NH) AS OCC,\n  t.DTP01_QUAL AS DTP01_QUAL,\n  t.DTP02_DT_FORMAT_QUAL AS DTP02_DT_FORMAT_QUAL,\n  t.START_DT AS START_DT,\n  t.END_DT AS END_DT \n  FROM RECON.EDI_271_SUBSCRIBER_DTP t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'DTP01_QUAL', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, DTP01_QUAL, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 29,
+                "TestCaseName": "EDI_271_SUBSCRIBER_EB matches 271 BENEFIT",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.746477",
+                "EndTime": "2026-10-20 21:03:52.029097",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,EB01_INFO_CODE\n  ,EB02_COVERAGE_CODE\n  ,EB04_INSURANCE_TYPE_CODE\n  ,EB05_PLAN_COV_DESC\n  ,EB06_TIME_PERIOD_QUAL\n  ,EB07_MONETARY_AMOUNT\n  ,EB08_PERCNT_DEC\n  ,EB09_QUANTITY_QUAL\n  ,EB10_QUANTITY\n  ,EB11_RESP_CODE\n  ,EB12_RESP_CODE\n  ,EB13_ID_QUAL\n  ,EB13_PROCEDURE_CODE\n  ,EB13_MOD1\n  ,EB13_MOD2\n  ,EB13_MOD3\n  ,EB13_MOD4\n  ,EB13_DESC\n  ,EB14_DIAGCODE_POINTER1\n  ,EB14_DIAGCODE_POINTER2\n  ,EB14_DIAGCODE_POINTER3\n  ,EB14_DIAGCODE_POINTER4 \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ,\n  t.EB01_INFO_CODE AS EB01_INFO_CODE,\n  t.EB02_COVERAGE_CODE AS EB02_COVERAGE_CODE,\n  t.EB04_INSURANCE_TYPE_CODE AS EB04_INSURANCE_TYPE_CODE,\n  t.EB05_PLAN_COV_DESC AS EB05_PLAN_COV_DESC,\n  t.EB06_TIME_PERIOD_QUAL AS EB06_TIME_PERIOD_QUAL,\n  t.EB07_MONETARY_AMOUNT AS EB07_MONETARY_AMOUNT,\n  t.EB08_PERCNT_DEC AS EB08_PERCNT_DEC,\n  t.EB09_QUANTITY_QUAL AS EB09_QUANTITY_QUAL,\n  t.EB10_QUANTITY AS EB10_QUANTITY,\n  t.EB11_RESP_CODE AS EB11_RESP_CODE,\n  t.EB12_RESP_CODE AS EB12_RESP_CODE,\n  t.EB13_ID_QUAL AS EB13_ID_QUAL,\n  t.EB13_PROCEDURE_CODE AS EB13_PROCEDURE_CODE,\n  t.EB13_MOD1 AS EB13_MOD1,\n  t.EB13_MOD2 AS EB13_MOD2,\n  t.EB13_MOD3 AS EB13_MOD3,\n  t.EB13_MOD4 AS EB13_MOD4,\n  t.EB13_DESC AS EB13_DESC,\n  t.EB14_DIAGCODE_POINTER1 AS EB14_DIAGCODE_POINTER1,\n  t.EB14_DIAGCODE_POINTER2 AS EB14_DIAGCODE_POINTER2,\n  t.EB14_DIAGCODE_POINTER3 AS EB14_DIAGCODE_POINTER3,\n  t.EB14_DIAGCODE_POINTER4 AS EB14_DIAGCODE_POINTER4 \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 30,
+                "TestCaseName": "Target EDI_271_SUBSCRIBER_EB: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.837513",
+                "EndTime": "2026-10-20 21:03:51.948043",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,EB01_INFO_CODE\n  ,EB02_COVERAGE_CODE\n  ,EB04_INSURANCE_TYPE_CODE\n  ,EB05_PLAN_COV_DESC\n  ,EB06_TIME_PERIOD_QUAL\n  ,EB07_MONETARY_AMOUNT\n  ,EB08_PERCNT_DEC\n  ,EB09_QUANTITY_QUAL\n  ,EB10_QUANTITY\n  ,EB11_RESP_CODE\n  ,EB12_RESP_CODE\n  ,EB13_ID_QUAL\n  ,EB13_PROCEDURE_CODE\n  ,EB13_MOD1\n  ,EB13_MOD2\n  ,EB13_MOD3\n  ,EB13_MOD4\n  ,EB13_DESC\n  ,EB14_DIAGCODE_POINTER1\n  ,EB14_DIAGCODE_POINTER2\n  ,EB14_DIAGCODE_POINTER3\n  ,EB14_DIAGCODE_POINTER4 \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ,\n  t.EB01_INFO_CODE AS EB01_INFO_CODE,\n  t.EB02_COVERAGE_CODE AS EB02_COVERAGE_CODE,\n  t.EB04_INSURANCE_TYPE_CODE AS EB04_INSURANCE_TYPE_CODE,\n  t.EB05_PLAN_COV_DESC AS EB05_PLAN_COV_DESC,\n  t.EB06_TIME_PERIOD_QUAL AS EB06_TIME_PERIOD_QUAL,\n  t.EB07_MONETARY_AMOUNT AS EB07_MONETARY_AMOUNT,\n  t.EB08_PERCNT_DEC AS EB08_PERCNT_DEC,\n  t.EB09_QUANTITY_QUAL AS EB09_QUANTITY_QUAL,\n  t.EB10_QUANTITY AS EB10_QUANTITY,\n  t.EB11_RESP_CODE AS EB11_RESP_CODE,\n  t.EB12_RESP_CODE AS EB12_RESP_CODE,\n  t.EB13_ID_QUAL AS EB13_ID_QUAL,\n  t.EB13_PROCEDURE_CODE AS EB13_PROCEDURE_CODE,\n  t.EB13_MOD1 AS EB13_MOD1,\n  t.EB13_MOD2 AS EB13_MOD2,\n  t.EB13_MOD3 AS EB13_MOD3,\n  t.EB13_MOD4 AS EB13_MOD4,\n  t.EB13_DESC AS EB13_DESC,\n  t.EB14_DIAGCODE_POINTER1 AS EB14_DIAGCODE_POINTER1,\n  t.EB14_DIAGCODE_POINTER2 AS EB14_DIAGCODE_POINTER2,\n  t.EB14_DIAGCODE_POINTER3 AS EB14_DIAGCODE_POINTER3,\n  t.EB14_DIAGCODE_POINTER4 AS EB14_DIAGCODE_POINTER4 \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 31,
+                "TestCaseName": "EDI_271_SUBSCRIBER_EB_ENTITY matches 271 BENEFIT_ENTITY",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:51.853513",
+                "EndTime": "2026-10-20 21:03:52.137019",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,ENTITY_SEQ\n  ,SUBSC_EB_ENTITY_CODE\n  ,SUBSC_EB_ENTITY_TYPE\n  ,SUBSC_EB_ENTITY_LAST_NAME\n  ,SUBSC_EB_ENTITY_FIRST_NAME\n  ,SUBSC_EB_ENTITY_MIDDLE_NAME\n  ,SUBSC_EB_ENTITY_ID_QUALF\n  ,SUBSC_EB_ENTITY_ID_CODE\n  ,SUBSC_EB_ENTITY_ADDRESS1\n  ,SUBSC_EB_ENTITY_ADDRESS2\n  ,SUBSC_EB_ENTITY_CITY\n  ,SUBSC_EB_ENTITY_STATE\n  ,SUBSC_EB_ENTITY_ZIP\n  ,SUBSC_EB_ENTITY_PROVIDER_CODE\n  ,SUBSC_EB_ENTITY_REF_ID \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH) AS ENTITY_SEQ,\n  t.SUBSC_EB_ENTITY_CODE AS SUBSC_EB_ENTITY_CODE,\n  t.SUBSC_EB_ENTITY_TYPE AS SUBSC_EB_ENTITY_TYPE,\n  t.SUBSC_EB_ENTITY_LAST_NAME AS SUBSC_EB_ENTITY_LAST_NAME,\n  t.SUBSC_EB_ENTITY_FIRST_NAME AS SUBSC_EB_ENTITY_FIRST_NAME,\n  t.SUBSC_EB_ENTITY_MIDDLE_NAME AS SUBSC_EB_ENTITY_MIDDLE_NAME,\n  t.SUBSC_EB_ENTITY_ID_QUALF AS SUBSC_EB_ENTITY_ID_QUALF,\n  t.SUBSC_EB_ENTITY_ID_CODE AS SUBSC_EB_ENTITY_ID_CODE,\n  t.SUBSC_EB_ENTITY_ADDRESS1 AS SUBSC_EB_ENTITY_ADDRESS1,\n  t.SUBSC_EB_ENTITY_ADDRESS2 AS SUBSC_EB_ENTITY_ADDRESS2,\n  t.SUBSC_EB_ENTITY_CITY AS SUBSC_EB_ENTITY_CITY,\n  t.SUBSC_EB_ENTITY_STATE AS SUBSC_EB_ENTITY_STATE,\n  t.SUBSC_EB_ENTITY_ZIP AS SUBSC_EB_ENTITY_ZIP,\n  t.SUBSC_EB_ENTITY_PROVIDER_CODE AS SUBSC_EB_ENTITY_PROVIDER_CODE,\n  t.SUBSC_EB_ENTITY_REF_ID AS SUBSC_EB_ENTITY_REF_ID \n  FROM RECON.EDI_271_SUBSCRIBER_EB_ENTITY t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 32,
+                "TestCaseName": "Target EDI_271_SUBSCRIBER_EB_ENTITY: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:51.949045",
+                "EndTime": "2026-10-20 21:03:52.075511",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,ENTITY_SEQ\n  ,SUBSC_EB_ENTITY_CODE\n  ,SUBSC_EB_ENTITY_TYPE\n  ,SUBSC_EB_ENTITY_LAST_NAME\n  ,SUBSC_EB_ENTITY_FIRST_NAME\n  ,SUBSC_EB_ENTITY_MIDDLE_NAME\n  ,SUBSC_EB_ENTITY_ID_QUALF\n  ,SUBSC_EB_ENTITY_ID_CODE\n  ,SUBSC_EB_ENTITY_ADDRESS1\n  ,SUBSC_EB_ENTITY_ADDRESS2\n  ,SUBSC_EB_ENTITY_CITY\n  ,SUBSC_EB_ENTITY_STATE\n  ,SUBSC_EB_ENTITY_ZIP\n  ,SUBSC_EB_ENTITY_PROVIDER_CODE\n  ,SUBSC_EB_ENTITY_REF_ID \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH) AS ENTITY_SEQ,\n  t.SUBSC_EB_ENTITY_CODE AS SUBSC_EB_ENTITY_CODE,\n  t.SUBSC_EB_ENTITY_TYPE AS SUBSC_EB_ENTITY_TYPE,\n  t.SUBSC_EB_ENTITY_LAST_NAME AS SUBSC_EB_ENTITY_LAST_NAME,\n  t.SUBSC_EB_ENTITY_FIRST_NAME AS SUBSC_EB_ENTITY_FIRST_NAME,\n  t.SUBSC_EB_ENTITY_MIDDLE_NAME AS SUBSC_EB_ENTITY_MIDDLE_NAME,\n  t.SUBSC_EB_ENTITY_ID_QUALF AS SUBSC_EB_ENTITY_ID_QUALF,\n  t.SUBSC_EB_ENTITY_ID_CODE AS SUBSC_EB_ENTITY_ID_CODE,\n  t.SUBSC_EB_ENTITY_ADDRESS1 AS SUBSC_EB_ENTITY_ADDRESS1,\n  t.SUBSC_EB_ENTITY_ADDRESS2 AS SUBSC_EB_ENTITY_ADDRESS2,\n  t.SUBSC_EB_ENTITY_CITY AS SUBSC_EB_ENTITY_CITY,\n  t.SUBSC_EB_ENTITY_STATE AS SUBSC_EB_ENTITY_STATE,\n  t.SUBSC_EB_ENTITY_ZIP AS SUBSC_EB_ENTITY_ZIP,\n  t.SUBSC_EB_ENTITY_PROVIDER_CODE AS SUBSC_EB_ENTITY_PROVIDER_CODE,\n  t.SUBSC_EB_ENTITY_REF_ID AS SUBSC_EB_ENTITY_REF_ID \n  FROM RECON.EDI_271_SUBSCRIBER_EB_ENTITY t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:51",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ', 'ENTITY_SEQ']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 33,
+                "TestCaseName": "EDI_271_SUBSCRIBER_EB_ENTITY matches 271 BENEFIT_ENTITY_CONTACT",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:52.034089",
+                "EndTime": "2026-10-20 21:03:52.167019",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,ENTITY_SEQ\n  ,OCC\n  ,SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE\n  ,SUBSC_EB_ENTITY_CONTACT_NAME\n  ,PER_PHONE\n  ,PER_PHONE_EXT\n  ,PER_FAX\n  ,PER_EMAIL\n  ,PER_URL \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH) AS ENTITY_SEQ,\n  1 AS OCC,\n  t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE AS SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE,\n  t.SUBSC_EB_ENTITY_CONTACT_NAME AS SUBSC_EB_ENTITY_CONTACT_NAME,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'TE' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'TE' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'TE' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_PHONE,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'EX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'EX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'EX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_PHONE_EXT,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'FX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'FX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'FX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_FAX,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'EM' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'EM' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'EM' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_EMAIL,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'UR' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'UR' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'UR' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_URL,\n  CASE \n  WHEN (t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE IS NOT NULL \n  OR t.SUBSC_EB_ENTITY_COMM_NUMBER_1 IS NOT NULL) \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_SUBSCRIBER_EB_ENTITY t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 34,
+                "TestCaseName": "Target EDI_271_SUBSCRIBER_EB_ENTITY: no duplicate TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:52.075511",
+                "EndTime": "2026-10-20 21:03:52.155018",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,EB_SEQ\n  ,ENTITY_SEQ\n  ,OCC\n  ,SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE\n  ,SUBSC_EB_ENTITY_CONTACT_NAME\n  ,PER_PHONE\n  ,PER_PHONE_EXT\n  ,PER_FAX\n  ,PER_EMAIL\n  ,PER_URL \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  p.EB_SEQ AS EB_SEQ,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_EB_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ENTITY_ID_NH) AS ENTITY_SEQ,\n  1 AS OCC,\n  t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE AS SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE,\n  t.SUBSC_EB_ENTITY_CONTACT_NAME AS SUBSC_EB_ENTITY_CONTACT_NAME,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'TE' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'TE' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'TE' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_PHONE,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'EX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'EX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'EX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_PHONE_EXT,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'FX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'FX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'FX' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_FAX,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'EM' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'EM' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'EM' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_EMAIL,\n  CASE \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_1 = 'UR' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_1 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_2 = 'UR' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_2 \n  WHEN t.SUBSC_EB_ENTITY_COMM_NUMBER_QUALF_3 = 'UR' \n  THEN t.SUBSC_EB_ENTITY_COMM_NUMBER_3 \n  END AS PER_URL,\n  CASE \n  WHEN (t.SUBSC_EB_ENTITY_CONTACT_FUNCT_CODE IS NOT NULL \n  OR t.SUBSC_EB_ENTITY_COMM_NUMBER_1 IS NOT NULL) \n  THEN 1 \n  ELSE 0 \n  END AS KEEP_ROW \n  FROM RECON.EDI_271_SUBSCRIBER_EB_ENTITY t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_EB_ID_NH AS EDI_271_SUBSCRIBER_EB_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_NAME_ID_NH \n  ORDER BY t.EDI_271_SUBSCRIBER_EB_ID_NH) AS EB_SEQ \n  FROM RECON.EDI_271_SUBSCRIBER_EB t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_NAME_ID_NH AS EDI_271_SUBSCRIBER_NAME_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_NAME_ID_NH = t.EDI_271_SUBSCRIBER_NAME_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_EB_ID_NH = t.EDI_271_SUBSCRIBER_EB_ID_NH) q \n  WHERE q.KEEP_ROW = 1"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'EB_SEQ', 'ENTITY_SEQ', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, EB_SEQ, ENTITY_SEQ, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 35,
+                "TestCaseName": "EDI_271_SUBSCRIBER_NAME matches 271 MEMBER",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:52.138023",
+                "EndTime": "2026-10-20 21:03:52.231549",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,SUBSC_ENTITY_CODE\n  ,SUBSC_ENTITY_TYPE\n  ,SUBSC_LAST_NAME\n  ,SUBSC_FIRST_NAME\n  ,SUBSC_MIDDLE_NAME\n  ,SUBSC_ID_QUAL\n  ,SUBSC_ID_CODE\n  ,SUBSC_ADDRESS1\n  ,SUBSC_ADDRESS2\n  ,SUBSC_CITY\n  ,SUBSC_STATE\n  ,SUBSC_ZIP\n  ,INS01_RESPONSE_CODE\n  ,INS02_RELATIONSHIP_CODE\n  ,INS03_MAITENANCE_CODE\n  ,INS04_MAITENANCE_REASON_CODE\n  ,INS17_NUMBER\n  ,HI01_DIAG_CODE\n  ,HI02_DIAG_CODE\n  ,HI03_DIAG_CODE\n  ,HI04_DIAG_CODE\n  ,HI05_DIAG_CODE\n  ,HI06_DIAG_CODE\n  ,DMG01_QUAL\n  ,DMG02_DT_TIME\n  ,DMG03_GENDER\n  ,PRV01_PROVIDER_CODE\n  ,PRV03_REF_ID\n  ,MPI01_INFO_STATUS_CODE\n  ,MPI02_EMP_STATUS_CODE\n  ,MPI03_GOVT_AFF_CODE\n  ,MPI04_DESC\n  ,MPI05_MILITARY_SERVICE_RANK\n  ,MPI06_DT_QUAL\n  ,MPI07_START_DT\n  ,MPI07_END_DT \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  t.SUBSC_ENTITY_CODE AS SUBSC_ENTITY_CODE,\n  t.SUBSC_ENTITY_TYPE AS SUBSC_ENTITY_TYPE,\n  t.SUBSC_LAST_NAME AS SUBSC_LAST_NAME,\n  t.SUBSC_FIRST_NAME AS SUBSC_FIRST_NAME,\n  t.SUBSC_MIDDLE_NAME AS SUBSC_MIDDLE_NAME,\n  t.SUBSC_ID_QUAL AS SUBSC_ID_QUAL,\n  t.SUBSC_ID_CODE AS SUBSC_ID_CODE,\n  t.SUBSC_ADDRESS1 AS SUBSC_ADDRESS1,\n  t.SUBSC_ADDRESS2 AS SUBSC_ADDRESS2,\n  t.SUBSC_CITY AS SUBSC_CITY,\n  t.SUBSC_STATE AS SUBSC_STATE,\n  t.SUBSC_ZIP AS SUBSC_ZIP,\n  t.INS01_RESPONSE_CODE AS INS01_RESPONSE_CODE,\n  t.INS02_RELATIONSHIP_CODE AS INS02_RELATIONSHIP_CODE,\n  t.INS03_MAITENANCE_CODE AS INS03_MAITENANCE_CODE,\n  t.INS04_MAITENANCE_REASON_CODE AS INS04_MAITENANCE_REASON_CODE,\n  t.INS17_NUMBER AS INS17_NUMBER,\n  t.HI01_DIAG_CODE AS HI01_DIAG_CODE,\n  t.HI02_DIAG_CODE AS HI02_DIAG_CODE,\n  t.HI03_DIAG_CODE AS HI03_DIAG_CODE,\n  t.HI04_DIAG_CODE AS HI04_DIAG_CODE,\n  t.HI05_DIAG_CODE AS HI05_DIAG_CODE,\n  t.HI06_DIAG_CODE AS HI06_DIAG_CODE,\n  t.DMG01_QUAL AS DMG01_QUAL,\n  t.DMG02_DT_TIME AS DMG02_DT_TIME,\n  t.DMG03_GENDER AS DMG03_GENDER,\n  t.PRV01_PROVIDER_CODE AS PRV01_PROVIDER_CODE,\n  t.PRV03_REF_ID AS PRV03_REF_ID,\n  t.MPI01_INFO_STATUS_CODE AS MPI01_INFO_STATUS_CODE,\n  t.MPI02_EMP_STATUS_CODE AS MPI02_EMP_STATUS_CODE,\n  t.MPI03_GOVT_AFF_CODE AS MPI03_GOVT_AFF_CODE,\n  t.MPI04_DESC AS MPI04_DESC,\n  t.MPI05_MILITARY_SERVICE_RANK AS MPI05_MILITARY_SERVICE_RANK,\n  t.MPI06_DT_QUAL AS MPI06_DT_QUAL,\n  t.MPI07_START_DT AS MPI07_START_DT,\n  t.MPI07_END_DT AS MPI07_END_DT \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 36,
+                "TestCaseName": "Target EDI_271_SUBSCRIBER_NAME: no duplicate TRANSACTION_CONTROL_NUMBER",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:52.156021",
+                "EndTime": "2026-10-20 21:03:52.210550",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,SUBSC_ENTITY_CODE\n  ,SUBSC_ENTITY_TYPE\n  ,SUBSC_LAST_NAME\n  ,SUBSC_FIRST_NAME\n  ,SUBSC_MIDDLE_NAME\n  ,SUBSC_ID_QUAL\n  ,SUBSC_ID_CODE\n  ,SUBSC_ADDRESS1\n  ,SUBSC_ADDRESS2\n  ,SUBSC_CITY\n  ,SUBSC_STATE\n  ,SUBSC_ZIP\n  ,INS01_RESPONSE_CODE\n  ,INS02_RELATIONSHIP_CODE\n  ,INS03_MAITENANCE_CODE\n  ,INS04_MAITENANCE_REASON_CODE\n  ,INS17_NUMBER\n  ,HI01_DIAG_CODE\n  ,HI02_DIAG_CODE\n  ,HI03_DIAG_CODE\n  ,HI04_DIAG_CODE\n  ,HI05_DIAG_CODE\n  ,HI06_DIAG_CODE\n  ,DMG01_QUAL\n  ,DMG02_DT_TIME\n  ,DMG03_GENDER\n  ,PRV01_PROVIDER_CODE\n  ,PRV03_REF_ID\n  ,MPI01_INFO_STATUS_CODE\n  ,MPI02_EMP_STATUS_CODE\n  ,MPI03_GOVT_AFF_CODE\n  ,MPI04_DESC\n  ,MPI05_MILITARY_SERVICE_RANK\n  ,MPI06_DT_QUAL\n  ,MPI07_START_DT\n  ,MPI07_END_DT \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  t.SUBSC_ENTITY_CODE AS SUBSC_ENTITY_CODE,\n  t.SUBSC_ENTITY_TYPE AS SUBSC_ENTITY_TYPE,\n  t.SUBSC_LAST_NAME AS SUBSC_LAST_NAME,\n  t.SUBSC_FIRST_NAME AS SUBSC_FIRST_NAME,\n  t.SUBSC_MIDDLE_NAME AS SUBSC_MIDDLE_NAME,\n  t.SUBSC_ID_QUAL AS SUBSC_ID_QUAL,\n  t.SUBSC_ID_CODE AS SUBSC_ID_CODE,\n  t.SUBSC_ADDRESS1 AS SUBSC_ADDRESS1,\n  t.SUBSC_ADDRESS2 AS SUBSC_ADDRESS2,\n  t.SUBSC_CITY AS SUBSC_CITY,\n  t.SUBSC_STATE AS SUBSC_STATE,\n  t.SUBSC_ZIP AS SUBSC_ZIP,\n  t.INS01_RESPONSE_CODE AS INS01_RESPONSE_CODE,\n  t.INS02_RELATIONSHIP_CODE AS INS02_RELATIONSHIP_CODE,\n  t.INS03_MAITENANCE_CODE AS INS03_MAITENANCE_CODE,\n  t.INS04_MAITENANCE_REASON_CODE AS INS04_MAITENANCE_REASON_CODE,\n  t.INS17_NUMBER AS INS17_NUMBER,\n  t.HI01_DIAG_CODE AS HI01_DIAG_CODE,\n  t.HI02_DIAG_CODE AS HI02_DIAG_CODE,\n  t.HI03_DIAG_CODE AS HI03_DIAG_CODE,\n  t.HI04_DIAG_CODE AS HI04_DIAG_CODE,\n  t.HI05_DIAG_CODE AS HI05_DIAG_CODE,\n  t.HI06_DIAG_CODE AS HI06_DIAG_CODE,\n  t.DMG01_QUAL AS DMG01_QUAL,\n  t.DMG02_DT_TIME AS DMG02_DT_TIME,\n  t.DMG03_GENDER AS DMG03_GENDER,\n  t.PRV01_PROVIDER_CODE AS PRV01_PROVIDER_CODE,\n  t.PRV03_REF_ID AS PRV03_REF_ID,\n  t.MPI01_INFO_STATUS_CODE AS MPI01_INFO_STATUS_CODE,\n  t.MPI02_EMP_STATUS_CODE AS MPI02_EMP_STATUS_CODE,\n  t.MPI03_GOVT_AFF_CODE AS MPI03_GOVT_AFF_CODE,\n  t.MPI04_DESC AS MPI04_DESC,\n  t.MPI05_MILITARY_SERVICE_RANK AS MPI05_MILITARY_SERVICE_RANK,\n  t.MPI06_DT_QUAL AS MPI06_DT_QUAL,\n  t.MPI07_START_DT AS MPI07_START_DT,\n  t.MPI07_END_DT AS MPI07_END_DT \n  FROM RECON.EDI_271_SUBSCRIBER_NAME t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: ['TRANSACTION_CONTROL_NUMBER']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 37,
+                "TestCaseName": "EDI_271_SUBSCRIBER_TRN matches 271 MEMBER_TRACE",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:52.168027",
+                "EndTime": "2026-10-20 21:03:52.315588",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,TRACE_TYPE_CODE\n  ,OCC\n  ,TRACE_NUMBER\n  ,TRACE_ENTITY_ID\n  ,TRACE_REFID \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_ID_NH, t.TRACE_TYPE_CODE \n  ORDER BY t.EDI_271_SUBSCRIBER_TRN_ID_NH) AS OCC,\n  t.TRACE_TYPE_CODE AS TRACE_TYPE_CODE,\n  t.TRACE_NUMBER AS TRACE_NUMBER,\n  t.TRACE_ENTITY_ID AS TRACE_ENTITY_ID,\n  t.TRACE_REFID AS TRACE_REFID \n  FROM RECON.EDI_271_SUBSCRIBER_TRN t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 38,
+                "TestCaseName": "Target EDI_271_SUBSCRIBER_TRN: no duplicate TRANSACTION_CONTROL_NUMBER, TRACE_TYPE_CODE, OCC",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:52.210550",
+                "EndTime": "2026-10-20 21:03:52.259550",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,TRACE_TYPE_CODE\n  ,OCC\n  ,TRACE_NUMBER\n  ,TRACE_ENTITY_ID\n  ,TRACE_REFID \n  FROM (\n  SELECT p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER,\n  ROW_NUMBER() OVER (PARTITION BY t.EDI_271_SUBSCRIBER_ID_NH, t.TRACE_TYPE_CODE \n  ORDER BY t.EDI_271_SUBSCRIBER_TRN_ID_NH) AS OCC,\n  t.TRACE_TYPE_CODE AS TRACE_TYPE_CODE,\n  t.TRACE_NUMBER AS TRACE_NUMBER,\n  t.TRACE_ENTITY_ID AS TRACE_ENTITY_ID,\n  t.TRACE_REFID AS TRACE_REFID \n  FROM RECON.EDI_271_SUBSCRIBER_TRN t \n  JOIN (\n  SELECT t.EDI_271_SUBSCRIBER_ID_NH AS EDI_271_SUBSCRIBER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_SUBSCRIBER t \n  JOIN (\n  SELECT t.EDI_271_INFO_RECEIVER_ID_NH AS EDI_271_INFO_RECEIVER_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_RECEIVER t \n  JOIN (\n  SELECT t.EDI_271_INFO_SOURCE_ID_NH AS EDI_271_INFO_SOURCE_ID_NH,\n  p.TRANSACTION_CONTROL_NUMBER AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_INFO_SOURCE t \n  JOIN (\n  SELECT t.EDI_271_TRANSET_HEADER_ID_NH AS EDI_271_TRANSET_HEADER_ID_NH,\n  t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) p \n  ON p.EDI_271_TRANSET_HEADER_ID_NH = t.EDI_271_TRANSET_HEADER_ID_NH) p \n  ON p.EDI_271_INFO_SOURCE_ID_NH = t.EDI_271_INFO_SOURCE_ID_NH) p \n  ON p.EDI_271_INFO_RECEIVER_ID_NH = t.EDI_271_INFO_RECEIVER_ID_NH) p \n  ON p.EDI_271_SUBSCRIBER_ID_NH = t.EDI_271_SUBSCRIBER_ID_NH) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: [['TRANSACTION_CONTROL_NUMBER', 'TRACE_TYPE_CODE', 'OCC']]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER, TRACE_TYPE_CODE, OCC': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 39,
+                "TestCaseName": "EDI_271_TRANSET_HEADER matches 271 TRANSACTION",
+                "Result": "Fail",
+                "StartTime": "2026-10-20 21:03:52.232547",
+                "EndTime": "2026-10-20 21:03:52.316596",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,SUBMITTER_TRAN_ID\n  ,SUBMITTER_DATE\n  ,SUBMITTER_TIME \n  FROM (\n  SELECT t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER,\n  t.SUBMITTER_TRAN_ID AS SUBMITTER_TRAN_ID,\n  t.SUBMITTER_DATE AS SUBMITTER_DATE,\n  t.SUBMITTER_TIME AS SUBMITTER_TIME \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "ISSUE",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Target data empty and Source having data. Please check TGT."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 40,
+                "TestCaseName": "Target EDI_271_TRANSET_HEADER: no duplicate TRANSACTION_CONTROL_NUMBER",
+                "Result": "Pass",
+                "StartTime": "2026-10-20 21:03:52.259550",
+                "EndTime": "2026-10-20 21:03:52.313590",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:SELECT TRANSACTION_CONTROL_NUMBER\n  ,SUBMITTER_TRAN_ID\n  ,SUBMITTER_DATE\n  ,SUBMITTER_TIME \n  FROM (\n  SELECT t.TRANS_SET_CTL_NUM AS TRANSACTION_CONTROL_NUMBER,\n  t.SUBMITTER_TRAN_ID AS SUBMITTER_TRAN_ID,\n  t.SUBMITTER_DATE AS SUBMITTER_DATE,\n  t.SUBMITTER_TIME AS SUBMITTER_TIME \n  FROM RECON.EDI_271_TRANSET_HEADER t \n  WHERE t.FILE_DETAIL_ID_NH = 12345) q"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Checking fields: ['TRANSACTION_CONTROL_NUMBER']"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-20 21:03:52",
+                        "Type": "INFO",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Field 'TRANSACTION_CONTROL_NUMBER': No duplicates found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-20 21:03:57.145296"
+        }
+    }
+]

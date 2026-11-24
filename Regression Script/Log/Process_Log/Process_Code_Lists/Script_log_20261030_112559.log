@@ -1,0 +1,110 @@
+2026-10-30 11:25:59,909 | INFO | ========== Starting Validation ==========
+2026-10-30 11:25:59,910 | INFO | Module         : Process_Code_Lists
+2026-10-30 11:25:59,910 | INFO | Stage          : None
+2026-10-30 11:25:59,911 | INFO | Cycle          : None
+2026-10-30 11:25:59,912 | INFO | Environment    : MCPQA1
+2026-10-30 11:25:59,912 | INFO | Runtime Filters: None — using DefaultValues
+2026-10-30 11:26:00,012 | INFO | Parallel execution started — 5 active thread(s) (requested: 5, test cases: 6).
+2026-10-30 11:26:01,439 | INFO | ========== [ Running TestCase 1: Compare source and target for Process_Code_Lists ] ==========
+2026-10-30 11:26:01,439 | INFO | TestCase 1: Target [ORACLE]:SELECT BUSINESS_ID
+  ,PROCESS_CODE
+  ,PROCESS_CODE_TYPE 
+  FROM DW.PROCESS_CODES_LIST 
+  WHERE dw_file_detail_id= :dw_file_detail_id
+2026-10-30 11:26:01,439 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 11:26:01,439 | INFO | File_fetcher: Reading local file — P:\Maheswar\Process_Code_Lists.xlsx
+2026-10-30 11:26:01,439 | INFO | File_fetcher: 'Process_Code_Lists.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 11:26:01,440 | INFO | File_parser: 'Process_Code_Lists.xlsx' — Excel parsed 1108 row(s), 0 parse error(s).
+2026-10-30 11:26:01,440 | INFO | File_parser: 'Process_Code_Lists.xlsx' — parse complete, 1108 row(s), no errors.
+2026-10-30 11:26:01,440 | INFO | File_parser: Combined 1 file(s) — 1108 total rows, 0 total error(s).
+2026-10-30 11:26:01,440 | ISSUE | Error fetching target data (ORACLE): ORA-01008: not all variables bound
+2026-10-30 11:26:01,440 | INFO | [TC 1] Source data sample (5 of 1108 records):
+2026-10-30 11:26:01,441 | INFO |   1: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'BN146'}
+2026-10-30 11:26:01,441 | INFO |   2: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL125'}
+2026-10-30 11:26:01,441 | INFO |   3: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL126'}
+2026-10-30 11:26:01,441 | INFO |   4: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL138'}
+2026-10-30 11:26:01,441 | INFO |   5: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL139'}
+2026-10-30 11:26:01,442 | ISSUE | Target data empty and Source having data. Please check TGT.
+2026-10-30 11:26:01,442 | INFO | Execution time for TestCase 1: 1.43 seconds
+2026-10-30 11:26:01,418 | INFO | ========== [ Running TestCase 2: Check for null values in key fields ] ==========
+2026-10-30 11:26:01,418 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 11:26:01,419 | INFO | File_fetcher: Reading local file — P:\Maheswar\Process_Code_Lists.xlsx
+2026-10-30 11:26:01,419 | INFO | File_fetcher: 'Process_Code_Lists.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 11:26:01,419 | INFO | File_parser: 'Process_Code_Lists.xlsx' — Excel parsed 1108 row(s), 0 parse error(s).
+2026-10-30 11:26:01,419 | INFO | File_parser: 'Process_Code_Lists.xlsx' — parse complete, 1108 row(s), no errors.
+2026-10-30 11:26:01,419 | INFO | File_parser: Combined 1 file(s) — 1108 total rows, 0 total error(s).
+2026-10-30 11:26:01,419 | INFO | TestCase 2: Null_Check — field 'BUSINESS_ID': 0 null(s) ✓
+2026-10-30 11:26:01,419 | INFO | TestCase 2: Null_Check — field 'PROCESSCODE': 0 null(s) ✓
+2026-10-30 11:26:01,420 | INFO | TestCase 2: Null_Check — field 'TYPE': 0 null(s) ✓
+2026-10-30 11:26:01,420 | INFO | Execution time for TestCase 2: 1.41 seconds
+2026-10-30 11:26:01,415 | INFO | ========== [ Running TestCase 3: Check for duplicate records on key fields ] ==========
+2026-10-30 11:26:01,416 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 11:26:01,417 | INFO | File_fetcher: Reading local file — P:\Maheswar\Process_Code_Lists.xlsx
+2026-10-30 11:26:01,417 | INFO | File_fetcher: 'Process_Code_Lists.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 11:26:01,417 | INFO | File_parser: 'Process_Code_Lists.xlsx' — Excel parsed 1108 row(s), 0 parse error(s).
+2026-10-30 11:26:01,417 | INFO | File_parser: 'Process_Code_Lists.xlsx' — parse complete, 1108 row(s), no errors.
+2026-10-30 11:26:01,417 | INFO | File_parser: Combined 1 file(s) — 1108 total rows, 0 total error(s).
+2026-10-30 11:26:01,418 | INFO | TestCase 3: Duplicate_Check — no duplicates on ['BUSINESS_ID', 'PROCESSCODE', 'TYPE'] ✓
+2026-10-30 11:26:01,418 | INFO | Execution time for TestCase 3: 1.40 seconds
+2026-10-30 11:26:01,435 | INFO | ========== [ Running TestCase 4: BUSINESS_ID has only approved values ] ==========
+2026-10-30 11:26:01,435 | INFO | File_fetcher: Fetch attempt 1/2
+2026-10-30 11:26:01,435 | INFO | File_fetcher: Reading local file — P:\Maheswar\Process_Code_Lists.xlsx
+2026-10-30 11:26:01,435 | INFO | File_fetcher: 'Process_Code_Lists.xlsx' is a ZIP-based spreadsheet — skipping ZIP extraction, passing to parser directly.
+2026-10-30 11:26:01,436 | INFO | File_parser: 'Process_Code_Lists.xlsx' — Excel parsed 1108 row(s), 0 parse error(s).
+2026-10-30 11:26:01,437 | INFO | File_parser: 'Process_Code_Lists.xlsx' — parse complete, 1108 row(s), no errors.
+2026-10-30 11:26:01,437 | INFO | File_parser: Combined 1 file(s) — 1108 total rows, 0 total error(s).
+2026-10-30 11:26:01,437 | INFO | [TC 4] Source data sample (5 of 1108 records):
+2026-10-30 11:26:01,438 | INFO |   1: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'BN146'}
+2026-10-30 11:26:01,438 | INFO |   2: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL125'}
+2026-10-30 11:26:01,438 | INFO |   3: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL126'}
+2026-10-30 11:26:01,438 | INFO |   4: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL138'}
+2026-10-30 11:26:01,438 | INFO |   5: {'BUSINESS_ID': '109', 'TYPE': 'Not A True Denial', 'PROCESSCODE': 'CL139'}
+2026-10-30 11:26:01,439 | INFO | [TC 4] BUSINESS_ID has only approved values
+2026-10-30 11:26:01,439 | INFO | [TC 4] PASS: All values are within approved list.
+2026-10-30 11:26:01,439 | INFO | Execution time for TestCase 4: 1.42 seconds
+2026-10-30 11:26:00,396 | INFO | ========== [ Running TestCase 5: Target DW.PROCESS_CODES_LIST: no duplicate BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE ] ==========
+2026-10-30 11:26:00,397 | INFO | TestCase 5: Source [ORACLE]:SELECT BUSINESS_ID
+  ,PROCESS_CODE
+  ,PROCESS_CODE_TYPE 
+  FROM DW.PROCESS_CODES_LIST
+2026-10-30 11:26:00,397 | INFO | TestCase 5: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-10-30 11:26:00,397 | INFO | Source [ORACLE] Duplicate_Check sample for 'BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE':
+SELECT BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE
+                    FROM (SELECT BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE FROM DW.PROCESS_CODES_LIST)
+                    WHERE BUSINESS_ID IS NOT NULL AND PROCESS_CODE IS NOT NULL AND PROCESS_CODE_TYPE IS NOT NULL
+                    AND (BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE) IN (
+                        
+                    SELECT BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE
+                    FROM (SELECT BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE FROM DW.PROCESS_CODES_LIST)
+                    WHERE BUSINESS_ID IS NOT NULL AND PROCESS_CODE IS NOT NULL AND PROCESS_CODE_TYPE IS NOT NULL
+                    GROUP BY BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-10-30 11:26:00,397 | INFO | TestCase 5: Field 'BUSINESS_ID, PROCESS_CODE, PROCESS_CODE_TYPE': No duplicates found.
+2026-10-30 11:26:00,397 | INFO | Execution time for TestCase 5: 0.39 seconds
+2026-10-30 11:26:00,405 | INFO | ========== [ Running TestCase 6: Target DW.PROCESS_CODES_LIST: keys and load columns are populated ] ==========
+2026-10-30 11:26:00,405 | INFO | TestCase 6: Source [ORACLE]:SELECT BUSINESS_ID
+  ,PROCESS_CODE_TYPE
+  ,PROCESS_CODE
+  ,PROCESS_CODES_LIST_ID
+  ,DW_FILE_DETAIL_ID
+  ,DW_CREATED_DT
+  ,DW_MODIFIED_DT 
+  FROM DW.PROCESS_CODES_LIST
+2026-10-30 11:26:00,405 | INFO | TestCase 6: Null_Check started — pushing null filter to ORACLE per field
+2026-10-30 11:26:00,405 | INFO | Oracle Null_Check query: SELECT * FROM (SELECT BUSINESS_ID, PROCESS_CODE_TYPE, PROCESS_CODE, PROCESS_CODES_LIST_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT FROM DW.PROCESS_CODES_LIST) WHERE (BUSINESS_ID IS NULL OR TRIM(TO_CHAR(BUSINESS_ID)) = '') OR (PROCESS_CODE_TYPE IS NULL OR TRIM(TO_CHAR(PROCESS_CODE_TYPE)) = '') OR (PROCESS_CODE IS NULL OR TRIM(TO_CHAR(PROCESS_CODE)) = '') OR (PROCESS_CODES_LIST_ID IS NULL OR TRIM(TO_CHAR(PROCESS_CODES_LIST_ID)) = '') OR (DW_FILE_DETAIL_ID IS NULL OR TRIM(TO_CHAR(DW_FILE_DETAIL_ID)) = '') OR (DW_CREATED_DT IS NULL OR TRIM(TO_CHAR(DW_CREATED_DT)) = '') OR (DW_MODIFIED_DT IS NULL OR TRIM(TO_CHAR(DW_MODIFIED_DT)) = '')
+2026-10-30 11:26:00,405 | INFO | TestCase 6: Field 'BUSINESS_ID': No nulls found.
+2026-10-30 11:26:00,406 | INFO | TestCase 6: Field 'PROCESS_CODE_TYPE': No nulls found.
+2026-10-30 11:26:00,406 | INFO | TestCase 6: Field 'PROCESS_CODE': No nulls found.
+2026-10-30 11:26:00,406 | INFO | TestCase 6: Field 'PROCESS_CODES_LIST_ID': No nulls found.
+2026-10-30 11:26:00,407 | INFO | TestCase 6: Field 'DW_FILE_DETAIL_ID': No nulls found.
+2026-10-30 11:26:00,407 | INFO | TestCase 6: Field 'DW_CREATED_DT': No nulls found.
+2026-10-30 11:26:00,407 | INFO | TestCase 6: Field 'DW_MODIFIED_DT': No nulls found.
+2026-10-30 11:26:00,407 | INFO | Execution time for TestCase 6: 0.01 seconds
+2026-10-30 11:26:01,481 | INFO | Total Number of Testcases Executed : 6,Pass : 5, Fail : 1, Skippped : 0
+2026-10-30 11:26:01,482 | INFO | Total execution time: 1.47 seconds (0.0 minutes)
+2026-10-30 11:26:01,504 | INFO | Master combined log written to: MCPQA1_Process_Code_Lists_Log_20261030_152601.json
+2026-10-30 11:26:01,518 | INFO | Result.InsertData : 6ae4b709a31dac1451bcd69e
+2026-10-30 11:26:04,716 | INFO | ========== Completed Validation ==========

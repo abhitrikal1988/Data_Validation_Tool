@@ -1,0 +1,343 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for chronic condition codes",
+    "Module": "EH_Chronic",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\ARKIT\\To be used to work\\Auto-Trigger letters\\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW",
+      "FileName": "eH_Chronic_Condition_Codes updated_2027.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CODE, SHORT_DESCRIPTION, CONDITION_CATEGORY, LONG_DESCRIPTION, YEAR FROM DW.CHRONIC_CONDITION_CODES"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "CODE",
+        "TargetField": "CODE"
+      },
+      {
+        "SourceField": "SHORT_DESCRIPTION",
+        "TargetField": "SHORT_DESCRIPTION"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "CONDITION_CATEGORY",
+        "TargetField": "CONDITION_CATEGORY"
+      },
+      {
+        "SourceField": "LONG_DESCRIPTION",
+        "TargetField": "LONG_DESCRIPTION"
+      },
+      {
+        "SourceField": "2027_CHRONIC_DISEASE_CODE",
+        "TargetField": "CODE"
+      },
+      {
+        "SourceField": "Year",
+        "TargetField": "YEAR"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 411,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 15:53:24"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on key fields",
+    "Module": "EH_Chronic",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\ARKIT\\To be used to work\\Auto-Trigger letters\\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW",
+      "FileName": "eH_Chronic_Condition_Codes updated_2027.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "CODE",
+        "ResultFields": [
+          "CODE"
+        ]
+      },
+      {
+        "SourceField": "SHORT_DESCRIPTION",
+        "ResultFields": [
+          "SHORT_DESCRIPTION"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same CODE, SHORT_DESCRIPTION",
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 412,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 15:53:24"
+    }
+  },
+  {
+    "ValidationType": "Format_Check",
+    "TestDescription": "Validate format of 'CODE' column",
+    "Module": "EH_Chronic",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\ARKIT\\To be used to work\\Auto-Trigger letters\\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW",
+      "FileName": "eH_Chronic_Condition_Codes updated_2027.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "2027_CHRONIC_DISEASE_CODE",
+        "FormatType": "REGEX",
+        "Pattern": "[YN]",
+        "Value": "",
+        "ResultFields": [
+          "2027_CHRONIC_DISEASE_CODE"
+        ]
+      }
+    ],
+    "ExpectedResult": "2027_CHRONIC_DISEASE_CODE values should match the expected format",
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 413,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 15:53:24"
+    }
+  },
+  {
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "2027_CHRONIC_DISEASE_CODE has only approved values",
+    "Module": "EH_Chronic",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 4,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\ARKIT\\To be used to work\\Auto-Trigger letters\\US 47782 SD 116106 Load the 2027 Chronic Condition Codes file in DW",
+      "FileName": "eH_Chronic_Condition_Codes updated_2027.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CompareFields": [
+      {
+        "SourceField": "2027_CHRONIC_DISEASE_CODE",
+        "TargetField": "CODE"
+      }
+    ],
+    "ApprovedValues": [
+      "Y"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "2027_CHRONIC_DISEASE_CODE values other than approved ['Y'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 414,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 15:53:24"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "EH_Chronic",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.CHRONIC_CONDITION_CODES: no duplicate CODE, SHORT_DESCRIPTION",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CODE, SHORT_DESCRIPTION FROM DW.CHRONIC_CONDITION_CODES"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "CODE",
+          "SHORT_DESCRIPTION"
+        ],
+        "ResultFields": [
+          "CODE",
+          "SHORT_DESCRIPTION"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same CODE, SHORT_DESCRIPTION",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 415,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 15:53:24"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "EH_Chronic",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target DW.CHRONIC_CONDITION_CODES: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_EHQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT CODE, SHORT_DESCRIPTION, CHRONIC_CONDITION_CODES_ID, DW_FILE_DETAIL_ID, BUSINESS_ID, DW_CREATED_DATE, DW_MODIFIED_DATE FROM DW.CHRONIC_CONDITION_CODES"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "CODE",
+        "ResultFields": [
+          "CODE"
+        ]
+      },
+      {
+        "SourceField": "SHORT_DESCRIPTION",
+        "ResultFields": [
+          "SHORT_DESCRIPTION"
+        ]
+      },
+      {
+        "SourceField": "CHRONIC_CONDITION_CODES_ID",
+        "ResultFields": [
+          "CHRONIC_CONDITION_CODES_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_FILE_DETAIL_ID",
+        "ResultFields": [
+          "DW_FILE_DETAIL_ID"
+        ]
+      },
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_CREATED_DATE",
+        "ResultFields": [
+          "DW_CREATED_DATE"
+        ]
+      },
+      {
+        "SourceField": "DW_MODIFIED_DATE",
+        "ResultFields": [
+          "DW_MODIFIED_DATE"
+        ]
+      }
+    ],
+    "ExpectedResult": "CODE, SHORT_DESCRIPTION, CHRONIC_CONDITION_CODES_ID, DW_FILE_DETAIL_ID, BUSINESS_ID, DW_CREATED_DATE, DW_MODIFIED_DATE should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 416,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-05 15:53:24"
+    }
+  }
+]

@@ -1,0 +1,205 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source data against target field by field for Cardholder ID, Election Start Date, and Election End Date.",
+    "Module": "",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "JoinFields": [
+      {
+        "SourceField": "Cardholder_ID",
+        "TargetField": "Cardholder_ID"
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "TargetField": "ElectionStartDate"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "ElectionEndDate",
+        "TargetField": "ElectionEndDate"
+      }
+    ],
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Record_Count",
+    "TestDescription": "Compare row counts between source data (61 rows) and target CSV file (1 row).",
+    "Module": "",
+    "Stage": "",
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "Target": {
+      "Type": "UNC_PATH",
+      "Path": "\\\\rxadvance\\QA-Team\\QA Documentation\\QA Automation\\Data_Validation\\",
+      "FileName": null,
+      "FilePattern": "Temp.csv",
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "CSV",
+        "Delimiter": ",",
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "ApprovedValues": [
+      "0"
+    ],
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Verify no null values for Cardholder ID.",
+    "Module": "",
+    "Stage": "",
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "CheckFields": [
+      {
+        "SourceField": "Cardholder_ID",
+        "ResultFields": [
+          "Cardholder_ID"
+        ]
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "ResultFields": [
+          "ElectionStartDate"
+        ]
+      }
+    ],
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Identify duplicate records on key columns (Cardholder ID and Election Start Date).",
+    "Module": "",
+    "Stage": "",
+    "TestCaseNumber": 4,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "CheckFields": [
+      {
+        "SourceField": "Cardholder_ID",
+        "ResultFields": [
+          "Cardholder_ID"
+        ]
+      },
+      {
+        "SourceField": "ElectionStartDate",
+        "ResultFields": [
+          "ElectionStartDate"
+        ]
+      }
+    ],
+    "ExpectedResult": 0,
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Format_Check",
+    "TestDescription": "Validate format of Cardholder ID, which should match the regex pattern for strings.",
+    "Module": "",
+    "Stage": "",
+    "TestCaseNumber": 5,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "CheckFields": [],
+    "ExpectedResult": 0,
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Check low-cardinality columns with approved values within date ranges (Cardholder ID and Election Start Date).",
+    "Module": "",
+    "Stage": "",
+    "TestCaseNumber": 6,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "Viceversa": false,
+    "CompareFields": [
+      {
+        "SourceField": "ElectionEndDate",
+        "TargetField": "ElectionEndDate"
+      }
+    ],
+    "ApprovedValues": [],
+    "DataFilters": []
+  }
+]

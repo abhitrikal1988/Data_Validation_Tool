@@ -1,0 +1,1443 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Edi837_parser.py
+# X12 837 Health Care Claim parser for the Data Validation framework —
+# FileConfig.Format = "EDI837".
+#
+# Covers all three variants in one parser; the variant is read from ST03/GS08:
+#     005010X222A1  Professional  (CLAIM_TYPE = PROFESSIONAL)
+#     005010X223A2  Institutional (CLAIM_TYPE = INSTITUTIONAL)
+#     005010X224A2  Dental        (CLAIM_TYPE = DENTAL)
+#
+# Design
+#   - Follows the 837 standard, not any target schema. Every element is
+#     extracted into business-named columns; mapping to a target happens only
+#     in the test case (JoinFields / CompareFields).
+#   - Output = one DataFrame per standard table (see _table_columns).
+#   - Every row carries its full position: file, envelope, billing provider,
+#     subscriber, payer, patient, claim, other subscriber, line, loop,
+#     occurrence and segment position.
+#   - Values kept as text, trailing spaces trimmed, empty → None.
+#   - Segments that cannot be placed go to UNMAPPED — nothing is dropped.
+#   - A file is parsed once per run; every test case reuses the cached result.
+#   - Standalone module: shares no code with the 835 / 271 / 834 parsers.
+#
+# Hook into File_parser.parse_file():
+#     from Libraries.Edi837_parser import parse_edi837_for_file_parser
+#     parser_map["EDI837"] = parse_edi837_for_file_parser
+# ─────────────────────────────────────────────────────────────────────────────
+
+import hashlib
+import json
+import logging
+import threading
+from collections import OrderedDict
+
+import pandas as pd
+
+try:
+    from Libraries import Edi837_codes as _codes
+except ImportError:                      # running from inside Libraries/
+    import Edi837_codes as _codes
+
+logger = logging.getLogger()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Hierarchy columns
+# ─────────────────────────────────────────────────────────────────────────────
+
+HIER_COLS = [
+    "FILE_ID", "FILE_NAME",
+    "INTERCHANGE_CONTROL_NUMBER", "GROUP_CONTROL_NUMBER",
+    "TRANSACTION_CONTROL_NUMBER", "CLAIM_TYPE", "BHT_REFERENCE_ID",
+    "BILLING_PROVIDER_HL", "BILLING_PROVIDER_ID",
+    "SUBSCRIBER_HL", "SUBSCRIBER_ID", "PAYER_ID",
+    "PATIENT_HL",
+    "CLAIM_SEQ", "CLAIM_ID", "CLAIM_OCC",
+    "OTHER_SUBSCRIBER_SEQ",
+    "LINE_SEQ", "LINE_NUMBER",
+    "LOOP_ID", "LOOP_SEQ",
+    "OCC", "SEG_POS",
+]
+
+_PARENT_COLS = [
+    "FILE_ID", "INTERCHANGE_CONTROL_NUMBER", "GROUP_CONTROL_NUMBER",
+    "TRANSACTION_CONTROL_NUMBER", "BILLING_PROVIDER_HL", "SUBSCRIBER_HL",
+    "PATIENT_HL", "CLAIM_SEQ", "OTHER_SUBSCRIBER_SEQ", "LINE_SEQ",
+    "LOOP_ID", "LOOP_SEQ",
+]
+
+_INT_COLS = ["CLAIM_SEQ", "CLAIM_OCC", "OTHER_SUBSCRIBER_SEQ", "LINE_SEQ",
+             "LOOP_SEQ", "OCC", "SEG_POS"]
+
+_VARIANTS = {"X222": "PROFESSIONAL", "X223": "INSTITUTIONAL", "X224": "DENTAL"}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Segment element maps
+#   (position, "COLUMN")              one element
+#   (position, ["C1", "C2", ...])     composite element, split by component
+# ─────────────────────────────────────────────────────────────────────────────
+
+_PROC = ["PROCEDURE_QUALIFIER", "PROCEDURE_CODE", "MODIFIER_1", "MODIFIER_2",
+         "MODIFIER_3", "MODIFIER_4", "PROCEDURE_DESCRIPTION"]
+_PTR = ["DIAG_POINTER_1", "DIAG_POINTER_2", "DIAG_POINTER_3", "DIAG_POINTER_4"]
+
+SPECS = {
+    "BHT": [(1, "HIERARCHY_STRUCTURE_CODE"), (2, "PURPOSE_CODE"), (3, "BHT_REFERENCE_ID"),
+            (4, "TRANSACTION_DATE"), (5, "TRANSACTION_TIME"), (6, "TRANSACTION_TYPE_CODE")],
+    "CUR": [(1, "CURRENCY_ENTITY"), (2, "CURRENCY_CODE")],
+    "SBR": [(1, "PAYER_RESPONSIBILITY"), (2, "RELATIONSHIP"), (3, "GROUP_NUMBER"),
+            (4, "GROUP_NAME"), (5, "INSURANCE_TYPE"), (6, "COB_CODE"),
+            (7, "YES_NO_CONDITION"), (8, "EMPLOYMENT_STATUS"), (9, "CLAIM_FILING_INDICATOR")],
+    "PAT": [(1, "PATIENT_RELATIONSHIP"), (2, "PATIENT_LOCATION"), (3, "PATIENT_EMPLOYMENT_STATUS"),
+            (4, "STUDENT_STATUS"), (5, "DEATH_DATE_FORMAT"), (6, "DEATH_DATE"),
+            (7, "WEIGHT_UNIT"), (8, "PATIENT_WEIGHT"), (9, "PREGNANCY_INDICATOR")],
+    "DMG": [(1, "DOB_FORMAT"), (2, "DATE_OF_BIRTH"), (3, "GENDER")],
+    "PRV": [(1, "PROVIDER_ROLE"), (2, "TAXONOMY_QUALIFIER"), (3, "TAXONOMY_CODE")],
+    "CLM": [(1, "CLAIM_ID"), (2, "TOTAL_CHARGE"),
+            (5, ["FACILITY_CODE", "FACILITY_CODE_QUALIFIER", "FREQUENCY_CODE"]),
+            (6, "PROVIDER_SIGNATURE"), (7, "ASSIGNMENT_PARTICIPATION"),
+            (8, "BENEFITS_ASSIGNMENT"), (9, "RELEASE_OF_INFORMATION"),
+            (10, "PATIENT_SIGNATURE_SOURCE"),
+            (11, ["RELATED_CAUSE_1", "RELATED_CAUSE_2", "RELATED_CAUSE_3",
+                  "ACCIDENT_STATE", "ACCIDENT_COUNTRY"]),
+            (12, "SPECIAL_PROGRAM"), (20, "DELAY_REASON")],
+    "CL1": [(1, "ADMISSION_TYPE"), (2, "ADMISSION_SOURCE"), (3, "PATIENT_STATUS")],
+    "CN1": [(1, "CONTRACT_TYPE"), (2, "CONTRACT_AMOUNT"), (3, "CONTRACT_PERCENT"),
+            (4, "CONTRACT_CODE"), (5, "TERMS_DISCOUNT_PERCENT"), (6, "CONTRACT_VERSION")],
+    "HCP": [(1, "REPRICING_METHOD"), (2, "REPRICED_ALLOWED_AMOUNT"),
+            (3, "REPRICED_SAVING_AMOUNT"), (4, "REPRICING_ORG_ID"), (5, "REPRICING_RATE"),
+            (6, "REPRICED_APG_CODE"), (7, "REPRICED_APG_AMOUNT"),
+            (8, "REPRICED_PRODUCT_QUALIFIER"), (9, "REPRICED_PROCEDURE_CODE"),
+            (10, "REPRICED_UNIT_QUALIFIER"), (11, "REPRICED_UNITS"),
+            (13, "REPRICING_REJECT_REASON"), (14, "REPRICING_POLICY_COMPLIANCE"),
+            (15, "REPRICING_EXCEPTION_CODE")],
+    "CR1": [(1, "AMBULANCE_WEIGHT_UNIT"), (2, "AMBULANCE_PATIENT_WEIGHT"),
+            (4, "AMBULANCE_TRANSPORT_REASON"), (5, "AMBULANCE_DISTANCE_UNIT"),
+            (6, "AMBULANCE_TRANSPORT_DISTANCE"), (9, "AMBULANCE_ROUND_TRIP_PURPOSE"),
+            (10, "AMBULANCE_STRETCHER_PURPOSE")],
+    "CR2": [(8, "SPINAL_PATIENT_CONDITION"), (10, "SPINAL_CONDITION_DESCRIPTION_1"),
+            (11, "SPINAL_CONDITION_DESCRIPTION_2")],
+    "CR3": [(1, "DME_CERTIFICATION_TYPE"), (2, "DME_DURATION_UNIT"), (3, "DME_DURATION")],
+    "CRC": [(1, "CONDITION_CATEGORY"), (2, "CONDITION_INDICATOR"), (3, "CONDITION_CODE_1"),
+            (4, "CONDITION_CODE_2"), (5, "CONDITION_CODE_3"), (6, "CONDITION_CODE_4"),
+            (7, "CONDITION_CODE_5")],
+    "PWK": [(1, "REPORT_TYPE"), (2, "TRANSMISSION_CODE"), (5, "ID_QUALIFIER"),
+            (6, "ATTACHMENT_CONTROL_NUMBER")],
+    "SV1": [(1, _PROC), (2, "LINE_CHARGE"), (3, "UNIT_QUALIFIER"), (4, "UNITS"),
+            (5, "PLACE_OF_SERVICE"), (7, _PTR), (9, "EMERGENCY_INDICATOR"),
+            (11, "EPSDT_INDICATOR"), (12, "FAMILY_PLANNING_INDICATOR"), (15, "COPAY_EXEMPT")],
+    "SV2": [(1, "REVENUE_CODE"), (2, _PROC), (3, "LINE_CHARGE"), (4, "UNIT_QUALIFIER"),
+            (5, "UNITS"), (6, "UNIT_RATE"), (7, "NONCOVERED_CHARGE")],
+    "SV3": [(1, _PROC), (2, "LINE_CHARGE"), (3, "PLACE_OF_SERVICE"),
+            (4, ["ORAL_CAVITY_1", "ORAL_CAVITY_2", "ORAL_CAVITY_3", "ORAL_CAVITY_4",
+                 "ORAL_CAVITY_5"]),
+            (5, "PROSTHESIS_CODE"), (6, "UNITS"), (11, _PTR)],
+    "SV5": [(1, ["DME_PROCEDURE_QUALIFIER", "DME_PROCEDURE_CODE"]), (2, "DME_UNIT_QUALIFIER"),
+            (3, "DME_LENGTH_OF_NEED"), (4, "DME_RENTAL_PRICE"), (5, "DME_PURCHASE_PRICE"),
+            (6, "DME_RENTAL_FREQUENCY")],
+    "PS1": [(1, "PURCHASED_SERVICE_PROVIDER_ID"), (2, "PURCHASED_SERVICE_CHARGE")],
+    "LIN": [(2, "DRUG_ID_QUALIFIER"), (3, "NDC_CODE")],
+    "CTP": [(4, "DRUG_QUANTITY"), (5, ["DRUG_UNIT_CODE"])],
+    "TOO": [(1, "TOOTH_CODE_SYSTEM"), (2, "TOOTH_NUMBER"),
+            (3, ["SURFACE_1", "SURFACE_2", "SURFACE_3", "SURFACE_4", "SURFACE_5"])],
+    "MEA": [(1, "MEASUREMENT_REFERENCE"), (2, "MEASUREMENT_QUALIFIER"), (3, "MEASUREMENT_VALUE")],
+    "SVD": [(1, "OTHER_PAYER_ID"), (2, "PAID_AMOUNT"), (3, _PROC), (4, "REVENUE_CODE"),
+            (5, "PAID_UNITS"), (6, "BUNDLED_LINE_NUMBER")],
+    "OI":  [(3, "BENEFITS_ASSIGNMENT"), (4, "PATIENT_SIGNATURE_SOURCE"),
+            (6, "RELEASE_OF_INFORMATION")],
+    "MIA": [(1, "MIA_COVERED_DAYS"), (2, "MIA_PPS_OPERATING_OUTLIER"),
+            (3, "MIA_LIFETIME_PSYCH_DAYS"), (4, "MIA_CLAIM_DRG_AMOUNT"),
+            (5, "MIA_REMARK_CODE_1"), (6, "MIA_DSH_AMOUNT"), (7, "MIA_MSP_PASS_THROUGH"),
+            (8, "MIA_PPS_CAPITAL"), (9, "MIA_PPS_CAPITAL_FSP_DRG"),
+            (10, "MIA_PPS_CAPITAL_HSP_DRG"), (11, "MIA_PPS_CAPITAL_DSH_DRG"),
+            (12, "MIA_OLD_CAPITAL"), (13, "MIA_PPS_CAPITAL_IME"),
+            (14, "MIA_PPS_OPERATING_HSP_DRG"), (15, "MIA_COST_REPORT_DAY_COUNT"),
+            (16, "MIA_PPS_OPERATING_FSP_DRG"), (17, "MIA_CAPITAL_OUTLIER"),
+            (18, "MIA_INDIRECT_TEACHING"), (19, "MIA_NONPAYABLE_PROFESSIONAL"),
+            (20, "MIA_REMARK_CODE_2"), (21, "MIA_REMARK_CODE_3"), (22, "MIA_REMARK_CODE_4"),
+            (23, "MIA_REMARK_CODE_5"), (24, "MIA_PPS_CAPITAL_EXCEPTION")],
+    "MOA": [(1, "MOA_REIMBURSEMENT_RATE"), (2, "MOA_HCPCS_PAYABLE_AMOUNT"),
+            (3, "MOA_REMARK_CODE_1"), (4, "MOA_REMARK_CODE_2"), (5, "MOA_REMARK_CODE_3"),
+            (6, "MOA_REMARK_CODE_4"), (7, "MOA_REMARK_CODE_5"), (8, "MOA_ESRD_PAYMENT"),
+            (9, "MOA_NONPAYABLE_PROFESSIONAL")],
+    "LQ":  [(1, "FORM_CODE_QUALIFIER"), (2, "FORM_ID")],
+    # 837D 2300 orthodontic information and tooth status
+    "DN1": [(1, "ORTHO_TOTAL_MONTHS"), (2, "ORTHO_REMAINING_MONTHS"),
+            (3, "ORTHO_TREATMENT_INDICATOR"), (4, "ORTHO_DESCRIPTION")],
+    "DN2": [(1, "TOOTH_NUMBER"), (2, "TOOTH_STATUS"), (4, "TOOTH_CODE_SYSTEM")],
+    "FRM": [(1, "QUESTION_NUMBER"), (2, "RESPONSE_YES_NO"), (3, "RESPONSE_TEXT"),
+            (4, "RESPONSE_DATE"), (5, "RESPONSE_PERCENT")],
+}
+
+# Columns that get a <COLUMN>_DESC description column, and the code list used
+DESC_FOR = {
+    "PURPOSE_CODE": "BHT02", "TRANSACTION_TYPE_CODE": "BHT06",
+    "PAYER_RESPONSIBILITY": "SBR01", "RELATIONSHIP": "SBR02",
+    "PATIENT_RELATIONSHIP": "SBR02", "INSURANCE_TYPE": "SBR05",
+    "CLAIM_FILING_INDICATOR": "SBR09", "FREQUENCY_CODE": "CLM05_3",
+    "RELATED_CAUSE_1": "CLM11", "RELATED_CAUSE_2": "CLM11", "RELATED_CAUSE_3": "CLM11",
+    "ADMISSION_TYPE": "CL101", "GENDER": "DMG03", "UNIT_QUALIFIER": "UNIT",
+    "REPORT_TYPE": "PWK01", "TRANSMISSION_CODE": "PWK02",
+    "DATE_QUALIFIER": "DTP01", "REF_QUALIFIER": "REF01", "AMOUNT_QUALIFIER": "AMT01",
+    "QUANTITY_QUALIFIER": "QTY01", "GROUP_CODE": "CAS01", "CODE_QUALIFIER": "HI01",
+    "TOOTH_STATUS": "DN202",
+}
+
+
+def _spec_cols(*seg_ids) -> list:
+    out = []
+    for seg in seg_ids:
+        for _, target in SPECS[seg]:
+            out += target if isinstance(target, list) else [target]
+    return out
+
+
+def _pfx(prefix: str, field: str) -> str:
+    """Prefixes a field name without doubling (ENTITY_ + ENTITY_CODE → ENTITY_CODE)."""
+    return field if field.startswith(prefix) else prefix + field
+
+
+def _cols(prefix: str, fields: list) -> list:
+    return [_pfx(prefix, f) for f in fields]
+
+
+_NAME_FIELDS = ["ENTITY_CODE", "ENTITY_DESC", "ENTITY_TYPE", "LAST_NAME", "FIRST_NAME",
+                "MIDDLE_NAME", "PREFIX", "SUFFIX", "ID_QUALIFIER", "ID"]
+_ADDRESS_FIELDS = ["ADDRESS_LINE1", "ADDRESS_LINE2", "CITY", "STATE", "ZIP", "COUNTRY",
+                   "COUNTRY_SUBDIVISION"]
+
+_PER_QUALIFIER_COLS = {"TE": "PHONE", "EX": "PHONE_EXT", "FX": "FAX", "EM": "EMAIL",
+                       "UR": "URL"}
+_CONTACT_COLS = (["CONTACT_FUNCTION", "CONTACT_NAME"] + list(_PER_QUALIFIER_COLS.values())
+                 + ["OTHER_COMM_QUALIFIER", "OTHER_COMM_NUMBER"])
+_REF_COLS = ["REF_QUALIFIER", "REF_ID", "REF_DESCRIPTION"]
+_DATE_COLS = ["DATE_QUALIFIER", "DATE_FORMAT", "START_DATE", "END_DATE"]
+_AMOUNT_COLS = ["AMOUNT_QUALIFIER", "AMOUNT"]
+_NOTE_COLS = ["SEGMENT_ID", "NOTE_CODE", "NOTE_TEXT"]
+_ADJ_COLS = ["GROUP_CODE", "CAS_SEQ", "TRIPLET", "REASON_CODE", "AMOUNT", "QUANTITY"]
+_DIAG_COLS = ["HI_SEQ", "POSITION", "CODE_QUALIFIER", "CODE", "DATE_FORMAT",
+              "START_DATE", "END_DATE", "AMOUNT", "QUANTITY", "VERSION", "POA_INDICATOR"]
+
+_ENVELOPE_COLS = [
+    "INTERCHANGE_SENDER_QUALIFIER", "INTERCHANGE_SENDER_ID",
+    "INTERCHANGE_RECEIVER_QUALIFIER", "INTERCHANGE_RECEIVER_ID",
+    "INTERCHANGE_DATE", "INTERCHANGE_TIME", "INTERCHANGE_VERSION",
+    "ACK_REQUESTED", "USAGE_INDICATOR",
+    "FUNCTIONAL_ID_CODE", "GROUP_SENDER", "GROUP_RECEIVER", "GROUP_DATE", "GROUP_TIME",
+    "VERSION", "TRANSACTION_SET_ID", "IMPLEMENTATION_REFERENCE",
+] + _spec_cols("BHT") + ["SEGMENT_COUNT", "GROUP_TRANSACTION_COUNT", "INTERCHANGE_GROUP_COUNT"]
+
+_CLAIM_DX_COLS = ["PRINCIPAL_DIAGNOSIS", "ADMITTING_DIAGNOSIS", "PRINCIPAL_PROCEDURE",
+                  "DRG_CODE", "DIAGNOSIS_CODES"]
+_PRINCIPAL_DX = {"ABK", "BK"}
+_ADMITTING_DX = {"ABJ", "BJ"}
+_PRINCIPAL_PROC = {"BBR", "BR", "CAH", "BP"}
+_DX_LIST = {"ABK", "ABF", "BK", "BF"}             # codes SV1/SV3 pointers refer to
+
+
+def _named_cols(named: dict, *groups) -> list:
+    out = []
+    for g in groups:
+        for value in named.get(g, {}).values():
+            if isinstance(value, (list, tuple)):
+                out += [c for c in value if c]
+            elif value:
+                out.append(value)
+    return out
+
+
+def _with_desc(cols: list) -> list:
+    """Adds <COLUMN>_DESC after each column that has a code list."""
+    out = []
+    for c in OrderedDict.fromkeys(cols):
+        out.append(c)
+        if c in DESC_FOR:
+            out.append(c + "_DESC")
+    return list(OrderedDict.fromkeys(out))
+
+
+def _table_columns(named: dict) -> "OrderedDict[str, list]":
+    n = lambda *g: _named_cols(named, *g)
+    entity = _cols("ENTITY_", _NAME_FIELDS) + _cols("ENTITY_", _ADDRESS_FIELDS) + _spec_cols("PRV")
+    line_cols = (["ASSIGNED_NUMBER"] + _spec_cols("SV1", "SV2", "SV3", "SV5")
+                 + ["POINTED_DIAGNOSIS_1", "POINTED_DIAGNOSIS_2", "POINTED_DIAGNOSIS_3",
+                    "POINTED_DIAGNOSIS_4"]
+                 + _spec_cols("CR1", "CR3", "CN1", "PS1", "HCP", "LIN", "CTP")
+                 + n("LINE_DATE", "LINE_REF", "LINE_AMOUNT", "LINE_QTY"))
+    tables = OrderedDict([
+        ("TRANSACTION", _ENVELOPE_COLS),
+        ("PARTY", _cols("PARTY_", _NAME_FIELDS)),
+        ("CONTACT", _CONTACT_COLS),
+        ("BILLING_PROVIDER", ["HL_CHILD_CODE"] + _spec_cols("PRV", "CUR")
+                             + _cols("BILLING_", _NAME_FIELDS) + _cols("BILLING_", _ADDRESS_FIELDS)
+                             + n("BILLING_REF")),
+        ("PAY_TO", _cols("PAYTO_", _NAME_FIELDS) + _cols("PAYTO_", _ADDRESS_FIELDS)),
+        ("PAY_TO_REF", _REF_COLS),
+        ("BILLING_PROVIDER_REF", _REF_COLS),
+        ("SUBSCRIBER", ["HL_CHILD_CODE"] + _spec_cols("SBR", "PAT")
+                       + _cols("SUBSCRIBER_", _NAME_FIELDS) + _cols("SUBSCRIBER_", _ADDRESS_FIELDS)
+                       + _spec_cols("DMG") + n("SUBSCRIBER_REF")),
+        ("PAYER", _cols("PAYER_", _NAME_FIELDS) + _cols("PAYER_", _ADDRESS_FIELDS)),
+        ("PAYER_REF", _REF_COLS),
+        ("SUBSCRIBER_REF", _REF_COLS),
+        ("PATIENT", ["HL_CHILD_CODE"] + _spec_cols("PAT")
+                    + _cols("PATIENT_", _NAME_FIELDS) + _cols("PATIENT_", _ADDRESS_FIELDS)
+                    + _spec_cols("DMG") + n("PATIENT_REF")),
+        ("PATIENT_REF", _REF_COLS),
+        ("CLAIM", _spec_cols("CLM", "CL1", "CN1", "HCP", "CR1", "CR2", "DN1") + _CLAIM_DX_COLS
+                  + n("CLAIM_DATE", "CLAIM_REF", "CLAIM_AMOUNT")),
+        ("CLAIM_DATE", _DATE_COLS),
+        ("CLAIM_REF", _REF_COLS),
+        ("CLAIM_AMOUNT", _AMOUNT_COLS),
+        ("CLAIM_NOTE", _NOTE_COLS),
+        ("CLAIM_ATTACHMENT", _spec_cols("PWK")),
+        ("CLAIM_CONDITION", _spec_cols("CRC")),
+        ("CLAIM_DIAGNOSIS", _DIAG_COLS),
+        ("CLAIM_TOOTH_STATUS", _spec_cols("DN2")),
+        ("CLAIM_PROVIDER", entity),
+        ("CLAIM_PROVIDER_REF", _REF_COLS),
+        ("OTHER_SUBSCRIBER", _spec_cols("SBR", "OI", "MIA", "MOA")
+                             + n("OTHER_SUBSCRIBER_AMOUNT", "OTHER_SUBSCRIBER_DATE",
+                                 "OTHER_SUBSCRIBER_REF")),
+        ("OTHER_SUBSCRIBER_ADJUSTMENT", _ADJ_COLS),
+        ("OTHER_SUBSCRIBER_AMOUNT", _AMOUNT_COLS),
+        ("OTHER_SUBSCRIBER_ENTITY", entity),
+        ("OTHER_SUBSCRIBER_REF", _REF_COLS),
+        ("OTHER_SUBSCRIBER_DATE", _DATE_COLS),
+        ("LINE", line_cols),
+        ("LINE_DATE", _DATE_COLS),
+        ("LINE_REF", _REF_COLS),
+        ("LINE_AMOUNT", _AMOUNT_COLS),
+        ("LINE_QUANTITY", ["QUANTITY_QUALIFIER", "QUANTITY"]),
+        ("LINE_NOTE", _NOTE_COLS),
+        ("LINE_ATTACHMENT", _spec_cols("PWK")),
+        ("LINE_CONDITION", _spec_cols("CRC")),
+        ("LINE_MEASUREMENT", _spec_cols("MEA")),
+        ("LINE_TOOTH", _spec_cols("TOO")),
+        ("LINE_PROVIDER", entity),
+        ("LINE_PROVIDER_REF", _REF_COLS),
+        ("LINE_ADJUDICATION", _spec_cols("SVD") + ["ADJUDICATION_DATE",
+                                                   "REMAINING_PATIENT_LIABILITY"]),
+        ("LINE_ADJUSTMENT", _ADJ_COLS),
+        ("LINE_FORM", _spec_cols("LQ", "FRM")),
+        ("UNMAPPED", ["SEG_ID", "SEGMENT_TEXT", "REASON"]),
+    ])
+    return OrderedDict((k, _with_desc(v)) for k, v in tables.items())
+
+
+TABLE_NAMES = list(_table_columns({}).keys())
+
+# OCC rule: occurrence number of the row's key under its parent.
+#   table: (key columns, parent columns to leave out)
+_OCC_SPEC = {
+    "PARTY":                       (["PARTY_ENTITY_CODE"], ["LOOP_ID", "LOOP_SEQ"]),
+    "CONTACT":                     ([], []),
+    "BILLING_PROVIDER":            (["BILLING_PROVIDER_ID"], ["BILLING_PROVIDER_HL", "LOOP_ID"]),
+    "PAY_TO":                      (["PAYTO_ENTITY_CODE"], ["LOOP_ID", "LOOP_SEQ"]),
+    "BILLING_PROVIDER_REF":        (["REF_QUALIFIER"], []),
+    "PAY_TO_REF":                  (["REF_QUALIFIER"], []),
+    "PAYER_REF":                   (["REF_QUALIFIER"], []),
+    "CLAIM_TOOTH_STATUS":          (["TOOTH_NUMBER"], []),
+    "SUBSCRIBER":                  (["SUBSCRIBER_ID"], ["SUBSCRIBER_HL", "LOOP_ID"]),
+    "PAYER":                       (["PAYER_ID"], ["LOOP_ID"]),
+    "SUBSCRIBER_REF":              (["REF_QUALIFIER"], []),
+    "PATIENT":                     (["PATIENT_LAST_NAME", "PATIENT_FIRST_NAME", "DATE_OF_BIRTH"],
+                                    ["PATIENT_HL", "LOOP_ID"]),
+    "PATIENT_REF":                 (["REF_QUALIFIER"], []),
+    "CLAIM_DATE":                  (["DATE_QUALIFIER"], []),
+    "CLAIM_REF":                   (["REF_QUALIFIER"], []),
+    "CLAIM_AMOUNT":                (["AMOUNT_QUALIFIER"], []),
+    "CLAIM_NOTE":                  ([], []),
+    "CLAIM_ATTACHMENT":            ([], []),
+    "CLAIM_CONDITION":             (["CONDITION_CATEGORY"], []),
+    "CLAIM_DIAGNOSIS":             (["CODE_QUALIFIER", "CODE"], []),
+    "CLAIM_PROVIDER":              (["ENTITY_CODE", "ENTITY_ID"], ["LOOP_ID", "LOOP_SEQ"]),
+    "CLAIM_PROVIDER_REF":          (["REF_QUALIFIER"], []),
+    "OTHER_SUBSCRIBER":            (["PAYER_RESPONSIBILITY"], ["OTHER_SUBSCRIBER_SEQ", "LOOP_ID"]),
+    "OTHER_SUBSCRIBER_ADJUSTMENT": (["GROUP_CODE", "REASON_CODE"], []),
+    "OTHER_SUBSCRIBER_AMOUNT":     (["AMOUNT_QUALIFIER"], []),
+    "OTHER_SUBSCRIBER_ENTITY":     (["ENTITY_CODE", "ENTITY_ID"], ["LOOP_ID", "LOOP_SEQ"]),
+    "OTHER_SUBSCRIBER_REF":        (["REF_QUALIFIER"], []),
+    "OTHER_SUBSCRIBER_DATE":       (["DATE_QUALIFIER"], []),
+    "LINE":                        (["LINE_NUMBER"], ["LINE_SEQ", "LOOP_ID"]),
+    "LINE_DATE":                   (["DATE_QUALIFIER"], []),
+    "LINE_REF":                    (["REF_QUALIFIER"], []),
+    "LINE_AMOUNT":                 (["AMOUNT_QUALIFIER"], []),
+    "LINE_QUANTITY":               (["QUANTITY_QUALIFIER"], []),
+    "LINE_NOTE":                   ([], []),
+    "LINE_ATTACHMENT":             ([], []),
+    "LINE_CONDITION":              (["CONDITION_CATEGORY"], []),
+    "LINE_MEASUREMENT":            (["MEASUREMENT_REFERENCE", "MEASUREMENT_QUALIFIER"], []),
+    "LINE_TOOTH":                  (["TOOTH_NUMBER"], []),
+    "LINE_PROVIDER":               (["ENTITY_CODE", "ENTITY_ID"], ["LOOP_ID", "LOOP_SEQ"]),
+    "LINE_PROVIDER_REF":           (["REF_QUALIFIER"], []),
+    "LINE_ADJUDICATION":           (["OTHER_PAYER_ID"], ["LOOP_SEQ"]),
+    "LINE_ADJUSTMENT":             (["GROUP_CODE", "REASON_CODE"], []),
+    "LINE_FORM":                   (["FORM_ID", "QUESTION_NUMBER"], ["LOOP_SEQ"]),
+    "UNMAPPED":                    ([], []),
+}
+
+# NM101 → sub-loop letter per variant (LOOP_ID only; unknown codes keep the base loop)
+_LOOP_LETTERS = {
+    "2310": {
+        "PROFESSIONAL": {"DN": "A", "P3": "A", "82": "B", "77": "C", "DQ": "D", "PW": "E", "45": "F"},
+        "INSTITUTIONAL": {"71": "A", "72": "B", "ZZ": "C", "82": "D", "77": "E", "DN": "F"},
+        "DENTAL": {"DN": "A", "P3": "A", "82": "B", "77": "C", "DD": "D", "DQ": "E"},
+    },
+    "2330": {
+        "PROFESSIONAL": {"IL": "A", "PR": "B", "DN": "C", "P3": "C", "82": "D", "77": "E",
+                         "DQ": "F", "85": "G"},
+        "INSTITUTIONAL": {"IL": "A", "PR": "B", "71": "C", "72": "D", "ZZ": "E", "77": "F",
+                          "82": "G", "DN": "H", "85": "I"},
+        "DENTAL": {"IL": "A", "PR": "B", "DN": "C", "P3": "C", "82": "D", "DQ": "E",
+                   "85": "F", "77": "G"},
+    },
+    "2420": {
+        "PROFESSIONAL": {"82": "A", "QB": "B", "77": "C", "DQ": "D", "DK": "E", "DN": "F",
+                         "P3": "F", "PW": "G", "45": "H"},
+        "INSTITUTIONAL": {"72": "A", "ZZ": "B", "82": "C", "DN": "D"},
+        "DENTAL": {"82": "A", "DD": "B", "DQ": "C", "77": "D"},
+    },
+}
+
+_CLAIM_AREAS = {"2300", "2310", "2320", "2330"}
+_LINE_AREAS = {"2400", "2410", "2420", "2430", "2440"}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _v(parts: list, i: int):
+    """Element i of a segment: trailing spaces trimmed, empty/missing → None."""
+    if i >= len(parts):
+        return None
+    s = parts[i].rstrip()
+    return s if s != "" else None
+
+
+def _split_range(value):
+    if value is None:
+        return None, None
+    if "-" in value:
+        start, end = value.split("-", 1)
+        return (start.strip() or None), (end.strip() or None)
+    return value, None
+
+
+def _decode(content, encoding=None) -> str:
+    if isinstance(content, str):
+        return content
+    if encoding:
+        return content.decode(encoding, errors="replace")
+    try:
+        return content.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return content.decode("latin-1")
+
+
+def _detect_separators(text: str) -> tuple:
+    t = text.lstrip("﻿ \t\r\n")
+    if not t.startswith("ISA") or len(t) < 106:
+        raise ValueError("EDI837: content does not start with an ISA segment.")
+    element_sep = t[3]
+    positions = [i for i, ch in enumerate(t[:400]) if ch == element_sep]
+    if len(positions) < 16:
+        raise ValueError("EDI837: ISA segment has fewer than 16 elements.")
+    isa16_pos = positions[15] + 1
+    component_sep = t[isa16_pos]
+    segment_term = t[isa16_pos + 1]
+    isa_fields = t[:isa16_pos + 1].split(element_sep)
+    rep = isa_fields[11] if len(isa_fields) > 11 else None
+    repetition_sep = rep if rep and len(rep) == 1 and not rep.isalnum() else None
+    return t, element_sep, component_sep, repetition_sep, segment_term
+
+
+def _to_file_id(value):
+    if value is None or value == "":
+        return None
+    try:
+        return int(str(value).strip())
+    except ValueError:
+        return value
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Parser
+# ─────────────────────────────────────────────────────────────────────────────
+
+class Edi837Parser:
+    """Single-pass, context-tracking 837 parser. Use parse_837() rather than this class."""
+
+    def __init__(self, filename="", file_id=None, code_lists=None, named_qualifiers=None):
+        self.filename = filename or None
+        self.file_id = _to_file_id(file_id)
+
+        self.code_lists = {k: dict(v) for k, v in _codes.CODE_LISTS.items()}
+        for name, values in (code_lists or {}).items():
+            self.code_lists.setdefault(name, {}).update(values)
+        self.named = {k: dict(v) for k, v in _codes.NAMED_QUALIFIERS.items()}
+        for group, values in (named_qualifiers or {}).items():
+            self.named.setdefault(group, {}).update(values)
+
+        self.columns = _table_columns(self.named)
+        self.tables = {name: [] for name in self.columns}
+
+        self.billing_ids = {}     # (txn, bp_hl) → NM109 of 2010AA
+        self.subscriber_ids = {}  # (txn, sub_hl) → NM109 of 2010BA
+        self.payer_ids = {}       # (txn, sub_hl) → NM109 of 2010BB
+        self.claim_rows = {}      # (txn, claim_seq) → CLAIM row
+        self.hl_path = {}
+
+        self.isa, self.gs = {}, {}
+        self.isa13 = self.gs06 = self.st02 = None
+        self.cur_txn = None
+        self.group_txns, self.interchange_txns = [], []
+        self._reset_transaction()
+
+    # ── state ────────────────────────────────────────────────────────────────
+
+    def _reset_transaction(self):
+        self.claim_type = None
+        self.bht_ref = None
+        self.area = None
+        self.party_seq = 0
+        self.bp_hl = self.sub_hl = self.pat_hl = None
+        self.cur_bp = self.cur_sub = self.cur_pat = None
+        self.payto_seq = 0
+        self.claim_seq = 0
+        self.ent = None
+        self._reset_claim()
+
+    def _reset_claim(self):
+        self.cur_claim = None
+        self.claim_id = None
+        self.claim_dx = []
+        self.hi_seq = 0
+        self.claim_prov_seq = 0
+        self.osub_seq = 0
+        self.cur_osub = None
+        self.osub_entity_seq = 0
+        self.cas_seq = 0
+        self._line_seq = 0
+        self._reset_line()
+
+    def _reset_line(self):
+        self.cur_line = None
+        self.line_number = None
+        self.line_prov_seq = 0
+        self.adj_seq = 0
+        self.cur_adj = None
+        self.form_seq = 0
+        self.cur_form = None
+
+    def _txn_key(self):
+        return (self.isa13, self.gs06, self.st02)
+
+    def _hier(self, pos, loop=None, path=True, claim=False, osub=False, line=False,
+              loop_seq=None):
+        return {
+            "FILE_ID": self.file_id,
+            "FILE_NAME": self.filename,
+            "INTERCHANGE_CONTROL_NUMBER": self.isa13,
+            "GROUP_CONTROL_NUMBER": self.gs06,
+            "TRANSACTION_CONTROL_NUMBER": self.st02,
+            "CLAIM_TYPE": self.claim_type,
+            "BHT_REFERENCE_ID": self.bht_ref,
+            "BILLING_PROVIDER_HL": self.bp_hl if path else None,
+            "BILLING_PROVIDER_ID": None,
+            "SUBSCRIBER_HL": self.sub_hl if path else None,
+            "SUBSCRIBER_ID": None,
+            "PAYER_ID": None,
+            "PATIENT_HL": self.pat_hl if path else None,
+            "CLAIM_SEQ": self.claim_seq if claim else None,
+            "CLAIM_ID": self.claim_id if claim else None,
+            "CLAIM_OCC": None,
+            "OTHER_SUBSCRIBER_SEQ": self.osub_seq if osub else None,
+            "LINE_SEQ": self.line_seq if line else None,
+            "LINE_NUMBER": self.line_number if line else None,
+            "LOOP_ID": loop or self.area,
+            "LOOP_SEQ": loop_seq,
+            "OCC": None,
+            "SEG_POS": pos,
+        }
+
+    def _desc(self, list_name, code):
+        if code is None:
+            return None
+        return self.code_lists.get(list_name, {}).get(code)
+
+    def _add(self, table, row):
+        self.tables[table].append(row)
+        return row
+
+    def _apply(self, row, parts, seg_id):
+        """Writes a segment's elements into row using SPECS, plus description columns."""
+        for pos, target in SPECS[seg_id]:
+            value = _v(parts, pos)
+            if isinstance(target, list):
+                comps = value.split(self.comp) if value else []
+                for k, col in enumerate(target):
+                    row[col] = (comps[k].strip() or None) if k < len(comps) else None
+                    self._apply_desc(row, col)
+            else:
+                row[target] = value
+                self._apply_desc(row, target)
+        return row
+
+    def _apply_desc(self, row, col):
+        if col in DESC_FOR:
+            row[col + "_DESC"] = self._desc(DESC_FOR[col], row.get(col))
+
+    def _unmapped(self, pos, seg_id, raw, reason):
+        row = self._hier(pos, claim=self.cur_claim is not None,
+                         osub=self.cur_osub is not None, line=self.cur_line is not None)
+        row.update({"SEG_ID": seg_id, "SEGMENT_TEXT": raw, "REASON": reason})
+        self._add("UNMAPPED", row)
+
+    def _set_named(self, parent, group, qual, *values):
+        if parent is None:
+            return
+        target = self.named.get(group, {}).get(qual)
+        if not target:
+            return
+        cols = target if isinstance(target, (list, tuple)) else [target]
+        for col, value in zip(cols, values):
+            if col and parent.get(col) is None:
+                parent[col] = value
+
+    def _sub_loop(self, base, code):
+        letter = _LOOP_LETTERS.get(base, {}).get(self.claim_type or "", {}).get(code)
+        return base + letter if letter else base
+
+    @property
+    def line_seq(self):
+        return self._line_seq
+
+    # ── main loop ────────────────────────────────────────────────────────────
+
+    def parse(self, text: str) -> dict:
+        text, self.el, self.comp, self.rep, term = _detect_separators(text)
+        self._line_seq = 0
+        pos = 0
+        for raw in text.split(term):
+            raw = raw.strip()
+            if not raw:
+                continue
+            pos += 1
+            parts = raw.split(self.el)
+            seg_id = parts[0].strip().upper()
+            handler = getattr(self, f"_seg_{seg_id}", None)
+            if handler is None:
+                self._unmapped(pos, seg_id, raw, "Unknown segment")
+            else:
+                handler(parts, pos, raw)
+        return self._finalize()
+
+    # ── envelope ─────────────────────────────────────────────────────────────
+
+    def _seg_ISA(self, p, pos, raw):
+        s = lambda i: (p[i].strip() or None) if i < len(p) else None
+        self.isa = {
+            "INTERCHANGE_SENDER_QUALIFIER": s(5), "INTERCHANGE_SENDER_ID": s(6),
+            "INTERCHANGE_RECEIVER_QUALIFIER": s(7), "INTERCHANGE_RECEIVER_ID": s(8),
+            "INTERCHANGE_DATE": s(9), "INTERCHANGE_TIME": s(10),
+            "INTERCHANGE_VERSION": s(12), "ACK_REQUESTED": s(14), "USAGE_INDICATOR": s(15),
+        }
+        self.isa13 = s(13)
+        self.gs06 = self.st02 = None
+        self.interchange_txns = []
+
+    def _seg_GS(self, p, pos, raw):
+        self.gs = {
+            "FUNCTIONAL_ID_CODE": _v(p, 1), "GROUP_SENDER": _v(p, 2),
+            "GROUP_RECEIVER": _v(p, 3), "GROUP_DATE": _v(p, 4),
+            "GROUP_TIME": _v(p, 5), "VERSION": _v(p, 8),
+        }
+        self.gs06 = _v(p, 6)
+        self.st02 = None
+        self.group_txns = []
+
+    def _seg_ST(self, p, pos, raw):
+        self.st02 = _v(p, 2)
+        self._reset_transaction()
+        self._line_seq = 0
+        ref = (_v(p, 3) or self.gs.get("VERSION") or "").upper()
+        self.claim_type = next((v for k, v in _VARIANTS.items() if k in ref), None)
+        self.area = "HEADER"
+        row = self._hier(pos, path=False)
+        row.update(self.isa)
+        row.update(self.gs)
+        row.update({"TRANSACTION_SET_ID": _v(p, 1), "IMPLEMENTATION_REFERENCE": _v(p, 3)})
+        self.cur_txn = self._add("TRANSACTION", row)
+        self.group_txns.append(row)
+        self.interchange_txns.append(row)
+
+    def _seg_BHT(self, p, pos, raw):
+        if self.cur_txn is None:
+            return self._unmapped(pos, "BHT", raw, "BHT outside a transaction")
+        self._apply(self.cur_txn, p, "BHT")
+        self.bht_ref = self.cur_txn["BHT_REFERENCE_ID"]
+
+    def _seg_SE(self, p, pos, raw):
+        if self.cur_txn is not None:
+            self.cur_txn["SEGMENT_COUNT"] = _v(p, 1)
+        self.cur_txn = None
+        self._reset_transaction()
+
+    def _seg_GE(self, p, pos, raw):
+        for row in self.group_txns:
+            row["GROUP_TRANSACTION_COUNT"] = _v(p, 1)
+
+    def _seg_IEA(self, p, pos, raw):
+        for row in self.interchange_txns:
+            row["INTERCHANGE_GROUP_COUNT"] = _v(p, 1)
+
+    # ── hierarchy ────────────────────────────────────────────────────────────
+
+    def _seg_HL(self, p, pos, raw):
+        hl01, hl02, hl03, hl04 = _v(p, 1), _v(p, 2), _v(p, 3), _v(p, 4)
+        txn = self._txn_key()
+        current = {"BP": self.bp_hl, "SUB": self.sub_hl, "PAT": self.pat_hl}
+        parent = self.hl_path.get(txn + (hl02,), current) if hl02 else {}
+
+        self._reset_claim()
+        self.ent = None
+
+        if hl03 == "20":
+            path = {"BP": hl01, "SUB": None, "PAT": None}
+        elif hl03 == "22":
+            path = {"BP": parent.get("BP"), "SUB": hl01, "PAT": None}
+        elif hl03 == "23":
+            path = {"BP": parent.get("BP"), "SUB": parent.get("SUB"), "PAT": hl01}
+        else:
+            self.area = None
+            return self._unmapped(pos, "HL", raw, f"Unknown HL level code '{hl03}'")
+
+        self.hl_path[txn + (hl01,)] = path
+        self.bp_hl, self.sub_hl, self.pat_hl = path["BP"], path["SUB"], path["PAT"]
+
+        if hl03 == "20":
+            self.area = "2000A"
+            self.payto_seq = 0
+            self.cur_sub = self.cur_pat = None
+            row = self._hier(pos)
+            row["HL_CHILD_CODE"] = hl04
+            self.cur_bp = self._add("BILLING_PROVIDER", row)
+        elif hl03 == "22":
+            self.area = "2000B"
+            self.cur_pat = None
+            row = self._hier(pos)
+            row["HL_CHILD_CODE"] = hl04
+            self.cur_sub = self._add("SUBSCRIBER", row)
+        else:
+            self.area = "2000C"
+            row = self._hier(pos)
+            row["HL_CHILD_CODE"] = hl04
+            self.cur_pat = self._add("PATIENT", row)
+
+    # ── names, addresses, contacts ───────────────────────────────────────────
+
+    def _fill_name(self, row, prefix, p):
+        nm101 = _v(p, 1)
+        row.update({
+            _pfx(prefix, "ENTITY_CODE"): nm101,
+            _pfx(prefix, "ENTITY_DESC"): self._desc("NM101", nm101),
+            _pfx(prefix, "ENTITY_TYPE"): _v(p, 2),
+            _pfx(prefix, "LAST_NAME"): _v(p, 3),
+            _pfx(prefix, "FIRST_NAME"): _v(p, 4),
+            _pfx(prefix, "MIDDLE_NAME"): _v(p, 5),
+            _pfx(prefix, "PREFIX"): _v(p, 6),
+            _pfx(prefix, "SUFFIX"): _v(p, 7),
+            _pfx(prefix, "ID_QUALIFIER"): _v(p, 8),
+            _pfx(prefix, "ID"): _v(p, 9),
+        })
+
+    def _set_ent(self, row, prefix, ref_table, named_group=None, hkw=None):
+        """Remembers the entity that following N3/N4/PRV/REF/PER/DMG belong to."""
+        self.ent = {"row": row, "prefix": prefix, "ref_table": ref_table,
+                    "named": named_group, "hkw": hkw or {}}
+
+    def _seg_NM1(self, p, pos, raw):
+        code = _v(p, 1)
+        txn = self._txn_key()
+        area = self.area or ""
+
+        # 1000A submitter / 1000B receiver
+        if area == "HEADER" or area.startswith("1000"):
+            if code not in ("41", "40"):
+                return self._unmapped(pos, "NM1", raw, "NM1 not expected here")
+            self.party_seq += 1
+            self.area = "1000A" if code == "41" else "1000B"
+            row = self._hier(pos, path=False, loop_seq=self.party_seq)
+            self._fill_name(row, "PARTY_", p)
+            self._add("PARTY", row)
+            self._set_ent(row, "PARTY_", None, hkw={"path": False, "loop_seq": self.party_seq})
+            return
+
+        # 2010AA billing provider / 2010AB pay-to address / 2010AC pay-to plan
+        if area in ("2000A", "2010AA", "2010AB", "2010AC") and self.cur_bp is not None:
+            if code == "85":
+                if self.cur_bp.get("BILLING_ENTITY_CODE") is not None:
+                    return self._unmapped(pos, "NM1", raw, "Second billing provider name")
+                self._fill_name(self.cur_bp, "BILLING_", p)
+                self.cur_bp["LOOP_ID"] = self.area = "2010AA"
+                self.billing_ids[txn + (self.bp_hl,)] = _v(p, 9)
+                return self._set_ent(self.cur_bp, "BILLING_", "BILLING_PROVIDER_REF", "BILLING_REF")
+            if code in ("87", "PE"):
+                self.payto_seq += 1
+                self.area = "2010AB" if code == "87" else "2010AC"
+                row = self._hier(pos, loop_seq=self.payto_seq)
+                self._fill_name(row, "PAYTO_", p)
+                self._add("PAY_TO", row)
+                return self._set_ent(row, "PAYTO_", "PAY_TO_REF",
+                                     hkw={"loop_seq": self.payto_seq})
+
+        # 2010BA subscriber / 2010BB payer
+        if area in ("2000B", "2010BA", "2010BB") and self.cur_sub is not None:
+            if code == "IL":
+                if self.cur_sub.get("SUBSCRIBER_ENTITY_CODE") is not None:
+                    return self._unmapped(pos, "NM1", raw, "Second subscriber name")
+                self._fill_name(self.cur_sub, "SUBSCRIBER_", p)
+                self.cur_sub["LOOP_ID"] = self.area = "2010BA"
+                self.subscriber_ids[txn + (self.sub_hl,)] = _v(p, 9)
+                return self._set_ent(self.cur_sub, "SUBSCRIBER_", "SUBSCRIBER_REF", "SUBSCRIBER_REF")
+            if code == "PR":
+                self.area = "2010BB"
+                row = self._hier(pos)
+                self._fill_name(row, "PAYER_", p)
+                self._add("PAYER", row)
+                self.payer_ids.setdefault(txn + (self.sub_hl,), _v(p, 9))
+                return self._set_ent(row, "PAYER_", "PAYER_REF")
+
+        # 2010CA patient
+        if area in ("2000C", "2010CA") and self.cur_pat is not None and code == "QC":
+            if self.cur_pat.get("PATIENT_ENTITY_CODE") is not None:
+                return self._unmapped(pos, "NM1", raw, "Second patient name")
+            self._fill_name(self.cur_pat, "PATIENT_", p)
+            self.cur_pat["LOOP_ID"] = self.area = "2010CA"
+            return self._set_ent(self.cur_pat, "PATIENT_", "PATIENT_REF", "PATIENT_REF")
+
+        # 2310 claim providers
+        if area in ("2300", "2310") and self.cur_claim is not None:
+            self.claim_prov_seq += 1
+            self.area = "2310"
+            loop = self._sub_loop("2310", code)
+            kw = {"claim": True, "loop_seq": self.claim_prov_seq, "loop": loop}
+            row = self._hier(pos, **kw)
+            self._fill_name(row, "ENTITY_", p)
+            self._add("CLAIM_PROVIDER", row)
+            return self._set_ent(row, "ENTITY_", "CLAIM_PROVIDER_REF", hkw=kw)
+
+        # 2330 other subscriber entities
+        if area in ("2320", "2330") and self.cur_osub is not None:
+            self.osub_entity_seq += 1
+            self.area = "2330"
+            loop = self._sub_loop("2330", code)
+            kw = {"claim": True, "osub": True, "loop_seq": self.osub_entity_seq, "loop": loop}
+            row = self._hier(pos, **kw)
+            self._fill_name(row, "ENTITY_", p)
+            self._add("OTHER_SUBSCRIBER_ENTITY", row)
+            return self._set_ent(row, "ENTITY_", "OTHER_SUBSCRIBER_REF", "OTHER_SUBSCRIBER_REF",
+                                 hkw=kw)
+
+        # 2420 line providers
+        if area in ("2400", "2410", "2420") and self.cur_line is not None:
+            self.line_prov_seq += 1
+            self.area = "2420"
+            loop = self._sub_loop("2420", code)
+            kw = {"claim": True, "line": True, "loop_seq": self.line_prov_seq, "loop": loop}
+            row = self._hier(pos, **kw)
+            self._fill_name(row, "ENTITY_", p)
+            self._add("LINE_PROVIDER", row)
+            return self._set_ent(row, "ENTITY_", "LINE_PROVIDER_REF", hkw=kw)
+
+        self._unmapped(pos, "NM1", raw, "NM1 not expected here")
+
+    def _ent_ok(self, *areas):
+        return self.ent is not None and (self.area in areas)
+
+    _ENTITY_AREAS = ("1000A", "1000B", "2010AA", "2010AB", "2010AC", "2010BA", "2010BB",
+                     "2010CA", "2310", "2330", "2420")
+
+    def _seg_N3(self, p, pos, raw):
+        if not self._ent_ok(*self._ENTITY_AREAS) or self.ent["prefix"] == "PARTY_":
+            return self._unmapped(pos, "N3", raw, "N3 not expected here")
+        row, prefix = self.ent["row"], self.ent["prefix"]
+        row[_pfx(prefix, "ADDRESS_LINE1")] = _v(p, 1)
+        row[_pfx(prefix, "ADDRESS_LINE2")] = _v(p, 2)
+
+    def _seg_N4(self, p, pos, raw):
+        if not self._ent_ok(*self._ENTITY_AREAS) or self.ent["prefix"] == "PARTY_":
+            return self._unmapped(pos, "N4", raw, "N4 not expected here")
+        row, prefix = self.ent["row"], self.ent["prefix"]
+        row.update({
+            _pfx(prefix, "CITY"): _v(p, 1), _pfx(prefix, "STATE"): _v(p, 2),
+            _pfx(prefix, "ZIP"): _v(p, 3), _pfx(prefix, "COUNTRY"): _v(p, 4),
+            _pfx(prefix, "COUNTRY_SUBDIVISION"): _v(p, 7),
+        })
+
+    def _seg_PRV(self, p, pos, raw):
+        if self.area == "2000A" and self.cur_bp is not None:
+            return self._apply(self.cur_bp, p, "PRV")
+        if self._ent_ok("2310", "2330", "2420"):
+            return self._apply(self.ent["row"], p, "PRV")
+        self._unmapped(pos, "PRV", raw, "PRV not expected here")
+
+    def _seg_CUR(self, p, pos, raw):
+        if self.area != "2000A" or self.cur_bp is None:
+            return self._unmapped(pos, "CUR", raw, "CUR not expected here")
+        self._apply(self.cur_bp, p, "CUR")
+
+    def _seg_PER(self, p, pos, raw):
+        if not self._ent_ok(*self._ENTITY_AREAS):
+            return self._unmapped(pos, "PER", raw, "PER not expected here")
+        row = self._hier(pos, **self.ent["hkw"])
+        row["CONTACT_FUNCTION"] = _v(p, 1)
+        row["CONTACT_NAME"] = _v(p, 2)
+        for q_idx in (3, 5, 7):
+            qual, number = _v(p, q_idx), _v(p, q_idx + 1)
+            if qual is None and number is None:
+                continue
+            col = _PER_QUALIFIER_COLS.get(qual)
+            if col and row.get(col) is None:
+                row[col] = number
+            elif row.get("OTHER_COMM_NUMBER") is None:
+                row["OTHER_COMM_QUALIFIER"] = qual
+                row["OTHER_COMM_NUMBER"] = number
+            else:
+                self._unmapped(pos, "PER", raw, f"Extra communication number '{qual}' in PER")
+        self._add("CONTACT", row)
+
+    def _seg_DMG(self, p, pos, raw):
+        if self.area == "2010BA" and self.cur_sub is not None:
+            return self._apply(self.cur_sub, p, "DMG")
+        if self.area == "2010CA" and self.cur_pat is not None:
+            return self._apply(self.cur_pat, p, "DMG")
+        self._unmapped(pos, "DMG", raw, "DMG not expected here")
+
+    # ── subscriber / patient ─────────────────────────────────────────────────
+
+    def _seg_SBR(self, p, pos, raw):
+        if self.area == "2000B" and self.cur_sub is not None:
+            return self._apply(self.cur_sub, p, "SBR")
+        if self.area in _CLAIM_AREAS and self.cur_claim is not None:
+            self.osub_seq += 1
+            self.osub_entity_seq = 0
+            self.cas_seq = 0
+            self.area = "2320"
+            self.ent = None
+            row = self._hier(pos, claim=True, osub=True)
+            self._apply(row, p, "SBR")
+            self.cur_osub = self._add("OTHER_SUBSCRIBER", row)
+            return
+        self._unmapped(pos, "SBR", raw, "SBR not expected here")
+
+    def _seg_PAT(self, p, pos, raw):
+        if self.area == "2000B" and self.cur_sub is not None:
+            return self._apply(self.cur_sub, p, "PAT")
+        if self.area == "2000C" and self.cur_pat is not None:
+            return self._apply(self.cur_pat, p, "PAT")
+        self._unmapped(pos, "PAT", raw, "PAT not expected here")
+
+    # ── REF / DTP / AMT / QTY (context dependent) ────────────────────────────
+
+    def _seg_REF(self, p, pos, raw):
+        qual, ref_id = _v(p, 1), _v(p, 2)
+        values = {"REF_QUALIFIER": qual, "REF_QUALIFIER_DESC": self._desc("REF01", qual),
+                  "REF_ID": ref_id, "REF_DESCRIPTION": _v(p, 3)}
+
+        if self._ent_ok("2010AA", "2010AB", "2010AC", "2010BA", "2010BB", "2010CA",
+                        "2310", "2330", "2420") and self.ent["ref_table"]:
+            row = self._hier(pos, **self.ent["hkw"])
+            row.update(values)
+            self._add(self.ent["ref_table"], row)
+            if self.ent["named"] == "OTHER_SUBSCRIBER_REF":
+                return self._set_named(self.cur_osub, "OTHER_SUBSCRIBER_REF", qual, ref_id)
+            if self.ent["named"]:
+                return self._set_named(self.ent["row"], self.ent["named"], qual, ref_id)
+            return
+
+        if self.area == "2300" and self.cur_claim is not None:
+            row = self._hier(pos, claim=True)
+            row.update(values)
+            self._add("CLAIM_REF", row)
+            return self._set_named(self.cur_claim, "CLAIM_REF", qual, ref_id)
+
+        if self.area in ("2400", "2410") and self.cur_line is not None:
+            row = self._hier(pos, claim=True, line=True)
+            row.update(values)
+            self._add("LINE_REF", row)
+            return self._set_named(self.cur_line, "LINE_REF", qual, ref_id)
+
+        self._unmapped(pos, "REF", raw, "REF not expected here")
+
+    def _seg_DTP(self, p, pos, raw):
+        qual = _v(p, 1)
+        start, end = _split_range(_v(p, 3))
+        values = {"DATE_QUALIFIER": qual, "DATE_QUALIFIER_DESC": self._desc("DTP01", qual),
+                  "DATE_FORMAT": _v(p, 2), "START_DATE": start, "END_DATE": end}
+
+        if self.area == "2300" and self.cur_claim is not None:
+            row = self._hier(pos, claim=True)
+            row.update(values)
+            self._add("CLAIM_DATE", row)
+            return self._set_named(self.cur_claim, "CLAIM_DATE", qual, start, end)
+
+        if self.area == "2330" and self.cur_osub is not None:
+            row = self._hier(pos, **(self.ent["hkw"] if self.ent else
+                                     {"claim": True, "osub": True}))
+            row.update(values)
+            self._add("OTHER_SUBSCRIBER_DATE", row)
+            return self._set_named(self.cur_osub, "OTHER_SUBSCRIBER_DATE", qual, start, end)
+
+        if self.area == "2400" and self.cur_line is not None:
+            row = self._hier(pos, claim=True, line=True)
+            row.update(values)
+            self._add("LINE_DATE", row)
+            return self._set_named(self.cur_line, "LINE_DATE", qual, start, end)
+
+        if self.area == "2430" and self.cur_adj is not None and qual == "573":
+            self.cur_adj["ADJUDICATION_DATE"] = start
+            return
+
+        self._unmapped(pos, "DTP", raw, "DTP not expected here")
+
+    def _seg_AMT(self, p, pos, raw):
+        qual, amount = _v(p, 1), _v(p, 2)
+        values = {"AMOUNT_QUALIFIER": qual, "AMOUNT_QUALIFIER_DESC": self._desc("AMT01", qual),
+                  "AMOUNT": amount}
+        routes = {
+            "2300": ("CLAIM_AMOUNT", self.cur_claim, "CLAIM_AMOUNT", {"claim": True}),
+            "2320": ("OTHER_SUBSCRIBER_AMOUNT", self.cur_osub, "OTHER_SUBSCRIBER_AMOUNT",
+                     {"claim": True, "osub": True}),
+            "2400": ("LINE_AMOUNT", self.cur_line, "LINE_AMOUNT", {"claim": True, "line": True}),
+        }
+        if self.area in routes and routes[self.area][1] is not None:
+            table, parent, group, kw = routes[self.area]
+            row = self._hier(pos, **kw)
+            row.update(values)
+            self._add(table, row)
+            return self._set_named(parent, group, qual, amount)
+        if self.area == "2430" and self.cur_adj is not None and qual == "EAF":
+            self.cur_adj["REMAINING_PATIENT_LIABILITY"] = amount
+            return
+        self._unmapped(pos, "AMT", raw, "AMT not expected here")
+
+    def _seg_QTY(self, p, pos, raw):
+        if self.area != "2400" or self.cur_line is None:
+            return self._unmapped(pos, "QTY", raw, "QTY not expected here")
+        qual, qty = _v(p, 1), _v(p, 2)
+        row = self._hier(pos, claim=True, line=True)
+        row.update({"QUANTITY_QUALIFIER": qual,
+                    "QUANTITY_QUALIFIER_DESC": self._desc("QTY01", qual), "QUANTITY": qty})
+        self._add("LINE_QUANTITY", row)
+        self._set_named(self.cur_line, "LINE_QTY", qual, qty)
+
+    # ── claim (2300) ─────────────────────────────────────────────────────────
+
+    def _seg_CLM(self, p, pos, raw):
+        if self.cur_sub is None or self.area is None or not (
+                self.area.startswith("20") or self.area in _CLAIM_AREAS or self.area in _LINE_AREAS):
+            return self._unmapped(pos, "CLM", raw, "CLM outside a subscriber/patient")
+        self._reset_claim()
+        self.claim_seq += 1
+        self.claim_id = _v(p, 1)
+        self.area = "2300"
+        self.ent = None
+        row = self._hier(pos, claim=True)
+        self._apply(row, p, "CLM")
+        self.cur_claim = self._add("CLAIM", row)
+        self.claim_rows[self._txn_key() + (self.claim_seq,)] = row
+
+    def _claim_or_line(self, seg_id, pos, raw, claim_ok=True, line_ok=True):
+        """Row that a segment allowed at claim and/or line level applies to."""
+        if claim_ok and self.area == "2300" and self.cur_claim is not None:
+            return self.cur_claim, {"claim": True}, "CLAIM"
+        if line_ok and self.area == "2400" and self.cur_line is not None:
+            return self.cur_line, {"claim": True, "line": True}, "LINE"
+        self._unmapped(pos, seg_id, raw, f"{seg_id} not expected here")
+        return None, None, None
+
+    def _seg_CL1(self, p, pos, raw):
+        row, _, _ = self._claim_or_line("CL1", pos, raw, line_ok=False)
+        if row is not None:
+            self._apply(row, p, "CL1")
+
+    def _seg_CN1(self, p, pos, raw):
+        row, _, _ = self._claim_or_line("CN1", pos, raw)
+        if row is not None:
+            self._apply(row, p, "CN1")
+
+    def _seg_HCP(self, p, pos, raw):
+        row, _, _ = self._claim_or_line("HCP", pos, raw)
+        if row is not None:
+            self._apply(row, p, "HCP")
+
+    def _seg_CR1(self, p, pos, raw):
+        row, _, _ = self._claim_or_line("CR1", pos, raw)
+        if row is not None:
+            self._apply(row, p, "CR1")
+
+    def _seg_CR2(self, p, pos, raw):
+        row, _, _ = self._claim_or_line("CR2", pos, raw, line_ok=False)
+        if row is not None:
+            self._apply(row, p, "CR2")
+
+    def _seg_CR3(self, p, pos, raw):
+        row, _, _ = self._claim_or_line("CR3", pos, raw, claim_ok=False)
+        if row is not None:
+            self._apply(row, p, "CR3")
+
+    def _seg_DN1(self, p, pos, raw):
+        row, _, _ = self._claim_or_line("DN1", pos, raw, line_ok=False)
+        if row is not None:
+            self._apply(row, p, "DN1")
+
+    def _seg_DN2(self, p, pos, raw):
+        parent, kw, _ = self._claim_or_line("DN2", pos, raw, line_ok=False)
+        if parent is not None:
+            self._add("CLAIM_TOOTH_STATUS", self._apply(self._hier(pos, **kw), p, "DN2"))
+
+    def _seg_CRC(self, p, pos, raw):
+        parent, kw, level = self._claim_or_line("CRC", pos, raw)
+        if parent is not None:
+            self._add(f"{level}_CONDITION", self._apply(self._hier(pos, **kw), p, "CRC"))
+
+    def _seg_PWK(self, p, pos, raw):
+        parent, kw, level = self._claim_or_line("PWK", pos, raw)
+        if parent is not None:
+            self._add(f"{level}_ATTACHMENT", self._apply(self._hier(pos, **kw), p, "PWK"))
+
+    def _note(self, seg_id, p, pos, raw):
+        parent, kw, level = self._claim_or_line(seg_id, pos, raw)
+        if parent is None:
+            return
+        row = self._hier(pos, **kw)
+        if seg_id == "NTE":
+            row.update({"SEGMENT_ID": "NTE", "NOTE_CODE": _v(p, 1), "NOTE_TEXT": _v(p, 2)})
+        else:
+            row.update({"SEGMENT_ID": "K3", "NOTE_CODE": None, "NOTE_TEXT": _v(p, 1)})
+        self._add(f"{level}_NOTE", row)
+
+    def _seg_NTE(self, p, pos, raw):
+        self._note("NTE", p, pos, raw)
+
+    def _seg_K3(self, p, pos, raw):
+        self._note("K3", p, pos, raw)
+
+    def _seg_HI(self, p, pos, raw):
+        if self.area != "2300" or self.cur_claim is None:
+            return self._unmapped(pos, "HI", raw, "HI not expected here")
+        self.hi_seq += 1
+        claim = self.cur_claim
+        for i in range(1, len(p)):
+            value = _v(p, i)
+            if value is None:
+                continue
+            comps = value.split(self.comp)
+            c = lambda k: (comps[k].strip() or None) if k < len(comps) else None
+            qual, code = c(0), c(1)
+            start, end = _split_range(c(3))
+            row = self._hier(pos, claim=True)
+            row.update({"HI_SEQ": self.hi_seq, "POSITION": i,
+                        "CODE_QUALIFIER": qual, "CODE_QUALIFIER_DESC": self._desc("HI01", qual),
+                        "CODE": code, "DATE_FORMAT": c(2), "START_DATE": start, "END_DATE": end,
+                        "AMOUNT": c(4), "QUANTITY": c(5), "VERSION": c(6),
+                        "POA_INDICATOR": c(8)})
+            self._add("CLAIM_DIAGNOSIS", row)
+
+            if qual in _PRINCIPAL_DX and claim.get("PRINCIPAL_DIAGNOSIS") is None:
+                claim["PRINCIPAL_DIAGNOSIS"] = code
+            elif qual in _ADMITTING_DX and claim.get("ADMITTING_DIAGNOSIS") is None:
+                claim["ADMITTING_DIAGNOSIS"] = code
+            elif qual in _PRINCIPAL_PROC and claim.get("PRINCIPAL_PROCEDURE") is None:
+                claim["PRINCIPAL_PROCEDURE"] = code
+            elif qual == "DR" and claim.get("DRG_CODE") is None:
+                claim["DRG_CODE"] = code
+            if qual in _DX_LIST and code:
+                self.claim_dx.append(code)
+        claim["DIAGNOSIS_CODES"] = ",".join(self.claim_dx) or None
+
+    # ── other subscriber (2320 / 2330) ───────────────────────────────────────
+
+    def _seg_CAS(self, p, pos, raw):
+        if self.area == "2320" and self.cur_osub is not None:
+            table, kw = "OTHER_SUBSCRIBER_ADJUSTMENT", {"claim": True, "osub": True}
+        elif self.area == "2430" and self.cur_adj is not None:
+            table, kw = "LINE_ADJUSTMENT", {"claim": True, "line": True, "loop_seq": self.adj_seq}
+        else:
+            return self._unmapped(pos, "CAS", raw, "CAS not expected here")
+        self.cas_seq += 1
+        group = _v(p, 1)
+        for t, idx in enumerate(range(2, 19, 3), start=1):
+            reason, amount, qty = _v(p, idx), _v(p, idx + 1), _v(p, idx + 2)
+            if reason is None and amount is None and qty is None:
+                continue
+            row = self._hier(pos, **kw)
+            row.update({"GROUP_CODE": group, "GROUP_CODE_DESC": self._desc("CAS01", group),
+                        "CAS_SEQ": self.cas_seq, "TRIPLET": t, "REASON_CODE": reason,
+                        "AMOUNT": amount, "QUANTITY": qty})
+            self._add(table, row)
+
+    def _osub_apply(self, seg_id, p, pos, raw):
+        if self.area != "2320" or self.cur_osub is None:
+            return self._unmapped(pos, seg_id, raw, f"{seg_id} not expected here")
+        self._apply(self.cur_osub, p, seg_id)
+
+    def _seg_OI(self, p, pos, raw):
+        self._osub_apply("OI", p, pos, raw)
+
+    def _seg_MIA(self, p, pos, raw):
+        self._osub_apply("MIA", p, pos, raw)
+
+    def _seg_MOA(self, p, pos, raw):
+        self._osub_apply("MOA", p, pos, raw)
+
+    # ── service line (2400 – 2440) ───────────────────────────────────────────
+
+    def _seg_LX(self, p, pos, raw):
+        if self.cur_claim is None or self.area not in (_CLAIM_AREAS | _LINE_AREAS):
+            return self._unmapped(pos, "LX", raw, "LX outside a claim")
+        self._reset_line()
+        self._line_seq += 1
+        self.line_number = _v(p, 1)
+        self.area = "2400"
+        self.ent = None
+        self.cas_seq = 0
+        row = self._hier(pos, claim=True, line=True)
+        row["ASSIGNED_NUMBER"] = _v(p, 1)
+        self.cur_line = self._add("LINE", row)
+
+    def _line_apply(self, seg_id, p, pos, raw):
+        if self.area != "2400" or self.cur_line is None:
+            return self._unmapped(pos, seg_id, raw, f"{seg_id} not expected here")
+        self._apply(self.cur_line, p, seg_id)
+
+    def _service(self, seg_id, p, pos, raw):
+        if self.area != "2400" or self.cur_line is None:
+            return self._unmapped(pos, seg_id, raw, f"{seg_id} not expected here")
+        if self.cur_line.get("LINE_CHARGE") is not None:
+            return self._unmapped(pos, seg_id, raw, "Second service segment in one line")
+        self._apply(self.cur_line, p, seg_id)
+        for i in range(1, 5):
+            ptr = self.cur_line.get(f"DIAG_POINTER_{i}")
+            if ptr and ptr.isdigit() and 0 < int(ptr) <= len(self.claim_dx):
+                self.cur_line[f"POINTED_DIAGNOSIS_{i}"] = self.claim_dx[int(ptr) - 1]
+
+    def _seg_SV1(self, p, pos, raw):
+        self._service("SV1", p, pos, raw)
+
+    def _seg_SV2(self, p, pos, raw):
+        self._service("SV2", p, pos, raw)
+
+    def _seg_SV3(self, p, pos, raw):
+        self._service("SV3", p, pos, raw)
+
+    def _seg_SV5(self, p, pos, raw):
+        self._line_apply("SV5", p, pos, raw)
+
+    def _seg_PS1(self, p, pos, raw):
+        self._line_apply("PS1", p, pos, raw)
+
+    def _seg_TOO(self, p, pos, raw):
+        if self.area != "2400" or self.cur_line is None:
+            return self._unmapped(pos, "TOO", raw, "TOO not expected here")
+        self._add("LINE_TOOTH", self._apply(self._hier(pos, claim=True, line=True), p, "TOO"))
+
+    def _seg_MEA(self, p, pos, raw):
+        if self.area != "2400" or self.cur_line is None:
+            return self._unmapped(pos, "MEA", raw, "MEA not expected here")
+        self._add("LINE_MEASUREMENT", self._apply(self._hier(pos, claim=True, line=True), p, "MEA"))
+
+    def _seg_LIN(self, p, pos, raw):
+        if self.area != "2400" or self.cur_line is None:
+            return self._unmapped(pos, "LIN", raw, "LIN not expected here")
+        self._apply(self.cur_line, p, "LIN")
+        self.area = "2410"
+
+    def _seg_CTP(self, p, pos, raw):
+        if self.area != "2410" or self.cur_line is None:
+            return self._unmapped(pos, "CTP", raw, "CTP not expected here")
+        self._apply(self.cur_line, p, "CTP")
+
+    def _seg_SVD(self, p, pos, raw):
+        if self.cur_line is None or self.area not in _LINE_AREAS:
+            return self._unmapped(pos, "SVD", raw, "SVD not expected here")
+        self.adj_seq += 1
+        self.cas_seq = 0
+        self.area = "2430"
+        self.ent = None
+        row = self._hier(pos, claim=True, line=True, loop_seq=self.adj_seq)
+        self._apply(row, p, "SVD")
+        self.cur_adj = self._add("LINE_ADJUDICATION", row)
+
+    def _seg_LQ(self, p, pos, raw):
+        if self.cur_line is None or self.area not in _LINE_AREAS:
+            return self._unmapped(pos, "LQ", raw, "LQ not expected here")
+        self.form_seq += 1
+        self.area = "2440"
+        self.ent = None
+        self.cur_form = self._apply({}, p, "LQ")
+
+    def _seg_FRM(self, p, pos, raw):
+        if self.area != "2440" or self.cur_form is None:
+            return self._unmapped(pos, "FRM", raw, "FRM not expected here")
+        row = self._hier(pos, claim=True, line=True, loop_seq=self.form_seq)
+        row.update(self.cur_form)
+        self._add("LINE_FORM", self._apply(row, p, "FRM"))
+
+    # ── finalize ─────────────────────────────────────────────────────────────
+
+    def _finalize(self) -> dict:
+        claim_occ_count, claim_occ = {}, {}
+        for key, crow in self.claim_rows.items():
+            count_key = key[:3] + (crow.get("CLAIM_ID"),)
+            claim_occ_count[count_key] = claim_occ_count.get(count_key, 0) + 1
+            claim_occ[key] = claim_occ_count[count_key]
+
+        result = {}
+        for table, data_cols in self.columns.items():
+            rows = self.tables[table]
+            data_cols = [c for c in data_cols if c not in HIER_COLS]
+
+            for row in rows:
+                txn = (row["INTERCHANGE_CONTROL_NUMBER"], row["GROUP_CONTROL_NUMBER"],
+                       row["TRANSACTION_CONTROL_NUMBER"])
+                if row["BILLING_PROVIDER_HL"] is not None:
+                    row["BILLING_PROVIDER_ID"] = self.billing_ids.get(txn + (row["BILLING_PROVIDER_HL"],))
+                if row["SUBSCRIBER_HL"] is not None:
+                    row["SUBSCRIBER_ID"] = self.subscriber_ids.get(txn + (row["SUBSCRIBER_HL"],))
+                    row["PAYER_ID"] = self.payer_ids.get(txn + (row["SUBSCRIBER_HL"],))
+                if row["CLAIM_SEQ"] is not None:
+                    row["CLAIM_OCC"] = claim_occ.get(txn + (row["CLAIM_SEQ"],))
+
+            df = pd.DataFrame(rows, columns=HIER_COLS + data_cols)
+            df = df.astype(object).where(pd.notna(df), None)
+
+            if not df.empty:
+                if table == "CLAIM":
+                    df["OCC"] = df["CLAIM_OCC"]
+                elif table == "TRANSACTION":
+                    df["OCC"] = 1
+                else:
+                    key_cols, exclude = _OCC_SPEC.get(table, ([], []))
+                    group_cols = [c for c in _PARENT_COLS if c not in exclude] + key_cols
+                    keys = df[group_cols].astype(object).where(df[group_cols].notna(), "\x00")
+                    keys = keys.astype(str)
+                    df["OCC"] = (keys.groupby(group_cols, sort=False, dropna=False)
+                                 .cumcount() + 1).to_numpy()
+
+            for col in _INT_COLS:
+                df[col] = pd.array(df[col], dtype="Int64")
+
+            result[table] = df
+        return result
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Public API
+# ─────────────────────────────────────────────────────────────────────────────
+
+_CACHE = OrderedDict()
+_CACHE_MAX = 8
+# Data_Validation runs test cases in parallel threads: one lock keeps the
+# cache consistent and makes a file that several test cases read at the same
+# time be parsed once.
+_CACHE_LOCK = threading.RLock()
+
+
+def clear_cache():
+    """Drops all cached parse results (they hold PHI in memory)."""
+    with _CACHE_LOCK:
+        _CACHE.clear()
+
+
+def _blank_null_values(df, null_values):
+    """
+    NullValues → None. A dict is used on purpose: on pandas 1.x,
+    df.replace(list, None) forward-fills from the row above instead of
+    blanking; the dict form blanks the value on every pandas version.
+    """
+    if not null_values or df.empty:
+        return df
+    return df.replace({v: None for v in null_values})
+
+
+def parse_837(content, filename: str = "", file_id=None, file_config: dict = None) -> dict:
+    """
+    Parses an 837 (P, I or D) file into all standard tables.
+
+    Args:
+        content     : raw bytes or text of the file
+        filename    : file name (FILE_NAME column, logging)
+        file_id     : file detail ID (FILE_ID column)
+        file_config : FileConfig dict — uses Encoding, CodeLists, NamedQualifiers,
+                      IncludeDescriptions, NullValues
+
+    Returns:
+        dict  table name → DataFrame (every table present, possibly empty)
+    """
+    file_config = file_config or {}
+    text = _decode(content, file_config.get("Encoding"))
+    with _CACHE_LOCK:
+        overrides = {k: file_config.get(k) for k in
+                     ("CodeLists", "NamedQualifiers", "IncludeDescriptions", "NullValues")}
+        cache_key = (hashlib.sha1(text.encode("utf-8", errors="replace")).hexdigest(),
+                     filename, str(file_id), json.dumps(overrides, sort_keys=True, default=str))
+        if cache_key in _CACHE:
+            _CACHE.move_to_end(cache_key)
+            return _CACHE[cache_key]
+
+        parser = Edi837Parser(filename=filename, file_id=file_id,
+                              code_lists=file_config.get("CodeLists"),
+                              named_qualifiers=file_config.get("NamedQualifiers"))
+        tables = parser.parse(text)
+
+        include_desc = file_config.get("IncludeDescriptions", True)
+        null_values = [v for v in (file_config.get("NullValues") or []) if v != ""]
+        for name, df in tables.items():
+            if include_desc is False:
+                df = df.drop(columns=[c for c in df.columns if c.endswith("_DESC")])
+            df = _blank_null_values(df, null_values)
+            tables[name] = df
+
+        counts = ", ".join(f"{k}={len(v)}" for k, v in tables.items() if len(v))
+        logger.info(f"EDI837: parsed '{filename}' — {counts}")
+        if len(tables["UNMAPPED"]):
+            logger.warning(f"EDI837: {len(tables['UNMAPPED'])} segment(s) in '{filename}' "
+                           f"could not be placed — see table UNMAPPED.")
+
+        _CACHE[cache_key] = tables
+        while len(_CACHE) > _CACHE_MAX:
+            _CACHE.popitem(last=False)
+        return tables
+
+
+def parse_edi837_for_file_parser(content: bytes, file_config: dict, filename: str = "") -> tuple:
+    """
+    File_parser.parse_file() entry point for FileConfig.Format = "EDI837".
+
+    FileConfig keys used:
+        Table           (required) which table to return, e.g. "CLAIM", "LINE"
+        FileDetailId    file detail ID for the FILE_ID column
+        plus the keys listed in parse_837()
+
+    Returns:
+        (DataFrame, parse_errors, schema_errors, footer_errors)
+    """
+    file_config = file_config or {}
+    table = (file_config.get("Table") or "CLAIM").strip().upper()
+    if not file_config.get("Table"):
+        logger.info(f"EDI837: FileConfig.Table not set — returning CLAIM.")
+    if table not in TABLE_NAMES:
+        raise ValueError(f"EDI837: FileConfig.Table '{table}' is not valid. "
+                         f"Valid tables: {TABLE_NAMES}")
+
+    file_id = file_config.get("FileDetailId", file_config.get("_FileDetailId"))
+    tables = parse_837(content, filename=filename, file_id=file_id, file_config=file_config)
+    df = tables[table].copy()
+    logger.info(f"EDI837: returning table {table} — {len(df)} row(s) from '{filename}'")
+    return df, [], [], []

@@ -1,0 +1,274 @@
+[
+  {
+    "TestCaseNumber": 1,
+    "Module": "EDI834_Enrollment",
+    "Stage": "",
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "member_profile matches 834 MEMBER",
+    "Viceversa": true,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar\\Files From 004",
+      "FileName": "HTA_FCL_EligibilityFile_20261106.EDI",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI834",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER"
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "mbrprofile",
+      "QueryType": "QUERY",
+      "Query": "SELECT HP_SUBSCRIBER_ID, HP_MEMBER_ID, SUBSCRIBER_IND, BENEFIT_STATUS_CODE, MEDICARE_PLAN_CODE, EMPLOYMENT_STATUS_CODE, STUDENT_STATUS_CODE, HANDICAP_IND, DATE_OF_DEATH, CONFIDENT_CODE, BIRTH_SEQ_NUMBER, MAINT_EFFECTIVE_DT, SSN, BIRTH_DATE, GENDER_CODE, MARITAL_STATUS_CODE, CITIZENSHIP_STATUS_CODE, LAST_NM, MIDDLE_NM, PREFIX, SUFFIX, FIRST_NM, NB_FLG FROM mbrprofile.member_profile"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "SUBSCRIBER_ID",
+        "TargetField": "HP_SUBSCRIBER_ID"
+      },
+      {
+        "SourceField": "MEMBER_ID",
+        "TargetField": "HP_MEMBER_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "SUBSCRIBER_INDICATOR",
+        "TargetField": "SUBSCRIBER_IND"
+      },
+      {
+        "SourceField": "BENEFIT_STATUS",
+        "TargetField": "BENEFIT_STATUS_CODE"
+      },
+      {
+        "SourceField": "MEDICARE_PLAN_CODE",
+        "TargetField": "MEDICARE_PLAN_CODE"
+      },
+      {
+        "SourceField": "EMPLOYMENT_STATUS",
+        "TargetField": "EMPLOYMENT_STATUS_CODE"
+      },
+      {
+        "SourceField": "STUDENT_STATUS",
+        "TargetField": "STUDENT_STATUS_CODE"
+      },
+      {
+        "SourceField": "HANDICAP_INDICATOR",
+        "TargetField": "HANDICAP_IND"
+      },
+      {
+        "SourceField": "DEATH_DATE",
+        "TargetField": "DATE_OF_DEATH"
+      },
+      {
+        "SourceField": "CONFIDENTIALITY_CODE",
+        "TargetField": "CONFIDENT_CODE"
+      },
+      {
+        "SourceField": "BIRTH_SEQUENCE",
+        "TargetField": "BIRTH_SEQ_NUMBER"
+      },
+      {
+        "SourceField": "MAINTENANCE_EFFECTIVE_DATE",
+        "TargetField": "MAINT_EFFECTIVE_DT"
+      },
+      {
+        "SourceField": "MEMBER_SSN",
+        "TargetField": "SSN"
+      },
+      {
+        "SourceField": "DATE_OF_BIRTH",
+        "TargetField": "BIRTH_DATE"
+      },
+      {
+        "SourceField": "GENDER",
+        "TargetField": "GENDER_CODE"
+      },
+      {
+        "SourceField": "MARITAL_STATUS",
+        "TargetField": "MARITAL_STATUS_CODE"
+      },
+      {
+        "SourceField": "CITIZENSHIP_STATUS",
+        "TargetField": "CITIZENSHIP_STATUS_CODE"
+      },
+      {
+        "SourceField": "MEMBER_LAST_NAME",
+        "TargetField": "LAST_NM"
+      },
+      {
+        "SourceField": "MEMBER_MIDDLE_NAME",
+        "TargetField": "MIDDLE_NM"
+      },
+      {
+        "SourceField": "MEMBER_PREFIX",
+        "TargetField": "PREFIX"
+      },
+      {
+        "SourceField": "MEMBER_SUFFIX",
+        "TargetField": "SUFFIX"
+      },
+      {
+        "SourceField": "MEMBER_FIRST_NAME",
+        "TargetField": "FIRST_NM"
+      },
+      {
+        "SourceField": "SUBSCRIBER_NUMBER",
+        "TargetField": "NB_FLG"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 450,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 17:42:41"
+    }
+  },
+  {
+    "TestCaseNumber": 2,
+    "Module": "EDI834_Enrollment",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target mbrprofile.member_profile: no duplicate HP_SUBSCRIBER_ID, HP_MEMBER_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "mbrprofile",
+      "QueryType": "QUERY",
+      "Query": "SELECT HP_SUBSCRIBER_ID, HP_MEMBER_ID FROM mbrprofile.member_profile"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "HP_SUBSCRIBER_ID",
+          "HP_MEMBER_ID"
+        ],
+        "ResultFields": [
+          "HP_SUBSCRIBER_ID",
+          "HP_MEMBER_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same HP_SUBSCRIBER_ID, HP_MEMBER_ID",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 451,
+      "DataRegressionSetTestCaseNumber": 7,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 17:42:41"
+    }
+  },
+  {
+    "TestCaseNumber": 3,
+    "Module": "EDI834_Enrollment",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "834 MEMBER: no duplicate SUBSCRIBER_ID, MEMBER_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar\\Files From 004",
+      "FileName": "HTA_FCL_EligibilityFile_20261106.EDI",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI834",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER"
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "SUBSCRIBER_ID",
+        "ResultFields": [
+          "SUBSCRIBER_ID"
+        ]
+      },
+      {
+        "SourceField": "MEMBER_ID",
+        "ResultFields": [
+          "MEMBER_ID"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "No two records should share the same SUBSCRIBER_ID, MEMBER_ID",
+    "_LoadStatus": {
+      "Status": "UPDATED",
+      "RegressionSet_ID": 449,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "changed: CheckFields, ExpectedResult",
+      "LoadedOn": "2026-11-10 17:42:41"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "EDI834_Enrollment",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "File HTA_FCL_EligibilityFile_20261106.EDI (834 MEMBER): no row repeated in every field",
+    "Viceversa": false,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar\\Files From 004",
+      "FileName": "HTA_FCL_EligibilityFile_20261106.EDI",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EDI834",
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Table": "MEMBER"
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "ALL",
+        "ResultFields": [
+          "ALL"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "No two rows of the file should be identical in every field",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 452,
+      "DataRegressionSetTestCaseNumber": 8,
+      "Detail": "new test case",
+      "LoadedOn": "2026-11-10 17:42:41"
+    }
+  }
+]

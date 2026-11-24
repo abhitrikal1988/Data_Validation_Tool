@@ -1,0 +1,172 @@
+[
+    {
+        "DataValidationLog_ID": 102,
+        "Module": "Practitioner_role",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target on LocationProvider_ID, Last, NPI and 39 more",
+                "Result": "Fail",
+                "StartTime": "2026-10-28 18:32:57.701288",
+                "EndTime": "2026-10-28 18:36:37.623839",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-28 18:32:57",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.LocationProvider.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"MCPProvider_ID\": 1, \"PrimiraySpecialtyCode\": 1, \"SecSpecialtyCode\": 1, \"Last\": 1, \"NPI\": 1, \"PrimiraySpecialty\": 1, \"SecSpecialty\": 1, \"PracticeName\": 1, \"OnDirectoryFlag\": 1, \"VendorLocationID\": 1, \"Span.StartDate\": 1, \"Span.EndDate\": 1, \"Location.Location_ID\": 1, \"Location.Location_Name\": 1, \"Location.NPI\": 1, \"Location.TIN\": 1, \"Location.MCPProvider_ID\": 1, \"Location.Address\": 1, \"Business.Business_ID\": 1, \"Business.BusinessName\": 1, \"PrimaryLocationFlag\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-28 18:32:57",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [MONGODB PIPELINE] db.PractitionerRole.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"McpProviderId\": 1, \"Specialty\": 1, \"IngestionDetail.LastUploadStatus\": 1, \"NPI\": 1, \"PracticeName\": 1, \"ExcludedByOnDirectoryFlag\": 1, \"Location\": 1, \"Span.StartDate\": 1, \"Span.EndDate\": 1, \"Business.Business_ID\": 1, \"Business.BusinessName\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-28 18:34:16",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source MONGODB records: 726461, Total target MONGODB records: 100540"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-28 18:36:36",
+                        "Type": "ERROR",
+                        "RunType": "Compare Data",
+                        "Detail": "Exception:'PrimiraySpecialtyCode'"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Target PractitionerRole: no duplicate LocationProvider_ID, McpProviderId, Specialty, Specialty",
+                "Result": "Fail",
+                "StartTime": "2026-10-28 18:32:57.702292",
+                "EndTime": "2026-10-28 18:33:06.958980",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-28 18:32:57",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.PractitionerRole.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"LocationProvider_ID\": 1, \"McpProviderId\": 1, \"Specialty\": 1}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-28 18:33:06",
+                        "Type": "ERROR",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "Exception: unhashable type: 'list'"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 3,
+                "TestCaseName": "Target PractitionerRole: keys and load columns are populated",
+                "Result": "Fail",
+                "StartTime": "2026-10-28 18:32:57.702292",
+                "EndTime": "2026-10-28 18:33:13.190587",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-28 18:32:57",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [MONGODB PIPELINE] db.PractitionerRole.aggregate:\n[\n  {\"$project\": {\"_id\": 0, \"LocationProvider_ID\": {\"$ifNull\": [\"$LocationProvider_ID\", null]}, \"McpProviderId\": {\"$ifNull\": [\"$McpProviderId\", null]}, \"Specialty\": {\"$ifNull\": [\"$Specialty\", null]}, \"LocationId\": {\"$ifNull\": [\"$LocationId\", null]}, \"SourceIdentity.LocationProvider_ID\": {\"$ifNull\": [\"$SourceIdentity.LocationProvider_ID\", null]}, \"Business.Business_ID\": {\"$ifNull\": [\"$Business.Business_ID\", null]}, \"Organization.McpProviderId\": {\"$ifNull\": [\"$Organization.McpProviderId\", null]}, \"Organization._idOfOrg\": {\"$ifNull\": [\"$Organization._idOfOrg\", null]}, \"Practitioner.McpProviderId\": {\"$ifNull\": [\"$Practitioner.McpProviderId\", null]}, \"Practitioner._idOfPractitioner\": {\"$ifNull\": [\"$Practitioner._idOfPractitioner\", null]}}}\n]"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-28 18:33:09",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'LocationProvider_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-28 18:33:09",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'McpProviderId': No nulls found."
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-28 18:33:10",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'Specialty': No nulls found."
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-28 18:33:10",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'LocationId': No nulls found."
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-28 18:33:10",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'SourceIdentity.LocationProvider_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-28 18:33:11",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'Business.Business_ID': No nulls found."
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-10-28 18:33:12",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'Organization.McpProviderId': No nulls found."
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-10-28 18:33:12",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'Organization._idOfOrg': 100540/100540 nulls found."
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-10-28 18:33:12",
+                        "Type": "INFO",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'Practitioner.McpProviderId': No nulls found."
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2026-10-28 18:33:13",
+                        "Type": "ERROR",
+                        "RunType": "Null_Check",
+                        "Detail": "Field 'Practitioner._idOfPractitioner': 100540/100540 nulls found."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [
+                    "Organization._idOfOrg",
+                    "Practitioner._idOfPractitioner"
+                ],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Haritha.Garikapati",
+            "InsertedDate": "2026-10-28 18:36:42.068229"
+        }
+    }
+]

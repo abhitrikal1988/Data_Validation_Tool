@@ -1,0 +1,47 @@
+[
+    {
+        "DataValidationLog_ID": 84,
+        "Module": "Test",
+        "Stage": "Test",
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 11,
+                "TestCaseName": "Data Comparison between SRC and TGT",
+                "Result": "Skip",
+                "StartTime": "2026-10-07 19:51:37.663769",
+                "EndTime": "2026-10-07 19:51:37.672076",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-07 19:51:37",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:select * \n  from stg.amz_network_temp_1_qa"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-07 19:51:37",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:select * \n  from stg.amz_network_temp_qa"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-07 19:51:37",
+                        "Type": "WARNING",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Source and Target data both are empty. Skipping."
+                    }
+                ],
+                "Stage": "Test",
+                "MismatchFields": [],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2026-10-07 19:51:37.688461"
+        }
+    }
+]

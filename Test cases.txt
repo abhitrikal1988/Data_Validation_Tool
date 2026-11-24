@@ -1,0 +1,420 @@
+{   "RegressionSet_ID" : NumberInt(1),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(1),
+    "TestDescription" : "Enrollment Data comparison between M3P and PBM",
+    "ValidationType" : "SRC_TGT",
+    "Source" : {
+        "Type" : "MONGODB",
+        "Environment" : "MCPQA1",
+        "DB" : "M3P",
+        "QueryType" : "VIEW",
+        "Query" : "Test_M3PMemberReceipt_PBM"
+    },
+    "Target" : {
+        "Type" : "ORACLE",
+        "Environment" : "PBMQA3",
+        "DB" : "STG",
+        "QueryType" : "Query",
+        "Query" : "select m.card_id, me.start_dt, me.end_dt from claim.mbr_enroll_other me, claim.member m where me.member_id_rx = m.member_id_rx   and me.enroll_type = 12531  and nvl(me.delete_flg, 'N') = 'N'"
+    },
+    "JoinFields" : [
+        {
+            "SourceField" : "Cardholder_ID",
+            "TargetField" : "CARD_ID"
+        }
+    ],
+    "CompareFields" : [
+        {
+            "SourceField" : "ElectionStartDate",
+            "TargetField" : "START_DT"
+        },
+        {
+            "SourceField" : "ElectionEndDate",
+            "TargetField" : "END_DT"
+        }
+    ],
+    "ExpectedResult" : "Zero Records",
+    "Viceversa" : "True",
+    "Audit" : {
+        "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }
+},
+	
+	
+	
+{   "RegressionSet_ID" : NumberInt(2),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(2),
+    "TestDescription" : "Checking MemberReceipt Data Validation after CapRx load",
+    "ValidationType" : "SRC_TGT",
+    "Source":{
+		"Type" : "MONGODB",
+		"Environment" : "MCPQA1",
+		"DB" : "M3P",
+		"QueryType" : "VIEW",
+		"Query" : "Test_M3P_Stg_Data_CAPRX"},
+	"Target":{
+		"Type" : "MONGODB",
+		"Environment" : "MCPQA1",
+		"DB" : "M3P",
+		"QueryType" : "VIEW",
+		"Query" : "Test_M3PMemberReceipt_CAPRX",
+	},
+    
+    "JoinFields" : [
+        {
+            "SourceField" : "Cardholder_ID",
+            "TargetField" : "Cardholder_ID"
+        },
+        {
+            "SourceField" : "M3PMember_ID",
+            "TargetField" : "M3PMember_ID"
+        },
+        {
+            "SourceField" : "ElectionStartDate",
+            "TargetField" : "ElectionStartDate"
+        }
+    ],
+    "CompareFields" : [
+        {
+            "SourceField" : "ElectionEndDate",
+            "TargetField" : "ElectionEndDate"
+        },
+        {
+            "SourceField" : "ElectionRequestDate",
+            "TargetField" : "ElectionRequestDate"
+        },
+        {
+            "SourceField" : "ElectionYear",
+            "TargetField" : "ElectionYear"
+        },
+        {
+            "SourceField" : "Elected",
+            "TargetField" : "Elected"
+        },
+        {
+            "SourceField" : "AppReceivedDate",
+            "TargetField" : "AppReceivedDate"
+        },
+        {
+            "SourceField" : "Signature",
+            "TargetField" : "Signature"
+        },
+        {
+            "SourceField" : "M3PProgram_ID",
+            "TargetField" : "M3PProgram_ID"
+        },
+        {
+            "SourceField" : "ElectionSource",
+            "TargetField" : "ElectionSource"
+        }
+    ],
+    "ExpectedResult" : "Zero Records",
+    "Viceversa" : "True",
+    "Audit" : {
+        "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }
+    },
+	
+	
+	
+{   "RegressionSet_ID" : NumberInt(3),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(3),
+    "TestDescription" : "Checking CapRX Data Validation into STG collection",
+    "ValidationType" : "SRC_TGT",
+    "Source":{
+		"Type" : "MONGODB",
+		"Environment" : "MCPQA1",
+		"DB" : "M3P",
+		"QueryType" : "VIEW",
+		"Query" : "Test_M3P_Cap_Data"},
+    "Target":{
+		"Type" : "MONGODB",
+		"Environment" : "MCPQA1",
+		"DB" : "M3P",
+		"Type" : "VIEW",
+		"Query" : "Test_M3P_Stg_Data"},
+    "JoinFields" : [
+        {
+            "SourceField" : "Cardholder_ID",
+            "TargetField" : "Cardholder_ID"
+        },
+        {
+            "SourceField" : "Effective_Begin",
+            "TargetField" : "Effective_Begin"
+        }
+    ],
+    "CompareFields" : [
+        {
+            "SourceField" : "Effective_End",
+            "TargetField" : "Effective_End"
+        },
+        {
+            "SourceField" : "Plan_ID",
+            "TargetField" : "Plan_ID"
+        },
+        {
+            "SourceField" : "Relationship_Code",
+            "TargetField" : "Relationship_Code"
+        },
+        {
+            "SourceField" : "Eligibility_ID",
+            "TargetField" : "Eligibility_ID"
+        },
+        {
+            "SourceField" : "CMS_Contract_ID",
+            "TargetField" : "CMS_Contract_ID"
+        },
+        {
+            "SourceField" : "Benefit",
+            "TargetField" : "Benefit"
+        },
+        {
+            "SourceField" : "M3P_Election_Status",
+            "TargetField" : "M3P_Election_Status"
+        },
+        {
+            "SourceField" : "M3P_Request_Date",
+            "TargetField" : "M3P_Request_Date"
+        },
+        {
+            "SourceField" : "Signature_Date",
+            "TargetField" : "Signature_Date"
+        },
+        {
+            "SourceField" : "M3P_Program_Year",
+            "TargetField" : "M3P_Program_Year"
+        },
+        {
+            "SourceField" : "Discontinuation_Reason",
+            "TargetField" : "Discontinuation_Reason"
+        },
+        {
+            "SourceField" : "Reinstatement_Reason",
+            "TargetField" : "Reinstatement_Reason"
+        },
+        {
+            "SourceField" : "Record_ID",
+            "TargetField" : "Record_ID"
+        }
+    ],
+    "ExpectedResult" : "Zero Records",
+    "Viceversa" : "True",
+    "Audit" : {
+        "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }
+
+    },
+	
+	
+{   "RegressionSet_ID" : NumberInt(4),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(4),
+    "TestDescription" : "Checking TBD Records in MemberReceipt Collection",
+    "ValidationType" : "Record_Count",
+    "Source":
+	{"Type" : "MONGODB",
+    "Environment" : "MCPQA1",
+    "DB" : "M3P",
+	"QueryType" : "VIEW",
+    "Query" : "Test_TBD_M3PMemberReceipt"},
+    "ExpectedResult" : "Zero Records",	
+    "ApprovedValues" : [
+        "0"
+    ],
+    "Viceversa" : "False",
+    "Audit" : {
+       "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    },
+
+},
+{ "RegressionSet_ID" : NumberInt(5),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(5),
+    "TestDescription" : "Checking duplicate records of phone sequence",
+    "ValidationType" : "Record_Count",
+	"Source":
+	{"Type" : "MONGODB",
+    "Environment" : "MCPQA1",
+    "DB" : "M3P",
+	"QueryType" : "VIEW",
+    "Query" : "Test_Duplicate_Phone_Sequence_M3PMember"},
+    "ExpectedResult" : "Zero Records",	
+    "ApprovedValues" : [
+        "0"
+    ],
+    "Viceversa" : "False",	
+    "Audit" : {
+       "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }
+},
+
+{"RegressionSet_ID" : NumberInt(6),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(6),
+    "TestDescription" : "Checking missing phone sequence",
+    "ValidationType" : "Record_Count",
+	"Source":
+	{"Type" : "MONGODB",
+    "Environment" : "MCPQA1",
+    "DB" : "M3P",
+	"QueryType" : "VIEW",
+    "Query" : "Test_Phone_Sequence_M3PMember"},
+    "ExpectedResult" : "Zero Records",	
+    "ApprovedValues" : [
+        "0"
+    ],
+    "Viceversa" : "False",	
+    "Audit" : {
+       "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }},
+{
+    "RegressionSet_ID" : NumberInt(7),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(7),
+    "TestDescription" : "Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap",
+    "ValidationType" : "InApprovedValue",
+	"Source":
+	{"Type" : "MONGODB",
+    "Environment" : "MCPQA1",
+    "DB" : "M3P",
+	"QueryType" : "VIEW",
+    "Query" : "Test_M3P_MemberReceipt_EnrollmentStatus"},
+    "ExpectedResult" : "Enrollment Status should match with ApprovedValues",	
+    "ApprovedValues" : [
+         "2000012",
+        "200004",
+        "200006"
+    ],
+    "Viceversa" : "False",	
+    "Audit" : {
+       "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }},
+{"RegressionSet_ID" : NumberInt(8),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(8),
+    "TestDescription" : "PBM View for Testing",
+    "ValidationType" : "Record_Count",
+	"Source":
+	{"Type" : "Oracle",
+    "Environment" : "PBMQA3",
+    "DB" : "Claim",
+	"QueryType" : "VIEW",
+    "Query" : "Claim.vw_claim"},
+    "ExpectedResult" : "Record count should match with ApprovedValues",	
+    "ApprovedValues" : [
+        "64821"
+    ],
+    "Viceversa" : "False",	
+    "Audit" : {
+       "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }},
+{   "RegressionSet_ID" : NumberInt(9),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(9),
+    "TestDescription" : "PBM Table for Testing",
+    "ValidationType" : "Record_Count",
+	"Source":
+	{"Type" : "Oracle",
+    "Environment" : "PBMQA3",
+    "DB" : "Claim",
+	"QueryType" : "TABLE",
+    "Query" : "claim_pharmacy"},
+    "ExpectedResult" : "Zero Records",	
+    "ApprovedValues" : [
+        "0"
+    ],
+    "Viceversa" : "False",	
+    "Audit" : {
+       "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }},
+{"RegressionSet_ID" : NumberInt(10),
+    "Module" : "M3P",
+    "Stage" : "Initial Testing",
+    "Cycle" : "M3P Enrollment",
+    "TestCaseNumber" : NumberInt(10),
+    "TestDescription" : "Checking TBD Records in MemberReceipt Collection",
+    "ValidationType" : "Record_Count",
+	"Source":
+	{"Type" : "MONGODB",
+    "Environment" : "MCPQA1",
+    "DB" : "M3P",
+	"QueryType" : "JAVA_SCRIPT",
+    "Query" : "var total_claims = 0;\nvar failed_claims = [];\nvar payment_event_id = paymentEventID; // Receive from Argument\nvar output_coll = \"PaymentEventValidation\";\nvar coll = output_coll ;\n\n// Please pass --eval 'var paymentEventID=125' Claims_Validation_UI.js in the argument\ndb.getSiblingDB(\"FIN\").getCollection(\"SearchCriteria\").find({ \"PaymentEvent_ID\": payment_event_id }).forEach(function (d) {\n\n    var payment_event = db.getSiblingDB(\"FIN\").getCollection(\"PaymentEvent\").findOne({ \"PaymentEvent_ID\": d.PaymentEvent_ID });\n\n    if (payment_event) {\n        d.SelectedClaims.forEach(function (selected_claim) {\n            total_claims++;\n            var claim = db.getSiblingDB(\"MCP\").getCollection(\"ClaimCore\").findOne({ \"ClaimCore_ID\": selected_claim.ClaimCore_ID });\n\n            if (claim) {\n                var frequency = claim.UB ? claim.UB.BillType.ClaimFrequency : claim.Professional ? claim.Professional.ServiceLocation.ClaimFrequency : null;\n                if (frequency != null) {\n                    if (payment_event.PaymentEventType == \"Provider\") {\n                        if (frequency != \"7\" && frequency != \"8\") {\n                            validateProviderClaim(claim, frequency);\n                        }\n                        else {\n                            validateAdjustmentClaim(d, claim, frequency);\n                        }\n                    }\n                    else if (payment_event.PaymentEventType == \"DMR\") {\n                        if (frequency != \"7\" && frequency != \"8\") {\n                            validateDMRClaim(claim, frequency);\n                        }\n                        else {\n                            addFailedClaims(\"DMRAdjustment\", selected_claim.ClaimCore_ID);\n                        }\n                    }\n                }\n                else {\n                    addFailedClaims(\"FrequencyCode\", selected_claim.ClaimCore_ID);\n                }\n            }\n            else {\n                addFailedClaims(\"ClaimNotFound\", selected_claim.ClaimCore_ID);\n            }\n        })\n    }\n    else {\n        addFailedClaims(\"PaymentEventMissing\", payment_event_id);\n    }\n})\n\nvar report = db.getSiblingDB(\"FIN\").getCollection(output_coll).findOne({ \"PaymentEvent_ID\": payment_event_id });\n\nif (report != null && report.PaymentEvent_ID) {\n    var recent_history = {};\n    recent_history.collection = report.collection;\n    recent_history.CreatedDate = report.CreatedDate;\n    recent_history.TotalClaims = report.TotalClaims;\n    recent_history.FailedClaims = report.FailedClaims;\n    recent_history.ReadyForNextStage = report.ReadyForNextStage;\n\n    report.History.push(recent_history);\n    var nextStage = failed_claims.length > 0 ? false : true;\n\n    db.getSiblingDB(\"FIN\").getCollection(output_coll).updateOne(\n        { \"_id\": report._id },\n        {\n            $set: {\n                \"collection\": coll,\n                \"CreatedDate\": new Date(),\n                \"TotalClaims\": total_claims,\n                \"FailedClaims\": failed_claims,\n                \"ReadyForNextStage\": nextStage,\n                \"History\": report.History\n            }\n        }\n    )\n}\nelse {\n    var record = {};\n    record.PaymentEvent_ID = payment_event_id;\n    record.collection = coll;\n    record.CreatedDate = new Date();\n    record.TotalClaims = total_claims;\n    record.FailedClaims = failed_claims;\n    record.ReadyForNextStage = failed_claims.length > 0 ? false : true;\n    record.History = [];\n\n    db.getSiblingDB(\"FIN\").getCollection(output_coll).insertOne(record);\n}\n\nfunction validateProviderClaim(claim, frequency) {\n    if (claim.PayToInfo && claim.PayToInfo.Type == \"DMR\") {\n        addFailedClaims(\"DMRClaimInProviderCycle\", claim.ClaimCore_ID);\n    }\n    else {\n        if (claim.FinStage == null) {\n            if (claim.ClaimStage?.Code != \"PRCC\") {\n                addFailedClaims(\"ClaimStage\", claim.ClaimCore_ID);\n            }\n            else {\n                if (claim.EasyLookups?.T837BillingProvider?.NPI == null || claim.EasyLookups?.T837BillingProvider?.NPI == \"\") {\n                    addFailedClaims(\"NPI\", claim.ClaimCore_ID);\n                }\n                else {\n                    if (claim.ClaimStatus?.Name == \"PAID\" || claim.ClaimStatus?.Name == \"DENY\") {\n                        if (claim.MHP == \"P\") {\n                            if (claim.EasyLookups.T837BillingProvider.TIN == \"\" || claim.EasyLookups.T837BillingProvider.TIN == null) {\n                                addFailedClaims(\"TaxID\", claim.ClaimCore_ID);\n                            }\n                            else {\n                                if (!claim.MCPMember || claim.MCPMember == null) {\n                                    addFailedClaims(\"MCPMember\", claim.ClaimCore_ID);\n                                }\n                                else {\n                                    if (frequency == \"6\") {\n                                        addFailedClaims(\"FrequencyCode\", claim.ClaimCore_ID);\n                                    }\n                                    else {\n                                        checkClaimStats(claim)\n                                    }\n                                }\n                            }\n                        }\n                        else {\n                            addFailedClaims(\"MHP\", claim.ClaimCore_ID);\n                        }\n                    }\n                    else {\n                        addFailedClaims(\"ClaimStatus\", claim.ClaimCore_ID);\n                    }\n                }\n            }\n        }\n        else {\n            addFailedClaims(\"FinStage\", claim.ClaimCore_ID);\n        }\n    }\n}\n\nfunction validateAdjustmentClaim(d, claim, frequency) {\n    if (claim.FinStage == null) {\n        if ((claim.ClaimStatus.Name == \"PAID\" && claim.Adjustment) || claim.ClaimStatus.Name == \"DENY\") {\n            if (claim.MHP == \"P\") {\n                if (claim.ClaimStatus.Name == \"PAID\") {\n                    var stats = db.getSiblingDB(\"MCP\").getCollection(\"ClaimStats\").findOne({ \"ClaimCore_ID\": claim.ClaimCore_ID });\n                    if (!stats) {\n                        addFailedClaims(\"ClaimStatsNotFound\", claim.ClaimCore_ID);\n                    }\n                }\n\n                var seven = false;\n                var eight = false;\n                var seven_deny = false;\n                var claim_list = [];\n\n                if (claim.Adjustment && claim.Adjustment.ParentClaimID) {\n                    var parent_paid = db.getSiblingDB(\"FIN\").getCollection(\"ClaimFinCore\").findOne({ \"ClaimCore_ID\": claim.Adjustment.ParentClaimID });\n\n                    if (parent_paid) {\n                        var parent_claim = db.getSiblingDB(\"MCP\").getCollection(\"ClaimCore\").findOne({ \"ClaimCore_ID\": claim.Adjustment.ParentClaimID });\n\n                        db.getSiblingDB(\"MCP\").getCollection(\"ClaimCore\").find({ \"Adjustment.ParentClaimID\": claim.Adjustment.ParentClaimID }).forEach(function (adj_claim) {\n                            var adj_frequency = adj_claim.UB ? adj_claim.UB.BillType.ClaimFrequency : adj_claim.Professional ? adj_claim.Professional.ServiceLocation.ClaimFrequency : null;\n                            if (adj_frequency == \"7\") {\n                                if (adj_claim.ClaimStatus && adj_claim.ClaimStatus.Name == \"PAID\") {\n                                    seven = true;\n                                    claim_list.push(adj_claim.ClaimCore_ID);\n                                }\n                                else if (adj_claim.ClaimStatus && adj_claim.ClaimStatus.Name == \"DENY\") {\n                                    seven_deny = true;\n                                    seven = true;\n                                    claim_list.push(adj_claim.ClaimCore_ID);\n                                }\n                            }\n                            else if (adj_frequency == \"8\") {\n                                eight = true;\n                                claim_list.push(adj_claim.ClaimCore_ID);\n                            }\n                        });\n\n                        if (claim_list.length > 2) {\n                            addFailedClaims(\"Multiple7or8InClaimCore\", claim.ClaimCore_ID);\n                        }\n                        else if (claim_list.length < 2 && parent_claim.ClaimStatus.Name == \"PAID\" && parent_claim.Adjustment.EffectingClaimType != \"8\") {\n                            addFailedClaims(\"Missing7or8InClaimCore\", claim.ClaimCore_ID);\n                        }\n                        else {\n                            var clm_rcvd = 0;\n                            d.SelectedClaims.forEach(function (data) {\n                                claim_list.forEach(function (clm) {\n                                    if (data.ClaimCore_ID == clm) {\n                                        clm_rcvd++;\n                                    }\n                                })\n                            })\n\n                            if (clm_rcvd > 2) {\n                                addFailedClaims(\"Multiple7or8InCycle\", claim.ClaimCore_ID);\n                            }\n                            else if (clm_rcvd < 2 && parent_claim.Adjustment.EffectingClaimType != \"8\" && parent_claim.ClaimStatus.Name == \"PAID\") {\n                                addFailedClaims(\"Missing7or8InCycle\", claim.ClaimCore_ID);\n                            }\n                        }\n                    }\n                    else {\n                        addFailedClaims(\"ParentNotPaid\", claim.ClaimCore_ID);\n                    }\n                }\n            }\n            else {\n                addFailedClaims(\"MHP\", claim.ClaimCore_ID);\n            }\n\n        }\n        else {\n            addFailedClaims(\"AdjustmentSubDocument\", claim.ClaimCore_ID);\n        }\n    }\n    else {\n        addFailedClaims(\"FinStage\", claim.ClaimCore_ID);\n    }\n}\n\nfunction validateDMRClaim(claim, frequency) {\n    if (claim.FinStage == null) {\n        if (claim.ClaimStatus?.Name == \"PAID\" || claim.ClaimStatus?.Name == \"DENY\") {\n            if (claim.MHP == \"P\") {\n                if (!claim.MCPMember) {\n                    addFailedClaims(\"MCPMember\", claim.ClaimCore_ID);\n                }\n                else {\n                    if (frequency == \"6\") {\n                        addFailedClaims(\"FrequencyCode\", claim.ClaimCore_ID);\n                    }\n                    else {\n                        checkClaimStats(claim);\n                    }\n                }\n            }\n            else {\n                addFailedClaims(\"MHP\", claim.ClaimCore_ID);\n            }\n        }\n        else {\n            addFailedClaims(\"ClaimStatus\", claim.ClaimCore_ID);\n        }\n    }\n    else {\n        addFailedClaims(\"FinStage\", claim.ClaimCore_ID);\n    }\n}\n\nfunction checkClaimStats(claim) {\n    var stats = db.getSiblingDB(\"MCP\").getCollection(\"ClaimStats\").findOne({ \"ClaimCore_ID\": claim.ClaimCore_ID });\n    if (stats) {\n        var approve = false;\n        if (stats.ServiceLines) {\n            for (var i = 0; i < stats.ServiceLines.length; i++) {\n                if (stats.ServiceLines[i].Costs.PlanPaidAmount >= 0) {\n                    approve = true;\n                }\n                else {\n                    approve = false;\n                    break;\n                }\n            }\n\n            if (!approve) {\n                addFailedClaims(\"ClaimStatsNegativePlanPaidAmount\", claim.ClaimCore_ID);\n            }\n        }\n        else {\n            var map = db.getSiblingDB(\"MCP\").getCollection(\"ClaimMap\").findOne({ \"ClaimCore_ID\": claim.ClaimCore_ID });\n\n            if (map.ClaimType != \"IP\") {\n                addFailedClaims(\"ClaimStatsMissingServiceLine\", claim.ClaimCore_ID);\n            }\n        }\n    }\n    else {\n        if (claim.ClaimStatus.Name != \"DENY\") {\n            addFailedClaims(\"ClaimStatsNotFound\", claim.ClaimCore_ID);\n        }\n    }\n}\n\nfunction addFailedClaims(reason, claim_id) {\n    var added = false;\n\n    if (failed_claims == []) {\n        var claims = [];\n        claims.push(claim_id);\n\n        var failedClaim = { \"reason\": reason, \"claims\": claims, \"count\": 1 };\n        failed_claims.push(failedClaim);\n    }\n    else {\n        failed_claims.forEach(function (f_claim) {\n            if (f_claim.reason == reason) {\n                var claims = f_claim.claims;\n                claims.push(claim_id);\n                f_claim.claims = claims;\n                f_claim.count = f_claim.count + 1;\n                added = true;\n            }\n        })\n\n        if (!added) {\n            var claims = [];\n            claims.push(claim_id);\n\n            var failedClaim = { \"reason\": reason, \"claims\": claims, \"count\": 1 };\n            failed_claims.push(failedClaim);\n        }\n    }\n}\n\nprint(\"==============================\");\nprint(\"Script Execution Completed\");\nprint(\"Total Claims: \" + total_claims);\nprint(\"Failed Claims: \" + failed_claims.length);\nprint(\"==============================\");"},
+    "ExpectedResult" : "Zero Records",	
+    "ApprovedValues" : [
+        "0"
+    ],
+    "Viceversa" : "False",	
+    "Audit" : {
+       "InsertedByID" : NumberInt(0),
+        "InsertedName" : "Admin",
+        "InsertedDate" : ISODate("2025-05-23T07:10:28.107+0000"),
+        "ModifiedByID" : NumberInt(0),
+        "ModifiedName" : "Admin",
+        "ModifiedDate" : ISODate("2025-05-23T07:10:28.107+0000")
+    }},

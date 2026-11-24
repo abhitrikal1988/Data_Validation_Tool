@@ -1,0 +1,302 @@
+[
+  {
+    "ValidationType": "Record_Count",
+    "TestDescription": "Check source row count",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Audit.InsertedByID\": 1}}]"
+    },
+    "ApprovedValues": [
+      "2404"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Should return 2404 records",
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 304,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-10-08 15:39:58"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in key fields",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": {\"$ifNull\": [\"$Contract_ID\", null]}, \"Status.StatusID\": {\"$ifNull\": [\"$Status.StatusID\", null]}, \"Business.Business_ID\": {\"$ifNull\": [\"$Business.Business_ID\", null]}, \"Span.StartDate\": {\"$ifNull\": [\"$Span.StartDate\", null]}, \"Audit.InsertedByID\": {\"$ifNull\": [\"$Audit.InsertedByID\", null]}}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Contract_ID",
+        "ResultFields": [
+          "Contract_ID"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      },
+      {
+        "SourceField": "Audit.InsertedByID",
+        "ResultFields": [
+          "Audit.InsertedByID"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Contract_ID, Status.StatusID, Business.Business_ID, Span.StartDate, Audit.InsertedByID should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 302,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-10-08 15:39:58"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on key fields",
+    "Module": "MCPDW",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Contract_ID\": 1, \"Status.StatusID\": 1, \"Business.Business_ID\": 1, \"Span.StartDate\": 1, \"Audit.InsertedByID\": 1, \"Audit.InsertedDate\": 1, \"Audit.ModifiedByID\": 1, \"Audit.ModifiedDate\": 1}}]"
+    },
+    "CheckFields": [
+      {
+        "SourceField": "Contract_ID",
+        "ResultFields": [
+          "Contract_ID"
+        ]
+      },
+      {
+        "SourceField": "Status.StatusID",
+        "ResultFields": [
+          "Status.StatusID"
+        ]
+      },
+      {
+        "SourceField": "Business.Business_ID",
+        "ResultFields": [
+          "Business.Business_ID"
+        ]
+      },
+      {
+        "SourceField": "Span.StartDate",
+        "ResultFields": [
+          "Span.StartDate"
+        ]
+      },
+      {
+        "SourceField": "Audit.InsertedByID",
+        "ResultFields": [
+          "Audit.InsertedByID"
+        ]
+      },
+      {
+        "SourceField": "Audit.InsertedDate",
+        "ResultFields": [
+          "Audit.InsertedDate"
+        ]
+      },
+      {
+        "SourceField": "Audit.ModifiedByID",
+        "ResultFields": [
+          "Audit.ModifiedByID"
+        ]
+      },
+      {
+        "SourceField": "Audit.ModifiedDate",
+        "ResultFields": [
+          "Audit.ModifiedDate"
+        ]
+      }
+    ],
+    "ExpectedResult": "Contract_ID, Status.StatusID, Business.Business_ID, Span.StartDate, Audit.InsertedByID, Audit.InsertedDate, Audit.ModifiedByID, Audit.ModifiedDate should not have duplicate values",
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "UNCHANGED",
+      "RegressionSet_ID": 303,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "same as stored",
+      "LoadedOn": "2026-10-08 15:39:58"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Business.BusinessName has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Business.BusinessName\": 1}}]"
+    },
+    "CompareFields": [
+      {
+        "SourceField": "Business.BusinessName"
+      }
+    ],
+    "ApprovedValues": [
+      "Troy Medicare",
+      "Antidote Health",
+      "HealthTeam Advantage",
+      "Oxbridge Health, Inc",
+      "Health Team Advantage"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Business.BusinessName values other than approved ['Troy Medicare', 'Antidote Health', 'HealthTeam Advantage', 'Oxbridge Health, Inc', 'Health Team Advantage'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 305,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 15:39:58"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Business.Business_ID has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Business.Business_ID\": 1}}]"
+    },
+    "CompareFields": [
+      {
+        "SourceField": "Business.Business_ID"
+      }
+    ],
+    "ApprovedValues": [
+      "109",
+      "2065",
+      "2066",
+      "2067"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Business.Business_ID values other than approved ['109', '2065', '2066', '2067'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 306,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 15:39:58"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Audit.InsertedByID has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Audit.InsertedByID\": 1}}]"
+    },
+    "CompareFields": [
+      {
+        "SourceField": "Audit.InsertedByID"
+      }
+    ],
+    "ApprovedValues": [
+      "793",
+      "1433"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Audit.InsertedByID values other than approved ['793', '1433'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 307,
+      "DataRegressionSetTestCaseNumber": 7,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 15:39:58"
+    }
+  },
+  {
+    "TestCaseNumber": 7,
+    "Module": "MCPDW",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "Audit.InsertedName has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "MCP",
+      "Collection": "Contract",
+      "QueryType": "PIPELINE",
+      "Query": "[{\"$project\": {\"_id\": 0, \"Audit.InsertedName\": 1}}]"
+    },
+    "CompareFields": [
+      {
+        "SourceField": "Audit.InsertedName"
+      }
+    ],
+    "ApprovedValues": [
+      "system"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Audit.InsertedName values other than approved ['system'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 308,
+      "DataRegressionSetTestCaseNumber": 8,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-08 15:39:58"
+    }
+  }
+]

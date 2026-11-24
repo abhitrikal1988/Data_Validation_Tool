@@ -1,0 +1,35 @@
+[
+    {
+        "DataValidationLog_ID": 131,
+        "Module": "EH_Chronic",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "Check for duplicate records on key fields",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 23:15:48.597119",
+                "EndTime": "2026-11-05 23:16:00.540000",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:16:00",
+                        "Type": "ERROR",
+                        "RunType": "Duplicate_Check",
+                        "Detail": "2 duplicate row(s) on ['CODE']."
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [
+                    "CODE"
+                ],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "mahesh.thirmandas",
+            "InsertedDate": "2026-11-05 23:16:00.565169"
+        }
+    }
+]

@@ -1,0 +1,160 @@
+2026-11-05 13:34:23,655 | INFO | ========== Starting Validation ==========
+2026-11-05 13:34:23,657 | INFO | Module         : recon_file
+2026-11-05 13:34:23,657 | INFO | Stage          : None
+2026-11-05 13:34:23,658 | INFO | Cycle          : None
+2026-11-05 13:34:23,659 | INFO | Environment    : MCPQA1
+2026-11-05 13:34:23,660 | INFO | Runtime Filters: None — using DefaultValues
+2026-11-05 13:34:24,825 | INFO | Parallel execution started — 4 active thread(s) (requested: 5, test cases: 4).
+2026-11-05 13:34:26,018 | INFO | ========== [ Running TestCase 1: Compare source and target on cFileKey, cOriginalFileName, cDocId and 58 more ] ==========
+2026-11-05 13:34:26,018 | INFO | TestCase 1: Target [ORACLE]:SELECT C_JOB_NUMBER
+  ,C_CLAIM_NUMBERS
+  ,C_FILE_KEY
+  ,C_ORIGINAL_FILE_NAME
+  ,C_DOC_ID
+  ,C_GH_1
+  ,C_GH_2
+  ,C_GH_3
+  ,C_GH_4
+  ,C_GH_5
+  ,C_GH_6
+  ,C_GH_7
+  ,C_GH_8
+  ,C_GH_9
+  ,C_GH_10
+  ,C_ENROLLEE_ID
+  ,C_MASTER_C_NAME
+  ,C_ENROLLEE_NAME
+  ,C_PROVIDER_TAX_ID
+  ,C_DOCUMENT_TYPE
+  ,C_DOCUMENT_TYPE_DESCRIPTION
+  ,C_DOCUMENT_EXTENSIONS
+  ,C_BATCH_NUMBER
+  ,I_ENVELOPE_NUMBER
+  ,C_DELIVERY_TYPE
+  ,Y_SHIPPING_AMOUNT
+  ,C_TRACKING_NUMBER
+  ,I_PAGE_QUANTITY
+  ,C_STATUS
+  ,T_FILE_RECEIPT_DATE
+  ,T_RELEASED_DATE
+  ,T_SHIP_DATE
+  ,C_USERNAME
+  ,T_DATE_TIME
+  ,C_PAPER_STOCK_DESC
+  ,C_PURGE_REASON
+  ,C_PURGE_REASON_DESC
+  ,C_RECIPIENT_TYPE
+  ,C_CLAIM_TYPE
+  ,C_CHECK_NUMBER
+  ,Y_CHECK_AMOUNT
+  ,C_PAYEE_NAME
+  ,C_PULL_CODE
+  ,SPOILED_TOUCH_AND_TOSS
+  ,REISSUED_TOUCH_AND_TOSS
+  ,C_REPORTING_ROLLUP_VALUE_1
+  ,C_REPORTING_ROLLUP_VALUE_2
+  ,C_REPORTING_ROLLUP_VALUE_3
+  ,C_REPORTING_ROLLUP_VALUE_4
+  ,C_REPORTING_ROLLUP_VALUE_5
+  ,C_REPORTING_ROLLUP_VALUE_6
+  ,C_REPORTING_ROLLUP_VALUE_7
+  ,C_REPORTING_ROLLUP_VALUE_8
+  ,C_REPORTING_ROLLUP_VALUE_9
+  ,C_REPORTING_ROLLUP_VALUE_10
+  ,C_DOCUMENT_INDEX_1
+  ,C_DOCUMENT_INDEX_2
+  ,C_DOCUMENT_INDEX_3
+  ,C_DOCUMENT_INDEX_4
+  ,DOCUMENT_WORKFLOW_ID
+  ,DOCUMENT_STATE_ID 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id >= :dw_file_detail_id
+2026-11-05 13:34:26,018 | INFO | File DataFilter 'DW_FILE_DETAIL_ID': no value — skipping.
+2026-11-05 13:34:26,019 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 13:34:26,019 | ISSUE | File_fetcher: Permanent error — Path not found: C:\Users\Maheswar.Basireddy\Documents
+2026-11-05 13:34:26,019 | ISSUE | Error fetching source data (LOCAL_PATH): Path not found: C:\Users\Maheswar.Basireddy\Documents
+2026-11-05 13:34:26,019 | ISSUE | Error fetching target data (ORACLE): ORA-01008: not all variables bound
+2026-11-05 13:34:26,019 | WARNING | Source and Target data both are empty. Skipping comparison.
+2026-11-05 13:34:26,019 | INFO | Execution time for TestCase 1: 2.26 seconds
+2026-11-05 13:34:26,017 | INFO | ========== [ Running TestCase 2: Target DW.zelis_recon: no duplicate C_JOB_NUMBER, C_CLAIM_NUMBERS ] ==========
+2026-11-05 13:34:26,017 | INFO | TestCase 2: Source [ORACLE]:SELECT C_JOB_NUMBER
+  ,C_CLAIM_NUMBERS 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id >= :dw_file_detail_id
+2026-11-05 13:34:26,017 | INFO | TestCase 2: Duplicate_Check started — pushing duplicate detection to ORACLE per field
+2026-11-05 13:34:26,018 | INFO | Source [ORACLE] Duplicate_Check sample for 'C_JOB_NUMBER, C_CLAIM_NUMBERS':
+SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    FROM (SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS FROM DW.zelis_recon WHERE dw_file_detail_id >= :dw_file_detail_id)
+                    WHERE C_JOB_NUMBER IS NOT NULL AND C_CLAIM_NUMBERS IS NOT NULL
+                    AND (C_JOB_NUMBER, C_CLAIM_NUMBERS) IN (
+                        
+                    SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    FROM (SELECT C_JOB_NUMBER, C_CLAIM_NUMBERS FROM DW.zelis_recon WHERE dw_file_detail_id >= :dw_file_detail_id)
+                    WHERE C_JOB_NUMBER IS NOT NULL AND C_CLAIM_NUMBERS IS NOT NULL
+                    GROUP BY C_JOB_NUMBER, C_CLAIM_NUMBERS
+                    HAVING COUNT(*) > 1
+                
+                    )
+                    AND ROWNUM <= 5
+2026-11-05 13:34:26,018 | ISSUE | Error fetching duplicate data for 'C_JOB_NUMBER, C_CLAIM_NUMBERS' (ORACLE): ORA-01008: not all variables bound
+2026-11-05 13:34:26,018 | WARNING | TestCase 2: Field 'C_JOB_NUMBER, C_CLAIM_NUMBERS': Failed to fetch duplicate data — skipping.
+2026-11-05 13:34:26,018 | INFO | Execution time for TestCase 2: 2.25 seconds
+2026-11-05 13:34:26,024 | INFO | ========== [ Running TestCase 3: Target DW.zelis_recon: keys and load columns are populated ] ==========
+2026-11-05 13:34:26,024 | INFO | TestCase 3: Source [ORACLE]:SELECT C_CLAIM_NUMBERS
+  ,ZELIS_RECON_ID
+  ,C_FILE_KEY
+  ,C_DOC_ID
+  ,I_ENVELOPE_NUMBER
+  ,T_FILE_RECEIPT_DATE
+  ,C_CHECK_NUMBER
+  ,DOCUMENT_STATE_ID
+  ,DW_FILE_DETAIL_ID
+  ,DW_CREATED_DT 
+  FROM DW.zelis_recon 
+  WHERE dw_file_detail_id >= :dw_file_detail_id
+2026-11-05 13:34:26,024 | INFO | TestCase 3: Null_Check started — pushing null filter to ORACLE per field
+2026-11-05 13:34:26,024 | INFO | Oracle Null_Check query: SELECT * FROM (SELECT C_CLAIM_NUMBERS, ZELIS_RECON_ID, C_FILE_KEY, C_DOC_ID, I_ENVELOPE_NUMBER, T_FILE_RECEIPT_DATE, C_CHECK_NUMBER, DOCUMENT_STATE_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT FROM DW.zelis_recon WHERE dw_file_detail_id >= :dw_file_detail_id) WHERE (C_CLAIM_NUMBERS IS NULL OR TRIM(TO_CHAR(C_CLAIM_NUMBERS)) = '') OR (ZELIS_RECON_ID IS NULL OR TRIM(TO_CHAR(ZELIS_RECON_ID)) = '') OR (C_FILE_KEY IS NULL OR TRIM(TO_CHAR(C_FILE_KEY)) = '') OR (C_DOC_ID IS NULL OR TRIM(TO_CHAR(C_DOC_ID)) = '') OR (I_ENVELOPE_NUMBER IS NULL OR TRIM(TO_CHAR(I_ENVELOPE_NUMBER)) = '') OR (T_FILE_RECEIPT_DATE IS NULL OR TRIM(TO_CHAR(T_FILE_RECEIPT_DATE)) = '') OR (C_CHECK_NUMBER IS NULL OR TRIM(TO_CHAR(C_CHECK_NUMBER)) = '') OR (DOCUMENT_STATE_ID IS NULL OR TRIM(TO_CHAR(DOCUMENT_STATE_ID)) = '') OR (DW_FILE_DETAIL_ID IS NULL OR TRIM(TO_CHAR(DW_FILE_DETAIL_ID)) = '') OR (DW_CREATED_DT IS NULL OR TRIM(TO_CHAR(DW_CREATED_DT)) = '')
+2026-11-05 13:34:26,025 | ISSUE | Error fetching null check data (ORACLE): ORA-01008: not all variables bound
+2026-11-05 13:34:26,025 | WARNING | TestCase 3: Field 'C_CLAIM_NUMBERS': Failed to fetch data — skipping.
+2026-11-05 13:34:26,025 | WARNING | TestCase 3: Field 'ZELIS_RECON_ID': Failed to fetch data — skipping.
+2026-11-05 13:34:26,025 | WARNING | TestCase 3: Field 'C_FILE_KEY': Failed to fetch data — skipping.
+2026-11-05 13:34:26,025 | WARNING | TestCase 3: Field 'C_DOC_ID': Failed to fetch data — skipping.
+2026-11-05 13:34:26,026 | WARNING | TestCase 3: Field 'I_ENVELOPE_NUMBER': Failed to fetch data — skipping.
+2026-11-05 13:34:26,026 | WARNING | TestCase 3: Field 'T_FILE_RECEIPT_DATE': Failed to fetch data — skipping.
+2026-11-05 13:34:26,026 | WARNING | TestCase 3: Field 'C_CHECK_NUMBER': Failed to fetch data — skipping.
+2026-11-05 13:34:26,026 | WARNING | TestCase 3: Field 'DOCUMENT_STATE_ID': Failed to fetch data — skipping.
+2026-11-05 13:34:26,027 | WARNING | TestCase 3: Field 'DW_FILE_DETAIL_ID': Failed to fetch data — skipping.
+2026-11-05 13:34:26,027 | WARNING | TestCase 3: Field 'DW_CREATED_DT': Failed to fetch data — skipping.
+2026-11-05 13:34:26,027 | INFO | Execution time for TestCase 3: 2.26 seconds
+2026-11-05 13:34:24,834 | INFO | ========== [ Running TestCase 4: File Recon Rpt 3670 Batches 20260101 - 20260410_202604100_testfile.csv: no row repeated in every field ] ==========
+2026-11-05 13:34:24,834 | INFO | File_fetcher: Fetch attempt 1/2
+2026-11-05 13:34:24,835 | ISSUE | File_fetcher: Permanent error — Path not found: C:\Users\Maheswar.Basireddy\Documents
+2026-11-05 13:34:24,836 | ERROR | TestCase 4: _run_duplicate_check_on_file: Path not found: C:\Users\Maheswar.Basireddy\Documents
+Traceback (most recent call last):
+  File "C:\Users\Amit.Rawat\Documents\Regression Script\Script\Data_Validation.py", line 1673, in _run_duplicate_check_on_file
+    result = _rows_or_file(source_def, rows)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Amit.Rawat\Documents\Regression Script\Script\Data_Validation.py", line 1482, in _rows_or_file
+    return fetch_and_parse(source_def)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Amit.Rawat\Documents\Regression Script\Libraries\File_parser.py", line 1533, in fetch_and_parse
+    raw_files = fetch_file(
+                ^^^^^^^^^^^
+  File "C:\Users\Amit.Rawat\Documents\Regression Script\Libraries\File_fetcher.py", line 1265, in fetch_file
+    raw_files = _with_retry(
+                ^^^^^^^^^^^^
+  File "C:\Users\Amit.Rawat\Documents\Regression Script\Libraries\File_fetcher.py", line 431, in _with_retry
+    return func()
+           ^^^^^^
+  File "C:\Users\Amit.Rawat\Documents\Regression Script\Libraries\File_fetcher.py", line 1263, in _fetch
+    return fetcher(source)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Amit.Rawat\Documents\Regression Script\Libraries\File_fetcher.py", line 590, in _fetch_local
+    raise FileNotFoundError(f"Path not found: {path}")
+FileNotFoundError: Path not found: C:\Users\Maheswar.Basireddy\Documents
+2026-11-05 13:34:24,866 | INFO | Execution time for TestCase 4: 1.07 seconds
+2026-11-05 13:34:26,050 | INFO | Total Number of Testcases Executed : 4,Pass : 2, Fail : 1, Skippped : 1
+2026-11-05 13:34:26,052 | INFO | Total execution time: 2.29 seconds (0.0 minutes)
+2026-11-05 13:34:26,084 | INFO | Master combined log written to: MCPQA1_recon_file_Log_20261105_183426.json
+2026-11-05 13:34:26,096 | INFO | Result.InsertData : 6aeccc3279ffb72d6fa84ee9
+2026-11-05 13:34:27,483 | INFO | ========== Completed Validation ==========

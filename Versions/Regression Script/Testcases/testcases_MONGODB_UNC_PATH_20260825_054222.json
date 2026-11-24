@@ -1,0 +1,34 @@
+[
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Cardholder ID null check",
+    "Module": "",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "DataFilters": []
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Key field duplicate detection (Cardholder ID)",
+    "Module": "",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "MONGODB",
+      "Environment": "MCPQA1",
+      "DB": "M3P",
+      "Query": "Test_M3PMemberReceipt_PBM",
+      "QueryType": "COLLECTION"
+    },
+    "DataFilters": []
+  }
+]

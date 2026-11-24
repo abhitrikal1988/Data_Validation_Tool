@@ -1,0 +1,328 @@
+[
+  {
+    "ValidationType": "SRC_TGT",
+    "TestDescription": "Compare source and target for POS Lookup",
+    "Module": "pos_lookup",
+    "Stage": "",
+    "Viceversa": true,
+    "TestCaseNumber": 1,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "POS Lookup.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "Target": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT PLACE_OF_SERVICE_CODE, BUSINESS_ID, PLACE_OF_SERVICE_NAME FROM DW.pos_lookup"
+    },
+    "JoinFields": [
+      {
+        "SourceField": "PLACE_OF_SERVICE_CODE",
+        "TargetField": "PLACE_OF_SERVICE_CODE"
+      },
+      {
+        "SourceField": "BUSINESS_ID",
+        "TargetField": "BUSINESS_ID"
+      }
+    ],
+    "CompareFields": [
+      {
+        "SourceField": "PLACE_OF_SERVICE_NAME",
+        "TargetField": "PLACE_OF_SERVICE_NAME"
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "Source and target should match: no missing records and no mismatched values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 388,
+      "DataRegressionSetTestCaseNumber": 1,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:43:46"
+    }
+  },
+  {
+    "ValidationType": "Null_Check",
+    "TestDescription": "Check for null values in BUSINESS_ID",
+    "Module": "pos_lookup",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 2,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "POS Lookup.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "PLACE_OF_SERVICE_CODE",
+        "ResultFields": [
+          "PLACE_OF_SERVICE_CODE"
+        ]
+      },
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      }
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "PLACE_OF_SERVICE_CODE, BUSINESS_ID should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 389,
+      "DataRegressionSetTestCaseNumber": 2,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:43:46"
+    }
+  },
+  {
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Check for duplicate records on BUSINESS_ID and PLACE_OF_SERVICE_CODE",
+    "Module": "pos_lookup",
+    "Stage": "",
+    "Viceversa": false,
+    "TestCaseNumber": 3,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "POS Lookup.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CheckFields": [
+      {
+        "SourceField": "PLACE_OF_SERVICE_CODE",
+        "ResultFields": [
+          "PLACE_OF_SERVICE_CODE"
+        ]
+      },
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same PLACE_OF_SERVICE_CODE, BUSINESS_ID",
+    "DataFilters": [],
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 390,
+      "DataRegressionSetTestCaseNumber": 3,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:43:46"
+    }
+  },
+  {
+    "TestCaseNumber": 4,
+    "Module": "pos_lookup",
+    "Stage": "",
+    "ValidationType": "Duplicate_Check",
+    "TestDescription": "Target DW.pos_lookup: no duplicate PLACE_OF_SERVICE_CODE, BUSINESS_ID",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT PLACE_OF_SERVICE_CODE, BUSINESS_ID FROM DW.pos_lookup"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": [
+          "PLACE_OF_SERVICE_CODE",
+          "BUSINESS_ID"
+        ],
+        "ResultFields": [
+          "PLACE_OF_SERVICE_CODE",
+          "BUSINESS_ID"
+        ]
+      }
+    ],
+    "ExpectedResult": "No two records should share the same PLACE_OF_SERVICE_CODE, BUSINESS_ID",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 391,
+      "DataRegressionSetTestCaseNumber": 4,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:43:46"
+    }
+  },
+  {
+    "TestCaseNumber": 5,
+    "Module": "pos_lookup",
+    "Stage": "",
+    "ValidationType": "Null_Check",
+    "TestDescription": "Target DW.pos_lookup: keys and load columns are populated",
+    "Viceversa": false,
+    "Source": {
+      "Type": "ORACLE",
+      "Environment": "ORACLE_HTAQA",
+      "DB": "DW",
+      "QueryType": "QUERY",
+      "Query": "SELECT BUSINESS_ID, PLACE_OF_SERVICE_CODE, POS_LOOKUP_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT FROM DW.pos_lookup"
+    },
+    "DataFilters": [],
+    "CheckFields": [
+      {
+        "SourceField": "BUSINESS_ID",
+        "ResultFields": [
+          "BUSINESS_ID"
+        ]
+      },
+      {
+        "SourceField": "PLACE_OF_SERVICE_CODE",
+        "ResultFields": [
+          "PLACE_OF_SERVICE_CODE"
+        ]
+      },
+      {
+        "SourceField": "POS_LOOKUP_ID",
+        "ResultFields": [
+          "POS_LOOKUP_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_FILE_DETAIL_ID",
+        "ResultFields": [
+          "DW_FILE_DETAIL_ID"
+        ]
+      },
+      {
+        "SourceField": "DW_CREATED_DT",
+        "ResultFields": [
+          "DW_CREATED_DT"
+        ]
+      },
+      {
+        "SourceField": "DW_MODIFIED_DT",
+        "ResultFields": [
+          "DW_MODIFIED_DT"
+        ]
+      }
+    ],
+    "ExpectedResult": "BUSINESS_ID, PLACE_OF_SERVICE_CODE, POS_LOOKUP_ID, DW_FILE_DETAIL_ID, DW_CREATED_DT, DW_MODIFIED_DT should not have null or empty values",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 392,
+      "DataRegressionSetTestCaseNumber": 5,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:43:46"
+    }
+  },
+  {
+    "TestCaseNumber": 6,
+    "Module": "pos_lookup",
+    "Stage": "",
+    "ValidationType": "InApprovedValue",
+    "TestDescription": "BUSINESS_ID has only approved values",
+    "Viceversa": false,
+    "Source": {
+      "Type": "LOCAL_PATH",
+      "Path": "P:\\Maheswar",
+      "FileName": "POS Lookup.xlsx",
+      "FilePattern": null,
+      "PickStrategy": "LATEST",
+      "FileConfig": {
+        "Format": "EXCEL",
+        "Delimiter": null,
+        "Header": true,
+        "SkipRows": 0,
+        "FooterRows": 0,
+        "Encoding": null,
+        "NullValues": [
+          "NULL",
+          "null",
+          "N/A",
+          "na",
+          "",
+          "-",
+          "none"
+        ],
+        "Columns": []
+      }
+    },
+    "CompareFields": [
+      {
+        "SourceField": "BUSINESS_ID"
+      }
+    ],
+    "ApprovedValues": [
+      "109",
+      "2066"
+    ],
+    "DataFilters": [],
+    "ExpectedResult": "BUSINESS_ID values other than approved ['109', '2066'] should not have any counts",
+    "_LoadStatus": {
+      "Status": "INSERTED",
+      "RegressionSet_ID": 393,
+      "DataRegressionSetTestCaseNumber": 6,
+      "Detail": "new test case",
+      "LoadedOn": "2026-10-30 11:43:46"
+    }
+  }
+]

@@ -1,0 +1,16 @@
+2025-11-18 17:02:54,044 | INFO | ========== Starting Validation ==========
+2025-11-18 17:02:54,064 | INFO | Module :  Test 
+2025-11-18 17:02:54,084 | INFO | Stage :  None 
+2025-11-18 17:02:54,103 | INFO | Cycle :  None
+2025-11-18 17:02:54,124 | INFO | Environment  : MONGODB_MCPQA1
+2025-11-18 17:02:55,520 | INFO | ========== [ Running TestCase 11: Data Comparison between SRC and TGT ] ==========
+2025-11-18 17:11:46,680 | ERROR | Error fetching source data (ORACLE): 
+2025-11-18 17:11:46,882 | ERROR | Error fetching target data (ORACLE): DPY-6005: cannot connect to database (CONNECTION_ID=Bx/1pUE7G+EF+P6l0JRFuw==).
+DPY-6001: Service "RALPBQAC" is not registered with the listener at host "10.85.2.238" port 1521. (Similar to ORA-12514)
+2025-11-18 17:11:46,908 | WARNING | Unknown data type for 'source_data': <class 'NoneType'>. Assuming not empty.
+2025-11-18 17:11:46,928 | WARNING | Unknown data type for 'target_data': <class 'NoneType'>. Assuming not empty.
+2025-11-18 17:11:46,947 | INFO |  Execution time for TestCase 11: 531.41 seconds
+2025-11-18 17:11:46,967 | INFO |  Total Number of Testcases Executed:1,Pass :1, Fail : 0
+2025-11-18 17:11:47,517 | INFO | Master combined log written to: MONGODB_MCPQA1_Test_Log_20251118_221147.json
+2025-11-18 17:11:47,559 | INFO | Result.InsertData : 691cef2337e65f4d74661c1a
+2025-11-18 17:11:49,857 | INFO | ========== Completed Validation ==========

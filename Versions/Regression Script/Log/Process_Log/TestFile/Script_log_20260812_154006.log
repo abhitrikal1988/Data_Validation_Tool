@@ -1,0 +1,24 @@
+2026-08-12 15:40:06,803 | INFO | ========== Starting Validation ==========
+2026-08-12 15:40:06,804 | INFO | Module         : TestFile
+2026-08-12 15:40:06,805 | INFO | Stage          : TestPDF
+2026-08-12 15:40:06,805 | INFO | Cycle          : None
+2026-08-12 15:40:06,806 | INFO | Environment    : MCPQA1
+2026-08-12 15:40:06,806 | INFO | Runtime Filters: None — using DefaultValues
+2026-08-12 15:40:06,809 | ERROR | Unexpected exception in __main__: 'DataView'
+Traceback (most recent call last):
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Script\Data_Validation.py", line 1539, in <module>
+    run_validation(
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Script\Data_Validation.py", line 1527, in run_validation
+    Regression_inputs(
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Script\Data_Validation.py", line 58, in __init__
+    else cr.view_row_count())
+         ^^^^^^^^^^^^^^^^^^^
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\Read_config.py", line 84, in view_row_count
+    return int(self.get_conf_data("DataView", "rows"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "Q:\QA Documentation\QA Automation\Data_Validation\Regression Script\Libraries\Read_config.py", line 25, in get_conf_data
+    section_variable = config_obj[section_name]
+                       ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\Lib\configparser.py", line 979, in __getitem__
+    raise KeyError(key)
+KeyError: 'DataView'

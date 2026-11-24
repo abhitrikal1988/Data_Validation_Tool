@@ -1,0 +1,152 @@
+[
+    {
+        "DataValidationLog_ID": 100,
+        "Module": "eH RollOver 2027",
+        "Stage": "NH",
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "eH RollOver Enroll.Member Count validation",
+                "Result": "Pass",
+                "StartTime": "2026-10-23 21:49:34.786345",
+                "EndTime": "2026-10-23 21:49:40.437006",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-23 21:49:34",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:WITH rollover_excluded_mbrs AS (\r\n\n  SELECT \n  DISTINCT mp.mbi,\n  mp.member_profile_id_nh,\n  mp.business_id_nh \n  FROM mbrprofile.health_coverage hc \r\n\n  INNER JOIN mbrprofile.member_profile mp \n  ON hc.member_profile_id_nh=mp.member_profile_id_nh \r\n\n  WHERE hc.benefit_begin_dt BETWEEN TO_DATE('01012027', 'MMDDYYYY') \n  AND TO_DATE('12312027', 'MMDDYYYY') \r\n\n  AND hc.benefit_end_dt BETWEEN TO_DATE('01012027', 'MMDDYYYY') \n  AND TO_DATE('12312027', 'MMDDYYYY')\r\n\n  AND hc.enrollment_status_id IN (200004,\n  200005) \r\n\n  AND sep_reason<>'SEP_ROL' \r\n\n  UNION ALL \r\n\n  SELECT \n  DISTINCT mbi,\n  mbr.member_profile_id_nh,\n  mbr.business_id_nh \n  FROM mbrexcep.member mbr\r\n\n  INNER JOIN mbrexcep.member_error mbr_er \n  ON mbr.member_id_nh=mbr_er.member_id_nh \n  AND mbr_er.error_status_id=170105 \r\n\n  INNER JOIN mbrexcep.health_coverage hc \n  ON mbr.member_id_nh=hc.member_id_nh \r\n\n  WHERE mbr.maintenance_type_code='021' \r\n\n  AND TO_DATE(hc.benefit_begin_dt DEFAULT NULL \n  ON CONVERSION ERROR, 'YYYYMMDD')BETWEEN TO_DATE('01012027', 'MMDDYYYY')\n  AND TO_DATE('12312027', 'MMDDYYYY')\r\n\n  AND TO_DATE(hc.benefit_end_dt DEFAULT NULL \n  ON CONVERSION ERROR, 'YYYYMMDD') BETWEEN TO_DATE('01012027', 'MMDDYYYY') \n  AND TO_DATE('12312027', 'MMDDYYYY')\r\n\n  UNION ALL \r\n\n  SELECT \n  DISTINCT mp.mbi,\n  mp.member_profile_id_nh,\n  mp.business_id_nh \n  FROM mbrprofile.member_profile mp\r\n\n  INNER JOIN mbrprofile.health_coverage hc \n  ON mp.member_profile_id_nh=hc.member_profile_id_nh\r\n\n  WHERE hc.enrollment_status_id=200004 \r\n\n  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY') \n  AND TO_DATE('12312026', 'MMDDYYYY')\r\n\n  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY') \r\n\n  AND hc.term_rsn_code IS NULL \r\n\n  AND hc.plan_id='H3551002000'\r\n\n  UNION ALL\r\n\n  SELECT \n  DISTINCT mp.mbi,\n  mp.member_profile_id_nh,\n  mp.business_id_nh \n  FROM mbrprofile.member_profile mp \r\n\n  INNER JOIN mbrprofile.health_coverage hc \n  ON mp.member_profile_id_nh=hc.member_profile_id_nh \r\n\n  INNER JOIN mbrprofile.mbr_address ma \n  ON mp.member_profile_id_nh=ma.member_profile_id_nh \r\n\n  AND upper(ma.address_type)='RESIDENTIAL'\r\n\n  AND upper(ma.county)='PIMA' \r\n\n  WHERE hc.enrollment_status_id=200004 \r\n\n  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY')\n  AND TO_DATE('12312026', 'MMDDYYYY') \r\n\n  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY')\r\n\n  AND hc.term_rsn_code IS NULL\r\n\n  AND hc.plan_id LIKE'H3551004%')\r\n\r\n \n  SELECT 'ENROLL.MEMBER' AS tbl\n  ,COUNT(*) AS RECORD_COUNT\r\n \n  FROM (\n  SELECT mp.subscriber_ind,\n  '18'AS individual_rel_code,\n  '021'AS maintenance_type_code,\n  hc.maintenance_rsn_code,\n  mp.benefit_status_code,\n  mp.medicare_plan_code,\n  mp.eligibility_rsn_code,\n  mp.cobra_qual_event_code,\n  \r\nCAST(NULL AS VARCHAR2(10)) AS employment_status_code,\n  mp.student_status_code,\n  mp.handicap_ind,\n  CAST(NULL AS VARCHAR2(10)) AS date_time_format_qual,\n  mp.date_of_death,\n  mp.confident_code,\n  mp.birth_seq_number,\n  \r\nCAST(NULL AS VARCHAR2(10)) AS enrollment_status,\n  mp.member_code,\n  0 AS file_detail_id_nh,\n  mp.hix_subscriber_id,\n  mp.hix_member_id,\n  mp.hp_subscriber_id,\n  mp.hp_member_id,\n  hc.plan_id,\n  \r\nTO_DATE('01012027', 'MMDDYYYY')AS elg_begin_dt,\n  TO_DATE('12312027', 'MMDDYYYY')AS elg_end_dt,\n  mp.maint_effective_dt,\n  mp.member_profile_id_nh,\n  CAST(NULL AS VARCHAR2(100)) AS prem_withhold_source,\n  \r\nCAST(NULL AS VARCHAR2(100)) AS prem_direct_pay,\n  mp.mbi,\n  CAST(NULL AS VARCHAR2(100)) AS esrd,\n  mp.medicaid,\n  CAST(NULL AS VARCHAR2(100))AS part_d_sub_ind,\n  CAST(NULL AS VARCHAR2(100)) AS deemedind,\n  \r\nCAST(NULL AS VARCHAR2(100)) AS subsidypercentage,\n  CAST(NULL AS VARCHAR2(100)) AS deducted_flg,\n  CAST(NULL AS VARCHAR2(100)) AS deemed_reason_code,\n  CAST(NULL AS VARCHAR2(100)) AS lis_copay_lvl_id,\n  \r\nCAST(NULL AS VARCHAR2(100))AS deemed_copay_lvl_id,\n  CAST(NULL AS VARCHAR2(100))AS partd_opt_flg,\n  CAST(NULL AS VARCHAR2(100)) AS spouse_employment_status,\n  CAST(NULL AS VARCHAR2(100))AS emailoptin,\n  \r\nmp.business_id_nh,\n  CAST(NULL AS VARCHAR2(100))AS email_optin_materials,\n  CAST(NULL AS VARCHAR2(100)) AS phoneoptin,\n  'N' AS generate_tc_flg,\n  \r\nCAST(NULL AS VARCHAR2(100)) AS original_prem_direct_pay,\n  CAST(NULL AS NUMBER) AS org_id_nh,\n  CAST(NULL AS VARCHAR2(100)) AS employee_id,\n  MP.broker_id_card_access,\n  \r\nCAST(NULL AS VARCHAR2(100)) AS textoptin \r\n\n  FROM mbrprofile.member_profile mp\r\n\n  INNER JOIN mbrprofile.health_coverage hc \n  ON mp.member_profile_id_nh=hc.member_profile_id_nh\r\n\n  WHERE hc.enrollment_status_id=200004 \r\n\n  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY')\n  AND TO_DATE('12312026', 'MMDDYYYY')\r\n\n  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY')\n  AND\r\nhc.term_rsn_code IS NULL\r\n\n  AND(mp.member_profile_id_nh NOT IN( \n  SELECT member_profile_id_nh \n  FROM rollover_excluded_mbrs)\r\n\n  OR mp.mbi NOT IN( \n  SELECT nvl(mbi, '~') AS mbi \n  FROM rollover_excluded_mbrs))\r\n\n  AND mp.business_id_nh='110' )"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-23 21:49:34",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT 'ENROLL.MEMBER' AS tbl\n  ,COUNT(*) AS RECORD_COUNT \n  FROM enroll.member a\r\n\n  INNER JOIN enroll.trans_set_header b \n  ON a.trans_set_header_id_nh = b.trans_set_header_id_nh\r\n\n  WHERE a.elg_begin_dt = '20270101'\r\n\n  AND a.elg_end_dt = '20271231'\r\n\n  AND a.business_id_nh = '110'\r\n\n  AND b.file_detail_id_nh = 0\r\n\n  AND b.trans_set_date = '20261023'"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-23 21:49:35",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source ORACLE records: 1, Total target ORACLE records: 1"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "NH",
+                "MismatchFields": [],
+                "MissingFields": []
+            },
+            {
+                "TestCaseID": 2,
+                "TestCaseName": "eH RollOver Enroll.Member Data validation",
+                "Result": "Fail",
+                "StartTime": "2026-10-23 21:49:34.808345",
+                "EndTime": "2026-10-23 21:49:40.783441",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-23 21:49:34",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Source [ORACLE]:WITH rollover_excluded_mbrs AS (\r\n\n  SELECT \n  DISTINCT mp.mbi,\n  mp.member_profile_id_nh,\n  mp.business_id_nh \n  FROM mbrprofile.health_coverage hc \r\n\n  INNER JOIN mbrprofile.member_profile mp \n  ON hc.member_profile_id_nh=mp.member_profile_id_nh \r\n\n  WHERE hc.benefit_begin_dt BETWEEN TO_DATE('01012027', 'MMDDYYYY') \n  AND TO_DATE('12312027', 'MMDDYYYY') \r\n\n  AND hc.benefit_end_dt BETWEEN TO_DATE('01012027', 'MMDDYYYY') \n  AND TO_DATE('12312027', 'MMDDYYYY')\r\n\n  AND hc.enrollment_status_id IN (200004,\n  200005) \r\n\n  AND sep_reason<>'SEP_ROL' \r\n\n  UNION ALL \r\n\n  SELECT \n  DISTINCT mbi,\n  mbr.member_profile_id_nh,\n  mbr.business_id_nh \n  FROM mbrexcep.member mbr\r\n\n  INNER JOIN mbrexcep.member_error mbr_er \n  ON mbr.member_id_nh=mbr_er.member_id_nh \n  AND mbr_er.error_status_id=170105 \r\n\n  INNER JOIN mbrexcep.health_coverage hc \n  ON mbr.member_id_nh=hc.member_id_nh \r\n\n  WHERE mbr.maintenance_type_code='021' \r\n\n  AND TO_DATE(hc.benefit_begin_dt DEFAULT NULL \n  ON CONVERSION ERROR, 'YYYYMMDD')BETWEEN TO_DATE('01012027', 'MMDDYYYY')\n  AND TO_DATE('12312027', 'MMDDYYYY')\r\n\n  AND TO_DATE(hc.benefit_end_dt DEFAULT NULL \n  ON CONVERSION ERROR, 'YYYYMMDD') BETWEEN TO_DATE('01012027', 'MMDDYYYY') \n  AND TO_DATE('12312027', 'MMDDYYYY')\r\n\n  UNION ALL \r\n\n  SELECT \n  DISTINCT mp.mbi,\n  mp.member_profile_id_nh,\n  mp.business_id_nh \n  FROM mbrprofile.member_profile mp\r\n\n  INNER JOIN mbrprofile.health_coverage hc \n  ON mp.member_profile_id_nh=hc.member_profile_id_nh\r\n\n  WHERE hc.enrollment_status_id=200004 \r\n\n  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY') \n  AND TO_DATE('12312026', 'MMDDYYYY')\r\n\n  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY') \r\n\n  AND hc.term_rsn_code IS NULL \r\n\n  AND hc.plan_id='H3551002000'\r\n\n  UNION ALL\r\n\n  SELECT \n  DISTINCT mp.mbi,\n  mp.member_profile_id_nh,\n  mp.business_id_nh \n  FROM mbrprofile.member_profile mp \r\n\n  INNER JOIN mbrprofile.health_coverage hc \n  ON mp.member_profile_id_nh=hc.member_profile_id_nh \r\n\n  INNER JOIN mbrprofile.mbr_address ma \n  ON mp.member_profile_id_nh=ma.member_profile_id_nh \r\n\n  AND upper(ma.address_type)='RESIDENTIAL'\r\n\n  AND upper(ma.county)='PIMA' \r\n\n  WHERE hc.enrollment_status_id=200004 \r\n\n  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY')\n  AND TO_DATE('12312026', 'MMDDYYYY') \r\n\n  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY')\r\n\n  AND hc.term_rsn_code IS NULL\r\n\n  AND hc.plan_id LIKE'H3551004%')\r\n\r\n\n  SELECT mp.subscriber_ind\n  ,'18'AS individual_rel_code\n  ,'021'AS maintenance_type_code\n  ,hc.maintenance_rsn_code\n  ,mp.benefit_status_code\n  ,mp.medicare_plan_code\n  ,mp.eligibility_rsn_code\n  ,mp.cobra_qual_event_code\n  ,\r\nCAST(NULL AS VARCHAR2(10)) AS employment_status_code\n  ,mp.student_status_code\n  ,mp.handicap_ind\n  ,CAST(NULL AS VARCHAR2(10)) AS date_time_format_qual\n  ,mp.date_of_death\n  ,mp.confident_code\n  ,mp.birth_seq_number\n  ,\r\nCAST(NULL AS VARCHAR2(10)) AS enrollment_status\n  ,mp.member_code\n  ,0 AS file_detail_id_nh\n  ,mp.hix_subscriber_id\n  ,mp.hix_member_id\n  ,mp.hp_subscriber_id\n  ,mp.hp_member_id\n  ,hc.plan_id\n  ,\r\nTO_DATE('01012027', 'MMDDYYYY')AS elg_begin_dt\n  ,TO_DATE('12312027', 'MMDDYYYY')AS elg_end_dt\n  ,mp.maint_effective_dt\n  ,mp.member_profile_id_nh\n  ,CAST(NULL AS VARCHAR2(100)) AS prem_withhold_source\n  ,\r\nCAST(NULL AS VARCHAR2(100)) AS prem_direct_pay\n  ,mp.mbi\n  ,CAST(NULL AS VARCHAR2(100)) AS esrd\n  ,mp.medicaid\n  ,CAST(NULL AS VARCHAR2(100))AS part_d_sub_ind\n  ,CAST(NULL AS VARCHAR2(100)) AS deemedind\n  ,\r\nCAST(NULL AS VARCHAR2(100)) AS subsidypercentage\n  ,CAST(NULL AS VARCHAR2(100)) AS deducted_flg\n  ,CAST(NULL AS VARCHAR2(100)) AS deemed_reason_code\n  ,CAST(NULL AS VARCHAR2(100)) AS lis_copay_lvl_id\n  ,\r\nCAST(NULL AS VARCHAR2(100))AS deemed_copay_lvl_id\n  ,CAST(NULL AS VARCHAR2(100))AS partd_opt_flg\n  ,CAST(NULL AS VARCHAR2(100)) AS spouse_employment_status\n  ,CAST(NULL AS VARCHAR2(100))AS emailoptin\n  ,\r\nmp.business_id_nh\n  ,CAST(NULL AS VARCHAR2(100))AS email_optin_materials\n  ,CAST(NULL AS VARCHAR2(100)) AS phoneoptin\n  ,'N' AS generate_tc_flg\n  ,\r\nCAST(NULL AS VARCHAR2(100)) AS original_prem_direct_pay\n  ,CAST(NULL AS NUMBER) AS org_id_nh\n  ,CAST(NULL AS VARCHAR2(100)) AS employee_id\n  ,MP.broker_id_card_access\n  ,\r\nCAST(NULL AS VARCHAR2(100)) AS textoptin \r\n\n  FROM mbrprofile.member_profile mp\r\n\n  INNER JOIN mbrprofile.health_coverage hc \n  ON mp.member_profile_id_nh=hc.member_profile_id_nh\r\n\n  WHERE hc.enrollment_status_id=200004 \r\n\n  AND trunc(hc.benefit_begin_dt) BETWEEN TO_DATE('01012026', 'MMDDYYYY')\n  AND TO_DATE('12312026', 'MMDDYYYY')\r\n\n  AND trunc(hc.benefit_end_dt)=TO_DATE('12312026', 'MMDDYYYY')\n  AND\r\nhc.term_rsn_code IS NULL\r\n\n  AND(mp.member_profile_id_nh NOT IN( \n  SELECT member_profile_id_nh \n  FROM rollover_excluded_mbrs)\r\n\n  OR mp.mbi NOT IN( \n  SELECT nvl(mbi, '~') AS mbi \n  FROM rollover_excluded_mbrs))\r\n\n  AND mp.business_id_nh='110'"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-23 21:49:34",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT * \n  FROM enroll.member a\r\n\n  INNER JOIN enroll.trans_set_header b \n  ON a.trans_set_header_id_nh = b.trans_set_header_id_nh\r\n\n  WHERE a.elg_begin_dt = '20270101'\r\n\n  AND a.elg_end_dt = '20271231'\r\n\n  AND a.business_id_nh = '110'\r\n\n  AND b.file_detail_id_nh = 0\r\n\n  AND b.trans_set_date = '20261023'"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-23 21:49:35",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source ORACLE records: 21, Total target ORACLE records: 21"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'MEMBER_PROFILE_ID_NH': 1572500}"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'MEMBER_PROFILE_ID_NH': 1581505}"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'MEMBER_PROFILE_ID_NH': 1585197}"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'MEMBER_PROFILE_ID_NH': 1586692}"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-10-23 21:49:40",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 4"
+                    }
+                ],
+                "Stage": "NH",
+                "MissingFields": [
+                    "MEMBER_PROFILE_ID_NH"
+                ],
+                "MismatchFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Sandeep.Konduru",
+            "InsertedDate": "2026-10-23 21:49:40.822163"
+        }
+    }
+]

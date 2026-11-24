@@ -1,0 +1,17 @@
+2026-08-12 16:22:11,273 | INFO | ========== Starting Validation ==========
+2026-08-12 16:22:11,273 | INFO | Module         : TestFile
+2026-08-12 16:22:11,274 | INFO | Stage          : TestPDF
+2026-08-12 16:22:11,275 | INFO | Cycle          : None
+2026-08-12 16:22:11,275 | INFO | Environment    : MCPQA1
+2026-08-12 16:22:11,276 | INFO | Runtime Filters: None — using DefaultValues
+2026-08-12 16:22:11,383 | INFO | Module 'TestFile': 1 TC(s) matched stage 'TestPDF'.
+2026-08-12 16:22:11,404 | INFO | Parallel execution started — 1 active thread(s) (requested: 5, test cases: 1).
+2026-08-12 16:22:11,408 | INFO | ========== [ Running TestCase 1: Validate Test PDF against Oracle ] ==========
+2026-08-12 16:22:11,408 | INFO | TestCase 1: Source [ORACLE]:select * 
+  from spai.test_file_data
+2026-08-12 16:22:11,411 | ERROR | Unhandled error in TestCase 1: get_data() got an unexpected keyword argument 'source_def'
+NoneType: None
+2026-08-12 16:22:11,412 | INFO | Total Number of Testcases Executed : 1,Pass : 0, Fail : 0, Skippped : 0
+2026-08-12 16:22:11,413 | INFO | Total execution time: 0.01 seconds (0.0 minutes)
+2026-08-12 16:22:11,430 | INFO | Master combined log written to: MCPQA1_TestFile_Log_20260812_202211.json
+2026-08-12 16:22:11,468 | INFO | ========== Completed Validation ==========

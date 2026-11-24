@@ -1,0 +1,169 @@
+[
+    {
+        "DataValidationLog_ID": 129,
+        "Module": "EH_Chronic",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 1,
+                "TestCaseName": "Compare source and target for chronic condition codes",
+                "Result": "Fail",
+                "StartTime": "2026-11-05 23:13:37.634792",
+                "EndTime": "2026-11-05 23:13:57.791653",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:13:37",
+                        "Type": "INFO",
+                        "RunType": "Query",
+                        "Detail": "Target [ORACLE]:SELECT CODE\n  ,SHORT_DESCRIPTION\n  ,CONDITION_CATEGORY\n  ,LONG_DESCRIPTION\n  ,YEAR \n  FROM DW.CHRONIC_CONDITION_CODES \n  where year =2027"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 23:13:51",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source Local_PATH records: 73427, Total target ORACLE records: 73427"
+                    },
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field SHORT_DESCRIPTION vs SHORT_DESCRIPTION: 2 mismatch(es)"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'CODE': 'I12'}: SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease != SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease:\u00a0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'CODE': 'I12'}: SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease:\u00a0 != SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Field LONG_DESCRIPTION vs LONG_DESCRIPTION: 3 mismatch(es)"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'CODE': 'I12'}: LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease != LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease:\u00a0"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'CODE': 'I12'}: LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease:\u00a0 != LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "ERROR",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Mismatch at {'CODE': 'I251'}: LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non\u2011billable parent code) != LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non-billable parent code)"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 5"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2026-11-05 23:13:56",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field SHORT_DESCRIPTION vs SHORT_DESCRIPTION: 2 mismatch(es)"
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'CODE': 'I12'}: SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease:\u00a0 != SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease"
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'CODE': 'I12'}: SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease != SHORT_DESCRIPTION=Hypertensive Chronic Kidney Disease:\u00a0"
+                    },
+                    {
+                        "Log_ID": 13,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Field LONG_DESCRIPTION vs LONG_DESCRIPTION: 3 mismatch(es)"
+                    },
+                    {
+                        "Log_ID": 14,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'CODE': 'I12'}: LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease:\u00a0 != LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease"
+                    },
+                    {
+                        "Log_ID": 15,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'CODE': 'I12'}: LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease != LONG_DESCRIPTION=Hypertensive Chronic Kidney Disease:\u00a0"
+                    },
+                    {
+                        "Log_ID": 16,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Mismatch at {'CODE': 'I251'}: LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non-billable parent code) != LONG_DESCRIPTION=Atherosclerotic heart disease of native coronary artery (non\u2011billable parent code)"
+                    },
+                    {
+                        "Log_ID": 17,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 5"
+                    },
+                    {
+                        "Log_ID": 18,
+                        "LogTime": "2026-11-05 23:13:57",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 0"
+                    }
+                ],
+                "Stage": "",
+                "MismatchFields": [
+                    "SHORT_DESCRIPTION",
+                    "LONG_DESCRIPTION"
+                ],
+                "MissingFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "mahesh.thirmandas",
+            "InsertedDate": "2026-11-05 23:13:57.858929"
+        }
+    }
+]

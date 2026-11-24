@@ -1,0 +1,135 @@
+[
+    {
+        "DataValidationLog_ID": 50,
+        "Module": "Test",
+        "Stage": null,
+        "Cycle": null,
+        "TestCases": [
+            {
+                "TestCaseID": 11,
+                "TestCaseName": "Data Comparison between SRC and TGT",
+                "Result": "Fail",
+                "StartTime": "2025-11-18 22:17:02.788241",
+                "EndTime": "2025-11-18 22:24:50.215674",
+                "Log": [
+                    {
+                        "Log_ID": 1,
+                        "LogTime": "2025-11-18 22:19:01",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total source ORACLE records: 53, Total target ORACLE records: 84"
+                    },
+                    {
+                        "Log_ID": 2,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 3,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "INFO",
+                        "RunType": "SRC->TGT",
+                        "Detail": "Total Missing Records: 0"
+                    },
+                    {
+                        "Log_ID": 4,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1174807572', 'SNH_SUPER_NETWORK_ID': 'OCMRXR', 'SEQ': 200, 'PHN_PHARMACY_NETWORK_ID': 'IRXCPI'}"
+                    },
+                    {
+                        "Log_ID": 5,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1174807572', 'SNH_SUPER_NETWORK_ID': 'OCMRXR', 'SEQ': 200, 'PHN_PHARMACY_NETWORK_ID': 'N3P20'}"
+                    },
+                    {
+                        "Log_ID": 6,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1205979127', 'SNH_SUPER_NETWORK_ID': 'OCMRXR', 'SEQ': 100, 'PHN_PHARMACY_NETWORK_ID': 'IRXREX'}"
+                    },
+                    {
+                        "Log_ID": 7,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1205979127', 'SNH_SUPER_NETWORK_ID': 'OCMRXR', 'SEQ': 100, 'PHN_PHARMACY_NETWORK_ID': 'IRXREX'}"
+                    },
+                    {
+                        "Log_ID": 8,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1205979127', 'SNH_SUPER_NETWORK_ID': 'OCMRXS', 'SEQ': 5, 'PHN_PHARMACY_NETWORK_ID': 'SOPCID'}"
+                    },
+                    {
+                        "Log_ID": 9,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1205979127', 'SNH_SUPER_NETWORK_ID': 'OCMRXS', 'SEQ': 5, 'PHN_PHARMACY_NETWORK_ID': 'SOPCID'}"
+                    },
+                    {
+                        "Log_ID": 10,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1235185745', 'SNH_SUPER_NETWORK_ID': 'OCMRXR', 'SEQ': 200, 'PHN_PHARMACY_NETWORK_ID': '00003'}"
+                    },
+                    {
+                        "Log_ID": 11,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1235185745', 'SNH_SUPER_NETWORK_ID': 'OCMRXR', 'SEQ': 200, 'PHN_PHARMACY_NETWORK_ID': '00027'}"
+                    },
+                    {
+                        "Log_ID": 12,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1235185745', 'SNH_SUPER_NETWORK_ID': 'OCMRXS', 'SEQ': 20, 'PHN_PHARMACY_NETWORK_ID': '00833'}"
+                    },
+                    {
+                        "Log_ID": 13,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "ERROR",
+                        "RunType": "TGT->SRC",
+                        "Detail": "[TGT->SRC] Missing in Source: {'PHA_NATIONAL_PROVIDER_ID': '1235185745', 'SNH_SUPER_NETWORK_ID': 'OCMRXS', 'SEQ': 20, 'PHN_PHARMACY_NETWORK_ID': '00838'}"
+                    },
+                    {
+                        "Log_ID": 14,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Mismatches: 0"
+                    },
+                    {
+                        "Log_ID": 15,
+                        "LogTime": "2025-11-18 22:23:36",
+                        "Type": "INFO",
+                        "RunType": "TGT->SRC",
+                        "Detail": "Total Missing Records: 31"
+                    }
+                ],
+                "MissingFields": [
+                    "PHA_NATIONAL_PROVIDER_ID",
+                    "SNH_SUPER_NETWORK_ID",
+                    "SEQ",
+                    "PHN_PHARMACY_NETWORK_ID"
+                ],
+                "MismatchFields": []
+            }
+        ],
+        "Audit": {
+            "InsertedName": "Maheswar.Basireddy",
+            "InsertedDate": "2025-11-18 22:24:56.634715"
+        }
+    }
+]

@@ -1,0 +1,107 @@
+2025-06-30 13:44:58,537 | INFO | ========== Starting Validation (web/cli) ==========
+2025-06-30 13:44:58,539 | INFO | Module :  M3P,FIN 
+2025-06-30 13:44:58,541 | INFO | Stage :  None 
+2025-06-30 13:44:58,543 | INFO | Cycle :  None
+2025-06-30 13:44:58,545 | INFO | TestCaseNumber : 0
+2025-06-30 13:44:58,548 | INFO | Environment  : MCPQA1
+2025-06-30 13:44:58,787 | INFO | ========== [ Running TestCase 1: Enrollment Data comparison between M3P and PBM ] ==========
+2025-06-30 13:44:59,191 | INFO | [SRC->TGT]  - Total source MONGODB records: 61
+2025-06-30 13:44:59,194 | INFO | [SRC->TGT]  - Total target ORACLE records: 1
+2025-06-30 13:44:59,209 | ERROR | [SRC->TGT] Missing in Target: {'Cardholder_ID': 'EH013557701'}
+2025-06-30 13:44:59,211 | ERROR | [SRC->TGT] Missing in Target: {'Cardholder_ID': 'T9808000657'}
+2025-06-30 13:44:59,216 | INFO | Vice-versa comparison TGT->SRC Started
+2025-06-30 13:44:59,217 | INFO | [TGT->SRC]  - Total source ORACLE records: 1
+2025-06-30 13:44:59,218 | INFO | [TGT->SRC]  - Total target MONGODB records: 61
+2025-06-30 13:44:59,237 | ERROR | [TGT->SRC] Missing in Source: {'CARD_ID': 'PPO1000101'}
+2025-06-30 13:44:59,251 | INFO | Data comparison process completed.
+2025-06-30 13:44:59,253 | ERROR | [TestCase 1] Test Result: FAIL
+2025-06-30 13:44:59,255 | INFO |  Execution time for TestCase 1: 0.46 seconds
+2025-06-30 13:44:59,256 | INFO | ========== [ Running TestCase 2: Checking MemberReceipt Data Validation after CapRx load ] ==========
+2025-06-30 13:44:59,446 | INFO | [SRC->TGT]  - Total source MONGODB records: 17
+2025-06-30 13:44:59,448 | INFO | [SRC->TGT]  - Total target MONGODB records: 50
+2025-06-30 13:44:59,484 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808048630', 'M3PMember_ID': 4017, 'ElectionStartDate': Timestamp('2025-01-10 19:00:00-0500', tz='America/New_York')}: Elected=Y != Elected=9
+2025-06-30 13:44:59,490 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: ElectionEndDate=NaT != ElectionEndDate=2025-12-30
+2025-06-30 13:44:59,492 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: ElectionRequestDate=NaT != ElectionRequestDate=2025-04-30
+2025-06-30 13:44:59,494 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: ElectionYear=nan != ElectionYear=2025
+2025-06-30 13:44:59,498 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: Elected=nan != Elected=Y
+2025-06-30 13:44:59,501 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: AppReceivedDate=NaT != AppReceivedDate=2024-11-08
+2025-06-30 13:44:59,503 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: Signature=nan != Signature=True
+2025-06-30 13:44:59,504 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: M3PProgram_ID=nan != M3PProgram_ID=1003
+2025-06-30 13:44:59,507 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}: ElectionSource=nan != ElectionSource=CAPRX
+2025-06-30 13:44:59,509 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: ElectionEndDate=NaT != ElectionEndDate=2025-06-29
+2025-06-30 13:44:59,511 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: ElectionRequestDate=NaT != ElectionRequestDate=2024-12-31
+2025-06-30 13:44:59,514 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: ElectionYear=nan != ElectionYear=2025
+2025-06-30 13:44:59,518 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: AppReceivedDate=NaT != AppReceivedDate=2024-10-21
+2025-06-30 13:44:59,521 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: Signature=nan != Signature=True
+2025-06-30 13:44:59,523 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: M3PProgram_ID=nan != M3PProgram_ID=1003
+2025-06-30 13:44:59,525 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}: ElectionSource=nan != ElectionSource=CAPRX
+2025-06-30 13:44:59,538 | INFO | Vice-versa comparison TGT->SRC Started
+2025-06-30 13:44:59,539 | INFO | [TGT->SRC]  - Total source MONGODB records: 50
+2025-06-30 13:44:59,540 | INFO | [TGT->SRC]  - Total target MONGODB records: 17
+2025-06-30 13:44:59,558 | ERROR | [TGT->SRC] Missing in Source: {'Cardholder_ID': 'T9808000657', 'M3PMember_ID': 3970, 'ElectionStartDate': Timestamp('2025-04-30 20:00:00-0400', tz='America/New_York')}
+2025-06-30 13:44:59,562 | ERROR | [TGT->SRC] Missing in Source: {'Cardholder_ID': 'T9808000661', 'M3PMember_ID': 3971, 'ElectionStartDate': Timestamp('2024-12-31 19:00:00-0500', tz='America/New_York')}
+2025-06-30 13:44:59,568 | ERROR | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808048630', 'M3PMember_ID': 4017, 'ElectionStartDate': Timestamp('2025-01-10 19:00:00-0500', tz='America/New_York')}: Elected=9 != Elected=Y
+2025-06-30 13:44:59,573 | INFO | Data comparison process completed.
+2025-06-30 13:44:59,574 | ERROR | [TestCase 2] Test Result: FAIL
+2025-06-30 13:44:59,576 | INFO |  Execution time for TestCase 2: 0.32 seconds
+2025-06-30 13:44:59,577 | INFO | ========== [ Running TestCase 3: Checking CapRX Data Validation into STG collection ] ==========
+2025-06-30 13:44:59,824 | INFO | [SRC->TGT]  - Total source MONGODB records: 21
+2025-06-30 13:44:59,827 | INFO | [SRC->TGT]  - Total target MONGODB records: 21
+2025-06-30 13:44:59,852 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Effective_End=2025-10-29 != Effective_End=2025-12-30
+2025-06-30 13:44:59,858 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Record_ID=9010 != Record_ID=9017
+2025-06-30 13:44:59,861 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Effective_End=2025-12-30 != Effective_End=2025-10-29
+2025-06-30 13:44:59,865 | ERROR | [SRC->TGT] Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Record_ID=9017 != Record_ID=9010
+2025-06-30 13:44:59,887 | INFO | Vice-versa comparison TGT->SRC Started
+2025-06-30 13:44:59,890 | INFO | [TGT->SRC]  - Total source MONGODB records: 21
+2025-06-30 13:44:59,892 | INFO | [TGT->SRC]  - Total target MONGODB records: 21
+2025-06-30 13:44:59,935 | ERROR | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Effective_End=2025-10-29 != Effective_End=2025-12-30
+2025-06-30 13:44:59,938 | ERROR | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Record_ID=9010 != Record_ID=9017
+2025-06-30 13:44:59,941 | ERROR | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Effective_End=2025-12-30 != Effective_End=2025-10-29
+2025-06-30 13:44:59,943 | ERROR | [TGT->SRC] Mismatch at {'Cardholder_ID': 'T9808049275', 'Effective_Begin': Timestamp('2025-01-09 19:00:00-0500', tz='America/New_York')}: Record_ID=9017 != Record_ID=9010
+2025-06-30 13:44:59,953 | INFO | Data comparison process completed.
+2025-06-30 13:44:59,954 | ERROR | [TestCase 3] Test Result: FAIL
+2025-06-30 13:44:59,956 | INFO |  Execution time for TestCase 3: 0.38 seconds
+2025-06-30 13:44:59,957 | INFO | ========== [ Running TestCase 4: Checking TBD Records in MemberReceipt Collection ] ==========
+2025-06-30 13:45:00,173 | INFO | [TC 4] Checking TBD Records in MemberReceipt Collection
+2025-06-30 13:45:00,176 | INFO | Source Count: 84| Approved Count: 0
+2025-06-30 13:45:00,177 | INFO | Records Count Validation is completed.
+2025-06-30 13:45:00,179 | ERROR | [TC 4] Fail: Row count Not matched.
+2025-06-30 13:45:00,180 | INFO |  Execution time for TestCase 4: 0.22 seconds
+2025-06-30 13:45:00,182 | INFO | ========== [ Running TestCase 5: Checking duplicate records of phone sequence ] ==========
+2025-06-30 13:45:00,242 | INFO | [TC 5] Checking duplicate records of phone sequence
+2025-06-30 13:45:00,244 | INFO | Source Count: 0| Approved Count: 0
+2025-06-30 13:45:00,246 | INFO | Records Count Validation is completed.
+2025-06-30 13:45:00,247 | INFO | [TC 5] PASS: Row counts match.
+2025-06-30 13:45:00,249 | INFO |  Execution time for TestCase 5: 0.07 seconds
+2025-06-30 13:45:00,250 | INFO | ========== [ Running TestCase 6: Checking missing phone sequence ] ==========
+2025-06-30 13:45:00,310 | INFO | [TC 6] Checking missing phone sequence
+2025-06-30 13:45:00,313 | INFO | Source Count: 0| Approved Count: 0
+2025-06-30 13:45:00,314 | INFO | Records Count Validation is completed.
+2025-06-30 13:45:00,316 | INFO | [TC 6] PASS: Row counts match.
+2025-06-30 13:45:00,318 | INFO |  Execution time for TestCase 6: 0.07 seconds
+2025-06-30 13:45:00,320 | INFO | ========== [ Running TestCase 7: Checking invalid Enrollment status in MemberReceipt Collection Testing extra space to wrap ] ==========
+2025-06-30 13:45:00,386 | ERROR | Values not in Source Data '[2000012.0]'
+2025-06-30 13:45:00,388 | INFO |  Execution time for TestCase 7: 0.07 seconds
+2025-06-30 13:45:00,389 | INFO | ========== [ Running TestCase 8: PBM View for Testing ] ==========
+2025-06-30 13:45:00,608 | INFO | [TC 8] PBM View for Testing
+2025-06-30 13:45:00,611 | INFO | Source Count: 64944| Approved Count: 64821
+2025-06-30 13:45:00,613 | INFO | Records Count Validation is completed.
+2025-06-30 13:45:00,614 | ERROR | [TC 8] Fail: Row count Not matched.
+2025-06-30 13:45:00,616 | INFO |  Execution time for TestCase 8: 0.23 seconds
+2025-06-30 13:45:00,618 | INFO | ========== [ Running TestCase 9: PBM Table for Testing ] ==========
+2025-06-30 13:45:00,696 | INFO | [TC 9] PBM Table for Testing
+2025-06-30 13:45:00,698 | INFO | Source Count: 193167| Approved Count: 0
+2025-06-30 13:45:00,700 | INFO | Records Count Validation is completed.
+2025-06-30 13:45:00,701 | ERROR | [TC 9] Fail: Row count Not matched.
+2025-06-30 13:45:00,702 | INFO |  Execution time for TestCase 9: 0.08 seconds
+2025-06-30 13:45:00,703 | INFO | ========== [ Running TestCase 10: Checking TBD Records in MemberReceipt Collection ] ==========
+2025-06-30 13:45:02,678 | INFO | [TC 10] Checking TBD Records in MemberReceipt Collection
+2025-06-30 13:45:02,681 | INFO | Source Count: None| Approved Count: 0
+2025-06-30 13:45:02,683 | INFO | Records Count Validation is completed.
+2025-06-30 13:45:02,685 | ERROR | [TC 10] Fail: Row count Not matched.
+2025-06-30 13:45:02,686 | INFO |  Execution time for TestCase 10: 1.98 seconds
+2025-06-30 13:45:02,688 | INFO |  Total Number of Testcases Executed:10,Pass :2, Fail : 8
+2025-06-30 13:45:02,735 | INFO | Master combined log written to: MCPQA1_M3P,FIN_Log_20250630_174502.json
+2025-06-30 13:45:02,743 | INFO | Result.InsertData : 6862cd1ef69c98f4c8a8e0a5
+2025-06-30 13:45:02,748 | INFO | Result.InsertData : 6862cd1ef69c98f4c8a8e0a6
+2025-06-30 13:45:06,408 | INFO | ========== Completed Validation ==========
